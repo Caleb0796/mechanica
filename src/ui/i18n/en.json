@@ -1,0 +1,56 @@
+{
+  "app": {
+    "brand": "Mechanica",
+    "subtitle": "A digital museum of Chinese machines",
+    "language": "Language",
+    "home": "Collection",
+    "loading": "Unfolding the mechanism…",
+    "loadError": "This exhibit could not be loaded",
+    "retry": "Try again",
+    "demo": "Open the gear demo",
+    "demoHint": "Drag the small gear to see the ratio and reverse motion"
+  },
+  "home": {
+    "eyebrow": "Ten machines · Ten ingenious ideas",
+    "title": "Set ancient machines in motion",
+    "intro": "Revisit Chinese mechanical history through sourced data, 3D structure, and interactive simulation.",
+    "open": "View exhibit",
+    "thumbnail": "Render forthcoming"
+  },
+  "viewer": {
+    "pause": "Pause",
+    "resume": "Resume",
+    "rotateHint": "Drag a gold part to drive the machine",
+    "driveForward": "Drive {{part}} forward",
+    "driveReverse": "Drive {{part}} in reverse",
+    "assembly": "Assembly progress",
+    "assemblyPlay": "Play assembly steps",
+    "explode": "Exploded view",
+    "mechanisms": "Mechanism demos",
+    "scheme": "Reconstruction",
+    "schemeDiff": "Parts that differ between schemes are highlighted in gold.",
+    "spotlight": "Ingenuity spotlight",
+    "spotlightPlay": "Play spotlight",
+    "spotlightDone": "Demo complete · 演示完成",
+    "noMechanisms": "No separate mechanism demo"
+  },
+  "inspector": {
+    "title": "Part record",
+    "empty": "Select a part in the model to inspect its name, dimensions, and sources.",
+    "provenance": "Evidence",
+    "dimensions": "Dimensions",
+    "source": "Source quotation",
+    "controversies": "Controversies",
+    "noControversies": "No controversy is linked to this part's sources.",
+    "wenxian": "Textual source",
+    "wenwu": "Artifact",
+    "tuice": "Inference",
+    "openSource": "Open source"
+  },
+  "gallery": {
+    "title": "Images and sources",
+    "empty": "Image references will be added as research is completed.",
+    "license": "License",
+    "open": "Open original source"
+  }
+}

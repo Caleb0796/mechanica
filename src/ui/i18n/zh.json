@@ -1,0 +1,56 @@
+{
+  "app": {
+    "brand": "格物机械志",
+    "subtitle": "中国古代机械数字博物馆",
+    "language": "语言",
+    "home": "典藏",
+    "loading": "正在展开机械图谱…",
+    "loadError": "展品暂时无法载入",
+    "retry": "重新载入",
+    "demo": "进入齿轮演示",
+    "demoHint": "拖动小齿轮，观察传动比与反向运动"
+  },
+  "home": {
+    "eyebrow": "十件机械 · 十种巧思",
+    "title": "让古代机械重新运转",
+    "intro": "以可验证的数据、三维结构与交互仿真，重访中国机械史。",
+    "open": "查看展品",
+    "thumbnail": "复原图待生成"
+  },
+  "viewer": {
+    "pause": "暂停",
+    "resume": "继续",
+    "rotateHint": "拖动金色部件驱动机械",
+    "driveForward": "{{part}}：正向驱动",
+    "driveReverse": "{{part}}：反向驱动",
+    "assembly": "装配进度",
+    "assemblyPlay": "播放装配步骤",
+    "explode": "分解视图",
+    "mechanisms": "机构演示",
+    "scheme": "复原方案",
+    "schemeDiff": "切换方案后，差异部件将以金色提示。",
+    "spotlight": "巧思聚焦",
+    "spotlightPlay": "播放巧思",
+    "spotlightDone": "演示完成 · Demo complete",
+    "noMechanisms": "暂无独立机构演示"
+  },
+  "inspector": {
+    "title": "部件档案",
+    "empty": "点选模型中的部件，查看名称、尺寸与史料来源。",
+    "provenance": "依据",
+    "dimensions": "尺寸记录",
+    "source": "史料引文",
+    "controversies": "学术争议",
+    "noControversies": "此部件的来源未关联学术争议。",
+    "wenxian": "文献",
+    "wenwu": "文物",
+    "tuice": "推测",
+    "openSource": "查看来源"
+  },
+  "gallery": {
+    "title": "图像与资料",
+    "empty": "图像资料将在后续整理中补充。",
+    "license": "授权",
+    "open": "打开原始资料"
+  }
+}

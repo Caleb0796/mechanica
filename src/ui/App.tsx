@@ -1,0 +1,58 @@
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import './i18n'
+import './styles.css'
+import RouterView from './routes'
+import { type UiLanguage, useUiStore } from './store'
+
+function LanguageSwitch() {
+  const { i18n, t } = useTranslation()
+  const language = useUiStore((state) => state.language)
+  const setLanguage = useUiStore((state) => state.setLanguage)
+
+  useEffect(() => {
+    void i18n.changeLanguage(language)
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'
+  }, [i18n, language])
+
+  const chooseLanguage = (nextLanguage: UiLanguage) => {
+    setLanguage(nextLanguage)
+  }
+
+  return (
+    <div aria-label={t('app.language')} className="language-switch" role="group">
+      <button
+        aria-pressed={language === 'zh'}
+        onClick={() => chooseLanguage('zh')}
+        type="button"
+      >
+        中文
+      </button>
+      <button
+        aria-pressed={language === 'en'}
+        onClick={() => chooseLanguage('en')}
+        type="button"
+      >
+        EN
+      </button>
+    </div>
+  )
+}
+
+export default function App() {
+  const { t } = useTranslation()
+
+  return (
+    <div className="app-shell">
+      <header className="museum-header">
+        <a className="brand-link" href="#/">
+          <span className="brand-mark">{t('app.brand')}</span>
+          <span className="brand-subtitle">{t('app.subtitle')}</span>
+        </a>
+        <LanguageSwitch />
+      </header>
+      <RouterView />
+    </div>
+  )
+}

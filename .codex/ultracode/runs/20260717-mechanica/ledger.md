@@ -204,3 +204,50 @@ None for Phase 0. The Session ID is a deliberate submission-note exception to th
 ### Next action
 
 Commit the Phase 0 evidence, tag `wave-0`, and begin the four Phase 1 ownership units.
+
+## Phase 1 Complete — Core, Simulation, Validation, and UI
+
+### Route
+
+Full route with four disjoint implementation units, root integration, focused repair rounds, and independent adversarial review for every unit.
+
+### Scope
+
+Deliver parametric geometry, the layered kinematic solver, deterministic validation and poison infrastructure, and the bilingual interactive museum shell with an executable 20/40-tooth demo.
+
+### Findings
+
+- Pin gears require the inner radius plus pin radius to remain below the pitch radius.
+- Reverse crank input needs bounded analytic inversion, explicit dead-center behavior, and nearest-branch selection.
+- Escapement ticks must consume residual time through release and lock transitions to remain timestep-partition independent.
+- Collision whitelists require observed 3D contact across sampled motion; analytic gear placement alone is insufficient.
+- Spotlight completion must follow its timed camera, highlight, and drive sequence rather than the trigger's synchronous return.
+
+### Changes
+
+- `17bc445` adds sourced units, materials, gear generation, primitive builders, and core tests.
+- `c84d6dd` adds linear/function/multi-input/gimbal solver layers, escapement simulation, and golden tests.
+- `cf704a1` adds ratio, range, provenance, collision, import, report, sampling, CLI, and poison validation.
+- `e2f1586` adds the bilingual catalog, R3F viewer, drive/explode/assembly controls, part records, reconstruction switching, gallery, spotlight choreography, and Playwright coverage.
+
+### Verification
+
+- `pnpm test` → 35/35 tests passed across core, simulation, and validation.
+- `pnpm exec tsc --noEmit` and `pnpm build` → exit 0. Vite reports a non-blocking main-chunk size warning.
+- `pnpm validate --partial` → exit 0 with exactly ten expected missing-machine warnings.
+- Strict `pnpm validate` → expected exit 1 with `manifest incomplete` for all ten Phase 2/3 machine modules.
+- `pnpm e2e` → 3/3 passed: ten-card metadata, exact −0.5 demo ratio, sub-300 ms inspector, explode spread, delayed spotlight completion, and a ten-second ≥50 FPS sample.
+- In-app browser review confirmed the complete card layout, responsive viewer, meshing gears, part selection, spotlight camera pose, highlights, captions, and done state.
+- Deletion audit found only replaced placeholder files and the superseded Phase 0 landing page.
+
+### Adversarial gate
+
+Four independent skeptic reviews pass with zero open findings. Repairs covered pin-gear hole bounds, crank branch continuity, escapement timestep stability, signed ratios, full-sweep BVH contact, transient poison collisions, import failure classification, card metadata, source-linked controversies, and truthful spotlight timing.
+
+### Unresolved risks
+
+The strict manifest gate remains intentionally red until the ten machine modules land. The production bundle warning should be revisited when machine-level code splitting and assets are available.
+
+### Next action
+
+Commit this gate evidence, tag `wave-1`, remove temporary history-safety branches, and begin Phase 2 data and source-snapshot ownership units.

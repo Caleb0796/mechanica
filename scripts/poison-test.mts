@@ -1,5 +1,6 @@
 import type { MachineModule, PartDef, Provenance } from '../src/sim/types'
 import { importErrorMessage, isMissingMachineBuild } from '../src/validate/imports'
+import { normalizeQuoteReceipt } from '../src/validate/quotes'
 import { runValidation, type ValidationReport } from '../src/validate/report'
 
 declare const process: {
@@ -13,9 +14,24 @@ interface FileSystem {
   readFileSync(path: string, encoding: 'utf8'): string
 }
 
+interface CryptoModule {
+  createHash(algorithm: 'sha256'): {
+    update(value: string): unknown
+    digest(encoding: 'hex'): string
+  }
+}
+
 const fsModuleName = 'node:fs'
+const cryptoModuleName = 'node:crypto'
 const { existsSync, readFileSync } = await import(fsModuleName) as unknown as FileSystem
+const { createHash } = await import(cryptoModuleName) as unknown as CryptoModule
 const repoRoot = process.cwd().replace(/[\\/]+$/, '')
+
+function quoteFingerprint(quote: string): string {
+  const hash = createHash('sha256')
+  hash.update(normalizeQuoteReceipt(quote))
+  return hash.digest('hex')
+}
 
 const partial = process.argv.slice(2).includes('--partial')
 let pristine: MachineModule
@@ -91,6 +107,7 @@ function validate(module: MachineModule): ValidationReport {
     repoRoot,
     fileExists: existsSync,
     readTextFile: (path) => readFileSync(path, 'utf8'),
+    quoteFingerprint,
   })
 }
 

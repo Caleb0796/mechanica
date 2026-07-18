@@ -34,6 +34,7 @@ export interface ValidationOptions {
   repoRoot?: string
   fileExists?: (path: string) => boolean
   readTextFile?: (path: string) => string
+  quoteFingerprint?: (quote: string) => string
 }
 
 function patchedSpec(spec: MachineSpec, patch: SchemePatch): MachineSpec {

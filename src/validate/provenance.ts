@@ -304,8 +304,11 @@ function checkSnapshots(module: MachineModule, opts: ValidationOptions): Validat
     try {
       if (!opts.readTextFile) throw new Error('snapshot reader is unavailable')
       const snapshot = JSON.parse(opts.readTextFile(path)) as UnknownRecord
-      const verified = snapshot.ok === true || snapshot.quoteFound === true
-      const offline = snapshot.offline === true
+      const quoteFound = snapshot.ok === true || snapshot.quoteFound === true
+      const receiptMatches = typeof snapshot.quoteSha256 === 'string'
+        && opts.quoteFingerprint?.(source.quote) === snapshot.quoteSha256
+      const verified = quoteFound && receiptMatches
+      const offline = snapshot.note === 'offline'
       checks.push({
         id: `integrity:snapshot:${source.id}`,
         status: verified ? 'pass' : offline ? 'warn' : 'fail',
@@ -313,7 +316,9 @@ function checkSnapshots(module: MachineModule, opts: ValidationOptions): Validat
           ? `Source snapshot ${source.id} verifies its source.`
           : offline
             ? `Source snapshot ${source.id} could not be verified offline.`
-            : `Source snapshot ${source.id} contains no successful verification record.`,
+            : quoteFound && !receiptMatches
+              ? `Source snapshot ${source.id} does not match the current quote receipt.`
+              : `Source snapshot ${source.id} contains no successful verification record.`,
         sourceRef: source.id,
       })
     } catch (error) {

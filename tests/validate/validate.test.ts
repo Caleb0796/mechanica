@@ -234,6 +234,28 @@ describe('independent machine validation', () => {
     ))).toBe(true)
   })
 
+  it('invalidates a source snapshot after the current quote changes', () => {
+    const module = miniModule()
+    const snapshotPath = '/repo/artifacts/source-snapshots/chariot/source-1.json'
+    const options = {
+      repoRoot: '/repo',
+      fileExists: (path: string) => path === snapshotPath,
+      readTextFile: () => JSON.stringify({ quoteFound: true, quoteSha256: 'receipt:Testquote' }),
+      quoteFingerprint: (quote: string) => `receipt:${quote.replace(/\s+/g, '')}`,
+    }
+    expect(validateProvenanceAndIntegrity(module, options).find((check) => (
+      check.id === 'integrity:snapshot:source-1'
+    ))?.status).toBe('pass')
+
+    module.data.sources[0].quote = 'Test quote!'
+    expect(validateProvenanceAndIntegrity(module, options).find((check) => (
+      check.id === 'integrity:snapshot:source-1'
+    ))).toMatchObject({
+      status: 'fail',
+      message: expect.stringContaining('current quote receipt'),
+    })
+  })
+
   it('derives a half-degree-or-finer shared sampling plan', () => {
     const module = miniModule()
     const graph = new KinematicGraph(module.spec)

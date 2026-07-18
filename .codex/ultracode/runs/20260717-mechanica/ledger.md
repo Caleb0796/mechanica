@@ -251,3 +251,49 @@ The strict manifest gate remains intentionally red until the ten machine modules
 ### Next action
 
 Commit this gate evidence, tag `wave-1`, remove temporary history-safety branches, and begin Phase 2 data and source-snapshot ownership units.
+
+## Phase 2 Complete — Data, Sources, and Licensed Assets
+
+### Route
+
+Full route with disjoint data and pipeline workers, root integration, two adversarial rounds, and root repair and verification of the finite findings.
+
+### Scope
+
+Deliver the ten-machine bilingual knowledge base, source-text receipts, licensed optimized museum assets, attribution credits, build-time extraction and audit scripts, and snapshot-bound validation.
+
+### Findings
+
+- Thirty-three source quotations now have fetched receipts with verified matched spans and hashes; source snapshots required narrow traditional/simplified normalization and removal of inline pronunciation annotations.
+- Institutional museum records supersede the gimbal card for artifact measurements and display status. The Hejiacun outer diameter is therefore `0.045` m, and the revision is recorded in `docs/OPEN_QUESTIONS.md`.
+- Commons supplied 48 usable raster assets. License metadata, file magic, per-file limits, aggregate limits, and credit-to-disk parity all pass.
+- The wooden-ox card names two reconstructions but supplies no publication years. Required scheme years were not invented.
+
+### Changes
+
+- Added ten validated `src/data/machines/*.json` records plus field-level schema and cardinality tests.
+- Added source snapshot, licensed image fetch, GPT-5.6 parts-extraction, and independent audit scripts.
+- Committed source receipts, optimized museum assets, generated credits, and a zero-failure image-pipeline report.
+- Extended deterministic validation so a successful source receipt must match the current quotation fingerprint; stale or missing receipts fail.
+
+### Verification
+
+- `pnpm test` → 61/61 tests passed across five files; the focused data suite covers all ten cards and per-slug supply floors.
+- `pnpm exec tsc --noEmit` and `pnpm build` → exit 0; Vite retains the known non-blocking main-chunk warning.
+- `pnpm snapshot-sources` → 33/33 quotations verified across ten directories with no offline exceptions.
+- A deliberate one-character seismoscope quotation corruption made `pnpm validate --partial` exit 1 with a stale-receipt failure; restoring the character returned validation to exit 0 with exactly ten expected missing Phase 3 modules.
+- Asset audit → 48 credit records match 48 committed rasters; 8,025,103 bytes total, 284,259-byte maximum, zero fetch failures.
+- `pnpm extract` and `pnpm run audit` → exit 0 with their specified yellow keyless-skip warnings because `OPENAI_API_KEY` is absent.
+
+### Adversarial gate
+
+Two independent skeptic rounds exercised philology, schema cardinality, receipt integrity, museum provenance, license handling, filesystem safety, and artifact sanitization. The second round found seven finite issues; root repaired six and self-verified the resulting source, data, asset, and validation invariants. No third Phase 2 skeptic round was opened under the configured two-round maximum.
+
+### Unresolved risks
+
+- Wooden-ox reconstruction metadata remains incomplete because neither scheme year is established by the frozen card or a verified source. This is documented and must be resolved with citable evidence before the machine can clear its release gate.
+- GPT-5.6 extractions are intentionally absent until a key is available; independent audits remain a mandatory Phase 6 gate after final machine reports exist.
+
+### Next action
+
+Create the four scoped Phase 2 commits, tag `wave-2`, then start the Phase 3 ten-machine fan-out in bounded ownership batches.

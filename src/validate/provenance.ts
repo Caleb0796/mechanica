@@ -111,7 +111,10 @@ function checkNumericGeometry(module: MachineModule, sources: Set<string>): Vali
 function checkRatioAndDataSources(module: MachineModule, sources: Set<string>): ValidationCheck[] {
   const checks: ValidationCheck[] = []
   for (const [index, ratio] of (module.spec.expectedRatios ?? []).entries()) {
-    const ok = ratio.sourceRef.trim().length > 0 && sources.has(ratio.sourceRef)
+    const references = ratio.sourceRef.split('+').map((reference) => reference.trim())
+    const ok = references.length > 0 && references.every((reference) => (
+      reference.length > 0 && sources.has(reference)
+    ))
     checks.push({
       id: `provenance:ratio:${index + 1}`,
       status: ok ? 'pass' : 'fail',

@@ -122,6 +122,21 @@ describe('independent machine validation', () => {
     expect(report.checks.find((check) => check.id === 'base:ratio-1')?.status).toBe('fail')
   })
 
+  it('requires every component of a composite ratio source reference to resolve', () => {
+    const module = miniModule()
+    module.data.sources.push({
+      id: 'source-2',
+      book: 'Second test source',
+      quote: 'Second test quote',
+      url: 'https://example.test/source-2',
+    })
+    module.spec.expectedRatios![0].sourceRef = 'source-1+source-2'
+    expect(integrity(module).find((check) => check.id === 'provenance:ratio:1')?.status).toBe('pass')
+
+    module.spec.expectedRatios![0].sourceRef = 'source-1+missing-source'
+    expect(integrity(module).find((check) => check.id === 'provenance:ratio:1')?.status).toBe('fail')
+  })
+
   it('fails a whitelisted gear pair whose axial gap prevents 3D contact', () => {
     const module = miniModule()
     module.spec.parts[1].position = [0.601, 0.04, 0]

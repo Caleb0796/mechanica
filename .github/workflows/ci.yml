@@ -1,0 +1,28 @@
+name: ci
+on: [push, pull_request]
+env:
+  # "--partial" until wave-3 completes (machine dirs may be missing);
+  # the LAST step of P3 acceptance flips this to "" (strict ten-machine manifest)
+  # and commits — this is the only sanctioned relaxation switch
+  VALIDATE_FLAGS: "--partial"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm validate $VALIDATE_FLAGS
+      - run: pnpm poison $VALIDATE_FLAGS
+      - run: pnpm build
+      - name: e2e (auto-enables once the first machine lands)
+        if: ${{ hashFiles('src/machines/odometer/parts.json') != '' }}
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          pnpm e2e
+      - uses: actions/upload-artifact@v4
+        with: { name: validation-reports, path: reports/ }

@@ -1,8 +1,8 @@
 # Submission Notes
 
-## Codex Session ID
+## Codex run
 
-`019f7356-3808-7a10-a445-faf293232674`
+Run identifiers are intentionally omitted from committed artifacts.
 
 ## Verification excerpts
 

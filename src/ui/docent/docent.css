@@ -1,0 +1,145 @@
+.docent-entry {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 40;
+  border: 1px solid rgba(213, 181, 111, 0.55);
+  border-radius: 999px;
+  background: #231c17;
+  color: #f5e7c8;
+  padding: 0.7rem 1rem;
+  box-shadow: 0 0.6rem 2rem rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.docent-entry:disabled,
+.docent-send:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.docent-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 41;
+  display: flex;
+  width: min(26rem, 100vw);
+  flex-direction: column;
+  border-left: 1px solid rgba(213, 181, 111, 0.35);
+  background: rgba(24, 19, 16, 0.98);
+  color: #f7edd8;
+  box-shadow: -1rem 0 3rem rgba(0, 0, 0, 0.38);
+}
+
+.docent-header,
+.docent-composer {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.9rem;
+}
+
+.docent-header {
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(213, 181, 111, 0.22);
+}
+
+.docent-close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.docent-scroll {
+  flex: 1;
+  overflow: auto;
+  padding: 0.9rem;
+}
+
+.docent-suggestions {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.docent-suggestion,
+.docent-retry {
+  border: 1px solid rgba(213, 181, 111, 0.35);
+  border-radius: 0.65rem;
+  background: rgba(213, 181, 111, 0.08);
+  color: inherit;
+  padding: 0.6rem 0.7rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.docent-message {
+  margin: 0 0 0.75rem;
+  border-radius: 0.75rem;
+  padding: 0.7rem 0.8rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.docent-message-user {
+  margin-left: 2.5rem;
+  background: rgba(213, 181, 111, 0.15);
+}
+
+.docent-message-assistant {
+  margin-right: 1.5rem;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.docent-citation {
+  display: inline-block;
+  margin: 0 0.1rem;
+  border: 1px solid rgba(213, 181, 111, 0.5);
+  border-radius: 999px;
+  color: #e9c77f;
+  padding: 0.05rem 0.38rem;
+  font-size: 0.82em;
+  text-decoration: none;
+}
+
+.docent-status {
+  border-left: 0.2rem solid #b96b5d;
+  padding: 0.55rem 0.7rem;
+  color: #f0bcb2;
+}
+
+.docent-composer {
+  border-top: 1px solid rgba(213, 181, 111, 0.22);
+}
+
+.docent-input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid rgba(213, 181, 111, 0.3);
+  border-radius: 0.6rem;
+  background: rgba(0, 0, 0, 0.24);
+  color: inherit;
+  padding: 0.65rem 0.75rem;
+}
+
+.docent-send {
+  border: 0;
+  border-radius: 0.6rem;
+  background: #b88a42;
+  color: #18130f;
+  padding: 0.65rem 0.8rem;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .docent-drawer {
+    top: 12vh;
+    width: 100vw;
+    border-top: 1px solid rgba(213, 181, 111, 0.35);
+    border-left: 0;
+  }
+}

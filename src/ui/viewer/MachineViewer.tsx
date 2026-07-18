@@ -4,7 +4,12 @@ import {
   OrbitControls,
   useBounds,
 } from "@react-three/drei";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  Canvas,
+  type ThreeEvent,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -38,12 +43,24 @@ import type {
   PartDef,
   SolveResult,
 } from "../../sim/types";
+import CompareView, { type CompareSceneContext } from "../compare/CompareView";
+import {
+  schemeGhostPresentation,
+  specForScheme,
+  type SchemeTransitionMetadata,
+} from "../compare/model";
 import GalleryPanel from "../panels/GalleryPanel";
+import DocentChat from "../panels/DocentChat";
 import PartInspector from "../panels/PartInspector";
 import SchemeSwitcher from "../panels/SchemeSwitcher";
 import { useUiStore } from "../store";
 import DriveHandle from "./DriveHandle";
 import ExplodedControl from "./ExplodedControl";
+import {
+  type AssemblyController,
+  isPartVisibleInAssemblyStep,
+  useAssemblyController,
+} from "./assembly";
 
 declare global {
   interface Window {
@@ -54,6 +71,25 @@ declare global {
     };
     __mechExplodeSpread?: () => number;
     __mechSelect?: (partId: string) => void;
+    __mechAssembly?: {
+      advanceStep: () => void;
+      enterExplodedMode: () => void;
+      enterStepMode: () => void;
+      exitAssembly: () => void;
+      seat: (
+        partId: string,
+        distanceFromHome?: number,
+        radius?: number,
+      ) => void;
+      selectPart: (partId: string | null) => void;
+      state: () => {
+        complete: boolean;
+        errorPartId: string | null;
+        mode: string;
+        seatedPartIds: string[];
+        transmissionEnabled: boolean;
+      };
+    };
   }
 }
 
@@ -63,12 +99,16 @@ export interface MachineViewerProps {
 }
 
 interface PartNodeProps {
+  appearance?: PartAppearance;
+  assembly?: AssemblyController;
   assemblyProgress: number;
   childrenByParent: Map<string, PartDef[]>;
+  compareContext?: CompareSceneContext;
   crankByRod: Map<string, CrankConstraint>;
   displayState: { current: Record<string, number> | null };
   explode: number;
   graph: IKinematicGraph;
+  interactionDisabled?: boolean;
   maxAssemblyStep: number;
   module: MachineModule;
   onDraggingChange: (dragging: boolean) => void;
@@ -78,6 +118,13 @@ interface PartNodeProps {
   schemeId?: string;
   spotlightActive: boolean;
   spotlightPartIds: string[];
+  visiblePartIds?: ReadonlySet<string>;
+}
+
+interface PartAppearance {
+  color?: string;
+  opacity: number;
+  partIds?: ReadonlySet<string>;
 }
 
 type CrankConstraint = Extract<
@@ -202,12 +249,16 @@ function radialExplodeVector(part: PartDef) {
 }
 
 function PartNode({
+  appearance,
+  assembly,
   assemblyProgress,
   childrenByParent,
+  compareContext,
   crankByRod,
   displayState,
   explode,
   graph,
+  interactionDisabled,
   maxAssemblyStep,
   module,
   onDraggingChange,
@@ -217,14 +268,29 @@ function PartNode({
   schemeId,
   spotlightActive,
   spotlightPartIds,
+  visiblePartIds,
 }: PartNodeProps) {
   const group = useRef<Group>(null);
   const instancedMesh = useRef<InstancedMesh>(null);
+  const assemblyPointer = useRef<number | null>(null);
+  const assemblyStartPoint = useRef(new Vector3());
+  const assemblyOffset = useRef(new Vector3());
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
+  const geometryCache = compareContext?.geometryCache;
   const geometry = useMemo(
-    () => buildPartGeometry(part.geometry, module.customBuilders),
-    [module.customBuilders, part.geometry],
+    () =>
+      geometryCache
+        ? geometryCache.acquire(module, part.geometry)
+        : buildPartGeometry(part.geometry, module.customBuilders),
+    [geometryCache, module, module.customBuilders, part.geometry],
   );
+  const comparePresentation = compareContext?.tintForPart(part.id);
+  const layerPresentation =
+    appearance && (!appearance.partIds || appearance.partIds.has(part.id))
+      ? appearance
+      : undefined;
+  const assemblyError = assembly?.state.errorPartId === part.id;
+  const assemblyHighlighted = assembly?.currentPartId === part.id;
   const material = useMemo<Material>(() => {
     const nextMaterial = standardMaterial(part.material);
     const materialOverride = geometry.userData.mechanicaMaterial as
@@ -261,8 +327,42 @@ function PartNode({
       nextMaterial.emissive.set("#6e4e18");
       nextMaterial.emissiveIntensity = spotlightHighlighted ? 1.4 : 0.65;
     }
+    if (nextMaterial instanceof MeshStandardMaterial) {
+      if (comparePresentation?.color) {
+        nextMaterial.color.set(comparePresentation.color);
+      }
+      if (comparePresentation?.emissive) {
+        nextMaterial.emissive.set(comparePresentation.emissive);
+        nextMaterial.emissiveIntensity = 1;
+      }
+      if (comparePresentation && comparePresentation.opacity < 1) {
+        nextMaterial.opacity = comparePresentation.opacity;
+        nextMaterial.transparent = true;
+      }
+      if (layerPresentation?.color) {
+        nextMaterial.color.set(layerPresentation.color);
+      }
+      if (layerPresentation && layerPresentation.opacity < 1) {
+        nextMaterial.opacity = layerPresentation.opacity;
+        nextMaterial.transparent = true;
+        nextMaterial.depthWrite = false;
+      }
+      if (assemblyHighlighted) {
+        nextMaterial.emissive.set("#a77825");
+        nextMaterial.emissiveIntensity = 1.1;
+      }
+      if (assemblyError) {
+        nextMaterial.color.set("#b62f2f");
+        nextMaterial.emissive.set("#7d1515");
+        nextMaterial.emissiveIntensity = 1.6;
+      }
+    }
     return nextMaterial;
   }, [
+    assemblyError,
+    assemblyHighlighted,
+    comparePresentation,
+    layerPresentation,
     part.id,
     part.material,
     part.schemeTags,
@@ -289,15 +389,26 @@ function PartNode({
   const visibleStep = Math.floor(
     assemblyProgress * Math.max(maxAssemblyStep, 1),
   );
-  const visible = assemblyStep <= visibleStep;
+  const visible = assembly
+    ? isPartVisibleInAssemblyStep(assembly.plan, assembly.state, part.id) &&
+      (assembly.state.mode === "step" || assemblyStep <= visibleStep)
+    : assemblyStep <= visibleStep;
   const childParts = childrenByParent.get(part.id) ?? [];
+  const renderOwnPart = !visiblePartIds || visiblePartIds.has(part.id);
+  const reassembling = assembly?.state.mode === "reassemble";
+  const seated = assembly?.state.seatedPartIds.has(part.id) ?? true;
+  const partExplode = reassembling ? (seated ? 0 : 1) : explode;
 
   useEffect(() => {
     return () => {
-      geometry.dispose();
+      if (geometryCache) {
+        geometryCache.release(module, part.geometry, geometry);
+      } else {
+        geometry.dispose();
+      }
       material.dispose();
     };
-  }, [geometry, material]);
+  }, [geometry, geometryCache, material, module, part.geometry]);
 
   useLayoutEffect(() => {
     if (!instancedMesh.current || !instanceMatrices) return;
@@ -318,7 +429,8 @@ function PartNode({
       );
       group.current.position
         .set(...pose.center)
-        .addScaledVector(explodeVector, explode);
+        .addScaledVector(explodeVector, partExplode)
+        .add(assemblyOffset.current);
       group.current.rotation.set(0, 0, pose.rotationZ);
       return;
     }
@@ -338,7 +450,8 @@ function PartNode({
     const attitude = attitudeQuaternion(state, part.id);
     group.current.position
       .copy(basePosition)
-      .addScaledVector(explodeVector, explode);
+      .addScaledVector(explodeVector, partExplode)
+      .add(assemblyOffset.current);
     group.current.rotation.set(...baseRotation);
 
     if (attitude) {
@@ -352,39 +465,84 @@ function PartNode({
 
   if (!visible) return null;
 
-  const handlePointerDown = part.interactive
-    ? undefined
-    : (event: { stopPropagation: () => void }) => {
-        event.stopPropagation();
-        setSelectedPartId(part.id);
-      };
+  const beginAssemblyDrag = (event: ThreeEvent<PointerEvent>) => {
+    if (interactionDisabled || !reassembling || seated) return;
+    event.stopPropagation();
+    assemblyPointer.current = event.pointerId;
+    assemblyStartPoint.current.copy(event.point);
+    assemblyOffset.current.set(0, 0, 0);
+    assembly?.beginDrag(part.id);
+    setSelectedPartId(part.id);
+    (event.target as Element).setPointerCapture(event.pointerId);
+  };
+  const moveAssemblyPart = (event: ThreeEvent<PointerEvent>) => {
+    if (assemblyPointer.current !== event.pointerId) return;
+    event.stopPropagation();
+    assemblyOffset.current.copy(event.point).sub(assemblyStartPoint.current);
+  };
+  const endAssemblyDrag = (event: ThreeEvent<PointerEvent>) => {
+    if (assemblyPointer.current !== event.pointerId) return;
+    event.stopPropagation();
+    assemblyPointer.current = null;
+    if ((event.target as Element).hasPointerCapture(event.pointerId)) {
+      (event.target as Element).releasePointerCapture(event.pointerId);
+    }
+    geometry.computeBoundingSphere();
+    const radius = Math.max(geometry.boundingSphere?.radius ?? 0.1, 0.001);
+    const distance = explodeVector
+      .clone()
+      .multiplyScalar(partExplode)
+      .add(assemblyOffset.current)
+      .length();
+    assembly?.attemptSeat(part.id, distance, radius);
+    assembly?.endDrag();
+    assemblyOffset.current.set(0, 0, 0);
+  };
+
+  const handlePointerDown =
+    interactionDisabled || reassembling || part.interactive
+      ? undefined
+      : (event: { stopPropagation: () => void }) => {
+          event.stopPropagation();
+          setSelectedPartId(part.id);
+        };
   const content = (
     <>
-      {instanceMatrices ? (
-        <instancedMesh
-          args={[geometry as BufferGeometry, material, instanceMatrices.length]}
-          castShadow
-          onPointerDown={handlePointerDown}
-          receiveShadow
-          ref={instancedMesh}
-        />
-      ) : (
-        <mesh
-          castShadow
-          geometry={geometry}
-          material={material}
-          onPointerDown={handlePointerDown}
-          receiveShadow
-        />
-      )}
+      {renderOwnPart ? (
+        instanceMatrices ? (
+          <instancedMesh
+            args={[
+              geometry as BufferGeometry,
+              material,
+              instanceMatrices.length,
+            ]}
+            castShadow
+            onPointerDown={handlePointerDown}
+            receiveShadow
+            ref={instancedMesh}
+          />
+        ) : (
+          <mesh
+            castShadow
+            geometry={geometry}
+            material={material}
+            onPointerDown={handlePointerDown}
+            receiveShadow
+          />
+        )
+      ) : null}
       {childParts.map((child) => (
         <PartNode
+          appearance={appearance}
+          assembly={assembly}
           assemblyProgress={assemblyProgress}
           childrenByParent={childrenByParent}
+          compareContext={compareContext}
           crankByRod={crankByRod}
           displayState={displayState}
           explode={explode}
           graph={graph}
+          interactionDisabled={interactionDisabled}
           key={child.id}
           maxAssemblyStep={maxAssemblyStep}
           module={module}
@@ -395,14 +553,33 @@ function PartNode({
           schemeId={schemeId}
           spotlightActive={spotlightActive}
           spotlightPartIds={spotlightPartIds}
+          visiblePartIds={visiblePartIds}
         />
       ))}
     </>
   );
 
   return (
-    <group name={part.id} ref={group} visible={visible}>
-      {part.interactive ? (
+    <group
+      name={part.id}
+      onPointerDown={interactionDisabled ? undefined : beginAssemblyDrag}
+      onPointerMove={moveAssemblyPart}
+      onPointerOut={() => {
+        if (!interactionDisabled) compareContext?.onHoverPart(undefined);
+      }}
+      onPointerOver={(event) => {
+        if (interactionDisabled) return;
+        event.stopPropagation();
+        compareContext?.onHoverPart(part.id);
+      }}
+      onPointerUp={endAssemblyDrag}
+      ref={group}
+      visible={visible}
+    >
+      {part.interactive &&
+      !reassembling &&
+      !interactionDisabled &&
+      (!compareContext || compareContext.driveNode === part.id) ? (
         <DriveHandle
           drive={(delta) => onDrivePart(part.id, delta)}
           onDraggingChange={onDraggingChange}
@@ -420,7 +597,10 @@ function PartNode({
 
 interface MachineSceneProps {
   activeSpec: MachineSpec;
+  appearance?: PartAppearance;
+  assembly?: AssemblyController;
   assemblyProgress: number;
+  compareContext?: CompareSceneContext;
   displayState: { current: Record<string, number> | null };
   explode: number;
   graph: IKinematicGraph;
@@ -431,11 +611,92 @@ interface MachineSceneProps {
   spotlightActive: boolean;
   spotlightPartIds: string[];
   spotlightRunId: number;
+  transitionLayer?: {
+    appearance: PartAppearance;
+    spec: MachineSpec;
+  };
+}
+
+function GhostPartLayer({
+  appearance,
+  module,
+  spec,
+}: {
+  appearance: PartAppearance;
+  module: MachineModule;
+  spec: MachineSpec;
+}) {
+  const graph = useMemo(() => new KinematicGraph(spec), [spec]);
+  const displayState = useRef<Record<string, number> | null>(null);
+  const partIds = useMemo(
+    () => new Set(spec.parts.map((part) => part.id)),
+    [spec.parts],
+  );
+  const rootParts = useMemo(
+    () =>
+      spec.parts.filter((part) => !part.parent || !partIds.has(part.parent)),
+    [partIds, spec.parts],
+  );
+  const partsById = useMemo(
+    () => new Map(spec.parts.map((part) => [part.id, part])),
+    [spec.parts],
+  );
+  const crankByRod = useMemo(
+    () =>
+      new Map(
+        spec.constraints.flatMap((constraint) =>
+          constraint.type === "crank"
+            ? ([[constraint.rod, constraint]] as const)
+            : [],
+        ),
+      ),
+    [spec.constraints],
+  );
+  const childrenByParent = useMemo(() => {
+    const children = new Map<string, PartDef[]>();
+    for (const part of spec.parts) {
+      if (!part.parent) continue;
+      const siblings = children.get(part.parent) ?? [];
+      siblings.push(part);
+      children.set(part.parent, siblings);
+    }
+    return children;
+  }, [spec.parts]);
+  const maxAssemblyStep = useMemo(
+    () => Math.max(1, ...spec.parts.map((part) => part.assemblyStep ?? 0)),
+    [spec.parts],
+  );
+
+  return rootParts.map((part) => (
+    <PartNode
+      appearance={appearance}
+      assemblyProgress={1}
+      childrenByParent={childrenByParent}
+      crankByRod={crankByRod}
+      displayState={displayState}
+      explode={0}
+      graph={graph}
+      interactionDisabled
+      key={`ghost:${part.id}`}
+      maxAssemblyStep={maxAssemblyStep}
+      module={module}
+      onDraggingChange={() => undefined}
+      onDrivePart={() => undefined}
+      part={part}
+      partsById={partsById}
+      spotlightActive={false}
+      spotlightPartIds={[]}
+      visiblePartIds={appearance.partIds}
+    />
+  ));
 }
 
 function MachineScene({
   activeSpec,
+  appearance,
+  assembly,
   assemblyProgress,
+  compareContext,
   displayState,
   explode,
   graph,
@@ -446,9 +707,11 @@ function MachineScene({
   spotlightActive,
   spotlightPartIds,
   spotlightRunId,
+  transitionLayer,
 }: MachineSceneProps) {
   const dragging = useRef(false);
   const escapementElapsed = useRef(0);
+  const orbitControls = useRef<{ target: Vector3 } | null>(null);
   const partIds = useMemo(
     () => new Set(activeSpec.parts.map((part) => part.id)),
     [activeSpec],
@@ -514,13 +777,41 @@ function MachineScene({
         intensity={1.2}
         position={[-2, -1, 2]}
       />
-      <OrbitControls enableDamping enabled={!spotlightActive} makeDefault />
-      <Bounds clip margin={1.25}>
+      <OrbitControls
+        autoRotate={false}
+        enableDamping
+        enabled={!spotlightActive}
+        makeDefault
+        onChange={() => {
+          const target = orbitControls.current?.target;
+          if (target && compareContext) {
+            compareContext.onCameraTargetChange([target.x, target.y, target.z]);
+          }
+        }}
+        ref={(controls) => {
+          orbitControls.current = controls;
+          if (controls && compareContext) {
+            controls.target.set(...compareContext.cameraTarget);
+          }
+        }}
+        target={compareContext?.cameraTarget}
+      />
+      <Bounds clip margin={1.25} maxDuration={compareContext ? 0.2 : undefined}>
         <BoundsRefit active={spotlightActive} spec={activeSpec} />
+        {transitionLayer ? (
+          <GhostPartLayer
+            appearance={transitionLayer.appearance}
+            module={module}
+            spec={transitionLayer.spec}
+          />
+        ) : null}
         {rootParts.map((part) => (
           <PartNode
+            appearance={appearance}
+            assembly={assembly}
             assemblyProgress={assemblyProgress}
             childrenByParent={childrenByParent}
+            compareContext={compareContext}
             crankByRod={crankByRod}
             displayState={displayState}
             explode={explode}
@@ -540,19 +831,49 @@ function MachineScene({
           />
         ))}
       </Bounds>
-      <ContactShadows
-        blur={2.5}
-        far={3}
-        opacity={0.38}
-        position={[0, -0.45, 0]}
-        scale={2}
-      />
+      {!compareContext ? (
+        <ContactShadows
+          blur={2.5}
+          far={3}
+          opacity={0.38}
+          position={[0, -0.45, 0]}
+          scale={2}
+        />
+      ) : null}
       <SpotlightRig
         active={spotlightActive}
         runId={spotlightRunId}
         targetPartId={spotlightPartIds.at(-1)}
       />
     </>
+  );
+}
+
+function CompareSceneAdapter({
+  context,
+  module,
+}: {
+  context: CompareSceneContext;
+  module: MachineModule;
+}) {
+  const displayState = useRef<Record<string, number> | null>(null);
+
+  return (
+    <MachineScene
+      activeSpec={context.spec}
+      assemblyProgress={1}
+      compareContext={context}
+      displayState={displayState}
+      explode={0}
+      graph={context.graph}
+      module={module}
+      onDrivePart={(_partId, delta) => context.driveDelta(delta)}
+      paused
+      schemeId={context.schemeId}
+      spotlightActive={false}
+      spotlightPartIds={[]}
+      spotlightRunId={0}
+    />
   );
 }
 
@@ -622,6 +943,23 @@ export default function MachineViewer({
     () => ({ ...module, spec: activeSpec }),
     [activeSpec, module],
   );
+  const assembly = useAssemblyController(activeSpec.parts);
+  const schemeIds = useMemo(
+    () => Object.keys(module.schemes ?? {}),
+    [module.schemes],
+  );
+  const defaultCompareSchemeIds = useMemo<[string, string]>(() => {
+    const left = schemeId ?? schemeIds[0] ?? "";
+    const right = schemeIds.find((id) => id !== left) ?? left;
+    return [left, right];
+  }, [schemeId, schemeIds]);
+  const [compareActive, setCompareActive] = useState(false);
+  const [compareSchemeIds, setCompareSchemeIds] = useState<[string, string]>(
+    defaultCompareSchemeIds,
+  );
+  const [schemeTransition, setSchemeTransition] =
+    useState<SchemeTransitionMetadata | null>(null);
+  const [schemeTransitionNow, setSchemeTransitionNow] = useState(0);
   const [caption, setCaption] = useState("");
   const [spotlightActive, setSpotlightActive] = useState(false);
   const [spotlightDone, setSpotlightDone] = useState(false);
@@ -636,13 +974,46 @@ export default function MachineViewer({
   const animationFrame = useRef<number | null>(null);
   const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
+  const observedCompletionEffect = useRef(0);
   const displayState = useRef<Record<string, number> | null>(null);
   const assemblyProgress = useUiStore((state) => state.assemblyProgress);
   const explode = useUiStore((state) => state.explode);
   const paused = useUiStore((state) => state.paused);
   const setAssemblyProgress = useUiStore((state) => state.setAssemblyProgress);
+  const setExplode = useUiStore((state) => state.setExplode);
   const setPaused = useUiStore((state) => state.setPaused);
+  const selectedPartId = useUiStore((state) => state.selectedPartId);
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
+
+  const oldSchemeSpec = useMemo(
+    () =>
+      schemeTransition
+        ? specForScheme(module, schemeTransition.previousSchemeId)
+        : null,
+    [module, schemeTransition],
+  );
+  const oldSchemePresentation = schemeTransition
+    ? schemeGhostPresentation(schemeTransition, "old", schemeTransitionNow)
+    : null;
+  const newSchemePresentation = schemeTransition
+    ? schemeGhostPresentation(schemeTransition, "new", schemeTransitionNow)
+    : null;
+  const oldSchemeAppearance =
+    schemeTransition && oldSchemePresentation?.visible
+      ? {
+          color: oldSchemePresentation.color,
+          opacity: oldSchemePresentation.opacity,
+          partIds: new Set(schemeTransition.oldPartIds),
+        }
+      : undefined;
+  const newSchemeAppearance =
+    schemeTransition && newSchemePresentation
+      ? {
+          color: newSchemePresentation.color,
+          opacity: newSchemePresentation.opacity,
+          partIds: new Set(schemeTransition.newPartIds),
+        }
+      : undefined;
 
   useLayoutEffect(() => {
     if (spotlightFrame.current !== null) {
@@ -661,8 +1032,38 @@ export default function MachineViewer({
     setTypecaseProcessStep(-1);
     setSelectedPartId(null);
     setActiveSchemeId(schemeId);
+    setSchemeTransition(null);
+    setCompareActive(false);
+    setCompareSchemeIds(defaultCompareSchemeIds);
+    assembly.exitAssembly();
+    setAssemblyProgress(1);
+    setExplode(0);
     setOdometerReadout(module.spec.slug === "odometer" ? "0.00" : null);
-  }, [graph, module.spec.slug, schemeId, setSelectedPartId]);
+  }, [
+    assembly.exitAssembly,
+    defaultCompareSchemeIds,
+    graph,
+    module.spec.slug,
+    schemeId,
+    setAssemblyProgress,
+    setExplode,
+    setSelectedPartId,
+  ]);
+
+  useEffect(() => {
+    if (!schemeTransition) return;
+    let frame = 0;
+    const animate = (now: number) => {
+      setSchemeTransitionNow(now);
+      if (now - schemeTransition.startedAt < schemeTransition.durationMs) {
+        frame = requestAnimationFrame(animate);
+      } else {
+        setSchemeTransition(null);
+      }
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [schemeTransition]);
 
   useLayoutEffect(() => {
     graph.setScheme(
@@ -702,12 +1103,72 @@ export default function MachineViewer({
     };
   }, [assemblyPlaying, setAssemblyProgress]);
 
+  useEffect(() => {
+    if (assembly.state.mode !== "step") return;
+    const targetIndex = Math.floor(
+      assemblyProgress * assembly.plan.orderedPartIds.length,
+    );
+    if (assembly.state.stepIndex < targetIndex) assembly.advanceStep();
+    if (assembly.state.stepIndex > targetIndex) assembly.previousStep();
+  }, [
+    assembly.advanceStep,
+    assembly.plan.orderedPartIds.length,
+    assembly.previousStep,
+    assembly.state.mode,
+    assembly.state.stepIndex,
+    assemblyProgress,
+  ]);
+
+  useEffect(() => {
+    if (!assembly.state.hint) return;
+    const token = assembly.state.feedbackToken;
+    const timeout = window.setTimeout(() => assembly.clearFeedback(token), 900);
+    return () => window.clearTimeout(timeout);
+  }, [
+    assembly.clearFeedback,
+    assembly.state.feedbackToken,
+    assembly.state.hint,
+  ]);
+
+  useEffect(() => {
+    if (
+      assembly.state.completionEffectToken <= observedCompletionEffect.current
+    ) {
+      return;
+    }
+    observedCompletionEffect.current = assembly.state.completionEffectToken;
+    setAssemblyProgress(1);
+    setExplode(0);
+    setPaused(false);
+  }, [
+    assembly.state.completionEffectToken,
+    setAssemblyProgress,
+    setExplode,
+    setPaused,
+  ]);
+
   useLayoutEffect(() => {
     const hooksEnabled =
       import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
     if (!hooksEnabled) return;
     window.__mech = { graph, module: activeModule, spec: activeSpec };
     window.__mechSelect = (partId) => setSelectedPartId(partId);
+    window.__mechAssembly = {
+      advanceStep: assembly.advanceStep,
+      enterExplodedMode: assembly.enterExplodedMode,
+      enterStepMode: assembly.enterStepMode,
+      exitAssembly: assembly.exitAssembly,
+      seat: (partId, distanceFromHome = 0, radius = 1) =>
+        assembly.attemptSeat(partId, distanceFromHome, radius),
+      selectPart: assembly.selectPart,
+      state: () => ({
+        complete: assembly.state.complete,
+        errorPartId: assembly.state.errorPartId,
+        mode: assembly.state.mode,
+        seatedPartIds: [...assembly.state.seatedPartIds],
+        transmissionEnabled: assembly.state.transmissionEnabled,
+      }),
+    };
     window.__mechExplodeSpread = () => {
       const currentExplode = useUiStore.getState().explode;
       if (activeSpec.parts.length === 0) return 0;
@@ -724,9 +1185,10 @@ export default function MachineViewer({
         delete window.__mech;
         delete window.__mechSelect;
         delete window.__mechExplodeSpread;
+        delete window.__mechAssembly;
       }
     };
-  }, [activeModule, activeSpec, graph, setSelectedPartId]);
+  }, [activeModule, activeSpec, assembly, graph, setSelectedPartId]);
 
   const recordEvent = (type: string, part: string) => {
     setCaption(`${type} · ${part}`);
@@ -891,6 +1353,15 @@ export default function MachineViewer({
   const spotlight = module.mechanism?.triggers.find(
     (trigger) => trigger.id === "spotlight",
   );
+  const assemblyHint = assembly.state.hint
+    ? assembly.state.hint.kind === "parent-required"
+      ? language === "zh"
+        ? `请先安装 ${assembly.state.hint.requiredPartId}`
+        : `Seat ${assembly.state.hint.requiredPartId} first`
+      : language === "zh"
+        ? "请将部件移近目标槽位"
+        : "Move the part closer to its target slot"
+    : null;
 
   return (
     <main className="viewer-page">
@@ -903,32 +1374,61 @@ export default function MachineViewer({
         </div>
         <div
           className="viewer-canvas"
+          data-assembly-complete={assembly.state.complete ? "true" : "false"}
+          data-assembly-mode={assembly.state.mode}
+          data-scheme-transition={schemeTransition ? "true" : "false"}
           data-spotlight-active={spotlightActive ? "true" : "false"}
         >
-          <Canvas
-            camera={{ fov: 36, position: [0.9, 1.1, 1.6] }}
-            dpr={[1, 2]}
-            shadows
-          >
-            <MachineScene
-              activeSpec={activeSpec}
-              assemblyProgress={assemblyProgress}
-              displayState={displayState}
-              explode={explode}
-              graph={graph}
+          {compareActive && compareSchemeIds[0] && compareSchemeIds[1] ? (
+            <CompareView
+              leftSchemeId={compareSchemeIds[0]}
               module={module}
-              onDrivePart={drivePart}
-              paused={paused}
-              schemeId={activeSchemeId}
-              spotlightActive={spotlightActive}
-              spotlightPartIds={spotlightPartIds}
-              spotlightRunId={spotlightRunId}
+              renderScene={(context) => (
+                <CompareSceneAdapter context={context} module={module} />
+              )}
+              rightSchemeId={compareSchemeIds[1]}
             />
-          </Canvas>
+          ) : (
+            <Canvas
+              camera={{ fov: 36, position: [0.9, 1.1, 1.6] }}
+              dpr={[1, 2]}
+              shadows
+            >
+              <MachineScene
+                activeSpec={activeSpec}
+                appearance={newSchemeAppearance}
+                assembly={assembly}
+                assemblyProgress={assemblyProgress}
+                displayState={displayState}
+                explode={explode}
+                graph={graph}
+                module={module}
+                onDrivePart={drivePart}
+                paused={paused || !assembly.state.transmissionEnabled}
+                schemeId={activeSchemeId}
+                spotlightActive={spotlightActive}
+                spotlightPartIds={spotlightPartIds}
+                spotlightRunId={spotlightRunId}
+                transitionLayer={
+                  oldSchemeSpec && oldSchemeAppearance
+                    ? {
+                        appearance: oldSchemeAppearance,
+                        spec: oldSchemeSpec,
+                      }
+                    : undefined
+                }
+              />
+            </Canvas>
+          )}
         </div>
-        <div className="viewer-toolbar">
+        <div
+          className="viewer-toolbar"
+          data-completion-effect={assembly.state.completionEffectToken}
+          hidden={compareActive}
+        >
           <button
             className="ghost-button"
+            disabled={compareActive || !assembly.state.transmissionEnabled}
             onClick={() => setPaused(!paused)}
             type="button"
           >
@@ -942,6 +1442,7 @@ export default function MachineViewer({
               min="0"
               onChange={(event) => {
                 setAssemblyPlaying(false);
+                assembly.exitAssembly();
                 setAssemblyProgress(Number(event.currentTarget.value));
               }}
               step="0.01"
@@ -953,13 +1454,106 @@ export default function MachineViewer({
             className="ghost-button"
             data-testid="assembly-play"
             onClick={() => {
+              assembly.enterStepMode();
               setAssemblyProgress(0);
               setAssemblyPlaying(true);
             }}
             type="button"
           >
-            {t("viewer.assemblyPlay")}
+            {t("assembly.play")}
           </button>
+          <button
+            className="ghost-button"
+            data-testid="assembly-reassemble"
+            onClick={() => {
+              setAssemblyPlaying(false);
+              setAssemblyProgress(1);
+              setExplode(1);
+              assembly.enterExplodedMode();
+            }}
+            type="button"
+          >
+            {language === "zh" ? "拖拽复原" : "Reassemble"}
+          </button>
+          {assembly.state.mode === "step" ? (
+            <div className="assembly-step-controls">
+              <button
+                className="ghost-button"
+                data-testid="assembly-previous"
+                disabled={assembly.state.stepIndex === 0}
+                onClick={() => {
+                  setAssemblyPlaying(false);
+                  assembly.previousStep();
+                  setAssemblyProgress(
+                    Math.max(0, assembly.state.stepIndex - 1) /
+                      Math.max(assembly.plan.orderedPartIds.length, 1),
+                  );
+                }}
+                type="button"
+              >
+                {t("assembly.previous")}
+              </button>
+              <button
+                className="ghost-button"
+                data-testid="assembly-next"
+                disabled={assembly.state.complete}
+                onClick={() => {
+                  setAssemblyPlaying(false);
+                  assembly.advanceStep();
+                  setAssemblyProgress(
+                    Math.min(
+                      1,
+                      (assembly.state.stepIndex + 1) /
+                        Math.max(assembly.plan.orderedPartIds.length, 1),
+                    ),
+                  );
+                }}
+                type="button"
+              >
+                {t("assembly.next")}
+              </button>
+            </div>
+          ) : null}
+          {assembly.state.mode === "reassemble" &&
+          assembly.state.selectedPartId ? (
+            <button
+              className="assembly-target-slot"
+              data-testid="assembly-seat-target"
+              onClick={() => assembly.attemptSeatSelected(0, 1)}
+              type="button"
+            >
+              {language === "zh" ? "点按目标槽位" : "Tap target slot"}
+            </button>
+          ) : null}
+          {assembly.currentPartName ? (
+            <p className="assembly-current" data-testid="assembly-current-part">
+              {assembly.currentPartName[language]}
+            </p>
+          ) : null}
+          {assemblyHint ? (
+            <p
+              className="assembly-hint"
+              data-testid="assembly-hint"
+              role="alert"
+            >
+              {assemblyHint}
+            </p>
+          ) : null}
+          {assembly.state.mode !== "idle" ? (
+            <button
+              className="ghost-button"
+              data-testid="assembly-reset"
+              onClick={() => {
+                setAssemblyPlaying(false);
+                assembly.exitAssembly();
+                setAssemblyProgress(1);
+                setExplode(0);
+              }}
+              type="button"
+            >
+              {t("assembly.showAll")}
+            </button>
+          ) : null}
           <ExplodedControl />
         </div>
       </section>
@@ -967,8 +1561,23 @@ export default function MachineViewer({
       <aside className="viewer-sidebar">
         <PartInspector module={module} spec={activeSpec} />
         <SchemeSwitcher
+          compareActive={compareActive}
+          compareSchemeIds={compareSchemeIds}
           module={module}
-          onChange={setActiveSchemeId}
+          onChange={(nextSchemeId) => {
+            assembly.exitAssembly();
+            setActiveSchemeId(nextSchemeId);
+          }}
+          onCompareChange={(active) => {
+            setCompareActive(active);
+            if (active) {
+              setPaused(true);
+              assembly.exitAssembly();
+              setExplode(0);
+            }
+          }}
+          onCompareSchemesChange={setCompareSchemeIds}
+          onTransition={setSchemeTransition}
           schemeId={activeSchemeId}
         />
         <section className="panel">
@@ -1078,6 +1687,11 @@ export default function MachineViewer({
         </section>
         <GalleryPanel data={module.data} />
       </aside>
+      <DocentChat
+        module={module}
+        partId={selectedPartId}
+        schemeId={activeSchemeId}
+      />
     </main>
   );
 }

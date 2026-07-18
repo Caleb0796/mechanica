@@ -1,6 +1,6 @@
 {
   "slug": "loom",
-  "when": "2026-07-18T14:32:06.504Z",
+  "when": "2026-07-18T16:27:41.113Z",
   "checks": [
     {
       "id": "base:provenance:part:loom-frame",

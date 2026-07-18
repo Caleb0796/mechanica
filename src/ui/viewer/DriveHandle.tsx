@@ -2,6 +2,7 @@ import { Html } from "@react-three/drei";
 import type { ThreeEvent } from "@react-three/fiber";
 import {
   type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
   type ReactNode,
   useRef,
 } from "react";
@@ -29,6 +30,8 @@ export default function DriveHandle({
 }: DriveHandleProps) {
   const { t } = useTranslation();
   const activePointer = useRef<number | null>(null);
+  const activeHtmlPointer = useRef<number | null>(null);
+  const lastHtmlX = useRef(0);
   const lastPoint = useRef(new Vector3());
   const tangent = useRef(new Vector3(1, 0, 0));
   const radius = useRef(0.1);
@@ -90,6 +93,33 @@ export default function DriveHandle({
     }
   };
 
+  const beginHtmlDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    onSelect();
+    activeHtmlPointer.current = event.pointerId;
+    lastHtmlX.current = event.clientX;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    onDraggingChange(true);
+  };
+
+  const continueHtmlDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (activeHtmlPointer.current !== event.pointerId) return;
+    event.stopPropagation();
+    const delta = (event.clientX - lastHtmlX.current) * 0.008;
+    if (Number.isFinite(delta) && Math.abs(delta) > 0) drive(delta);
+    lastHtmlX.current = event.clientX;
+  };
+
+  const endHtmlDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (activeHtmlPointer.current !== event.pointerId) return;
+    event.stopPropagation();
+    activeHtmlPointer.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    onDraggingChange(false);
+  };
+
   return (
     <group
       onPointerCancel={endDrag}
@@ -99,7 +129,14 @@ export default function DriveHandle({
     >
       {children}
       <Html center position={[0, 0, 0.08]}>
-        <div className="drive-buttons">
+        <div
+          className="drive-buttons"
+          data-drive-part-id={part.id}
+          onPointerCancel={endHtmlDrag}
+          onPointerDown={beginHtmlDrag}
+          onPointerMove={continueHtmlDrag}
+          onPointerUp={endHtmlDrag}
+        >
           <button
             aria-label={t("viewer.driveReverse", { part: part.name.en })}
             onClick={(event) => {

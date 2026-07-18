@@ -1,6 +1,6 @@
 {
   "slug": "astroclock",
-  "when": "2026-07-18T14:30:02.396Z",
+  "when": "2026-07-18T16:25:30.563Z",
   "checks": [
     {
       "id": "base:provenance:part:tower-shell",

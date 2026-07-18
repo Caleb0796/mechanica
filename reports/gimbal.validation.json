@@ -1,6 +1,6 @@
 {
   "slug": "gimbal",
-  "when": "2026-07-18T14:32:22.747Z",
+  "when": "2026-07-18T16:27:58.415Z",
   "checks": [
     {
       "id": "base:provenance:part:display-base",

@@ -1,6 +1,6 @@
 {
   "slug": "seismoscope",
-  "when": "2026-07-18T14:30:04.430Z",
+  "when": "2026-07-18T16:25:32.693Z",
   "checks": [
     {
       "id": "base:provenance:part:vessel",

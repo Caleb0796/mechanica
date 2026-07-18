@@ -346,3 +346,53 @@ Independent final reviews found no remaining concrete defect in Typecase instanc
 ### Next action
 
 Commit the integrated Phase 3 wave, tag `wave-3`, then begin Phase 4 docent, compare-mode, and interaction-completeness work.
+
+## Phase 4 Complete — Interaction and Docent Layer
+
+### Route
+
+Full route with disjoint implementation workers, root integration, three independent read-only skeptics, focused repair, and root-owned unit, validation, build, poison, i18n, and real-browser acceptance.
+
+### Scope
+
+Complete dependency-aware assembly, one-second reconstruction handoff, dual-canvas comparison, four-layer gallery and attribution, bilingual UI auditing, and the fail-closed grounded AI Docent without changing machine data, dimensions, ratios, or provenance.
+
+### Findings
+
+- The first green browser suite did not prove compare-part dragging, machine-specific compare excitation, sparse assembly-step visibility, or actual R3F frame rates. The repaired suite now exercises pointer input, seismoscope divergence, ordered visibility, and per-canvas frame counters.
+- The first Docent relay could accept truncated upstream SSE, context changes could leave chat streaming, the shared-budget request lacked the upstream timeout, daily exhaustion used the wrong status, and citation chips opened external URLs. All now fail closed or navigate to validated PartInspector sources as specified.
+- The gallery initially inferred reconstruction renders from title keywords and its checks only proved empty panels. Reconstruction classification is now path-based, attribution and lightbox behavior are asserted, offline fallback is simulated, and the modal traps and restores focus.
+- English inspection leaked the opposite-language part name. The inspector now renders only the active locale while preserving original-language source quotations as collection content.
+- A production build initially emitted the development mock chunk. The client mock path is now compile-time guarded and the production artifact contains neither a mock chunk nor mock reply strings.
+
+### Changes
+
+- Added the assembly controller, drag/tap reassembly, dependency feedback, snap threshold, completion effect, and transmission gating.
+- Added scheme ghost transitions, dual linked canvases, behavioral compare excitation, shared geometry cache, difference tinting, linked hover/camera state, actual frame counters, and the evidence table.
+- Added accessible four-layer gallery tabs, linked attribution, collection fallback cards, a focus-trapped lightbox, browser-language defaulting, catalog parity audit, and zero-leakage route checks.
+- Added strict Docent request validation, grounded prompt assembly, semantic SSE relay, abort and rate/budget controls, validated in-page citation navigation, development/E2E mock behavior, and production fail-closed states.
+- Expanded browser acceptance to sixteen scenarios, including all ten machine routes with no console errors, real pointer drives, all five dual-scheme machines, assembly completion, attribution/lightbox/offline behavior, Docent chips, language leakage, and actual compare-canvas performance.
+
+### Verification
+
+- `pnpm test` → 19 files and 175/175 tests passed.
+- `pnpm validate` → exit 0 under the permanent strict manifest; all ten refreshed reports remain clean.
+- `pnpm poison` → exit 0 with four `caught by the validator ✓` confirmations.
+- `pnpm i18n:check` → `i18n catalogs: 0 issues`.
+- `pnpm e2e` → 16/16 scenarios passed; chariot dual view clears 40 fps and half-resolution Astroclock clears 25 fps using actual left/right R3F frame counters.
+- `pnpm build` → exit 0, 678 modules, first-route gzip 353.22 KB; the known non-blocking chunk warning remains.
+- Production artifact scan found zero development-mock reply strings and no mock chunk. Literal boundary probes return 400 for an 8,193-byte body and for `role:"system"`; the 11th request from one IP returns 429; an unknown citation remains plain text.
+
+### Adversarial gate
+
+Three independent skeptics challenged assembly/compare semantics, Docent security and outage behavior, and gallery/i18n acceptance. Their concrete findings were repaired and root reproduced the strengthened gates. No reported acceptance-impacting Phase 4 finding remains open.
+
+### Unresolved risks
+
+- A real-key Docent answer could not be exercised because `OPENAI_API_KEY` is absent. Boundary, production-failure, mock-isolation, and grounded-citation paths are verified without fabricating a live-model result.
+- The build retains the known large uncompressed main-chunk warning while remaining below the plan's gzip budget.
+- Project reconstruction renders remain intentionally absent until Phase 6. The newly inserted Visual Recovery gate forbids generating them until all ten models pass semantic-fidelity and framing review.
+
+### Next action
+
+Commit the Phase 4 task and tag `wave-4`. Then immediately run the blocking Visual Recovery phase across all ten routes: capture default, alternate/side, and exploded or animated evidence; require complete centered 60–80% framing and recognizable named silhouettes; repair semantic fidelity while treating fine ornament as optional; obtain an independent read-only evidence verdict; and do not generate final renders until every machine is green.

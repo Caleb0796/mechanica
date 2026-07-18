@@ -84,9 +84,6 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
     );
   }
 
-  const source = module.data.sources.find((candidate) =>
-    referenceIds(part.provenance.ref).includes(candidate.id),
-  );
   const sourceRefs = new Set([
     ...referenceIds(part.provenance.ref),
     ...Object.values(part.dimensionProvenance).flatMap((provenance) =>
@@ -96,6 +93,9 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
       referenceIds(quantity.provenance.ref),
     ),
   ]);
+  const sources = module.data.sources.filter((candidate) =>
+    sourceRefs.has(candidate.id),
+  );
   const dimensions = geometryDimensions(part);
   const controversies = module.data.controversies.filter((controversy) =>
     controversy.sourceIds.some((sourceId) => sourceRefs.has(sourceId)),
@@ -104,10 +104,7 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
   return (
     <section className="panel" data-testid="part-inspector">
       <h2>{t("inspector.title")}</h2>
-      <h3 className="part-name">
-        {part.name[language]}
-        <small>{part.name[language === "zh" ? "en" : "zh"]}</small>
-      </h3>
+      <h3 className="part-name">{part.name[language]}</h3>
       <span className="provenance-badge">
         {t(`inspector.${part.provenance.kind}`)} · {part.provenance.ref}
       </span>
@@ -149,18 +146,27 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
         </dl>
       ) : null}
 
-      {source ? (
+      {sources.length > 0 ? (
         <div>
           <h2>{t("inspector.source")}</h2>
-          <p className="panel-copy">{source.quote}</p>
-          <a
-            className="panel-link"
-            href={source.url}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {t("inspector.openSource")}
-          </a>
+          {sources.map((source) => (
+            <div
+              data-source-id={source.id}
+              id={`part-inspector-source-${source.id}`}
+              key={source.id}
+              tabIndex={-1}
+            >
+              <p className="panel-copy">{source.quote}</p>
+              <a
+                className="panel-link"
+                href={source.url}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {t("inspector.openSource")}
+              </a>
+            </div>
+          ))}
         </div>
       ) : null}
 

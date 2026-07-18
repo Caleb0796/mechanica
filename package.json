@@ -11,6 +11,7 @@
     "validate": "tsx scripts/validate.mts",
     "poison": "tsx scripts/poison-test.mts",
     "e2e": "VITE_E2E=1 vite build && playwright test",
+    "i18n:check": "tsx scripts/check-i18n.mts",
     "snapshot-sources": "tsx scripts/snapshot-sources.mts",
     "fetch-images": "node scripts/fetch-images.mjs",
     "extract": "node scripts/extract-parts.mjs",

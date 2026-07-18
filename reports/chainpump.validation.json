@@ -1,6 +1,6 @@
 {
   "slug": "chainpump",
-  "when": "2026-07-18T14:32:09.019Z",
+  "when": "2026-07-18T16:27:43.874Z",
   "checks": [
     {
       "id": "base:provenance:part:trough",

@@ -1,6 +1,6 @@
 {
   "slug": "odometer",
-  "when": "2026-07-18T14:30:17.494Z",
+  "when": "2026-07-18T16:25:46.581Z",
   "checks": [
     {
       "id": "base:provenance:part:chassis-base",

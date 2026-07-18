@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 import dataJson from "../../data/machines/seismoscope.json";
 import type {
@@ -21,6 +22,44 @@ const spec = partsJson as unknown as MachineSpec;
 const data = dataJson as unknown as MachineData;
 const wangzhenduo = wangzhenduoJson as unknown as SchemePatch;
 const fengrui = fengruiJson as unknown as SchemePatch;
+
+function placeGeometry(
+  geometry: THREE.BufferGeometry,
+  scale: readonly [number, number, number],
+  position: readonly [number, number, number],
+  rotation: readonly [number, number, number] = [0, 0, 0],
+): THREE.BufferGeometry {
+  geometry.scale(...scale);
+  geometry.rotateX(rotation[0]);
+  geometry.rotateY(rotation[1]);
+  geometry.rotateZ(rotation[2]);
+  geometry.translate(...position);
+  return geometry;
+}
+
+function mergeComposite(
+  parts: THREE.BufferGeometry[],
+  envelope: readonly [number, number, number],
+): THREE.BufferGeometry {
+  const composite = mergeGeometries(parts);
+  for (const part of parts) part.dispose();
+  if (!composite) throw new Error("Unable to merge seismoscope geometry");
+  composite.computeBoundingBox();
+  const bounds = composite.boundingBox;
+  if (!bounds) throw new Error("Unable to measure seismoscope geometry");
+  const center = bounds.getCenter(new THREE.Vector3());
+  const size = bounds.getSize(new THREE.Vector3());
+  composite.translate(-center.x, -center.y, -center.z);
+  composite.scale(
+    envelope[0] / size.x,
+    envelope[1] / size.y,
+    envelope[2] / size.z,
+  );
+  composite.computeVertexNormals();
+  composite.computeBoundingBox();
+  composite.computeBoundingSphere();
+  return composite;
+}
 
 function droppedBearing(graph: IKinematicGraph): number | undefined {
   const state = graph.state();
@@ -106,17 +145,111 @@ const module: MachineModule = {
   defaultSchemeId: "wangzhenduo",
   customBuilders: {
     seismoscopeDragon(params) {
-      return new THREE.SphereGeometry(params.radius, 16, 10).scale(
-        1.35,
-        0.7,
-        0.85,
+      const radius = params.radius;
+      return mergeComposite(
+        [
+          placeGeometry(
+            new THREE.SphereGeometry(radius, 16, 10),
+            [0.95, 0.65, 0.7],
+            [0, radius * 0.02, -radius * 0.12],
+          ),
+          placeGeometry(
+            new THREE.BoxGeometry(radius * 1.08, radius * 0.38, radius * 0.9),
+            [1, 1, 1],
+            [0, -radius * 0.02, radius * 0.56],
+          ),
+          placeGeometry(
+            new THREE.BoxGeometry(radius * 0.94, radius * 0.22, radius * 0.82),
+            [1, 1, 1],
+            [0, -radius * 0.39, radius * 0.58],
+          ),
+          placeGeometry(
+            new THREE.CylinderGeometry(
+              radius * 0.58,
+              radius * 0.72,
+              radius * 0.5,
+              10,
+            ),
+            [1, 1, 1],
+            [0, 0, -radius * 0.58],
+            [Math.PI / 2, 0, 0],
+          ),
+          placeGeometry(
+            new THREE.ConeGeometry(radius * 0.16, radius * 0.58, 6),
+            [1, 1, 1],
+            [-radius * 0.48, radius * 0.67, -radius * 0.26],
+            [0, 0, -0.2],
+          ),
+          placeGeometry(
+            new THREE.ConeGeometry(radius * 0.16, radius * 0.58, 6),
+            [1, 1, 1],
+            [radius * 0.48, radius * 0.67, -radius * 0.26],
+            [0, 0, 0.2],
+          ),
+        ],
+        [radius * 2.7, radius * 1.4, radius * 1.7],
       );
     },
     seismoscopeToad(params) {
-      return new THREE.SphereGeometry(params.radius, 16, 10).scale(
-        1.25,
-        0.65,
-        1,
+      const radius = params.radius;
+      return mergeComposite(
+        [
+          placeGeometry(
+            new THREE.SphereGeometry(radius, 16, 10),
+            [0.95, 0.42, 0.72],
+            [0, -radius * 0.02, radius * 0.18],
+          ),
+          placeGeometry(
+            new THREE.SphereGeometry(radius, 16, 10),
+            [0.78, 0.4, 0.55],
+            [0, radius * 0.03, -radius * 0.55],
+          ),
+          placeGeometry(
+            new THREE.SphereGeometry(radius, 10, 8),
+            [0.23, 0.23, 0.23],
+            [-radius * 0.4, radius * 0.43, -radius * 0.77],
+          ),
+          placeGeometry(
+            new THREE.SphereGeometry(radius, 10, 8),
+            [0.23, 0.23, 0.23],
+            [radius * 0.4, radius * 0.43, -radius * 0.77],
+          ),
+          placeGeometry(
+            new THREE.CapsuleGeometry(radius * 0.12, radius * 0.55, 4, 8),
+            [1, 1, 1],
+            [-radius * 0.78, -radius * 0.1, -radius * 0.42],
+            [Math.PI / 2, -2.35, 0],
+          ),
+          placeGeometry(
+            new THREE.CapsuleGeometry(radius * 0.12, radius * 0.55, 4, 8),
+            [1, 1, 1],
+            [radius * 0.78, -radius * 0.1, -radius * 0.42],
+            [Math.PI / 2, 2.35, 0],
+          ),
+          placeGeometry(
+            new THREE.CapsuleGeometry(radius * 0.12, radius * 0.55, 4, 8),
+            [1, 1, 1],
+            [-radius * 0.78, -radius * 0.1, radius * 0.42],
+            [Math.PI / 2, -0.8, 0],
+          ),
+          placeGeometry(
+            new THREE.CapsuleGeometry(radius * 0.12, radius * 0.55, 4, 8),
+            [1, 1, 1],
+            [radius * 0.78, -radius * 0.1, radius * 0.42],
+            [Math.PI / 2, 0.8, 0],
+          ),
+          placeGeometry(
+            new THREE.BoxGeometry(radius * 0.68, radius * 0.12, radius * 0.14),
+            [1, 1, 1],
+            [0, radius * 0.02, -radius * 1.06],
+          ),
+          placeGeometry(
+            new THREE.BoxGeometry(radius * 0.62, radius * 0.12, radius * 0.14),
+            [1, 1, 1],
+            [0, -radius * 0.2, -radius * 1.06],
+          ),
+        ],
+        [radius * 2.5, radius * 1.3, radius * 2],
       );
     },
     seismoscopeBall(params) {

@@ -61,6 +61,12 @@ import {
   isPartVisibleInAssemblyStep,
   useAssemblyController,
 } from "./assembly";
+import {
+  buildSemanticPartGeometry,
+  type ViewerProfile,
+  VIEWER_PROFILES,
+  visualMaterialFor,
+} from "./visualRecovery";
 
 declare global {
   interface Window {
@@ -231,12 +237,66 @@ function SpotlightRig({
   return null;
 }
 
-function BoundsRefit({ active, spec }: { active: boolean; spec: MachineSpec }) {
+function BoundsRefit({
+  active,
+  explode,
+  profile,
+  spec,
+}: {
+  active: boolean;
+  explode: number;
+  profile: ViewerProfile;
+  spec: MachineSpec;
+}) {
   const bounds = useBounds();
+  const scene = useThree((state) => state.scene);
 
   useLayoutEffect(() => {
-    if (!active) bounds.refresh().fit().clip();
-  }, [active, bounds, spec]);
+    if (active) return;
+    let cancelled = false;
+    let frame = 0;
+    const refit = () => {
+      if (cancelled) return;
+      frame += 1;
+      if (frame < 3) {
+        requestAnimationFrame(refit);
+        return;
+      }
+
+      let focusBounds: Box3 | undefined;
+      if (profile.focusPartIds) {
+        focusBounds = new Box3();
+        for (const partId of profile.focusPartIds) {
+          const object = scene.getObjectByName(partId);
+          if (object) focusBounds.expandByObject(object, true);
+        }
+        if (focusBounds.isEmpty()) focusBounds = undefined;
+      }
+
+      bounds.refresh(focusBounds);
+      const { center, distance, size } = bounds.getSize();
+      const target = center.clone();
+      if (profile.targetOffset) {
+        target.add(
+          new Vector3(...profile.targetOffset).multiply(
+            new Vector3(size.x, size.y, size.z),
+          ),
+        );
+      }
+      const direction = new Vector3(...profile.direction).normalize();
+      const position = target.clone().addScaledVector(direction, distance);
+      bounds
+        .to({
+          position: [position.x, position.y, position.z],
+          target: [target.x, target.y, target.z],
+        })
+        .clip();
+    };
+    requestAnimationFrame(refit);
+    return () => {
+      cancelled = true;
+    };
+  }, [active, bounds, explode, profile, scene, spec]);
 
   return null;
 }
@@ -277,12 +337,27 @@ function PartNode({
   const assemblyOffset = useRef(new Vector3());
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
   const geometryCache = compareContext?.geometryCache;
+  const semanticGeometry = useMemo(
+    () => buildSemanticPartGeometry(module.data.slug, part),
+    [module.data.slug, part],
+  );
   const geometry = useMemo(
     () =>
-      geometryCache
+      semanticGeometry ??
+      (geometryCache
         ? geometryCache.acquire(module, part.geometry)
-        : buildPartGeometry(part.geometry, module.customBuilders),
-    [geometryCache, module, module.customBuilders, part.geometry],
+        : buildPartGeometry(part.geometry, module.customBuilders)),
+    [
+      geometryCache,
+      module,
+      module.customBuilders,
+      part.geometry,
+      semanticGeometry,
+    ],
+  );
+  const visualPresentation = useMemo(
+    () => visualMaterialFor(module.data.slug, part),
+    [module.data.slug, part],
   );
   const comparePresentation = compareContext?.tintForPart(part.id);
   const layerPresentation =
@@ -317,6 +392,29 @@ function PartNode({
       }
       if (typeof materialOverride.transparent === "boolean") {
         nextMaterial.transparent = materialOverride.transparent;
+      }
+    }
+    if (visualPresentation && nextMaterial instanceof MeshStandardMaterial) {
+      if (visualPresentation.color) {
+        nextMaterial.color.set(visualPresentation.color);
+      }
+      if (visualPresentation.emissive) {
+        nextMaterial.emissive.set(visualPresentation.emissive);
+      }
+      if (Number.isFinite(visualPresentation.emissiveIntensity)) {
+        nextMaterial.emissiveIntensity = visualPresentation.emissiveIntensity!;
+      }
+      if (Number.isFinite(visualPresentation.metalness)) {
+        nextMaterial.metalness = visualPresentation.metalness!;
+      }
+      if (Number.isFinite(visualPresentation.opacity)) {
+        nextMaterial.opacity = visualPresentation.opacity!;
+      }
+      if (Number.isFinite(visualPresentation.roughness)) {
+        nextMaterial.roughness = visualPresentation.roughness!;
+      }
+      if (typeof visualPresentation.transparent === "boolean") {
+        nextMaterial.transparent = visualPresentation.transparent;
       }
     }
     const schemeHighlighted = part.schemeTags?.includes(schemeId ?? "");
@@ -370,6 +468,7 @@ function PartNode({
     schemeId,
     spotlightActive,
     spotlightPartIds,
+    visualPresentation,
   ]);
   const instanceMatrices = useMemo(
     () => getMechanicaInstanceMatrices(geometry),
@@ -401,14 +500,21 @@ function PartNode({
 
   useEffect(() => {
     return () => {
-      if (geometryCache) {
+      if (geometryCache && !semanticGeometry) {
         geometryCache.release(module, part.geometry, geometry);
       } else {
         geometry.dispose();
       }
       material.dispose();
     };
-  }, [geometry, geometryCache, material, module, part.geometry]);
+  }, [
+    geometry,
+    geometryCache,
+    material,
+    module,
+    part.geometry,
+    semanticGeometry,
+  ]);
 
   useLayoutEffect(() => {
     if (!instancedMesh.current || !instanceMatrices) return;
@@ -716,6 +822,10 @@ function MachineScene({
     () => new Set(activeSpec.parts.map((part) => part.id)),
     [activeSpec],
   );
+  const viewerProfile = VIEWER_PROFILES[module.data.slug];
+  const viewMargin =
+    viewerProfile.margin +
+    (viewerProfile.explodedMargin - viewerProfile.margin) * explode;
   const rootParts = useMemo(
     () =>
       activeSpec.parts.filter(
@@ -771,11 +881,20 @@ function MachineScene({
     <>
       <color args={["#090a0a"]} attach="background" />
       <ambientLight intensity={0.8} />
+      <hemisphereLight
+        args={["#ead9b6", "#13201c", 0.9]}
+        position={[0, 2, 0]}
+      />
       <directionalLight castShadow intensity={3.2} position={[1.5, 2.5, 3]} />
       <directionalLight
         color="#b88a42"
         intensity={1.2}
         position={[-2, -1, 2]}
+      />
+      <directionalLight
+        color="#91b6a5"
+        intensity={1.5}
+        position={[-3, 1.5, -2]}
       />
       <OrbitControls
         autoRotate={false}
@@ -796,8 +915,17 @@ function MachineScene({
         }}
         target={compareContext?.cameraTarget}
       />
-      <Bounds clip margin={1.25} maxDuration={compareContext ? 0.2 : undefined}>
-        <BoundsRefit active={spotlightActive} spec={activeSpec} />
+      <Bounds
+        clip
+        margin={viewMargin}
+        maxDuration={compareContext ? 0.2 : 0.45}
+      >
+        <BoundsRefit
+          active={spotlightActive}
+          explode={explode}
+          profile={viewerProfile}
+          spec={activeSpec}
+        />
         {transitionLayer ? (
           <GhostPartLayer
             appearance={transitionLayer.appearance}

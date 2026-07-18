@@ -43,6 +43,13 @@ function buildCutawayShell(
     Math.PI,
   );
   geometry.rotateY(Math.PI);
+  geometry.userData.mechanicaMaterial = {
+    color: "#7f9f99",
+    metalness: 0.62,
+    opacity: 0.48,
+    roughness: 0.34,
+    transparent: true,
+  };
   return geometry;
 }
 
@@ -51,18 +58,37 @@ function buildInnerRing(params: Record<string, number>): THREE.BufferGeometry {
 }
 
 function buildBowl(params: Record<string, number>): THREE.BufferGeometry {
-  return new THREE.CylinderGeometry(
-    params.radius,
-    params.baseRadius,
-    params.depth,
-    32,
-    1,
-    false,
-  );
+  const halfDepth = params.depth / 2;
+  const wall = Math.min(params.radius * 0.09, params.depth * 0.18);
+  const profile = [
+    new THREE.Vector2(0, -halfDepth),
+    new THREE.Vector2(params.baseRadius, -halfDepth),
+    new THREE.Vector2(params.radius * 0.82, -params.depth * 0.18),
+    new THREE.Vector2(params.radius, halfDepth),
+    new THREE.Vector2(params.radius - wall, halfDepth),
+    new THREE.Vector2(params.radius * 0.7, -params.depth * 0.12),
+    new THREE.Vector2(params.baseRadius * 0.55, -halfDepth + wall),
+    new THREE.Vector2(0, -halfDepth + wall),
+  ];
+  return new THREE.LatheGeometry(profile, 32);
 }
 
 function buildFlame(params: Record<string, number>): THREE.BufferGeometry {
-  return new THREE.ConeGeometry(params.radius, params.height, 16);
+  const halfHeight = params.height / 2;
+  const profile = [
+    new THREE.Vector2(0, -halfHeight),
+    new THREE.Vector2(params.radius * 0.78, -params.height * 0.28),
+    new THREE.Vector2(params.radius, -params.height * 0.05),
+    new THREE.Vector2(params.radius * 0.52, params.height * 0.22),
+    new THREE.Vector2(0, halfHeight),
+  ];
+  const geometry = new THREE.LatheGeometry(profile, 20);
+  geometry.userData.mechanicaMaterial = {
+    color: "#d88932",
+    metalness: 0.18,
+    roughness: 0.32,
+  };
+  return geometry;
 }
 
 function multiplyQuaternions(

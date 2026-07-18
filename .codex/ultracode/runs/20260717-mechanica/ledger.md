@@ -396,3 +396,52 @@ Three independent skeptics challenged assembly/compare semantics, Docent securit
 ### Next action
 
 Commit the Phase 4 task and tag `wave-4`. Then immediately run the blocking Visual Recovery phase across all ten routes: capture default, alternate/side, and exploded or animated evidence; require complete centered 60–80% framing and recognizable named silhouettes; repair semantic fidelity while treating fine ornament as optional; obtain an independent read-only evidence verdict; and do not generate final renders until every machine is green.
+
+## Visual Recovery Complete — All-Machine Visual Gate
+
+### Route
+
+Full route with root-owned browser capture and remediation, followed by an independent read-only adversarial review. Phase 5 and final render generation remained paused throughout.
+
+### Scope
+
+Audit all ten machine routes in default, alternate, and fully exploded states. Semantic fidelity was blocking: a named animal, person, vessel, or mechanism had to read from its silhouette and hierarchy at normal zoom. Ornamental fidelity—scales, carving, surface decoration, and other fine detail—was optional. Cross-directory edits were limited to `src/ui/viewer`, `src/machines/seismoscope`, and `src/machines/gimbal`; authoritative data, dimensions, ratios, provenance, and interaction semantics were unchanged.
+
+### Findings and changes
+
+- Astroclock: the oversized tower clipped in the initial view. Bounds-aware framing now contains the tower, and compact human-form jacks plus material hierarchy clarify the moving figures.
+- Seismoscope: ellipsoidal dragons and toads failed semantic identity. Exact-envelope composite silhouettes now provide horned heads, open jaws, eyes, mouths, and splayed limbs without changing part dimensions.
+- Chariot: framing was too close. A machine-specific fit and view direction contain the full chassis, canopy, pointer figure, and wheels.
+- Odometer: tall framing and box-like figures obscured the mechanism. The view now contains the carriage, and exact-envelope head, torso, limb, and striker silhouettes read as people.
+- Wooden Ox: the head and body were cropped and the head was ambiguous. Reframing plus an exact-envelope horn, ear, muzzle, and cranial silhouette restores the ox identity.
+- Loom: an alternate angle crossed the control overlay. Camera fit, hierarchy, and the recaptured opposite oblique keep the full warp/frame above the controls.
+- Typecase: the wide, shallow apparatus lacked hierarchy. Framing and differentiated type, tray, carriage, and frame materials preserve the complete flat mechanism.
+- Chainpump: the long machine appeared too small and visually uniform. A tighter fit and water, chain, pallet, sprocket, and trough hierarchy expose the transport path.
+- Bellows: the chest read as a generic box. An exact-envelope paired-body, lid, and nozzle silhouette plus framing and material separation clarifies the air mechanism.
+- Gimbal: the model was initially too small, then support-focused experiments cropped its chain and base. Final full-bounds framing contains the complete suspension; a concave bowl, teardrop flame, translucent shell, and contrasting rings make the stabilizer legible.
+
+### Browser evidence
+
+Root captured and reviewed thirty 1440×1000 headed-browser screenshots: default, alternate OrbitControls view, and fully exploded state for every machine. Every route had empty console-error and page-error collections. Exploded sliders were asserted at `1`, and measured part spreads were nonzero for all ten models. The independent reviewer first rejected Loom alternate-view overlap and Gimbal framing, then reviewed the repaired evidence and returned `GREEN` for all ten machines.
+
+### Verification
+
+- `pnpm test` → 19 files, 175/175 tests passed.
+- `pnpm validate` → exit 0 under strict all-machine validation.
+- `pnpm poison` → exit 0 with four validator catches.
+- `pnpm i18n:check` → zero issues.
+- `pnpm build` → exit 0; 679 modules transformed, 356.63 kB main-entry gzip.
+- `pnpm e2e` → 16/16 scenarios passed, including all ten routes without console errors and all existing interaction/performance assertions.
+- `pnpm exec prettier --check ...` and `git diff --check` → exit 0.
+
+### Adversarial gate
+
+The read-only reviewer found recognizable required animal and human silhouettes, complete UI-safe views, materially distinct alternates, and valid exploded states. It accepted Gimbal's long chain/support as an unusual-proportion exception because the complete assembly occupies about 70% of the safe vertical model area. Verdict: `GREEN` for all ten machines.
+
+### Remaining limitations
+
+Fine ornament remains intentionally optional. Typecase is inherently flat and wide; Chainpump, Bellows, and Gimbal are unusually elongated, so their central mechanisms occupy less width than compact machines when the complete assembly is fitted. The known non-blocking Vite chunk-size warning remains. These are documented visual constraints, not gate failures.
+
+### Next action
+
+Commit and tag this green Visual Recovery checkpoint. Resume Phase 5 only afterward, and rerun the full Visual Gate after the remaining functionality is complete and before generating final renders.

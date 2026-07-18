@@ -1,0 +1,496 @@
+{
+  "slug": "astroclock",
+  "names": {
+    "zh": "水运仪象台",
+    "en": "Water-Powered Astronomical Clock Tower"
+  },
+  "era": {
+    "zh": "北宋，1088年制小木样，1092年在汴京建成",
+    "en": "Northern Song; wooden model in 1088 and completed at Bianjing in 1092"
+  },
+  "inventors": [
+    {
+      "zh": "苏颂",
+      "en": "Su Song"
+    },
+    {
+      "zh": "韩公廉",
+      "en": "Han Gonglian"
+    }
+  ],
+  "oneLiner": {
+    "zh": "把连续水流分成均匀节拍的宇宙机器。",
+    "en": "A cosmic engine that divides continuous water flow into equal beats."
+  },
+  "principle": {
+    "zh": "天池和平水壶保持稳定水头，水逐壶推动枢轮；天衡擒纵每次只放行一格，再由齿轮系同步带动浑仪、浑象和五层报时木阁。",
+    "en": "A reservoir and constant-level tank fill the scoops that drive the wheel; the tianheng escapement releases one cell at a time, while the gear train synchronizes the armillary sphere, celestial globe, and five-tier chime pagoda."
+  },
+  "sources": [
+    {
+      "id": "xyxfy-taiti",
+      "book": "新儀象法要",
+      "chapter": "卷下",
+      "quote": "水運儀象臺其制為臺四方而再重，上狹下廣……渾儀置上隔……儀有三重，曰六合儀、曰三辰儀、曰四游儀",
+      "translation": {
+        "zh": "水运仪象台是下宽上窄的方形重台，最上层放置由六合仪、三辰仪和四游仪组成的浑仪。",
+        "en": "The tower is a square, tiered structure, wider below and narrower above, with a three-part armillary sphere on its upper level."
+      },
+      "url": "https://zh.wikisource.org/wiki/新儀象法要_(四庫全書本)/卷下"
+    },
+    {
+      "id": "xyxfy-shulun",
+      "book": "新儀象法要",
+      "chapter": "卷下",
+      "quote": "樞輪直徑一丈一尺，以七十二輻（七十二一本云九十六）雙植於一轂為三十六（三十六一本云四十八）洪，束以三輞，每洪夾持受水壺一，總三十六壺，每壺長一尺、闊五寸、深四寸，於壺側置鐵撥牙以撥天衡關舌",
+      "translation": {
+        "zh": "枢轮直径一丈一尺，辐条成对组成三十六格，每格夹一只受水壶；另有版本记作四十八格。每壶长一尺、宽五寸、深四寸，侧面铁拨牙推动天衡关舌。",
+        "en": "The 1-zhang-1-chi wheel has paired spokes forming 36 cells, each holding a scoop; another edition gives 48. Each scoop is 1 chi long, 5 cun wide, and 4 cun deep, with an iron tooth that moves the escapement tongue."
+      },
+      "url": "https://zh.wikisource.org/wiki/新儀象法要_(四庫全書本)/卷下"
+    },
+    {
+      "id": "xyxfy-tianheng",
+      "book": "新儀象法要",
+      "chapter": "卷下",
+      "quote": "天衡一置樞輪上，天關一置衡腦，天權一置衡尾，天條一在衡之前，天衡關舌一以天條綴之……樞衡一在天衡關舌上，衡腦為格叉以抵受水壺，以樞權掛其末，所以節受水壺之升降也。左右天鎖二，分置東西天柱間梁上，所以持正樞輪也",
+      "translation": {
+        "zh": "天衡、天关、天权、天条和关舌组成控制机构；格叉托住水壶，配重调节升降，左右天锁从两边固定枢轮。",
+        "en": "The tianheng, gate, counterweight, strip, and tongue form the control mechanism; a fork supports each scoop, the weight regulates its rise and fall, and two locks hold the wheel from either side."
+      },
+      "url": "https://zh.wikisource.org/wiki/新儀象法要_(四庫全書本)/卷下"
+    },
+    {
+      "id": "xyxfy-action",
+      "book": "新儀象法要",
+      "chapter": "卷下",
+      "quote": "壺虛即為格叉所格……水實即格叉不能勝壺，故格叉落，格叉落即壺側鐵撥擊開天衡關舌……一輻過則左天鎖及天關開……一壺落則關鎖再拒次壺，則激輪右回，故以右天鎖拒之使不能西也",
+      "translation": {
+        "zh": "空壶被格叉托住；水满后格叉下落，铁拨牙打开关舌。轮子走过一格后锁和关重新挡住下一壶，右锁阻止倒转。",
+        "en": "An empty scoop rests on the fork; when full it overcomes the fork and its iron tooth opens the tongue. After one cell passes, the locks catch the next scoop, while the right lock prevents reverse motion."
+      },
+      "url": "https://zh.wikisource.org/wiki/新儀象法要_(四庫全書本)/卷下"
+    },
+    {
+      "id": "xyxfy-baoshi",
+      "book": "新儀象法要",
+      "chapter": "卷下",
+      "quote": "木閣五層……第一層時初木人左搖鈴，刻至中擊鼓，時正右扣鐘……第五層分布木人出報夜漏箭……晝夜機輪八重，第一重曰天輪以撥渾象之赤道牙……",
+      "translation": {
+        "zh": "五层木阁用木人按时摇铃、击鼓、扣钟并报告夜漏；八重昼夜机轮中，天轮推动浑象赤道齿。",
+        "en": "Figures in the five-tier wooden pagoda ring bells, beat a drum, strike a chime, and report the night watches; the first of eight day-and-night wheels drives the celestial globe's equatorial teeth."
+      },
+      "url": "https://zh.wikisource.org/wiki/新儀象法要_(四庫全書本)/卷下"
+    },
+    {
+      "id": "xyxfy-water",
+      "book": "新儀象法要",
+      "chapter": "卷下",
+      "quote": "樞輪左設天池、平水壺。平水壺受天池水注入受水壺以激樞輪；受水壺水落入退水壺……以昇水下輪運水入昇水上壺……運水入天河，天河復流入天池，周而復始",
+      "translation": {
+        "zh": "天池把水送入平水壶，再流进受水壶推动枢轮；落水经退水壶和提水轮送回天河，最后回到天池循环。",
+        "en": "Water passes from the reservoir through the constant-level tank into the scoops, drives the wheel, then returns through the drain and lifting wheels to the celestial river and reservoir in a cycle."
+      },
+      "url": "https://zh.wikisource.org/wiki/新儀象法要_(四庫全書本)/卷下"
+    }
+  ],
+  "dimensions": [
+    {
+      "label": {
+        "zh": "枢轮直径",
+        "en": "Shulun wheel diameter"
+      },
+      "ancient": "一丈一尺",
+      "meters": 3.432,
+      "basis": "宋制一尺为0.312米",
+      "sourceId": "xyxfy-shulun",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "受水壶长度",
+        "en": "Scoop length"
+      },
+      "ancient": "一尺",
+      "meters": 0.312,
+      "basis": "原文直接记载",
+      "sourceId": "xyxfy-shulun",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "受水壶宽度",
+        "en": "Scoop width"
+      },
+      "ancient": "五寸",
+      "meters": 0.156,
+      "basis": "原文直接记载",
+      "sourceId": "xyxfy-shulun",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "受水壶深度",
+        "en": "Scoop depth"
+      },
+      "ancient": "四寸",
+      "meters": 0.125,
+      "basis": "原文直接记载",
+      "sourceId": "xyxfy-shulun",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "天柱高度",
+        "en": "Celestial column height"
+      },
+      "ancient": "一丈九尺五寸",
+      "meters": 6.084,
+      "basis": "宋制换算",
+      "sourceId": "xyxfy-taiti",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "提水轮直径",
+        "en": "Water-lift wheel diameter"
+      },
+      "ancient": "五尺六寸",
+      "meters": 1.747,
+      "basis": "宋制换算",
+      "sourceId": "xyxfy-water",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "时鼓轮直径",
+        "en": "Hour and drum wheel diameter"
+      },
+      "ancient": "六尺七寸，六百牙",
+      "meters": 2.09,
+      "basis": "宋制换算；轮有600个齿槽",
+      "sourceId": "xyxfy-baoshi",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "仪象台总高",
+        "en": "Overall tower height"
+      },
+      "ancient": "约十二米",
+      "meters": 12,
+      "basis": "流传说法，四库本卷三未明载",
+      "sourceId": "xyxfy-taiti",
+      "confidence": "tuice"
+    },
+    {
+      "label": {
+        "zh": "仪象台基座宽度",
+        "en": "Tower base width"
+      },
+      "ancient": "约七米",
+      "meters": 7,
+      "basis": "流传说法，四库本卷三未明载",
+      "sourceId": "xyxfy-taiti",
+      "confidence": "tuice"
+    }
+  ],
+  "schemes": [
+    {
+      "id": "fixed-scoop",
+      "scholar": {
+        "zh": "王振铎",
+        "en": "Wang Zhenduo"
+      },
+      "year": 1958,
+      "summary": {
+        "zh": "三十六只刚性固定受水壶。",
+        "en": "Thirty-six rigidly fixed scoops."
+      },
+      "evidence": {
+        "zh": "按《新仪象法要》的三十六壶记载复原，国家博物馆藏有1:5模型。",
+        "en": "Reconstructs the text's 36 scoops; a 1:5 model is held by the National Museum of China."
+      },
+      "critique": {
+        "zh": "固定壶的计时稳定性不如铰接翻斗方案。",
+        "en": "Rigid scoops may keep time less steadily than hinged tipping scoops."
+      }
+    },
+    {
+      "id": "combridge-hinged",
+      "scholar": {
+        "zh": "约翰·康布里奇",
+        "en": "John Combridge"
+      },
+      "year": 1961,
+      "summary": {
+        "zh": "受水壶采用可倾翻的铰接结构。",
+        "en": "The scoops are hinged so they can tip."
+      },
+      "evidence": {
+        "zh": "工作模型显示铰接翻斗计时更稳定；土屋荣夫和诹访湖时之科学馆复原同属这一体系。",
+        "en": "Working models showed steadier timekeeping; Tsuchiya Sakao's variant and the Gishodo replica belong to this family."
+      }
+    }
+  ],
+  "controversies": [
+    {
+      "topic": {
+        "zh": "受水壶数量",
+        "en": "Scoop count"
+      },
+      "detail": {
+        "zh": "正文记三十六壶，异本记四十八壶，两个数字都必须保留。",
+        "en": "The main reading gives 36 scoops while another edition gives 48; both readings must remain visible."
+      },
+      "sourceIds": [
+        "xyxfy-shulun"
+      ]
+    },
+    {
+      "topic": {
+        "zh": "仪象台总体尺寸",
+        "en": "Overall tower dimensions"
+      },
+      "detail": {
+        "zh": "约12米高、约7米宽是流传说法，《四库全书》本卷三没有明载，因此只作推测。",
+        "en": "The roughly 12-meter height and 7-meter base are received figures not explicit in volume three of the Siku edition, so they remain inferred."
+      },
+      "sourceIds": [
+        "xyxfy-taiti"
+      ]
+    },
+    {
+      "topic": {
+        "zh": "台中复原完成年代",
+        "en": "Completion date of the Taichung replica"
+      },
+      "detail": {
+        "zh": "台中1:1木制复原的完成年有1993年与1997年两种说法。",
+        "en": "The completion year of the Taichung 1:1 wooden replica is disputed between 1993 and 1997."
+      },
+      "sourceIds": []
+    }
+  ],
+  "museums": [
+    {
+      "name": {
+        "zh": "中国国家博物馆",
+        "en": "National Museum of China"
+      },
+      "city": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "exhibit": {
+        "zh": "王振铎1:5复原模型",
+        "en": "Wang Zhenduo 1:5 reconstruction"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "中国科学技术馆",
+        "en": "China Science and Technology Museum"
+      },
+      "city": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "exhibit": {
+        "zh": "“华夏之光”展厅复原",
+        "en": "Reconstruction in the Light of China gallery"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "开封市博物馆",
+        "en": "Kaifeng Museum"
+      },
+      "city": {
+        "zh": "开封",
+        "en": "Kaifeng"
+      },
+      "exhibit": {
+        "zh": "1:1可运行复原",
+        "en": "1:1 working reconstruction"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "台湾自然科学博物馆",
+        "en": "National Museum of Natural Science"
+      },
+      "city": {
+        "zh": "台中",
+        "en": "Taichung"
+      },
+      "exhibit": {
+        "zh": "1:1可运行木制复原",
+        "en": "1:1 working wooden replica"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "诹访湖时之科学馆仪象堂",
+        "en": "Gishodo"
+      },
+      "city": {
+        "zh": "下诹访",
+        "en": "Shimosuwa"
+      },
+      "exhibit": {
+        "zh": "1:1可运行复原",
+        "en": "1:1 working reconstruction"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "苏颂纪念馆",
+        "en": "Su Song Memorial"
+      },
+      "city": {
+        "zh": "厦门同安",
+        "en": "Tong'an, Xiamen"
+      },
+      "exhibit": {
+        "zh": "苏颂与水运仪象台展陈",
+        "en": "Exhibit on Su Song and the clock tower"
+      },
+      "isOriginalArtifact": false
+    }
+  ],
+  "images": [
+    {
+      "title": "Water-powered Armillary & Celestial Tower 01",
+      "angle": "Taichung 1:1 overall",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-powered_Armillary_%26_Celestial_Tower_01._20241024.jpg",
+      "file": "public/assets/museum/astroclock/1.jpg",
+      "author": "阿道",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Water-powered Armillary & Celestial Tower 02",
+      "angle": "Taichung 1:1 overall",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-powered_Armillary_%26_Celestial_Tower_02._20241024.jpg",
+      "file": "public/assets/museum/astroclock/2.jpg",
+      "author": "阿道",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Water-powered Armillary & Celestial Tower 03",
+      "angle": "Taichung 1:1 overall",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-powered_Armillary_%26_Celestial_Tower_03._20241024.jpg",
+      "file": "public/assets/museum/astroclock/3.jpg",
+      "author": "阿道",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Water-powered Armillary & Celestial Tower 04",
+      "angle": "Taichung 1:1 overall",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-powered_Armillary_%26_Celestial_Tower_04._20241024.jpg",
+      "file": "public/assets/museum/astroclock/4.jpg",
+      "author": "阿道",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Top of the Water-powered Armillary & Celestial Tower",
+      "angle": "Armillary platform close-up",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Top_of_the_Water-powered_Armillary_%26_Celestial_Tower_01._20241024.jpg",
+      "file": "public/assets/museum/astroclock/5.jpg",
+      "author": "阿道",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Beijing Ancient Observatory model",
+      "angle": "Cutaway model, internal works",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Beijing_Ancient_Observatory_91105.jpg",
+      "file": "public/assets/museum/astroclock/6.jpg",
+      "author": "G41rn8",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "G41rn8, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Kaifeng Museum water clock model",
+      "angle": "Kaifeng reconstruction",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:20241025_Model_of_the_Water_Clock_in_Kaifeng_Museum.jpg",
+      "file": "public/assets/museum/astroclock/7.jpg",
+      "author": "Windmemories",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "Windmemories, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Song hydrodynamic planetarium model",
+      "angle": "Fujian Museum model",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Model_of_Song_Hydrodynamic_Planetarium_(33295154030).jpg",
+      "file": "public/assets/museum/astroclock/8.jpg",
+      "author": "Gary Todd from Xinzheng, China",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+    },
+    {
+      "title": "Clock tower from Su Song's book",
+      "angle": "Treatise plate, general view",
+      "license": "PD",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Clock_Tower_from_Su_Song's_Book.JPG",
+      "file": "public/assets/museum/astroclock/9.jpg",
+      "author": "PericlesofAthens",
+      "attributionText": "PericlesofAthens, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Exploded view of Su Song's clock",
+      "angle": "Treatise plate, exploded view",
+      "license": "PD",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vue_éclatée_horloge_Su_Song.jpg",
+      "file": "public/assets/museum/astroclock/10.jpg",
+      "author": "Unknown author Unknown author",
+      "attributionText": "Unknown author Unknown author, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Chain drive from Su Song's book",
+      "angle": "Treatise plate, chain drive",
+      "license": "PD",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chain_drive,_Su_Song's_book_of_1092.jpg",
+      "file": "public/assets/museum/astroclock/11.jpg",
+      "author": "Su Song 蘇頌",
+      "attributionText": "Su Song 蘇頌, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Taichung museum exhibit guide",
+      "angle": "Official guide",
+      "license": "linkout",
+      "sourceUrl": "https://www.nmns.edu.tw/ch/exhibitions/galleries/human-cultures-hall/chinese-science-and-technology/water-powered-clock/index.html"
+    }
+  ],
+  "ingenuity": {
+    "hook": {
+      "zh": "把连续水流数字化为均匀节拍：受水壶与格叉组成自调节的负反馈调速器。",
+      "en": "Digitizing continuous water flow into equal beats: the scoops and fork form a self-regulating negative-feedback governor."
+    },
+    "demo": {
+      "zh": "慢放一个擒纵周期：壶注水、格叉下落、关舌开启、轮进一格、天锁复位，并逐句同步原文。",
+      "en": "Play one escapement cycle in slow motion—fill, yield, open, advance one cell, re-lock—with captions synchronized to the source."
+    },
+    "echo": {
+      "zh": "每一只机械表里的擒纵器，都是这声“滴答”的后代。",
+      "en": "The escapement in every mechanical watch descends from this tick-tock."
+    }
+  }
+}

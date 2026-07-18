@@ -1,0 +1,254 @@
+{
+  "slug": "odometer",
+  "names": {
+    "zh": "记里鼓车（大章车）",
+    "en": "Odometer Drum Carriage"
+  },
+  "era": {
+    "zh": "汉代起源；北宋天圣五年（1027年）留下卢道隆完整齿数",
+    "en": "Han origin; Lu Daolong's complete tooth counts survive from 1027"
+  },
+  "inventors": [
+    {
+      "zh": "卢道隆",
+      "en": "Lu Daolong"
+    }
+  ],
+  "oneLiner": {
+    "zh": "用两级十进制减速把车轮里程变成击鼓与击镯。",
+    "en": "Two decimal reductions turn wheel travel into drum and chime strikes."
+  },
+  "principle": {
+    "zh": "足轮经过1/100和1/1000两级减速，将连续行程离散为里程；中平轮每周触发木人击鼓，上平轮每周触发木人击镯。",
+    "en": "The road wheel passes through 1/100 and 1/1000 reductions to discretize distance; each full turn of the middle wheel triggers a drum, and each full turn of the upper wheel triggers a chime."
+  },
+  "sources": [
+    {
+      "id": "songshi-waiguan",
+      "book": "宋史",
+      "chapter": "卷149",
+      "quote": "記裏鼓車，一名大章車。赤質，四面畫花鳥，重台，勾闌，鏤拱。行一里，則上層木人擊鼓；十里，則次層木人擊鐲。一轅，鳳首，駕四馬。",
+      "translation": {
+        "zh": "记里鼓车又叫大章车，车身红色，绘有花鸟并设重台栏杆。每走一里，上层木人击鼓；每走十里，下层木人击镯。",
+        "en": "The odometer carriage, also called the Great Display Carriage, is red and decorated with birds and flowers. A figure beats a drum every li and another strikes a chime every ten li."
+      },
+      "url": "https://zh.wikisource.org/wiki/宋史/卷149"
+    },
+    {
+      "id": "songshi-ludaolong",
+      "book": "宋史",
+      "chapter": "卷149",
+      "quote": "足輪各徑六尺，圍一丈八尺。足輪一周，而行地三步。以古法六尺為步，三百步為裏……立輪一，附於左足，徑一尺三寸八分……出齒十八……下平輪一，其徑四尺一寸四分……出齒五十四……立貫心軸一，其上設銅旋風輪一，出齒三……中立平輪一，其徑四尺……出齒百……次安小平輪一……出齒十……上平輪一……出齒百……其中平輪轉一周，車行一里，下一層木人擊鼓；上平輪轉一周，車行十里，上一層木人擊鐲。凡用大小輪八，合二百八十五齒，遞相鉤鎖，犬牙相製，周而復始。",
+      "translation": {
+        "zh": "足轮直径六尺，每周走三步，三百步为一里。传动依次使用18齿立轮、54齿下平轮、3齿旋风轮、100齿中平轮、10齿小平轮和100齿上平轮；中平轮一周击鼓，上平轮一周击镯，八轮合计285齿。",
+        "en": "Each six-chi road wheel travels three bu per turn, with 300 bu to a li. The train uses an 18-tooth vertical wheel, 54-tooth lower wheel, 3-tooth whirlwind wheel, 100-tooth middle wheel, 10-tooth small wheel, and 100-tooth upper wheel. The middle wheel triggers the drum, the upper wheel the chime, and all eight wheels total 285 teeth."
+      },
+      "url": "https://zh.wikisource.org/wiki/宋史/卷149"
+    }
+  ],
+  "dimensions": [
+    {
+      "label": {
+        "zh": "足轮直径",
+        "en": "Road-wheel diameter"
+      },
+      "ancient": "六尺，围一丈八尺",
+      "meters": 1.872,
+      "basis": "宋制一尺为0.312米；原文采用周三径一",
+      "sourceId": "songshi-ludaolong",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "立轮直径",
+        "en": "Vertical wheel diameter"
+      },
+      "ancient": "一尺三寸八分，出齒十八",
+      "meters": 0.431,
+      "basis": "宋制换算，18齿",
+      "sourceId": "songshi-ludaolong",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "下平轮直径",
+        "en": "Lower horizontal wheel diameter"
+      },
+      "ancient": "四尺一寸四分，出齒五十四",
+      "meters": 1.292,
+      "basis": "宋制换算，54齿",
+      "sourceId": "songshi-ludaolong",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "旋风轮齿数",
+        "en": "Whirlwind wheel teeth"
+      },
+      "ancient": "出齒三",
+      "meters": 3,
+      "basis": "原文齿数，以count理解",
+      "sourceId": "songshi-ludaolong",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "中平轮直径",
+        "en": "Middle wheel diameter"
+      },
+      "ancient": "四尺，出齒百",
+      "meters": 1.248,
+      "basis": "宋制换算，100齿",
+      "sourceId": "songshi-ludaolong",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "小平轮齿数",
+        "en": "Small wheel teeth"
+      },
+      "ancient": "出齒十",
+      "meters": 10,
+      "basis": "原文齿数，以count理解",
+      "sourceId": "songshi-ludaolong",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "上平轮齿数",
+        "en": "Upper wheel teeth"
+      },
+      "ancient": "出齒百",
+      "meters": 100,
+      "basis": "原文齿数，以count理解",
+      "sourceId": "songshi-ludaolong",
+      "confidence": "wenxian"
+    }
+  ],
+  "schemes": [
+    {
+      "id": "ludaolong",
+      "scholar": {
+        "zh": "卢道隆",
+        "en": "Lu Daolong"
+      },
+      "year": 1027,
+      "summary": {
+        "zh": "八轮、285齿的两级十进制里程传动。",
+        "en": "An eight-wheel, 285-tooth train with two decimal distance reductions."
+      },
+      "evidence": {
+        "zh": "《宋史》逐项记载轮径、齿数以及一里击鼓、十里击镯。",
+        "en": "The Song Shi records each diameter and tooth count and states the one-li drum and ten-li chime actions."
+      }
+    }
+  ],
+  "controversies": [
+    {
+      "topic": {
+        "zh": "古代圆周率近似",
+        "en": "Ancient circumference approximation"
+      },
+      "detail": {
+        "zh": "足轮直径六尺而周长一丈八尺，明确使用“周三径一”；展示时应保留这一计算基础。",
+        "en": "A six-chi diameter with an eighteen-chi circumference explicitly uses the approximation circumference = 3 × diameter, which the exhibit must preserve."
+      },
+      "sourceIds": [
+        "songshi-ludaolong"
+      ]
+    },
+    {
+      "topic": {
+        "zh": "博物馆照片缺口",
+        "en": "Museum-photo gap"
+      },
+      "detail": {
+        "zh": "多轮检索仍未找到博物馆复原品的Commons照片，画廊必须以项目渲染为主。",
+        "en": "Repeated searches found no Commons photograph of a museum replica, so the gallery must lead with project renders."
+      },
+      "sourceIds": []
+    }
+  ],
+  "museums": [
+    {
+      "name": {
+        "zh": "中国国家博物馆",
+        "en": "National Museum of China"
+      },
+      "city": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "exhibit": {
+        "zh": "王振铎1936至1937年复原模型",
+        "en": "Wang Zhenduo 1936–37 reconstruction"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "中国科学技术馆",
+        "en": "China Science and Technology Museum"
+      },
+      "city": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "exhibit": {
+        "zh": "记里鼓车复原",
+        "en": "Odometer carriage reconstruction"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "台湾自然科学博物馆",
+        "en": "National Museum of Natural Science"
+      },
+      "city": {
+        "zh": "台中",
+        "en": "Taichung"
+      },
+      "exhibit": {
+        "zh": "记里鼓车相关复原，展出状态未核实",
+        "en": "Related odometer reconstruction; display status unverified"
+      },
+      "isOriginalArtifact": false
+    }
+  ],
+  "images": [
+    {
+      "title": "Han dynasty odometer cart",
+      "angle": "Xiaotangshan Han relief rubbing",
+      "license": "PD",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Han_dynasty_odometer_cart.jpg",
+      "file": "public/assets/museum/odometer/1.jpg",
+      "author": "An artist from the Han Dynasty",
+      "attributionText": "An artist from the Han Dynasty, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Diagram of a Song dynasty odometer cart",
+      "angle": "Gear-train diagram",
+      "license": "CC-BY",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Diagram_of_a_Song_dynasty_odometer_cart.svg",
+      "file": "public/assets/museum/odometer/2.png",
+      "author": "Dingyuang , Gisling",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+      "attributionText": "Gisling , Dingyuang"
+    }
+  ],
+  "ingenuity": {
+    "hook": {
+      "zh": "这是一台十进制机械计数器：1/100和1/1000减速把连续滚动变成离散里程，八轮总齿数正好是285。",
+      "en": "A decimal mechanical counter: 1/100 and 1/1000 reductions turn continuous rolling into distance steps, and the eight wheels total exactly 285 teeth."
+    },
+    "demo": {
+      "zh": "快进到0.99里，再慢放3齿旋风轮推动100齿中平轮最后一齿，木人举槌击鼓，里程表翻转。",
+      "en": "Fast-forward to 0.99 li, then slow down as the 3-tooth whirlwind wheel advances the final tooth of the 100-tooth middle wheel, raising the figure's mallet to strike."
+    },
+    "echo": {
+      "zh": "它是出租车计价器和汽车小计里程表的机械祖先。",
+      "en": "It is a mechanical ancestor of the taximeter and trip counter."
+    }
+  }
+}

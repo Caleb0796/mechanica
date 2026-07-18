@@ -1,0 +1,287 @@
+{
+  "slug": "loom",
+  "names": {
+    "zh": "老官山一勾多综提花织机",
+    "en": "Laoguanshan Han Pattern Loom"
+  },
+  "era": {
+    "zh": "西汉约公元前157至88年；2013年出土于成都老官山M2墓",
+    "en": "Western Han, about 157–88 BCE; excavated in 2013 from Laoguanshan tomb M2, Chengdu"
+  },
+  "inventors": [
+    {
+      "zh": "佚名汉代织工",
+      "en": "Unknown Han weavers"
+    }
+  ],
+  "oneLiner": {
+    "zh": "把图案写进综片升降次序的可编程织机。",
+    "en": "A programmable loom that writes the pattern into the heddle-lift sequence."
+  },
+  "principle": {
+    "zh": "踏板与一勾多综选择器按预定次序升降综片，把纹样固定成一套程序；更换综序就能织出不同图案。",
+    "en": "Treadles and a single-hook multi-heddle selector raise the heddles in a stored sequence, turning a pattern into a physical program that changes when the heddle order changes."
+  },
+  "sources": [
+    {
+      "id": "xijingzaji-loom",
+      "book": "西京雜記",
+      "chapter": "卷一",
+      "quote": "霍光妻遺淳于衍蒲桃錦二十四匹、散花綾二十五匹。綾出鉅鹿陳寶光家，寶光妻傳其法……機用一百二十鑷，六十日成一匹，匹直萬錢。",
+      "translation": {
+        "zh": "霍光妻子赠送葡萄锦二十四匹、散花绫二十五匹。绫出自巨鹿陈宝光家，其妻传下织法；织机用一百二十镊，六十天织成一匹，价值一万钱。",
+        "en": "Huo Guang's wife gave 24 bolts of grape brocade and 25 of scattered-flower damask. The method came through Chen Baoguang's wife; the loom used 120 selectors, took 60 days per bolt, and each bolt was worth ten thousand cash."
+      },
+      "url": "https://zh.wikisource.org/wiki/西京雜記/卷一"
+    },
+    {
+      "id": "sgz-majun-loom",
+      "book": "三國志",
+      "chapter": "卷29裴注",
+      "quote": "舊綾機五十綜者五十躡，六十綜者六十躡，先生患其喪功費日，乃皆易以十二躡。",
+      "translation": {
+        "zh": "旧绫机有五十综就配五十蹑，有六十综就配六十蹑。马钧认为费工费时，把它们都改成十二蹑。",
+        "en": "Older damask looms used 50 treadles for 50 heddles or 60 for 60. Ma Jun found this wasteful and reduced both arrangements to 12 treadles."
+      },
+      "url": "https://zh.wikisource.org/wiki/三國志/卷29"
+    },
+    {
+      "id": "kaogu-laoguanshan",
+      "book": "中国丝绸博物馆老官山织机复原研究",
+      "quote": "M2北底箱出土四部织机模型，由竹木构成，结构复杂、清楚，部件上残存有丝线和染料，是参照原织机制作的缩小模型……其中一部织机（编号186）略大，尺寸是：长85、宽26、高50cm，其他三部（189、190、191）连杆型略小：长63、宽19、高37cm",
+      "translation": {
+        "zh": "二号墓北底箱出土四部按原织机缩制的竹木织机模型，部件上残留丝线和染料；186号长85厘米、宽26厘米、高50厘米，189、190、191号连杆型长63厘米、宽19厘米、高37厘米。",
+        "en": "Four scaled bamboo-and-wood loom models based on full-size machines were excavated from Tomb No. 2, with surviving silk and pigment. No. 186 measures 85 by 26 by 50 cm; linkage models Nos. 189, 190, and 191 measure 63 by 19 by 37 cm."
+      },
+      "url": "https://www.chinasilkmuseum.com/gskt/info_319.aspx?itemid=28182"
+    }
+  ],
+  "dimensions": [
+    {
+      "label": {
+        "zh": "186号滑框式模型长度",
+        "en": "No. 186 sliding-frame model length"
+      },
+      "ancient": "考古实测",
+      "meters": 0.85,
+      "basis": "长0.85米",
+      "sourceId": "kaogu-laoguanshan",
+      "confidence": "wenwu"
+    },
+    {
+      "label": {
+        "zh": "186号滑框式模型宽度",
+        "en": "No. 186 sliding-frame model width"
+      },
+      "ancient": "考古实测",
+      "meters": 0.26,
+      "basis": "宽0.26米",
+      "sourceId": "kaogu-laoguanshan",
+      "confidence": "wenwu"
+    },
+    {
+      "label": {
+        "zh": "186号滑框式模型高度",
+        "en": "No. 186 sliding-frame model height"
+      },
+      "ancient": "考古实测",
+      "meters": 0.5,
+      "basis": "高0.50米",
+      "sourceId": "kaogu-laoguanshan",
+      "confidence": "wenwu"
+    },
+    {
+      "label": {
+        "zh": "连杆式模型长度",
+        "en": "Linkage model length"
+      },
+      "ancient": "考古实测约值",
+      "meters": 0.63,
+      "basis": "长约0.63米",
+      "sourceId": "kaogu-laoguanshan",
+      "confidence": "wenwu"
+    },
+    {
+      "label": {
+        "zh": "连杆式模型宽度",
+        "en": "Linkage model width"
+      },
+      "ancient": "考古实测约值",
+      "meters": 0.19,
+      "basis": "宽约0.19米",
+      "sourceId": "kaogu-laoguanshan",
+      "confidence": "wenwu"
+    },
+    {
+      "label": {
+        "zh": "连杆式模型高度",
+        "en": "Linkage model height"
+      },
+      "ancient": "考古实测约值",
+      "meters": 0.37,
+      "basis": "高约0.37米",
+      "sourceId": "kaogu-laoguanshan",
+      "confidence": "wenwu"
+    },
+    {
+      "label": {
+        "zh": "模型比例",
+        "en": "Model scale"
+      },
+      "ancient": "约六分之一",
+      "meters": 0.16666666666666666,
+      "basis": "模型约为实机1/6",
+      "sourceId": "kaogu-laoguanshan",
+      "confidence": "tuice"
+    },
+    {
+      "label": {
+        "zh": "全尺寸织机量级",
+        "en": "Full-size loom class"
+      },
+      "ancient": "约二米级",
+      "meters": 2,
+      "basis": "按中国丝绸博物馆工作复原推测",
+      "sourceId": "kaogu-laoguanshan",
+      "confidence": "tuice"
+    }
+  ],
+  "schemes": [
+    {
+      "id": "sliding-frame",
+      "scholar": {
+        "zh": "中国丝绸博物馆复原团队",
+        "en": "China National Silk Museum reconstruction team"
+      },
+      "year": 2013,
+      "summary": {
+        "zh": "按186号模型复原的滑框式织机。",
+        "en": "A sliding-frame loom reconstructed from model no. 186."
+      },
+      "evidence": {
+        "zh": "工作复原成功织出交龙对凤纹锦。",
+        "en": "The working reconstruction wove the intertwined-dragon and paired-phoenix brocade."
+      }
+    },
+    {
+      "id": "linkage",
+      "scholar": {
+        "zh": "中国丝绸博物馆复原团队",
+        "en": "China National Silk Museum reconstruction team"
+      },
+      "year": 2018,
+      "summary": {
+        "zh": "按189、190、191号模型复原的连杆式织机。",
+        "en": "A linkage loom reconstructed from models 189, 190, and 191."
+      },
+      "evidence": {
+        "zh": "复原织出“世毋极”锦，并在2018年用同一程序复织“五星出东方利中国”锦。",
+        "en": "The reconstruction wove the Shi Wu Ji brocade and in 2018 reproduced the Five Stars Rise in the East brocade with the same program."
+      }
+    }
+  ],
+  "controversies": [
+    {
+      "topic": {
+        "zh": "八综演示简化",
+        "en": "Eight-heddle demonstration simplification"
+      },
+      "detail": {
+        "zh": "展项只驱动8片代表性综片，真实织机有数十片；这是明确声明的演示简化。",
+        "en": "The exhibit drives eight representative heddles, while real machines carried dozens; this is a declared demonstration simplification."
+      },
+      "sourceIds": [
+        "xijingzaji-loom",
+        "sgz-majun-loom",
+        "kaogu-laoguanshan"
+      ]
+    }
+  ],
+  "museums": [
+    {
+      "name": {
+        "zh": "成都博物馆",
+        "en": "Chengdu Museum"
+      },
+      "city": {
+        "zh": "成都",
+        "en": "Chengdu"
+      },
+      "exhibit": {
+        "zh": "4件出土织机模型，常设核心藏品",
+        "en": "The four excavated loom models, permanent signature holdings"
+      },
+      "url": "https://cdmuseum.com/gudaipian/",
+      "isOriginalArtifact": true
+    },
+    {
+      "name": {
+        "zh": "中国丝绸博物馆",
+        "en": "China National Silk Museum"
+      },
+      "city": {
+        "zh": "杭州",
+        "en": "Hangzhou"
+      },
+      "exhibit": {
+        "zh": "全尺寸可运行复原与织造演示",
+        "en": "Full-size working reconstructions and weaving demonstrations"
+      },
+      "url": "https://www.chinasilkmuseum.com/gskt/info_319.aspx?itemid=28182",
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "成都蜀锦织绣博物馆",
+        "en": "Chengdu Shu Brocade and Embroidery Museum"
+      },
+      "city": {
+        "zh": "成都",
+        "en": "Chengdu"
+      },
+      "exhibit": {
+        "zh": "蜀锦织机与工艺展陈",
+        "en": "Shu brocade looms and weaving display"
+      },
+      "isOriginalArtifact": false
+    }
+  ],
+  "images": [
+    {
+      "title": "Laoguanshan excavated Han loom",
+      "angle": "Excavated original, 4096 px",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:成都老官山墓地出土-织机-西汉-成都考古中心_2024-10-17.jpg",
+      "file": "public/assets/museum/loom/1.jpg",
+      "author": "Kcx36",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "Kcx36, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Silk Museum reconstruction study",
+      "angle": "Measured drawings and replica photos",
+      "license": "linkout",
+      "sourceUrl": "https://www.chinasilkmuseum.com/gskt/info_319.aspx?itemid=28182"
+    },
+    {
+      "title": "Chengdu Museum ancient gallery",
+      "angle": "Official exhibit page",
+      "license": "linkout",
+      "sourceUrl": "https://cdmuseum.com/gudaipian/"
+    }
+  ],
+  "ingenuity": {
+    "hook": {
+      "zh": "把图案写进机器：综片升降顺序就是程序，程序与织出的数据在实体机械中分离。",
+      "en": "Write the picture into the machine: the heddle lift order is the program, physically separating program from woven data."
+    },
+    "demo": {
+      "zh": "交互调整8片综的顺序，让同一台织机现场织出两种对比纹样。",
+      "en": "Interactively reorder eight heddles so the same loom weaves two contrasting patterns live."
+    },
+    "echo": {
+      "zh": "提花机通向雅卡尔穿孔卡、巴贝奇，再通向存储程序。",
+      "en": "The pattern loom leads to Jacquard cards, Babbage, and the stored program."
+    }
+  }
+}

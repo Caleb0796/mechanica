@@ -1,0 +1,299 @@
+{
+  "slug": "seismoscope",
+  "names": {
+    "zh": "候风地动仪",
+    "en": "Zhang Heng's Seismoscope"
+  },
+  "era": {
+    "zh": "东汉阳嘉元年（132年），洛阳",
+    "en": "Eastern Han, 132 CE, Luoyang"
+  },
+  "inventors": [
+    {
+      "zh": "张衡",
+      "en": "Zhang Heng"
+    }
+  ],
+  "oneLiner": {
+    "zh": "以一龙先发、七龙锁止来报告地震方向。",
+    "en": "A first-event direction detector in which one dragon fires and seven lock."
+  },
+  "principle": {
+    "zh": "中央都柱感受地面初动方向，经八道关机只释放一个龙首中的铜丸，落入下方蟾蜍；首个方向触发后锁止其余七路。",
+    "en": "A central duzhu senses the initial ground-motion bearing and uses eight paths of levers to release one dragon's bronze ball into its toad, locking the other seven paths after the first trigger."
+  },
+  "sources": [
+    {
+      "id": "houfeng-196",
+      "book": "後漢書",
+      "chapter": "卷59",
+      "quote": "陽嘉元年，復造候風地動儀。以精銅鑄成，員徑八尺，合蓋隆起，形似酒尊，飾以篆文山龜鳥獸之形。中有都柱，傍行八道，施關發機。外有八龍，首銜銅丸，下有蟾蜍，張口承之。其牙機巧制，皆隱在尊中，覆蓋周密無際。如有地動，尊則振龍機發吐丸，而蟾蜍銜之。振聲激揚，伺者因此覺知。雖一龍發機，而七首不動，尋其方面，乃知震之所在。驗之以事，合契若神。自書典所記，未之有也。嘗一龍機發而地不覺動，京師學者咸怪其無征，後數日驛至，果地震隴西，於是皆服其妙。自此以後，乃令史官記地動所從方起。",
+      "translation": {
+        "zh": "阳嘉元年，张衡造候风地动仪。仪器用精铜铸成，直径八尺，形似酒尊；中央有都柱，旁通八道机关，外有八龙含铜丸，下面八只蟾蜍承接。地震时只有一个方向的龙机吐丸，其余七首不动，由此判断震源方向。一次京师没有感觉而仪器先报，数日后驿使证实陇西发生地震。",
+        "en": "In 132 Zhang Heng made a bronze, eight-chi seismoscope shaped like a wine vessel. A central column and eight hidden trigger paths served eight dragons holding balls above eight toads. During an earthquake one dragon released its ball while the other seven remained still, revealing the direction; a report later confirmed a Longxi quake that had not been felt in the capital."
+      },
+      "url": "https://zh.wikisource.org/wiki/後漢書/卷59"
+    }
+  ],
+  "dimensions": [
+    {
+      "label": {
+        "zh": "尊体直径",
+        "en": "Vessel diameter"
+      },
+      "ancient": "八尺",
+      "meters": 1.848,
+      "basis": "汉制一尺为0.231米",
+      "sourceId": "houfeng-196",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "龙首数量",
+        "en": "Dragon count"
+      },
+      "ancient": "八龍",
+      "meters": 8,
+      "basis": "原文直接记载，数量以count理解",
+      "sourceId": "houfeng-196",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "蟾蜍数量",
+        "en": "Toad count"
+      },
+      "ancient": "八个方向各一",
+      "meters": 8,
+      "basis": "原文写八龙且下有蟾蜍，复原为八只",
+      "sourceId": "houfeng-196",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "都柱高度",
+        "en": "Duzhu height"
+      },
+      "ancient": "约二米",
+      "meters": 2,
+      "basis": "冯锐推断",
+      "sourceId": "houfeng-196",
+      "confidence": "tuice"
+    }
+  ],
+  "schemes": [
+    {
+      "id": "wangzhenduo",
+      "scholar": {
+        "zh": "王振铎",
+        "en": "Wang Zhenduo"
+      },
+      "year": 1951,
+      "summary": {
+        "zh": "竖立都柱的倒立摆模型。",
+        "en": "A standing-column, inverted-pendulum model."
+      },
+      "evidence": {
+        "zh": "依据“中有都柱，傍行八道”构造教科书式复原。",
+        "en": "Builds a textbook reconstruction from the phrases about a central column and eight paths."
+      },
+      "critique": {
+        "zh": "地震学家判断该模型不能可靠工作；傅承义曾作尖锐批评。",
+        "en": "Seismologists judged it non-functional; Fu Chengyi famously criticized its sensitivity."
+      }
+    },
+    {
+      "id": "fengrui",
+      "scholar": {
+        "zh": "冯锐",
+        "en": "Feng Rui"
+      },
+      "year": 2005,
+      "summary": {
+        "zh": "悬垂都柱配八条滚珠轨道。",
+        "en": "A suspended duzhu with eight ball tracks."
+      },
+      "evidence": {
+        "zh": "2004至2005年结合陇西地震史料和振动台试验验证，2005年通过鉴定。",
+        "en": "Validated in 2004–05 against historical Longxi seismograms and shake-table tests, and accepted in 2005."
+      },
+      "critique": {
+        "zh": "这是当前最佳方案，但不能当作唯一答案。",
+        "en": "It is the strongest current solution, not a uniquely proven answer."
+      }
+    }
+  ],
+  "controversies": [
+    {
+      "topic": {
+        "zh": "复原方案与教材争议",
+        "en": "Reconstruction and textbook debate"
+      },
+      "detail": {
+        "zh": "2017年教材撤图引发争论；史料可信不等于王振铎模型可行，冯锐方案也只是当前最佳解释。",
+        "en": "The 2017 textbook-image removal debate showed that confidence in the historical record does not validate Wang's model; Feng's remains the best current reconstruction rather than the only possible one."
+      },
+      "sourceIds": [
+        "houfeng-196"
+      ]
+    },
+    {
+      "topic": {
+        "zh": "冯锐模型图像缺口",
+        "en": "Feng Rui image gap"
+      },
+      "detail": {
+        "zh": "目前没有冯锐模型的CC许可图片，只能用项目渲染和河南博物院文字链接补足。",
+        "en": "No Creative Commons image of the Feng Rui model is available; project renders and a Henan Museum text link must fill the gap."
+      },
+      "sourceIds": []
+    },
+    {
+      "topic": {
+        "zh": "南阳张衡博物馆展出状态",
+        "en": "Nanyang display status"
+      },
+      "detail": {
+        "zh": "南阳张衡博物馆相关展项的常设性尚未核实。",
+        "en": "The permanence of the related display at the Nanyang Zhang Heng Museum is unverified."
+      },
+      "sourceIds": []
+    }
+  ],
+  "museums": [
+    {
+      "name": {
+        "zh": "中国国家博物馆",
+        "en": "National Museum of China"
+      },
+      "city": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "exhibit": {
+        "zh": "王振铎复原模型",
+        "en": "Wang Zhenduo reconstruction"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "河南博物院",
+        "en": "Henan Museum"
+      },
+      "city": {
+        "zh": "郑州",
+        "en": "Zhengzhou"
+      },
+      "exhibit": {
+        "zh": "冯锐复原模型，常设展",
+        "en": "Feng Rui reconstruction, permanent display"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "中国科学技术馆",
+        "en": "China Science and Technology Museum"
+      },
+      "city": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "exhibit": {
+        "zh": "候风地动仪复原",
+        "en": "Seismoscope reconstruction"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "南阳张衡博物馆",
+        "en": "Nanyang Zhang Heng Museum"
+      },
+      "city": {
+        "zh": "南阳",
+        "en": "Nanyang"
+      },
+      "exhibit": {
+        "zh": "张衡与地动仪展陈，常设性未核实",
+        "en": "Zhang Heng and seismoscope display; permanence unverified"
+      },
+      "isOriginalArtifact": false
+    }
+  ],
+  "images": [
+    {
+      "title": "Seismograph in the National Museum of Natural Science",
+      "angle": "Taichung replica, high resolution",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seismograph_in_the_National_Museum_of_Natural_Science_20241024.jpg",
+      "file": "public/assets/museum/seismoscope/1.jpg",
+      "author": "阿道",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "East Han Seismograph",
+      "angle": "Wang-style exterior",
+      "license": "CC-BY-SA",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:EastHanSeismograph.JPG",
+      "file": "public/assets/museum/seismoscope/2.jpg",
+      "author": "en:user: Kowloonese",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "attributionText": "en:user: Kowloonese, CC BY-SA 3.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Copy of World's First Seismograph",
+      "angle": "1982 World's Fair replica",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:People's_Republic_of_China_Exhibit-_Copy_of_World's_First_Seismograph.jpg",
+      "file": "public/assets/museum/seismoscope/3.jpg",
+      "author": "Gary Lee Todd, Ph.D.",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionText": "Gary Lee Todd, Ph.D., CC0, via Wikimedia Commons"
+    },
+    {
+      "title": "Wang Zhenduo's reproduction",
+      "angle": "Wang Zhenduo 1951 historical photo",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wang_Zhenduo's_reprodution_of_Heng's_seismoscope.png",
+      "file": "public/assets/museum/seismoscope/4.png",
+      "author": "WdW Review",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionText": "WdW Review, CC0, via Wikimedia Commons"
+    },
+    {
+      "title": "Inverted-pendulum internal reproduction",
+      "angle": "Imamura inverted-pendulum internals",
+      "license": "PD",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zhang_Heng's_seismometer_internal_reproduction_with_inverted_pendulum.png",
+      "file": "public/assets/museum/seismoscope/5.png",
+      "author": "Seismological Society of Japan",
+      "attributionText": "Seismological Society of Japan, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Annotated seismoscope reconstruction",
+      "angle": "Annotated cutaway in Chinese",
+      "license": "PD",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:注释版地动仪复原.jpg",
+      "file": "public/assets/museum/seismoscope/6.jpg",
+      "author": "Zhuoluen 养竹村农夫",
+      "attributionText": "Zhuoluen 养竹村农夫, Public domain, via Wikimedia Commons"
+    }
+  ],
+  "ingenuity": {
+    "hook": {
+      "zh": "“一龙发机，七首不动”是一种带互锁的单稳态触发器：最先响应的一路锁住其余七路。",
+      "en": "One dragon fires and seven remain still: a monostable trigger with interlock, where the first response locks all other paths."
+    },
+    "demo": {
+      "zh": "注入向西脉冲，西龙吐丸；立刻尝试其他方向，全部锁止并红闪，同时显示原文。",
+      "en": "Inject a westward pulse, drop the west dragon's ball, then immediately try the other directions and show their red lockout beside the source line."
+    },
+    "echo": {
+      "zh": "它像数字锁存器，也是现代报警系统“首事件锁止”的先声。",
+      "en": "It anticipates the digital latch and first-event lockout used in alarm systems."
+    }
+  }
+}

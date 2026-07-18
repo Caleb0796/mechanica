@@ -1,0 +1,269 @@
+{
+  "slug": "bellows",
+  "names": {
+    "zh": "水排",
+    "en": "Water-Powered Blast Bellows"
+  },
+  "era": {
+    "zh": "东汉建武七年（31年）杜诗创制，韩暨推广；元代《农书》保存结构",
+    "en": "Invented by Du Shi in 31 CE, spread by Han Ji, and structurally recorded in the Yuan Nong Shu"
+  },
+  "inventors": [
+    {
+      "zh": "杜诗",
+      "en": "Du Shi"
+    },
+    {
+      "zh": "韩暨",
+      "en": "Han Ji"
+    },
+    {
+      "zh": "王祯（记录者）",
+      "en": "Wang Zhen (recorder)"
+    }
+  ],
+  "oneLiner": {
+    "zh": "把水轮旋转经过绳索、曲柄和连杆变成风箱往复。",
+    "en": "Turn waterwheel rotation into bellows reciprocation through cord, crank, and rod."
+  },
+  "principle": {
+    "zh": "卧式水轮用弦索带动小鼓增速，小鼓上的掉枝曲柄推挽行桄，再通过攀耳和直木使风箱板高速往复。",
+    "en": "A horizontal waterwheel uses a cord to speed a small drum; a crank on the drum pushes and pulls a connecting rod, rocker, and upright member to reciprocate the bellows boards."
+  },
+  "sources": [
+    {
+      "id": "hhs-dushi",
+      "book": "後漢書",
+      "chapter": "卷31",
+      "quote": "造作水排，鑄為農器，用力少，見功多，百姓便之。",
+      "translation": {
+        "zh": "杜诗制造水排来鼓风铸造农具，耗力少而成效多，百姓觉得便利。",
+        "en": "Du Shi made water-powered bellows to cast farm tools, achieving much with little labor and benefiting the people."
+      },
+      "url": "https://zh.wikisource.org/wiki/後漢書/卷31"
+    },
+    {
+      "id": "nongshu-hanji",
+      "book": "王禎農書引魏志",
+      "chapter": "卷十九",
+      "quote": "暨乃因長流為水排，計其利益，三倍於前。",
+      "translation": {
+        "zh": "韩暨利用长流水设置水排，计算其效益比以前提高三倍。",
+        "en": "Han Ji used a continuous stream to power the bellows, producing three times the previous benefit."
+      },
+      "url": "https://zh.wikisource.org/wiki/王禎農書/卷十九"
+    },
+    {
+      "id": "nongshu-shuipai",
+      "book": "王禎農書",
+      "chapter": "卷十九",
+      "quote": "其製：當選湍流之側，架木立軸，作二臥輪；用水激轉下輪，則上輪所週絃索，通繳輪前旋鼓，掉枝一例隨轉；其掉枝所貫行桄，因而推挽臥軸左右攀耳，以及排前直木，則排隨來去，扇冶甚速，過於人力……假水輪臥軸所列拐木，自上打動排前偃木……一軸可供數排，宛若水碓之製。",
+      "translation": {
+        "zh": "在急流边架木轴和两个卧轮，水推动下轮，上轮的弦索带动前方旋鼓和掉枝。掉枝穿过行桄，推挽卧轴两侧攀耳与风箱前直木，使风箱快速往复。另一方案是在水轮卧轴上排列拐木，向下击动偃木，一根轴可带多座风箱。",
+        "en": "Beside a rapid stream, two horizontal wheels turn on a wooden frame. A cord from the upper wheel drives a drum and crank; the crank moves a connecting rod, rockers, and the upright member of the bellows for rapid reciprocation. An alternate design uses cams on the waterwheel shaft to strike levers, allowing one shaft to serve several bellows."
+      },
+      "url": "https://zh.wikisource.org/wiki/王禎農書/卷十九"
+    }
+  ],
+  "dimensions": [
+    {
+      "label": {
+        "zh": "风箱前直出木簨长度",
+        "en": "Projecting bellows timber length"
+      },
+      "ancient": "约长三尺",
+      "meters": 0.94,
+      "basis": "散见部件尺寸，约0.94米",
+      "sourceId": "nongshu-shuipai",
+      "confidence": "wenxian"
+    },
+    {
+      "label": {
+        "zh": "水轮直径",
+        "en": "Waterwheel diameter"
+      },
+      "ancient": "约三米",
+      "meters": 3,
+      "basis": "王振铎复原推测",
+      "sourceId": "nongshu-shuipai",
+      "confidence": "tuice"
+    },
+    {
+      "label": {
+        "zh": "风箱板长度",
+        "en": "Bellows board length"
+      },
+      "ancient": "约一点五米",
+      "meters": 1.5,
+      "basis": "王振铎复原推测",
+      "sourceId": "nongshu-shuipai",
+      "confidence": "tuice"
+    },
+    {
+      "label": {
+        "zh": "小鼓半径",
+        "en": "Small drum radius"
+      },
+      "ancient": "约零点六米",
+      "meters": 0.6,
+      "basis": "5:1增速演示所用推测半径",
+      "sourceId": "nongshu-shuipai",
+      "confidence": "tuice"
+    },
+    {
+      "label": {
+        "zh": "曲柄半径",
+        "en": "Crank radius"
+      },
+      "ancient": "约零点二四米",
+      "meters": 0.24,
+      "basis": "复原传动设定",
+      "sourceId": "nongshu-shuipai",
+      "confidence": "tuice"
+    },
+    {
+      "label": {
+        "zh": "连杆长度",
+        "en": "Connecting-rod length"
+      },
+      "ancient": "约一点二米",
+      "meters": 1.2,
+      "basis": "复原传动设定",
+      "sourceId": "nongshu-shuipai",
+      "confidence": "tuice"
+    },
+    {
+      "label": {
+        "zh": "风箱冲程",
+        "en": "Bellows stroke"
+      },
+      "ancient": "二倍曲柄半径",
+      "meters": 0.48,
+      "basis": "2×0.24米，小于0.5米滑块行程限制",
+      "sourceId": "nongshu-shuipai",
+      "confidence": "tuice"
+    }
+  ],
+  "schemes": [],
+  "controversies": [
+    {
+      "topic": {
+        "zh": "曲柄连杆与凸轮击木",
+        "en": "Crank-rod versus cam-tappet"
+      },
+      "detail": {
+        "zh": "默认展示弦索与曲柄连杆方案；《农书》还记载一轴可带多排的凸轮击木方案，在时间有限时只作为争议与备选说明。",
+        "en": "The default exhibit uses the cord-and-crank train; the Nong Shu also records a cam-tappet version that can drive several bellows from one shaft, retained as an alternate when time is limited."
+      },
+      "sourceIds": [
+        "nongshu-shuipai"
+      ]
+    },
+    {
+      "topic": {
+        "zh": "复原尺寸",
+        "en": "Reconstruction dimensions"
+      },
+      "detail": {
+        "zh": "文献没有总体尺寸；约3米水轮、约1.5米风箱板以及演示用传动尺寸来自王振铎复原或本项目推测。",
+        "en": "The sources give no overall size; the roughly 3-meter wheel, 1.5-meter board, and demonstration transmission dimensions come from Wang Zhenduo's reconstruction or project inference."
+      },
+      "sourceIds": [
+        "nongshu-shuipai"
+      ]
+    },
+    {
+      "topic": {
+        "zh": "南阳与河南展出状态",
+        "en": "Nanyang and Henan display status"
+      },
+      "detail": {
+        "zh": "南阳或河南博物院冶铁展中相关水排内容的具体常设状态尚未核实。",
+        "en": "The exact permanent status of related water-bellows content in Nanyang or Henan Museum iron-smelting displays is unverified."
+      },
+      "sourceIds": []
+    }
+  ],
+  "museums": [
+    {
+      "name": {
+        "zh": "中国国家博物馆",
+        "en": "National Museum of China"
+      },
+      "city": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "exhibit": {
+        "zh": "王振铎1:10水排模型",
+        "en": "Wang Zhenduo 1:10 water-bellows model"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "中国科学技术馆",
+        "en": "China Science and Technology Museum"
+      },
+      "city": {
+        "zh": "北京",
+        "en": "Beijing"
+      },
+      "exhibit": {
+        "zh": "水排传动复原",
+        "en": "Water-powered bellows reconstruction"
+      },
+      "isOriginalArtifact": false
+    },
+    {
+      "name": {
+        "zh": "南阳或河南博物院冶铁展",
+        "en": "Nanyang or Henan Museum iron-smelting displays"
+      },
+      "city": {
+        "zh": "南阳或郑州",
+        "en": "Nanyang or Zhengzhou"
+      },
+      "exhibit": {
+        "zh": "冶铁相关展陈，具体常设状态未核实",
+        "en": "Related iron-smelting displays; exact permanent status unverified"
+      },
+      "isOriginalArtifact": false
+    }
+  ],
+  "images": [
+    {
+      "title": "Water-Powered Bellows Model",
+      "angle": "National Museum of China model, full-chain side view",
+      "license": "CC0",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-Powered_Bellows_Model_(9832086364).jpg",
+      "file": "public/assets/museum/bellows/1.jpg",
+      "author": "Gary Todd from Xinzheng, China",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+    },
+    {
+      "title": "Yuan Dynasty waterwheels and smelting",
+      "angle": "Nong Shu plate",
+      "license": "PD",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuan_Dynasty_-_waterwheels_and_smelting.png",
+      "file": "public/assets/museum/bellows/2.png",
+      "author": "Wang Zhen",
+      "attributionText": "Wang Zhen, Public domain, via Wikimedia Commons"
+    }
+  ],
+  "ingenuity": {
+    "hook": {
+      "zh": "像镜像的瓦特连杆：完整的旋转到往复曲柄连杆链，比欧洲早约一千年。",
+      "en": "Watt's linkage mirrored: a complete rotary-to-reciprocating crank-and-rod chain about a millennium before Europe."
+    },
+    "demo": {
+      "zh": "按水轮、弦索、小鼓、曲柄、连杆、攀耳、风箱板逐级点亮传动，最后与蒸汽机反向链并排比较。",
+      "en": "Light the transmission stage by stage—wheel, cord, drum, crank, rod, rocker, board—then compare it with the same chain reversed in a steam engine."
+    },
+    "echo": {
+      "zh": "它是蒸汽机和内燃机曲柄连杆链的镜像，李约瑟专门讨论过这一点。",
+      "en": "It mirrors the crank-and-rod chain in steam and internal-combustion engines, exactly the connection Needham emphasized."
+    }
+  }
+}

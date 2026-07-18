@@ -1,0 +1,434 @@
+[
+  {
+    "file": "public/assets/museum/astroclock/1.jpg",
+    "title": "Water-powered Armillary & Celestial Tower 01",
+    "author": "阿道",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-powered_Armillary_%26_Celestial_Tower_01._20241024.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/10.jpg",
+    "title": "Exploded view of Su Song's clock",
+    "author": "Unknown author Unknown author",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vue_éclatée_horloge_Su_Song.jpg",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "Unknown author Unknown author, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/11.jpg",
+    "title": "Chain drive from Su Song's book",
+    "author": "Su Song 蘇頌",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chain_drive,_Su_Song's_book_of_1092.jpg",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "Su Song 蘇頌, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/2.jpg",
+    "title": "Water-powered Armillary & Celestial Tower 02",
+    "author": "阿道",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-powered_Armillary_%26_Celestial_Tower_02._20241024.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/3.jpg",
+    "title": "Water-powered Armillary & Celestial Tower 03",
+    "author": "阿道",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-powered_Armillary_%26_Celestial_Tower_03._20241024.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/4.jpg",
+    "title": "Water-powered Armillary & Celestial Tower 04",
+    "author": "阿道",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-powered_Armillary_%26_Celestial_Tower_04._20241024.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/5.jpg",
+    "title": "Top of the Water-powered Armillary & Celestial Tower",
+    "author": "阿道",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Top_of_the_Water-powered_Armillary_%26_Celestial_Tower_01._20241024.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/6.jpg",
+    "title": "Beijing Ancient Observatory model",
+    "author": "G41rn8",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Beijing_Ancient_Observatory_91105.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "G41rn8, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/7.jpg",
+    "title": "Kaifeng Museum water clock model",
+    "author": "Windmemories",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:20241025_Model_of_the_Water_Clock_in_Kaifeng_Museum.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Windmemories, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/8.jpg",
+    "title": "Song hydrodynamic planetarium model",
+    "author": "Gary Todd from Xinzheng, China",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Model_of_Song_Hydrodynamic_Planetarium_(33295154030).jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/astroclock/9.jpg",
+    "title": "Clock tower from Su Song's book",
+    "author": "PericlesofAthens",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Clock_Tower_from_Su_Song's_Book.JPG",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "PericlesofAthens, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/bellows/1.jpg",
+    "title": "Water-Powered Bellows Model",
+    "author": "Gary Todd from Xinzheng, China",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Water-Powered_Bellows_Model_(9832086364).jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/bellows/2.png",
+    "title": "Yuan Dynasty waterwheels and smelting",
+    "author": "Wang Zhen",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuan_Dynasty_-_waterwheels_and_smelting.png",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "Wang Zhen, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chainpump/1.jpg",
+    "title": "Eastern Han and Three Kingdoms Chain Pump Model",
+    "author": "Gary Todd from Xinzheng, China",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Eastern_Han_%26_Three_Kingdoms_Chain_Pump_Model_(9833206136).jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chainpump/2.jpg",
+    "title": "Southern Henan Chain Pump for Irrigation 1",
+    "author": "Gary Todd",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Southern_Henan_Chain_Pump_for_Irrigation_1.jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chainpump/3.jpg",
+    "title": "Southern Henan Chain Pump for Irrigation 2",
+    "author": "Gary Todd",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Southern_Henan_Chain_Pump_for_Irrigation_2.jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chainpump/4.jpg",
+    "title": "Tiangong Kaiwu Chain Pumps",
+    "author": "Unknown author Unknown author",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tiangong_Kaiwu_Chain_Pumps.jpg",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "Unknown author Unknown author, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chainpump/5.jpg",
+    "title": "Foot-power irrigation pump",
+    "author": "Unknown photographer Unknown photographer",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Farmers_of_forty_centuries_-_Foot-power_of_China_propels_irrigation_pump.jpg",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "Unknown photographer Unknown photographer, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chainpump/6.jpg",
+    "title": "Waterladder pump",
+    "author": "KVDP",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Waterladder_pump.JPG",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "KVDP, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chariot/1.jpg",
+    "title": "South-pointing Chariot Model",
+    "author": "Gary Todd from Xinzheng, China",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:South-pointing_Chariot_Model_(9883195115).jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chariot/2.jpg",
+    "title": "South-pointing chariot in Taichung",
+    "author": "阿道",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:South-pointing_chariot_in_the_National_Museum_of_Natural_Science_20241024.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chariot/3.jpg",
+    "title": "Gears of South-pointing chariot",
+    "author": "SSR2000",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gears_of_South-pointing_chariot_Model_in_National_Museum_of_Natural_Science,_Taiwan.JPG",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "attributionText": "SSR2000, CC BY-SA 3.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chariot/4.jpg",
+    "title": "South-pointing chariot Science Museum model",
+    "author": "Andy Dingley",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:South-pointing_chariot_(Science_Museum_model).jpg",
+    "license": "CC-BY",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "attributionText": "Andy Dingley, CC BY 3.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/chariot/5.jpg",
+    "title": "South-pointing chariot at Xuanyuan Hometown",
+    "author": "Windmemories",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:20241011_South-pointing_chariot_at_the_Temple_of_Xuanyuan_Hometown.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Windmemories, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/gimbal/1.jpg",
+    "title": "Tang Gold or Silver Incense Burner",
+    "author": "Gary Todd from Xinzheng, China",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tang_Gold_or_Silver_Incense_Burner_(9949879025).jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/gimbal/2.jpg",
+    "title": "Tang Silver Incense Ball",
+    "author": "Gary Todd from Xinzheng, China",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tang_Silver_Incense_Ball_(9923133354).jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/gimbal/3.jpg",
+    "title": "Tang Dynasty Culture Relics 11",
+    "author": "Cyclohexane233",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tang_Dynasty_Culture_Relics_11.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Cyclohexane233, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/gimbal/4.jpg",
+    "title": "Famen Si May 2007",
+    "author": "G41rn8",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Famen_Si_May_2007_060.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "G41rn8, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/loom/1.jpg",
+    "title": "Laoguanshan excavated Han loom",
+    "author": "Kcx36",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:成都老官山墓地出土-织机-西汉-成都考古中心_2024-10-17.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Kcx36, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/odometer/1.jpg",
+    "title": "Han dynasty odometer cart",
+    "author": "An artist from the Han Dynasty",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Han_dynasty_odometer_cart.jpg",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "An artist from the Han Dynasty, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/odometer/2.png",
+    "title": "Diagram of a Song dynasty odometer cart",
+    "author": "Dingyuang , Gisling",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Diagram_of_a_Song_dynasty_odometer_cart.svg",
+    "license": "CC-BY",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "attributionText": "Gisling , Dingyuang"
+  },
+  {
+    "file": "public/assets/museum/seismoscope/1.jpg",
+    "title": "Seismograph in the National Museum of Natural Science",
+    "author": "阿道",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seismograph_in_the_National_Museum_of_Natural_Science_20241024.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "阿道, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/seismoscope/2.jpg",
+    "title": "East Han Seismograph",
+    "author": "en:user: Kowloonese",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:EastHanSeismograph.JPG",
+    "license": "CC-BY-SA",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attributionText": "en:user: Kowloonese, CC BY-SA 3.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/seismoscope/3.jpg",
+    "title": "Copy of World's First Seismograph",
+    "author": "Gary Lee Todd, Ph.D.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:People's_Republic_of_China_Exhibit-_Copy_of_World's_First_Seismograph.jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Lee Todd, Ph.D., CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/seismoscope/4.png",
+    "title": "Wang Zhenduo's reproduction",
+    "author": "WdW Review",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wang_Zhenduo's_reprodution_of_Heng's_seismoscope.png",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "WdW Review, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/seismoscope/5.png",
+    "title": "Inverted-pendulum internal reproduction",
+    "author": "Seismological Society of Japan",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zhang_Heng's_seismometer_internal_reproduction_with_inverted_pendulum.png",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "Seismological Society of Japan, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/seismoscope/6.jpg",
+    "title": "Annotated seismoscope reconstruction",
+    "author": "Zhuoluen 养竹村农夫",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:注释版地动仪复原.jpg",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "Zhuoluen 养竹村农夫, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/typecase/1.png",
+    "title": "Chinese movable type 1313",
+    "author": "User:Parhamr",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chinese_movable_type_1313-ce.png",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "User:Parhamr, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/typecase/2.jpg",
+    "title": "Beijing Printing Museum Bi Sheng process",
+    "author": "Popolon",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Beijing.Musee_imprimerie.caracteres_mobiles.Bisheng.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Popolon, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/typecase/3.jpg",
+    "title": "Beijing Printing Museum wooden movable types",
+    "author": "Popolon",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Beijing_printing_museum.wooden_movable_types.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Popolon, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/typecase/4.jpg",
+    "title": "Beijing Printing Museum bronze movable types",
+    "author": "Popolon",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Beijing_printing_museum.bronze_movable_types.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Popolon, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/typecase/5.jpg",
+    "title": "Beijing Printing Museum Han characters case",
+    "author": "Popolon",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Beijing_printing_museum.Han_characters_case.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Popolon, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/wooden-ox/1.jpg",
+    "title": "Wooden ox at the Temple of Marquis Wu",
+    "author": "Morio",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wooden_ox_2016_Temple_of_Marquis_Wu_(Wuzhang_Plains).jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Morio, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/wooden-ox/2.jpg",
+    "title": "Flowing horse at the Temple of Marquis Wu",
+    "author": "Morio",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Flowing_horse_2016_Temple_of_Marquis_Wu_(Wuzhang_Plains).jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Morio, CC BY-SA 4.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/wooden-ox/3.jpg",
+    "title": "Wooden ox replica in Zibo",
+    "author": "Deadkid dk",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wooden_ox_replica_in_the_Ancient_Chariot_Museum_in_Zibo,_China.JPG",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "attributionText": "Deadkid dk, CC BY-SA 3.0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/wooden-ox/4.jpg",
+    "title": "Three Kingdoms Locking Ox-Cart Model",
+    "author": "Gary Todd from Xinzheng, China",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Three_Kingdoms_Locking_Ox-Cart_Model_(9883958246).jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attributionText": "Gary Todd from Xinzheng, China, CC0, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/wooden-ox/5.jpg",
+    "title": "Shu forces construct wooden oxen and flowing horses",
+    "author": "Qing Dynasty",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shu_forces_construct_wooden_oxen_and_flowing_horses.jpg",
+    "license": "PD",
+    "licenseUrl": "",
+    "attributionText": "Qing Dynasty, Public domain, via Wikimedia Commons"
+  },
+  {
+    "file": "public/assets/museum/wooden-ox/6.jpg",
+    "title": "Wooden ox Wujing Zongyao plate",
+    "author": "Yprpyqp",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wooden_ox_wjzy.jpg",
+    "license": "CC-BY-SA",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attributionText": "Yprpyqp, CC BY-SA 4.0, via Wikimedia Commons"
+  }
+]

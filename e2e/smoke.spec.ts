@@ -74,6 +74,19 @@ test("smoke: homepage presents the ten-machine collection", async ({
   await expect(page.locator(".machine-era")).toHaveCount(10);
   await expect(page.locator(".machine-principle")).toHaveCount(10);
   await expect(page.locator(".machine-thumbnail")).toHaveCount(10);
+  const thumbnails = page.getByTestId("machine-thumbnail-image");
+  await expect(thumbnails).toHaveCount(10);
+  await expect
+    .poll(() =>
+      thumbnails.evaluateAll((images) =>
+        images.every(
+          (image) =>
+            (image as HTMLImageElement).complete &&
+            (image as HTMLImageElement).naturalWidth > 0,
+        ),
+      ),
+    )
+    .toBe(true);
 });
 
 test("smoke: all ten machine routes render without console errors", async ({
@@ -90,6 +103,42 @@ test("smoke: all ten machine routes render without console errors", async ({
     await page.goto(`/#/m/${slug}`);
     await waitForMechanica(page, slug);
     await expect(page.locator(".viewer-canvas canvas").first()).toBeVisible();
+    const evidenceCounts = await page.evaluate(() => ({
+      controversies: window.__mech?.module.data.controversies.length ?? -1,
+      dimensions: window.__mech?.module.data.dimensions.length ?? -1,
+      schemes: window.__mech?.module.data.schemes.length ?? -1,
+      sources: window.__mech?.module.data.sources.length ?? -1,
+    }));
+    const evidence = page.getByTestId("machine-evidence-register");
+    await expect(evidence).toHaveCount(1);
+    await expect(evidence.locator("[data-machine-dimension]")).toHaveCount(
+      evidenceCounts.dimensions,
+    );
+    await expect(evidence.locator("[data-machine-source]")).toHaveCount(
+      evidenceCounts.sources,
+    );
+    await expect(evidence.locator("[data-machine-scheme]")).toHaveCount(
+      evidenceCounts.schemes,
+    );
+    await expect(evidence.locator("[data-machine-controversy]")).toHaveCount(
+      evidenceCounts.controversies,
+    );
+    const directlySourcedPart = await page.evaluate(() => {
+      const part = window.__mech?.spec.parts.find(
+        (candidate) =>
+          !candidate.dimensionNotes?.length &&
+          Object.values(candidate.dimensionProvenance).some(
+            (item) => item.kind !== "tuice",
+          ),
+      );
+      if (part) window.__mechSelect?.(part.id);
+      return part?.id ?? null;
+    });
+    if (directlySourcedPart) {
+      await expect(
+        page.locator('[data-evidence-gap="ancient-dimension"]'),
+      ).toHaveCount(0);
+    }
     expect(errors, `${slug} emitted browser errors`).toEqual([]);
   }
 });
@@ -111,26 +160,95 @@ test("U2: demo exposes the exact external-gear ratio", async ({ page }) => {
   expect(angles.large).toBeCloseTo(-Math.PI / 18, 8);
 });
 
-test("U2 real pointer: dragging the gimbal shell changes graph state", async ({
+test("U2: odometer wheel advances the one-hundredth shaft exactly", async ({
+  page,
+}) => {
+  await page.goto("/#/m/odometer");
+  await waitForMechanica(page, "odometer");
+
+  const result = await page.evaluate(() => {
+    const graph = window.__mech?.graph;
+    if (!graph) throw new Error("Mechanica graph hook is unavailable");
+    const ratio = graph.ratioBetween("zulun", "zhongpinglun");
+    const before = graph.state()["zhongpinglun"] ?? 0;
+    graph.drive("zulun", Math.PI * 2);
+    return {
+      delta: graph.state()["zhongpinglun"] - before,
+      ratio,
+    };
+  });
+
+  expect(Math.abs(result.ratio ?? 0)).toBeCloseTo(0.01, 10);
+  expect(Math.abs(result.delta)).toBeCloseTo((Math.PI * 2) / 100, 8);
+});
+
+test("U2 real pointer: dragging the demo gear changes graph state", async ({
+  page,
+}) => {
+  await page.goto("/#/m/demo");
+  await waitForMechanica(page);
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+  const before = await page.evaluate(() => window.__mech?.graph.state());
+  const dragPad = page.locator(
+    '[data-drive-part-id="small-gear"] .drive-drag-pad',
+  );
+  await expect(dragPad).toBeInViewport();
+  await dragPad.hover();
+  const box = await dragPad.boundingBox();
+  if (!box) throw new Error("Demo gear drag handle is unavailable");
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 + 100, box.y + box.height / 2, {
+    steps: 10,
+  });
+  await page.mouse.up();
+  const after = await page.evaluate(() => window.__mech?.graph.state());
+  const smallDelta =
+    (after?.["small-gear"] ?? 0) - (before?.["small-gear"] ?? 0);
+  const largeDelta =
+    (after?.["large-gear"] ?? 0) - (before?.["large-gear"] ?? 0);
+  expect(Math.abs(smallDelta)).toBeGreaterThan(0.01);
+  expect(largeDelta).toBeCloseTo(-smallDelta / 2, 8);
+});
+
+test("U2 pointer control: gimbal drive changes shell attitude", async ({
   page,
 }) => {
   await page.goto("/#/m/gimbal");
   await waitForMechanica(page, "gimbal");
-  const before = await page.evaluate(() =>
-    JSON.stringify(window.__mech?.graph.state()),
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+  const before = await page.evaluate(
+    () => window.__mech?.graph.state()["@attitude:outer-shell:y"] ?? 0,
   );
-  const box = await page.locator(".viewer-canvas canvas").boundingBox();
-  if (!box) throw new Error("Gimbal canvas is unavailable");
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width / 2 + 120, box.y + box.height / 2, {
-    steps: 10,
+  await page
+    .getByRole("button", { name: "Drive Openwork outer shell forward" })
+    .click();
+  const after = await page.evaluate(
+    () => window.__mech?.graph.state()["@attitude:outer-shell:y"] ?? 0,
+  );
+  expect(after).not.toBeCloseTo(before, 8);
+});
+
+test("U2 pointer control: astroclock reverse lock cannot be bypassed", async ({
+  page,
+}) => {
+  await page.goto("/#/m/astroclock");
+  await waitForMechanica(page, "astroclock");
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+  const before = await page.evaluate(
+    () => window.__mech?.graph.state().shulun ?? 0,
+  );
+  const reverse = page.getByRole("button", {
+    name: "Drive Celestial column in reverse",
   });
-  await page.mouse.up();
-  const after = await page.evaluate(() =>
-    JSON.stringify(window.__mech?.graph.state()),
+  await expect(reverse).toBeVisible();
+  await reverse.click();
+
+  await expect(page.getByTestId("event-captions")).toContainText(
+    "blocked · tiansuo-r",
   );
-  expect(after).not.toBe(before);
+  expect(
+    await page.evaluate(() => window.__mech?.graph.state().shulun ?? 0),
+  ).toBeCloseTo(before, 10);
 });
 
 test("U4: inspection responds within 300 ms and exploded view spreads parts", async ({
@@ -164,6 +282,64 @@ test("U4: inspection responds within 300 ms and exploded view spreads parts", as
   expect(spread).toBeGreaterThan(0.1);
 });
 
+test("U4: seismoscope part inspection exposes the duzhu source quote", async ({
+  page,
+}) => {
+  await page.goto("/#/m/seismoscope");
+  await waitForMechanica(page, "seismoscope");
+  await page.evaluate(() => window.__mechSelect?.("duzhu"));
+
+  await expect(page.getByTestId("part-inspector")).toContainText(/duzhu/i);
+  await expect(
+    page.locator('[data-source-id="houfeng-196"] .panel-copy'),
+  ).toContainText("中有都柱");
+});
+
+test("seismoscope quake is inert in Wang and releases a ball in Feng", async ({
+  page,
+}) => {
+  await page.goto("/#/m/seismoscope");
+  await waitForMechanica(page, "seismoscope");
+
+  await page.getByTestId("mech-trigger-quake").click();
+  await expect(page.getByTestId("event-captions")).toContainText("inert");
+  expect(
+    await page.evaluate(() =>
+      Object.entries(window.__mech?.graph.state() ?? {}).some(
+        ([partId, value]) => partId.startsWith("ball-") && value > 0,
+      ),
+    ),
+  ).toBe(false);
+
+  const select = page.locator(".viewer-sidebar .scheme-select").first();
+  await select.selectOption("fengrui");
+  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+    "data-scheme-transition",
+    "false",
+    { timeout: 2500 },
+  );
+  const drive = await page
+    .locator('[data-drive-part-id="duzhu"] .drive-drag-pad')
+    .boundingBox();
+  if (!drive) throw new Error("Seismoscope duzhu drive handle is unavailable");
+  await page.mouse.move(drive.x + drive.width / 2, drive.y + drive.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(
+    drive.x + drive.width / 2 + 60,
+    drive.y + drive.height / 2,
+    { steps: 6 },
+  );
+  await page.mouse.up();
+  await expect(page.getByTestId("event-captions")).toContainText("locked");
+  expect(
+    await page.evaluate(() =>
+      Object.entries(window.__mech?.graph.state() ?? {})
+        .filter(([partId, value]) => partId.startsWith("ball-") && value > 0)
+        .map(([partId]) => partId),
+    ),
+  ).toEqual(["ball-6"]);
+});
+
 test("U3: switching reconstructions runs the one-second ghost handoff", async ({
   page,
 }) => {
@@ -174,6 +350,7 @@ test("U3: switching reconstructions runs the one-second ghost handoff", async ({
       JSON.stringify(window.__mech?.spec.parts),
     );
     const select = page.locator(".viewer-sidebar .scheme-select").first();
+    await expect(select.locator('option[value=""]')).toHaveCount(0);
     const target = await select.locator("option").evaluateAll(
       (options, current) => {
         const values = options
@@ -396,14 +573,137 @@ test("U6: spotlight completes after its ordered highlight sequence", async ({
   );
 });
 
+test("U6: all ten machine spotlights complete within ten seconds", async ({
+  page,
+}) => {
+  test.setTimeout(120_000);
+  for (const slug of machineSlugs) {
+    await page.goto(`/#/m/${slug}`);
+    await waitForMechanica(page, slug);
+    await page.getByTestId("spotlight-play").click();
+    await expect(page.locator(".spotlight-done")).toBeVisible({
+      timeout: 10_000,
+    });
+    await expect(page.getByTestId("event-captions")).toContainText(
+      "spotlight:done",
+    );
+    if (
+      [
+        "seismoscope",
+        "chariot",
+        "wooden-ox",
+        "loom",
+        "typecase",
+        "chainpump",
+        "bellows",
+        "gimbal",
+      ].includes(slug)
+    ) {
+      await expect(
+        page.getByTestId("spotlight-semantic-readout"),
+      ).toBeVisible();
+    }
+
+    if (slug === "seismoscope") {
+      await expect(
+        page.locator(".viewer-sidebar .scheme-select").first(),
+      ).toHaveValue("fengrui");
+      expect(
+        await page.evaluate(
+          () => (window.__mech?.graph.state()["ball-6"] ?? 0) > 0,
+        ),
+      ).toBe(true);
+    }
+    if (slug === "chariot") {
+      await expect(
+        page.getByTestId("spotlight-semantic-readout"),
+      ).toContainText("0.0°");
+    }
+    if (slug === "loom") {
+      await expect(page.getByTestId("loom-pattern-swatches")).toContainText(
+        "▦▦▦ · ◆◇◆",
+      );
+    }
+    if (slug === "typecase") {
+      const progress = page
+        .getByTestId("typecase-retrieval-race")
+        .locator("progress");
+      await expect(progress).toHaveCount(2);
+      expect(await progress.nth(0).getAttribute("value")).toBe("100");
+      expect(Number(await progress.nth(1).getAttribute("value"))).toBeLessThan(
+        50,
+      );
+    }
+    if (slug === "gimbal") {
+      await expect(
+        page.getByTestId("spotlight-semantic-readout"),
+      ).toContainText("(<0.5°)");
+    }
+  }
+});
+
+test("U6 semantics: astroclock stages sourced captions and wooden ox shows force arrows", async ({
+  page,
+}) => {
+  await page.goto("/#/m/astroclock");
+  await waitForMechanica(page, "astroclock");
+  await page.getByTestId("spotlight-play").click();
+  await expect(page.locator(".spotlight-done")).toBeVisible({
+    timeout: 10_000,
+  });
+  const stages = await page
+    .getByTestId("spotlight-source-transcript")
+    .innerText();
+  for (const phrase of [
+    "scoop fills",
+    "fork yields",
+    "iron tooth opens",
+    "advances one cell",
+    "locks catch",
+  ]) {
+    expect(stages.toLowerCase()).toContain(phrase);
+  }
+  expect(stages).toContain("新儀象法要");
+
+  await page.goto("/#/m/wooden-ox");
+  await waitForMechanica(page, "wooden-ox");
+  await page.getByTestId("spotlight-play").click();
+  await expect(
+    page.getByTestId("wooden-ox-force-marker").first(),
+  ).toBeVisible();
+  await expect(page.locator(".spotlight-done")).toBeVisible({
+    timeout: 10_000,
+  });
+});
+
 test("gallery exposes four layers, attribution, lightbox, and offline fallback", async ({
   page,
 }) => {
-  for (const slug of ["chariot", "gimbal", "chainpump"]) {
+  for (const slug of machineSlugs) {
     await page.goto(`/#/m/${slug}`);
     await waitForMechanica(page, slug);
     const tabs = page.locator("[data-gallery-layer]");
     await expect(tabs).toHaveCount(4);
+    const renderPanel = page.locator('[data-gallery-panel="reconstruction"]');
+    await expect(renderPanel.getByTestId("image-credit")).toHaveCount(4);
+    const renderImages = renderPanel.locator("img");
+    await expect(renderImages).toHaveCount(4);
+    await expect(
+      renderPanel.locator('a[href="https://opensource.org/license/mit"]'),
+    ).toHaveCount(4);
+    await renderImages.first().scrollIntoViewIfNeeded();
+    await expect
+      .poll(() =>
+        renderImages.evaluateAll((images) =>
+          images.every(
+            (image) =>
+              (image as HTMLImageElement).complete &&
+              (image as HTMLImageElement).naturalWidth > 0,
+          ),
+        ),
+      )
+      .toBe(true);
+    if (!["chariot", "gimbal", "chainpump"].includes(slug)) continue;
     for (const layer of [
       "reconstruction",
       "classical",
@@ -461,11 +761,80 @@ test("English UI has no Chinese leakage across three machines", async ({
     const mainText = await page.locator("main").evaluate((main) => {
       const copy = main.cloneNode(true) as HTMLElement;
       copy
-        .querySelectorAll("[data-source-id], .gallery-attribution-text")
+        .querySelectorAll(
+          '[data-source-id], [data-testid="machine-evidence-register"], .gallery-attribution-text',
+        )
         .forEach((node) => node.remove());
       return copy.innerText;
     });
     expect(mainText).not.toMatch(/[\u3400-\u9fff]/u);
+  }
+});
+
+test("G6.3: cold homepage largest-contentful paint stays under three seconds", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const target = window as Window & { __mechanicaLcp?: number };
+    target.__mechanicaLcp = 0;
+    new PerformanceObserver((list) => {
+      const entry = list.getEntries().at(-1);
+      if (entry) target.__mechanicaLcp = entry.startTime;
+    }).observe({ buffered: true, type: "largest-contentful-paint" });
+  });
+  await page.goto("/");
+  await expect(page.getByTestId("machine-card")).toHaveCount(10);
+  await page.waitForTimeout(750);
+  const lcp = await page.evaluate(
+    () => (window as Window & { __mechanicaLcp?: number }).__mechanicaLcp ?? 0,
+  );
+  test.info().annotations.push({
+    description: `${lcp.toFixed(1)} ms`,
+    type: "homepage LCP",
+  });
+  expect(lcp).toBeGreaterThan(0);
+  expect(lcp).toBeLessThan(3_000);
+});
+
+test("G6.3: every machine reconstruction stays under 150k triangles", async ({
+  page,
+}) => {
+  for (const slug of machineSlugs) {
+    await page.goto(`/#/m/${slug}`);
+    await waitForMechanica(page, slug);
+    const select = page.locator(".viewer-sidebar .scheme-select").first();
+    const schemeIds = (await select.count())
+      ? await select
+          .locator("option")
+          .evaluateAll((options) =>
+            options
+              .map((option) => (option as HTMLOptionElement).value)
+              .filter(Boolean),
+          )
+      : [];
+    const states = schemeIds.length > 0 ? schemeIds : ["default"];
+
+    for (const schemeId of states) {
+      if (schemeId !== "default" && (await select.inputValue()) !== schemeId) {
+        await select.selectOption(schemeId);
+        await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+          "data-scheme-transition",
+          "false",
+          { timeout: 2500 },
+        );
+      }
+      await expect
+        .poll(() => page.evaluate(() => window.__mech?.triangles() ?? 0))
+        .toBeGreaterThan(0);
+      const triangles = await page.evaluate(
+        () => window.__mech?.triangles() ?? 0,
+      );
+      test.info().annotations.push({
+        description: `${triangles}`,
+        type: `${slug}/${schemeId} triangles`,
+      });
+      expect(triangles, `${slug}/${schemeId}`).toBeLessThan(150_000);
+    }
   }
 });
 

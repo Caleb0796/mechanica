@@ -31,7 +31,9 @@ export default function SchemeSwitcher({
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const schemes = Object.values(module.schemes ?? {});
-  const initialLeft = schemeId ?? schemes[0]?.id ?? "";
+  const selectedSchemeId =
+    schemeId ?? module.defaultSchemeId ?? schemes[0]?.id ?? "";
+  const initialLeft = selectedSchemeId;
   const initialRight =
     schemes.find((scheme) => scheme.id !== initialLeft)?.id ?? initialLeft;
   const [internalCompareActive, setInternalCompareActive] = useState(false);
@@ -43,9 +45,8 @@ export default function SchemeSwitcher({
   if (schemes.length === 0) return null;
 
   const chooseScheme = (nextId: string) => {
-    const nextSchemeId = nextId || undefined;
-    onTransition?.(createSchemeTransition(module, schemeId, nextSchemeId));
-    onChange(nextSchemeId);
+    onTransition?.(createSchemeTransition(module, selectedSchemeId, nextId));
+    onChange(nextId);
   };
 
   const isCompareActive = compareActive ?? internalCompareActive;
@@ -63,7 +64,7 @@ export default function SchemeSwitcher({
     if (compareSchemeIds === undefined) setInternalSchemeIds(next);
     onCompareSchemesChange?.(next);
   };
-  const selected = schemeId ? module.schemes?.[schemeId] : undefined;
+  const selected = module.schemes?.[selectedSchemeId];
 
   return (
     <section
@@ -77,9 +78,8 @@ export default function SchemeSwitcher({
         aria-label={t("viewer.scheme")}
         className="scheme-select"
         onChange={(event) => chooseScheme(event.currentTarget.value)}
-        value={schemeId ?? ""}
+        value={selectedSchemeId}
       >
-        <option value="">—</option>
         {schemes.map((scheme) => (
           <option key={scheme.id} value={scheme.id}>
             {scheme.scholar[language]} · {scheme.year}

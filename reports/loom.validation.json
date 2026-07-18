@@ -1,6 +1,6 @@
 {
   "slug": "loom",
-  "when": "2026-07-18T16:27:41.113Z",
+  "when": "2026-07-18T23:25:11.183Z",
   "checks": [
     {
       "id": "base:provenance:part:loom-frame",
@@ -1009,6 +1009,46 @@
       "id": "base:integrity:image:3:linkout",
       "status": "pass",
       "message": "Linkout image has no local file."
+    },
+    {
+      "id": "base:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/exploded.jpg exists."
     },
     {
       "id": "base:integrity:snapshot:xijingzaji-loom",
@@ -2135,6 +2175,46 @@
       "id": "sliding-frame:integrity:image:3:linkout",
       "status": "pass",
       "message": "Linkout image has no local file."
+    },
+    {
+      "id": "sliding-frame:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "sliding-frame:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/overall.jpg exists."
+    },
+    {
+      "id": "sliding-frame:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "sliding-frame:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/cutaway.jpg exists."
+    },
+    {
+      "id": "sliding-frame:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "sliding-frame:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "sliding-frame:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "sliding-frame:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/exploded.jpg exists."
     },
     {
       "id": "sliding-frame:integrity:snapshot:xijingzaji-loom",
@@ -3293,6 +3373,46 @@
       "message": "Linkout image has no local file."
     },
     {
+      "id": "linkage:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "linkage:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/overall.jpg exists."
+    },
+    {
+      "id": "linkage:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "linkage:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/cutaway.jpg exists."
+    },
+    {
+      "id": "linkage:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "linkage:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "linkage:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "linkage:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/loom/exploded.jpg exists."
+    },
+    {
       "id": "linkage:integrity:snapshot:xijingzaji-loom",
       "status": "pass",
       "message": "Source snapshot xijingzaji-loom verifies its source.",
@@ -3417,7 +3537,7 @@
     }
   ],
   "summary": {
-    "pass": 585,
+    "pass": 609,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

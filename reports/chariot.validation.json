@@ -1,6 +1,6 @@
 {
   "slug": "chariot",
-  "when": "2026-07-18T16:25:33.505Z",
+  "when": "2026-07-18T23:23:00.558Z",
   "checks": [
     {
       "id": "base:provenance:part:chassis-pivot",
@@ -940,6 +940,46 @@
       "id": "base:integrity:image:5:asset",
       "status": "pass",
       "message": "Image asset public/assets/museum/chariot/5.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/exploded.jpg exists."
     },
     {
       "id": "base:integrity:snapshot:songshi-yansu",
@@ -1997,6 +2037,46 @@
       "message": "Image asset public/assets/museum/chariot/5.jpg exists."
     },
     {
+      "id": "yansu-clutch:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/overall.jpg exists."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/cutaway.jpg exists."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/exploded.jpg exists."
+    },
+    {
       "id": "yansu-clutch:integrity:snapshot:songshi-yansu",
       "status": "pass",
       "message": "Source snapshot songshi-yansu verifies its source.",
@@ -3028,6 +3108,46 @@
       "message": "Image asset public/assets/museum/chariot/5.jpg exists."
     },
     {
+      "id": "lanchester-diff:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/overall.jpg exists."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/cutaway.jpg exists."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chariot/exploded.jpg exists."
+    },
+    {
       "id": "lanchester-diff:integrity:snapshot:songshi-yansu",
       "status": "pass",
       "message": "Source snapshot songshi-yansu verifies its source.",
@@ -3120,7 +3240,7 @@
     }
   ],
   "summary": {
-    "pass": 531,
+    "pass": 555,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

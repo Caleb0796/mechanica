@@ -1,6 +1,6 @@
 {
   "slug": "bellows",
-  "when": "2026-07-18T16:27:47.954Z",
+  "when": "2026-07-18T23:25:18.080Z",
   "checks": [
     {
       "id": "base:provenance:part:waterwheel",
@@ -367,6 +367,46 @@
       "message": "Image asset public/assets/museum/bellows/2.png exists."
     },
     {
+      "id": "base:integrity:image:3:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/bellows/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/bellows/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/bellows/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/bellows/exploded.jpg exists."
+    },
+    {
       "id": "base:integrity:snapshot:hhs-dushi",
       "status": "pass",
       "message": "Source snapshot hhs-dushi verifies its source.",
@@ -452,7 +492,7 @@
     }
   ],
   "summary": {
-    "pass": 77,
+    "pass": 85,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.4998677598519292

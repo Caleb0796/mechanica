@@ -1,6 +1,7 @@
 import {
   Bounds,
   ContactShadows,
+  Html,
   OrbitControls,
   useBounds,
 } from "@react-three/drei";
@@ -75,6 +76,7 @@ declare global {
       graph: IKinematicGraph;
       module: MachineModule;
       spec: MachineModule["spec"];
+      triangles: () => number;
     };
     __mechExplodeSpread?: () => number;
     __mechSelect?: (partId: string) => void;
@@ -119,7 +121,7 @@ interface PartNodeProps {
   maxAssemblyStep: number;
   module: MachineModule;
   onDraggingChange: (dragging: boolean) => void;
-  onDrivePart: (partId: string, delta: number) => void;
+  onDrivePart: (partId: string, delta: number, secondaryDelta?: number) => void;
   part: PartDef;
   partsById: Map<string, PartDef>;
   schemeId?: string;
@@ -169,10 +171,12 @@ const TYPECASE_PROCESS_STEPS = [
 
 function SpotlightRig({
   active,
+  machineSlug,
   runId,
   targetPartId,
 }: {
   active: boolean;
+  machineSlug: MachineModule["data"]["slug"];
   runId: number;
   targetPartId?: string;
 }) {
@@ -199,7 +203,11 @@ function SpotlightRig({
     startedAt.current = performance.now();
     startPosition.current.copy(camera.position);
     startQuaternion.current.copy(camera.quaternion);
-    if (targetPartId === "lower-figure") {
+    if (machineSlug === "chainpump") {
+      endPosition.current
+        .copy(target)
+        .add(new Vector3(0, size * 0.35, Math.max(size * 3, 1.2)));
+    } else if (targetPartId === "lower-figure") {
       endPosition.current
         .copy(target)
         .add(new Vector3(size * 0.8, size * 1.5, size * 4));
@@ -214,7 +222,7 @@ function SpotlightRig({
     endQuaternion.current.setFromRotationMatrix(
       new Matrix4().lookAt(endPosition.current, target, camera.up),
     );
-  }, [active, camera, runId, scene, targetPartId]);
+  }, [active, camera, machineSlug, runId, scene, targetPartId]);
 
   useFrame(() => {
     if (!active || !targetPartId) return;
@@ -367,6 +375,8 @@ function PartNode({
       : undefined;
   const assemblyError = assembly?.state.errorPartId === part.id;
   const assemblyHighlighted = assembly?.currentPartId === part.id;
+  const spotlightCutaway =
+    module.data.slug === "chainpump" && part.id === "trough" && spotlightActive;
   const material = useMemo<Material>(() => {
     const nextMaterial = standardMaterial(part.material);
     const materialOverride = geometry.userData.mechanicaMaterial as
@@ -422,9 +432,24 @@ function PartNode({
     const spotlightHighlighted =
       spotlightActive && spotlightPartIds.includes(part.id);
     const highlighted = schemeHighlighted || spotlightHighlighted;
+    if (spotlightCutaway && nextMaterial instanceof MeshStandardMaterial) {
+      nextMaterial.opacity = 0.22;
+      nextMaterial.transparent = true;
+      nextMaterial.depthWrite = false;
+    }
     if (highlighted && nextMaterial instanceof MeshStandardMaterial) {
       nextMaterial.emissive.set("#6e4e18");
       nextMaterial.emissiveIntensity = spotlightHighlighted ? 1.4 : 0.65;
+    }
+    if (
+      module.data.slug === "seismoscope" &&
+      spotlightHighlighted &&
+      part.id.startsWith("dragon-") &&
+      nextMaterial instanceof MeshStandardMaterial
+    ) {
+      nextMaterial.color.set("#b62f2f");
+      nextMaterial.emissive.set("#7d1515");
+      nextMaterial.emissiveIntensity = 1.8;
     }
     if (nextMaterial instanceof MeshStandardMaterial) {
       if (comparePresentation?.color) {
@@ -468,6 +493,7 @@ function PartNode({
     geometry,
     schemeId,
     spotlightActive,
+    spotlightCutaway,
     spotlightPartIds,
     visualPresentation,
   ]);
@@ -563,6 +589,8 @@ function PartNode({
 
     if (attitude) {
       group.current.quaternion.fromArray(attitude).normalize();
+    } else if (module.data.slug === "astroclock" && part.id === "scoop-01") {
+      group.current.rotateOnAxis(axis, value);
     } else if (part.joint?.kind === "revolute") {
       group.current.rotateOnAxis(axis, value);
     } else if (part.joint?.kind === "prismatic") {
@@ -613,6 +641,20 @@ function PartNode({
           event.stopPropagation();
           setSelectedPartId(part.id);
         };
+  const woodenOxLoadStage =
+    module.data.slug === "wooden-ox" &&
+    schemeId === "wheelbarrow" &&
+    spotlightActive &&
+    spotlightPartIds.some((partId) => partId.startsWith("cargo-pod-"));
+  const forceMarker = woodenOxLoadStage
+    ? part.id.startsWith("cargo-pod-") && spotlightPartIds.includes(part.id)
+      ? "↓"
+      : part.id === "central-big-wheel" && spotlightPartIds.includes(part.id)
+        ? "↑"
+        : part.id.startsWith("twin-shaft-")
+          ? "≈0"
+          : null
+    : null;
   const content = (
     <>
       {renderOwnPart ? (
@@ -637,6 +679,21 @@ function PartNode({
             receiveShadow
           />
         )
+      ) : null}
+      {forceMarker ? (
+        <Html center position={[0, 0.16, 0]}>
+          <strong
+            data-testid="wooden-ox-force-marker"
+            style={{
+              color: forceMarker === "↓" ? "#e46855" : "#71c7b8",
+              fontSize: "1.4rem",
+              textShadow: "0 1px 4px #090a0a",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {forceMarker}
+          </strong>
+        </Html>
       ) : null}
       {childParts.map((child) => (
         <PartNode
@@ -688,7 +745,9 @@ function PartNode({
       !interactionDisabled &&
       (!compareContext || compareContext.driveNode === part.id) ? (
         <DriveHandle
-          drive={(delta) => onDrivePart(part.id, delta)}
+          drive={(delta, secondaryDelta) =>
+            onDrivePart(part.id, delta, secondaryDelta)
+          }
           onDraggingChange={onDraggingChange}
           onSelect={() => setSelectedPartId(part.id)}
           part={part}
@@ -713,7 +772,7 @@ interface MachineSceneProps {
   graph: IKinematicGraph;
   interactionDisabled?: boolean;
   module: MachineModule;
-  onDrivePart: (partId: string, delta: number) => void;
+  onDrivePart: (partId: string, delta: number, secondaryDelta?: number) => void;
   paused: boolean;
   schemeId?: string;
   spotlightActive: boolean;
@@ -743,6 +802,33 @@ function StoryCameraRig({ pose }: { pose?: StoryStageState["camera"] }) {
     camera.position.copy(targetPosition);
     camera.quaternion.copy(targetQuaternion);
     camera.updateMatrixWorld();
+  });
+
+  return null;
+}
+
+function SceneComplexityProbe({ count }: { count: { current: number } }) {
+  const scene = useThree((state) => state.scene);
+
+  useFrame(() => {
+    let triangles = 0;
+    scene.traverse((object) => {
+      const mesh = object as typeof object & {
+        count?: number;
+        geometry?: BufferGeometry;
+        isInstancedMesh?: boolean;
+        isMesh?: boolean;
+      };
+      if (!mesh.isMesh || !mesh.geometry) return;
+      const vertices =
+        mesh.geometry.index?.count ??
+        mesh.geometry.getAttribute("position")?.count ??
+        0;
+      triangles +=
+        Math.floor(vertices / 3) *
+        (mesh.isInstancedMesh ? (mesh.count ?? 0) : 1);
+    });
+    count.current = triangles;
   });
 
   return null;
@@ -896,6 +982,7 @@ function MachineScene({
 
   useFrame((_, delta) => {
     if (paused || dragging.current) return;
+    if (module.spec.slug === "seismoscope") return;
     if (activeSpec.escapement) {
       escapementElapsed.current += delta;
       if (escapementElapsed.current < activeSpec.escapement.fillSecondsPerScoop)
@@ -931,6 +1018,10 @@ function MachineScene({
         enableDamping
         enabled={!spotlightActive && !storyCamera}
         makeDefault
+        maxAzimuthAngle={viewerProfile.maxAzimuthAngle}
+        maxPolarAngle={viewerProfile.maxPolarAngle}
+        minAzimuthAngle={viewerProfile.minAzimuthAngle}
+        minPolarAngle={viewerProfile.minPolarAngle}
         onChange={() => {
           const target = orbitControls.current?.target;
           if (target && compareContext) {
@@ -1003,6 +1094,7 @@ function MachineScene({
       {!storyCamera ? (
         <SpotlightRig
           active={spotlightActive}
+          machineSlug={module.data.slug}
           runId={spotlightRunId}
           targetPartId={spotlightPartIds.at(-1)}
         />
@@ -1319,6 +1411,238 @@ export function MachineStoryStage({
   );
 }
 
+function gimbalDeviationDegrees(graph: IKinematicGraph): number | null {
+  const state = graph.state();
+  const shell = attitudeQuaternion(state, "outer-shell");
+  if (!shell) return null;
+  const world = new Matrix4()
+    .makeRotationFromQuaternion(new Quaternion(...shell))
+    .multiply(new Matrix4().makeRotationZ(state["outer-ring"] ?? 0))
+    .multiply(new Matrix4().makeRotationX(state["inner-ring"] ?? 0));
+  const worldUp = new Vector3(0, 1, 0).transformDirection(world);
+  return Math.acos(Math.max(-1, Math.min(1, worldUp.y))) * (180 / Math.PI);
+}
+
+function mechanismCaption(
+  module: MachineModule,
+  language: "en" | "zh",
+  type: string,
+  part: string,
+): string {
+  if (module.data.slug === "astroclock") {
+    const phases: Record<string, { en: string; zh: string }> = {
+      "caption:fill": {
+        en: "The scoop fills and overcomes the fork",
+        zh: "水实即格叉不能胜壶",
+      },
+      "caption:yield": {
+        en: "The fork yields",
+        zh: "故格叉落",
+      },
+      "caption:open": {
+        en: "The iron tooth opens the tongue",
+        zh: "壶侧铁拨击开关舌",
+      },
+      "caption:advance": {
+        en: "The wheel advances one cell",
+        zh: "一辐过",
+      },
+      "caption:relock": {
+        en: "The locks catch the next scoop",
+        zh: "关锁再拒次壶",
+      },
+    };
+    const phase = phases[type];
+    if (phase) {
+      const source = module.data.sources.find(
+        (candidate) => candidate.id === "xyxfy-action",
+      );
+      return `${phase[language]} · ${source?.book ?? "xyxfy-action"}`;
+    }
+  }
+  if (
+    module.data.slug === "seismoscope" &&
+    (type === "releaseBall" || type === "locked")
+  ) {
+    return language === "zh"
+      ? `${type} · 虽一龙发机，而七首不动 ·《后汉书》`
+      : `${type} · One dragon releases; the other seven remain still · Book of Later Han`;
+  }
+  return `${type} · ${part}`;
+}
+
+function SpotlightSemanticReadout({
+  active,
+  graph,
+  language,
+  module,
+  visible,
+}: {
+  active: boolean;
+  graph: IKinematicGraph;
+  language: "en" | "zh";
+  module: MachineModule;
+  visible: boolean;
+}) {
+  const [retrievalProgress, setRetrievalProgress] = useState(0);
+  useEffect(() => {
+    if (module.data.slug !== "typecase" || !visible) {
+      setRetrievalProgress(0);
+      return;
+    }
+    if (!active) {
+      setRetrievalProgress(100);
+      return;
+    }
+    const startedAt = performance.now();
+    let frame = 0;
+    const animate = (now: number) => {
+      const progress = Math.min(100, ((now - startedAt) / 900) * 100);
+      setRetrievalProgress(progress);
+      if (progress < 100) frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [active, module.data.slug, visible]);
+
+  if (!visible) return null;
+  const localized = (en: string, zh: string) => (language === "en" ? en : zh);
+  const rows: Array<{ label: string; value: string }> = [];
+
+  if (module.data.slug === "seismoscope") {
+    rows.push(
+      {
+        label: localized("West dragon", "西方龙首"),
+        value: localized("Ball released", "落丸已释放"),
+      },
+      {
+        label: localized("Other seven paths", "其余七路"),
+        value: localized("Locked", "已互锁"),
+      },
+    );
+  }
+  if (module.data.slug === "chariot") {
+    const state = graph.state();
+    const chassis = (state["chassis-pivot"] ?? 0) * (180 / Math.PI);
+    const compensation = (state["figure-turntable"] ?? 0) * (180 / Math.PI);
+    const worldHeading = chassis + compensation;
+    const degrees = (value: number) => {
+      const normalized = Math.abs(value) < 0.05 ? 0 : value;
+      return `${normalized > 0 ? "+" : ""}${normalized.toFixed(1)}°`;
+    };
+    rows.push(
+      { label: localized("Chassis", "车身"), value: degrees(chassis) },
+      {
+        label: localized("Geartrain compensation", "齿轮系补偿"),
+        value: degrees(compensation),
+      },
+      {
+        label: localized("Figure world heading", "木人世界朝向"),
+        value: degrees(worldHeading),
+      },
+    );
+  }
+  if (module.data.slug === "wooden-ox") {
+    rows.push(
+      {
+        label: localized("Wheelbarrow load path", "轮式承重路径"),
+        value: localized(
+          "Cargo ↓ axle; hand force ≈ 0",
+          "货重 ↓ 车轴；手力 ≈ 0",
+        ),
+      },
+      {
+        label: localized("Walker reconstruction", "步行式复原"),
+        value: localized("Four-leg crank gait", "四足曲柄步态"),
+      },
+    );
+  }
+  if (module.data.slug === "typecase") {
+    rows.push({
+      label: localized("Target character", "目标字"),
+      value: localized("字 → indexed sector", "字 → 索引扇区"),
+    });
+  }
+  if (module.data.slug === "loom") {
+    rows.push({
+      label: localized("Program A / B cloth", "程序 A / B 织纹"),
+      value: "▦ ▦ ▦   →   ◆ ◇ ◆",
+    });
+  }
+  if (module.data.slug === "chainpump") {
+    rows.push(
+      {
+        label: localized("Side cutaway", "侧视剖切"),
+        value: localized("Trough translucent", "木槽已半透明"),
+      },
+      {
+        label: localized("Pallet chain", "龙骨板链"),
+        value: localized("Drive link + water scraper", "传动链节 + 刮水活塞"),
+      },
+    );
+  }
+  if (module.data.slug === "bellows") {
+    rows.push(
+      {
+        label: localized("Water-powered bellows", "水排"),
+        value: localized("Rotary → reciprocating", "旋转 → 往复"),
+      },
+      {
+        label: localized("Steam-engine mirror", "蒸汽机镜像"),
+        value: localized("Reciprocating → rotary", "往复 → 旋转"),
+      },
+    );
+  }
+  if (module.data.slug === "gimbal") {
+    const deviation = gimbalDeviationDegrees(graph);
+    rows.push(
+      {
+        label: localized("Bowl deviation", "香盂偏差"),
+        value:
+          deviation === null
+            ? localized("Not measured", "尚未测量")
+            : `${deviation.toFixed(2)}° (<0.5°)`,
+      },
+      {
+        label: localized("Modern comparison", "现代对照"),
+        value: localized(
+          "Passive rings · powered phone gimbal",
+          "无源套环 · 有源手机云台",
+        ),
+      },
+    );
+  }
+
+  if (rows.length === 0) return null;
+  return (
+    <div data-testid="spotlight-semantic-readout">
+      <dl className="record-list">
+        {rows.map((row) => (
+          <div key={row.label}>
+            <dt>{row.label}</dt>
+            <dd>{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+      {module.data.slug === "typecase" ? (
+        <div data-testid="typecase-retrieval-race">
+          <label className="panel-copy">
+            {localized("Carousel", "转轮")}
+            <progress max="100" value={retrievalProgress} />
+          </label>
+          <label className="panel-copy">
+            {localized("Walk the racks", "步行查架")}
+            <progress max="100" value={retrievalProgress * 0.38} />
+          </label>
+        </div>
+      ) : null}
+      {module.data.slug === "loom" ? (
+        <output data-testid="loom-pattern-swatches">▦▦▦ · ◆◇◆</output>
+      ) : null}
+    </div>
+  );
+}
+
 export default function MachineViewer({
   module,
   schemeId,
@@ -1365,6 +1689,7 @@ export default function MachineViewer({
   const [spotlightDone, setSpotlightDone] = useState(false);
   const [spotlightPartIds, setSpotlightPartIds] = useState<string[]>([]);
   const [spotlightRunId, setSpotlightRunId] = useState(0);
+  const [spotlightTranscript, setSpotlightTranscript] = useState<string[]>([]);
   const [typecaseProcessBusy, setTypecaseProcessBusy] = useState(false);
   const [typecaseProcessStep, setTypecaseProcessStep] = useState(-1);
   const [odometerReadout, setOdometerReadout] = useState<string | null>(
@@ -1374,6 +1699,8 @@ export default function MachineViewer({
   const animationFrame = useRef<number | null>(null);
   const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
+  const sceneTriangles = useRef(0);
+  const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
   const observedCompletionEffect = useRef(0);
   const displayState = useRef<Record<string, number> | null>(null);
   const assemblyProgress = useUiStore((state) => state.assemblyProgress);
@@ -1428,6 +1755,7 @@ export default function MachineViewer({
     setSpotlightActive(false);
     setSpotlightDone(false);
     setSpotlightPartIds([]);
+    setSpotlightTranscript([]);
     setTypecaseProcessBusy(false);
     setTypecaseProcessStep(-1);
     setSelectedPartId(null);
@@ -1548,10 +1876,13 @@ export default function MachineViewer({
   ]);
 
   useLayoutEffect(() => {
-    const hooksEnabled =
-      import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
     if (!hooksEnabled) return;
-    window.__mech = { graph, module: activeModule, spec: activeSpec };
+    window.__mech = {
+      graph,
+      module: activeModule,
+      spec: activeSpec,
+      triangles: () => sceneTriangles.current,
+    };
     window.__mechSelect = (partId) => setSelectedPartId(partId);
     window.__mechAssembly = {
       advanceStep: assembly.advanceStep,
@@ -1591,7 +1922,17 @@ export default function MachineViewer({
   }, [activeModule, activeSpec, assembly, graph, setSelectedPartId]);
 
   const recordEvent = (type: string, part: string) => {
-    setCaption(`${type} · ${part}`);
+    const nextCaption = mechanismCaption(module, language, type, part);
+    setCaption(nextCaption);
+    if (
+      (module.data.slug === "astroclock" && type.startsWith("caption:")) ||
+      (module.data.slug === "seismoscope" &&
+        (type === "releaseBall" || type === "locked"))
+    ) {
+      setSpotlightTranscript((current) =>
+        current.includes(nextCaption) ? current : [...current, nextCaption],
+      );
+    }
     if (type === "odometer:update" || type === "odometer:readout") {
       const value = Number.parseFloat(part);
       if (Number.isFinite(value)) setOdometerReadout(value.toFixed(2));
@@ -1616,6 +1957,17 @@ export default function MachineViewer({
       return;
     }
 
+    let spotlightSpec = activeSpec;
+    if (
+      module.spec.slug === "seismoscope" &&
+      activeSchemeId !== "fengrui" &&
+      module.schemes?.fengrui
+    ) {
+      graph.setScheme(module.schemes.fengrui);
+      setActiveSchemeId("fengrui");
+      spotlightSpec = applySchemePatch(module.spec, module.schemes.fengrui);
+    }
+
     if (spotlightFrame.current !== null) {
       cancelAnimationFrame(spotlightFrame.current);
       spotlightFrame.current = null;
@@ -1623,12 +1975,13 @@ export default function MachineViewer({
     setPaused(true);
     setSpotlightActive(true);
     setSpotlightDone(false);
-    setSpotlightPartIds([activeSpec.primaryDrive]);
+    setSpotlightPartIds([spotlightSpec.primaryDrive]);
+    setSpotlightTranscript([]);
     setSpotlightRunId((current) => current + 1);
 
     const initialState = graph.state();
     const captured: CapturedEvent[] = [];
-    let donePart = activeSpec.primaryDrive;
+    let donePart = spotlightSpec.primaryDrive;
     trigger.run(graph, (type, part) => {
       if (type === "spotlight:done") {
         donePart = part;
@@ -1637,7 +1990,7 @@ export default function MachineViewer({
       captured.push({
         type,
         part,
-        state: captureSpotlightState(activeSpec, graph.state(), type, part),
+        state: captureSpotlightState(spotlightSpec, graph.state(), type, part),
       });
     });
     displayState.current = initialState;
@@ -1662,6 +2015,8 @@ export default function MachineViewer({
       } else if (
         event.type.includes("drive") ||
         event.type.includes("highlight") ||
+        event.type.startsWith("force:") ||
+        event.type === "locked" ||
         event.type === "mallet:raise"
       ) {
         setSpotlightPartIds((current) =>
@@ -1736,7 +2091,47 @@ export default function MachineViewer({
     processFrame.current = requestAnimationFrame(animate);
   };
 
-  const drivePart = (partId: string, delta: number) => {
+  const drivePart = (partId: string, delta: number, secondaryDelta = 0) => {
+    if (module.spec.slug === "astroclock" && delta < 0) {
+      const reverseLock = module.mechanism?.triggers.find(
+        (candidate) => candidate.id === "drag-shulun",
+      );
+      reverseLock?.run(graph, recordEvent, delta);
+      return;
+    }
+    if (
+      module.spec.slug === "seismoscope" &&
+      (partId === "vessel" || partId === "duzhu")
+    ) {
+      const quake = module.mechanism?.triggers.find(
+        (candidate) => candidate.id === "quake",
+      );
+      quake?.run(graph, recordEvent, delta >= 0 ? 6 : 2);
+      return;
+    }
+    if (module.spec.slug === "gimbal" && partId === "outer-shell") {
+      const current = attitudeQuaternion(graph.state(), partId) ?? [0, 0, 0, 1];
+      const attitude = new Quaternion(...current)
+        .premultiply(
+          new Quaternion().setFromAxisAngle(
+            new Vector3(1, 0, 0),
+            secondaryDelta,
+          ),
+        )
+        .premultiply(
+          new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), delta),
+        )
+        .normalize();
+      graph.setAttitude(partId, [
+        attitude.x,
+        attitude.y,
+        attitude.z,
+        attitude.w,
+      ]);
+      recordEvent("drive:attitude", partId);
+      recordEvent("stabilize", "incense-bowl");
+      return;
+    }
     const trigger = module.mechanism?.triggers.find(
       (candidate) =>
         candidate.id === `drive:${partId}` ||
@@ -1803,6 +2198,9 @@ export default function MachineViewer({
               dpr={[1, 2]}
               shadows
             >
+              {hooksEnabled ? (
+                <SceneComplexityProbe count={sceneTriangles} />
+              ) : null}
               <MachineScene
                 activeSpec={activeSpec}
                 appearance={newSchemeAppearance}
@@ -2077,6 +2475,7 @@ export default function MachineViewer({
           <article className="spotlight-card">
             <strong>{t("viewer.spotlight")}</strong>
             <p className="panel-copy">{module.data.ingenuity.hook[language]}</p>
+            <p className="panel-copy">{module.data.ingenuity.demo[language]}</p>
             <button
               className="gold-button"
               data-testid="spotlight-play"
@@ -2086,6 +2485,23 @@ export default function MachineViewer({
             >
               {t("viewer.spotlightPlay")}
             </button>
+            <SpotlightSemanticReadout
+              active={spotlightActive}
+              graph={graph}
+              language={language}
+              module={module}
+              visible={spotlightActive || spotlightDone}
+            />
+            {spotlightTranscript.length > 0 ? (
+              <ol
+                className="panel-copy"
+                data-testid="spotlight-source-transcript"
+              >
+                {spotlightTranscript.map((entry) => (
+                  <li key={entry}>{entry}</li>
+                ))}
+              </ol>
+            ) : null}
             <p className="panel-copy">{module.data.ingenuity.echo[language]}</p>
             {spotlightDone ? (
               <span className="spotlight-done">

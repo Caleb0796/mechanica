@@ -7,6 +7,10 @@ export interface ViewerProfile {
   direction: readonly [number, number, number];
   margin: number;
   explodedMargin: number;
+  minAzimuthAngle?: number;
+  maxAzimuthAngle?: number;
+  minPolarAngle?: number;
+  maxPolarAngle?: number;
   targetOffset?: readonly [number, number, number];
   focusPartIds?: readonly string[];
 }
@@ -14,9 +18,13 @@ export interface ViewerProfile {
 export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
   astroclock: {
     direction: [1, 0.72, 1.4],
-    margin: 1.65,
-    explodedMargin: 1.75,
-    targetOffset: [0, -0.1, 0],
+    margin: 1.5,
+    explodedMargin: 1.5,
+    minAzimuthAngle: 0.27,
+    maxAzimuthAngle: 0.97,
+    minPolarAngle: 1.1,
+    maxPolarAngle: 1.45,
+    targetOffset: [0, -0.03, 0],
   },
   seismoscope: {
     direction: [1, 0.5, 1.35],
@@ -34,6 +42,8 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     direction: [1.25, 0.65, 1.1],
     margin: 1.55,
     explodedMargin: 1.65,
+    minPolarAngle: 0.9,
+    maxPolarAngle: 1.45,
     targetOffset: [0, -0.08, 0],
   },
   "wooden-ox": {
@@ -46,18 +56,26 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     direction: [1.2, 0.52, 1.3],
     margin: 1.25,
     explodedMargin: 1.35,
+    minPolarAngle: 0.9,
+    maxPolarAngle: 1.45,
     targetOffset: [0, -0.08, 0],
   },
   typecase: {
     direction: [1.25, 0.6, 1.1],
     margin: 1,
     explodedMargin: 1.15,
+    minPolarAngle: 0.9,
+    maxPolarAngle: 1.45,
     targetOffset: [0, -0.06, 0],
   },
   chainpump: {
     direction: [1.3, 0.65, 1],
     margin: 0.9,
     explodedMargin: 1,
+    minAzimuthAngle: 0.56,
+    maxAzimuthAngle: 1.26,
+    minPolarAngle: 1.05,
+    maxPolarAngle: 1.45,
     targetOffset: [0.04, 0, 0],
   },
   bellows: {
@@ -68,9 +86,10 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
   },
   gimbal: {
     direction: [1, 0.42, 1.35],
-    margin: 1.8,
-    explodedMargin: 1.85,
-    targetOffset: [0, -0.05, 0],
+    margin: 1.25,
+    explodedMargin: 1.45,
+    targetOffset: [0, -0.08, 0],
+    focusPartIds: ["outer-shell"],
   },
 };
 
@@ -249,7 +268,13 @@ export function visualMaterialFor(
         ? DARK_WOOD
         : undefined;
     case "gimbal":
-      if (matches(id, /stand|support|base|post|frame|hanger/)) return DARK_WOOD;
+      if (matches(id, /stand|support|base|post|frame|hanger/)) {
+        return {
+          ...DARK_WOOD,
+          opacity: 0.24,
+          transparent: true,
+        };
+      }
       if (matches(id, /shell/)) {
         return {
           color: "#78998a",

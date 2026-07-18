@@ -7,13 +7,17 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 
+import { reconstructionRenderAssets } from "../../data/reconstructionRenders";
 import type { MachineData } from "../../sim/types";
 
 interface GalleryPanelProps {
   data: MachineData;
 }
 
-type GalleryImage = MachineData["images"][number];
+type DataGalleryImage = MachineData["images"][number];
+type GalleryImage = Omit<DataGalleryImage, "license"> & {
+  license: DataGalleryImage["license"] | "MIT";
+};
 type GalleryLayer = "reconstruction" | "classical" | "museum" | "collection";
 
 const GALLERY_LAYERS: GalleryLayer[] = [
@@ -73,8 +77,24 @@ const COPY = {
 function localImageUrl(image: GalleryImage): string | undefined {
   const value = image.file ?? image.hotlink;
   return value?.startsWith("public/")
-    ? `/${value.slice("public/".length)}`
+    ? `${import.meta.env.BASE_URL}${value.slice("public/".length)}`
     : value;
+}
+
+function reconstructionRenders(
+  data: MachineData,
+  language: "en" | "zh",
+): GalleryImage[] {
+  return reconstructionRenderAssets(data.slug).map((render) => ({
+    angle: render.label[language],
+    attributionText: render.attributionText,
+    author: render.author,
+    file: render.file,
+    license: render.license,
+    licenseUrl: render.licenseUrl,
+    sourceUrl: `${import.meta.env.BASE_URL}#/m/${data.slug}`,
+    title: data.names[language],
+  }));
 }
 
 function imageSearchText(image: GalleryImage): string {
@@ -89,7 +109,7 @@ function isReconstructionRender(image: GalleryImage): boolean {
 }
 
 function isClassicalPlate(image: GalleryImage): boolean {
-  return /woodcut|plate|engraving|manuscript|classical|historical diagram|nong shu|農書|农书|木刻|古籍|圖版|图版|古圖|古图/.test(
+  return /woodcut|plate|engraving|manuscript|classical|historical diagram|relief|rubbing|diagram|nong shu|農書|农书|木刻|古籍|圖版|图版|古圖|古图|画像石|拓片|示意图|结构图/.test(
     imageSearchText(image),
   );
 }
@@ -174,7 +194,15 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
     const displayImages = data.images.filter(
       (image) => image.license !== "linkout",
     );
-    const reconstruction = displayImages.filter(isReconstructionRender);
+    const generatedRenders = reconstructionRenders(data, language);
+    const generatedFiles = new Set(generatedRenders.map((image) => image.file));
+    const reconstruction = [
+      ...generatedRenders,
+      ...displayImages.filter(
+        (image) =>
+          isReconstructionRender(image) && !generatedFiles.has(image.file),
+      ),
+    ];
     const remaining = displayImages.filter(
       (image) => !isReconstructionRender(image),
     );
@@ -183,7 +211,7 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
     const linkouts = data.images.filter((image) => image.license === "linkout");
 
     return { classical, linkouts, museum, reconstruction };
-  }, [data.images]);
+  }, [data, language]);
 
   const layerCounts: Record<GalleryLayer, number> = {
     reconstruction: layers.reconstruction.length,

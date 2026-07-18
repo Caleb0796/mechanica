@@ -1,3 +1,4 @@
+import { reconstructionRenderAssets } from "../data/reconstructionRenders";
 import { KinematicGraph } from "../sim/graph";
 import type { MachineModule, PartDef, Provenance } from "../sim/types";
 import type { ValidationCheck, ValidationOptions } from "./report";
@@ -497,7 +498,11 @@ function checkImages(
   opts: ValidationOptions,
 ): ValidationCheck[] {
   const checks: ValidationCheck[] = [];
-  for (const [index, image] of module.data.images.entries()) {
+  const images = [
+    ...module.data.images,
+    ...reconstructionRenderAssets(module.data.slug),
+  ];
+  for (const [index, image] of images.entries()) {
     const id = `integrity:image:${index + 1}`;
     if (image.license === "linkout") {
       checks.push({
@@ -524,6 +529,20 @@ function checkImages(
         message: ok
           ? "Licensed local image includes complete attribution."
           : "CC-BY/CC-BY-SA local images require author, licenseUrl, and attributionText.",
+      });
+    }
+    if (image.license === "MIT") {
+      const ok = Boolean(
+        image.author.trim() &&
+        image.licenseUrl.trim() &&
+        image.attributionText.trim(),
+      );
+      checks.push({
+        id: `${id}:attribution`,
+        status: ok ? "pass" : "fail",
+        message: ok
+          ? "Project render includes its MIT license attribution."
+          : "Project renders require author, license URL, and attribution text.",
       });
     }
     if (image.file) {

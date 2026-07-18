@@ -18,6 +18,17 @@ import odometerPartsJson from "../src/machines/odometer/parts.json";
 import seismoscopePartsJson from "../src/machines/seismoscope/parts.json";
 import typecasePartsJson from "../src/machines/typecase/parts.json";
 import woodenOxPartsJson from "../src/machines/wooden-ox/parts.json";
+import astroclockCombridgeJson from "../src/machines/astroclock/schemes/combridge-hinged.json";
+import astroclockFixedScoopJson from "../src/machines/astroclock/schemes/fixed-scoop.json";
+import chariotLanchesterJson from "../src/machines/chariot/schemes/lanchester-diff.json";
+import chariotYanSuJson from "../src/machines/chariot/schemes/yansu-clutch.json";
+import loomLinkageJson from "../src/machines/loom/schemes/linkage.json";
+import loomSlidingFrameJson from "../src/machines/loom/schemes/sliding-frame.json";
+import odometerLuDaolongJson from "../src/machines/odometer/schemes/ludaolong.json";
+import seismoscopeFengJson from "../src/machines/seismoscope/schemes/fengrui.json";
+import seismoscopeWangJson from "../src/machines/seismoscope/schemes/wangzhenduo.json";
+import woodenOxWalkerJson from "../src/machines/wooden-ox/schemes/walker.json";
+import woodenOxWheelbarrowJson from "../src/machines/wooden-ox/schemes/wheelbarrow.json";
 import type { MachineData, MachineSlug } from "../src/sim/types";
 
 declare const process: { env: Record<string, string | undefined> };
@@ -57,28 +68,59 @@ export interface DocentRequestBody {
 }
 
 type PartsJson = Array<{ id: string }> | { parts: Array<{ id: string }> };
+type SchemePartsJson = {
+  addParts?: Array<{ id: string }>;
+  overrideParts?: Array<{ id: string }>;
+};
 
 interface MachineRecord {
   data: MachineData;
   partIds: ReadonlySet<string>;
 }
 
-function machineRecord(dataJson: unknown, partsJson: unknown): MachineRecord {
+function machineRecord(
+  dataJson: unknown,
+  partsJson: unknown,
+  schemePartsJson: unknown[] = [],
+): MachineRecord {
   const parsedParts = partsJson as PartsJson;
   const parts = Array.isArray(parsedParts) ? parsedParts : parsedParts.parts;
+  const schemePartIds = schemePartsJson.flatMap((schemeJson) => {
+    const scheme = schemeJson as SchemePartsJson;
+    return [...(scheme.addParts ?? []), ...(scheme.overrideParts ?? [])].map(
+      (part) => part.id,
+    );
+  });
   return {
     data: dataJson as MachineData,
-    partIds: new Set(parts.map((part) => part.id)),
+    partIds: new Set([...parts.map((part) => part.id), ...schemePartIds]),
   };
 }
 
 const machines: Record<MachineSlug, MachineRecord> = {
-  astroclock: machineRecord(astroclockDataJson, astroclockPartsJson),
-  seismoscope: machineRecord(seismoscopeDataJson, seismoscopePartsJson),
-  chariot: machineRecord(chariotDataJson, chariotPartsJson),
-  odometer: machineRecord(odometerDataJson, odometerPartsJson),
-  "wooden-ox": machineRecord(woodenOxDataJson, woodenOxPartsJson),
-  loom: machineRecord(loomDataJson, loomPartsJson),
+  astroclock: machineRecord(astroclockDataJson, astroclockPartsJson, [
+    astroclockFixedScoopJson,
+    astroclockCombridgeJson,
+  ]),
+  seismoscope: machineRecord(seismoscopeDataJson, seismoscopePartsJson, [
+    seismoscopeWangJson,
+    seismoscopeFengJson,
+  ]),
+  chariot: machineRecord(chariotDataJson, chariotPartsJson, [
+    chariotYanSuJson,
+    chariotLanchesterJson,
+  ]),
+  odometer: machineRecord(odometerDataJson, odometerPartsJson, [
+    odometerLuDaolongJson,
+  ]),
+  "wooden-ox": machineRecord(woodenOxDataJson, woodenOxPartsJson, [
+    woodenOxWheelbarrowJson,
+    woodenOxWalkerJson,
+  ]),
+  loom: machineRecord(loomDataJson, loomPartsJson, [
+    loomSlidingFrameJson,
+    loomLinkageJson,
+  ]),
   typecase: machineRecord(typecaseDataJson, typecasePartsJson),
   chainpump: machineRecord(chainpumpDataJson, chainpumpPartsJson),
   bellows: machineRecord(bellowsDataJson, bellowsPartsJson),

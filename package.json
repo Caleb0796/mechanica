@@ -2,6 +2,7 @@
   "name": "mechanica",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,6 +15,7 @@
     "i18n:check": "tsx scripts/check-i18n.mts",
     "snapshot-sources": "tsx scripts/snapshot-sources.mts",
     "fetch-images": "node scripts/fetch-images.mjs",
+    "render-assets": "node scripts/render-renders.mjs",
     "extract": "node scripts/extract-parts.mjs",
     "audit": "node scripts/audit-llm.mjs"
   },

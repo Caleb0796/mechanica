@@ -1,6 +1,6 @@
 {
   "slug": "astroclock",
-  "when": "2026-07-18T16:25:30.563Z",
+  "when": "2026-07-18T23:22:56.778Z",
   "checks": [
     {
       "id": "base:provenance:part:tower-shell",
@@ -2719,6 +2719,46 @@
       "id": "base:integrity:image:12:linkout",
       "status": "pass",
       "message": "Linkout image has no local file."
+    },
+    {
+      "id": "base:integrity:image:13:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:13:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:14:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:14:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:15:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:15:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:16:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:16:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/exploded.jpg exists."
     },
     {
       "id": "base:integrity:snapshot:xyxfy-taiti",
@@ -5732,6 +5772,46 @@
       "id": "fixed-scoop:integrity:image:12:linkout",
       "status": "pass",
       "message": "Linkout image has no local file."
+    },
+    {
+      "id": "fixed-scoop:integrity:image:13:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "fixed-scoop:integrity:image:13:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/overall.jpg exists."
+    },
+    {
+      "id": "fixed-scoop:integrity:image:14:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "fixed-scoop:integrity:image:14:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/cutaway.jpg exists."
+    },
+    {
+      "id": "fixed-scoop:integrity:image:15:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "fixed-scoop:integrity:image:15:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "fixed-scoop:integrity:image:16:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "fixed-scoop:integrity:image:16:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/exploded.jpg exists."
     },
     {
       "id": "fixed-scoop:integrity:snapshot:xyxfy-taiti",
@@ -8753,6 +8833,46 @@
       "message": "Linkout image has no local file."
     },
     {
+      "id": "combridge-hinged:integrity:image:13:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "combridge-hinged:integrity:image:13:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/overall.jpg exists."
+    },
+    {
+      "id": "combridge-hinged:integrity:image:14:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "combridge-hinged:integrity:image:14:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/cutaway.jpg exists."
+    },
+    {
+      "id": "combridge-hinged:integrity:image:15:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "combridge-hinged:integrity:image:15:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "combridge-hinged:integrity:image:16:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "combridge-hinged:integrity:image:16:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/astroclock/exploded.jpg exists."
+    },
+    {
       "id": "combridge-hinged:integrity:snapshot:xyxfy-taiti",
       "status": "pass",
       "message": "Source snapshot xyxfy-taiti verifies its source.",
@@ -9049,7 +9169,7 @@
     }
   ],
   "summary": {
-    "pass": 1543,
+    "pass": 1567,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

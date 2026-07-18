@@ -1,6 +1,6 @@
 {
   "slug": "wooden-ox",
-  "when": "2026-07-18T16:25:47.010Z",
+  "when": "2026-07-18T23:23:13.860Z",
   "checks": [
     {
       "id": "base:provenance:part:drive-axle",
@@ -429,6 +429,46 @@
       "id": "base:integrity:image:6:asset",
       "status": "pass",
       "message": "Image asset public/assets/museum/wooden-ox/6.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:10:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:10:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/exploded.jpg exists."
     },
     {
       "id": "base:integrity:snapshot:sgz-benzhuan",
@@ -910,6 +950,46 @@
       "id": "wheelbarrow:integrity:image:6:asset",
       "status": "pass",
       "message": "Image asset public/assets/museum/wooden-ox/6.jpg exists."
+    },
+    {
+      "id": "wheelbarrow:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "wheelbarrow:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/overall.jpg exists."
+    },
+    {
+      "id": "wheelbarrow:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "wheelbarrow:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/cutaway.jpg exists."
+    },
+    {
+      "id": "wheelbarrow:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "wheelbarrow:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "wheelbarrow:integrity:image:10:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "wheelbarrow:integrity:image:10:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/exploded.jpg exists."
     },
     {
       "id": "wheelbarrow:integrity:snapshot:sgz-benzhuan",
@@ -1723,6 +1803,46 @@
       "message": "Image asset public/assets/museum/wooden-ox/6.jpg exists."
     },
     {
+      "id": "walker:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "walker:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/overall.jpg exists."
+    },
+    {
+      "id": "walker:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "walker:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/cutaway.jpg exists."
+    },
+    {
+      "id": "walker:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "walker:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "walker:integrity:image:10:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "walker:integrity:image:10:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/wooden-ox/exploded.jpg exists."
+    },
+    {
       "id": "walker:integrity:snapshot:sgz-benzhuan",
       "status": "pass",
       "message": "Source snapshot sgz-benzhuan verifies its source.",
@@ -1813,7 +1933,7 @@
     }
   ],
   "summary": {
-    "pass": 312,
+    "pass": 336,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

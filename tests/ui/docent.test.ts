@@ -132,6 +132,22 @@ describe.sequential("docent boundaries", () => {
     expect(response.json()).toEqual({ error: "message_invalid" });
   });
 
+  it("accepts part context added by an authoritative reconstruction scheme", async () => {
+    delete runtimeProcess.env.OPENAI_API_KEY;
+    const response = await invoke(
+      JSON.stringify({
+        slug: "chariot",
+        partId: "differential-carrier",
+        schemeId: "lanchester-diff",
+        lang: "en",
+        messages: [],
+      }),
+    );
+
+    expect(response.statusCode).toBe(503);
+    expect(response.json()).toEqual({ disabled: true });
+  });
+
   it("fails closed when no server API key is configured", async () => {
     delete runtimeProcess.env.OPENAI_API_KEY;
     const response = await invoke(

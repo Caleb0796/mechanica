@@ -3,6 +3,7 @@ import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js
 
 import dataDocument from "../../data/machines/astroclock.json";
 import type {
+  IKinematicGraph,
   MachineData,
   MachineModule,
   MachineSpec,
@@ -21,11 +22,49 @@ const spec = {
 const fixedScoop = fixedScoopDocument as unknown as SchemePatch;
 const combridgeHinged = combridgeHingedDocument as unknown as SchemePatch;
 const stepRad = (Math.PI * 2) / 36;
+const escapementSwingRad = 0.35;
+const scoopPreloadRad = stepRad / 10;
 
 function emitWaterCircuit(emit: (type: string, part: string) => void): void {
   emit("caption:reservoir", "water-reservoir");
   emit("caption:constant-head", "constant-level-tank");
   emit("caption:return", "water-lift-wheel");
+}
+
+function runEscapementBeat(
+  graph: IKinematicGraph,
+  emit: (type: string, part: string) => void,
+  highlightFork: boolean,
+): void {
+  const startRad = graph.state().shulun;
+
+  graph.setInput("shulun", startRad + scoopPreloadRad);
+  graph.setInput("scoop-01", escapementSwingRad);
+  emit("caption:fill", "scoop-01");
+  emitWaterCircuit(emit);
+
+  if (highlightFork) emit("highlight", "gecha");
+  graph.setInput("gecha", -escapementSwingRad);
+  graph.setInput("tianguan", -escapementSwingRad);
+  emit("caption:yield", "gecha");
+
+  graph.setInput("guanshe", escapementSwingRad);
+  graph.setInput("tianguan", escapementSwingRad);
+  graph.setInput("tiansuo-l", escapementSwingRad);
+  graph.setInput("tiansuo-r", -escapementSwingRad);
+  emit("caption:open", "guanshe");
+
+  graph.setInput("shulun", startRad + stepRad);
+  graph.setInput("scoop-01", -escapementSwingRad);
+  emit("caption:advance", "shulun");
+
+  graph.setInput("scoop-01", 0);
+  graph.setInput("gecha", 0);
+  graph.setInput("guanshe", 0);
+  graph.setInput("tianguan", 0);
+  graph.setInput("tiansuo-l", -escapementSwingRad);
+  graph.setInput("tiansuo-r", escapementSwingRad);
+  emit("caption:relock", "tiansuo-r");
 }
 
 function towerCutaway(params: Record<string, number>): THREE.BufferGeometry {
@@ -97,14 +136,7 @@ const mechanism: MechanismScript = {
       run: (graph, emit) => {
         emit("camera", "tower-shell");
         emit("highlight", "scoop-01");
-        emit("caption:fill", "scoop-01");
-        emitWaterCircuit(emit);
-        emit("highlight", "gecha");
-        emit("caption:yield", "gecha");
-        emit("caption:open", "guanshe");
-        graph.drive("shulun", stepRad);
-        emit("caption:advance", "shulun");
-        emit("caption:relock", "tiansuo-r");
+        runEscapementBeat(graph, emit, true);
         emit("highlight", "celestial-globe");
         emit("spotlight:done", "shulun");
       },
@@ -116,13 +148,7 @@ const mechanism: MechanismScript = {
         en: "Caption one escapement cycle",
       },
       run: (graph, emit) => {
-        emit("caption:fill", "scoop-01");
-        emitWaterCircuit(emit);
-        emit("caption:yield", "gecha");
-        emit("caption:open", "guanshe");
-        graph.drive("shulun", stepRad);
-        emit("caption:advance", "shulun");
-        emit("caption:relock", "tiansuo-r");
+        runEscapementBeat(graph, emit, false);
       },
     },
     {

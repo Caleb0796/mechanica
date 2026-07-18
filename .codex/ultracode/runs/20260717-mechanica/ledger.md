@@ -180,18 +180,18 @@ Close G0.6 with the user-provided `/feedback` value, confirm all prior executabl
 
 ### Findings
 
-- The user supplied the required Session ID, which is recorded only in the submission note and intentionally omitted from this ledger.
+- The user supplied the required Session ID for direct Devpost entry. It is intentionally omitted from repository artifacts, including the submission note and this ledger.
 - Every GATE-0 row now has authoritative evidence.
 
 ### Changes
 
-- Replaced the Session ID placeholder in `docs/SUBMISSION_NOTES.md`.
+- Replaced the Session ID placeholder in `docs/SUBMISSION_NOTES.md` with the repository's external-only submission policy.
 - Finalized the Phase 0 ledger without embedding the identifier.
 
 ### Verification
 
 - G0.1–G0.5 retain the green command/browser evidence recorded above.
-- G0.6: `docs/SUBMISSION_NOTES.md` contains the user-provided `/feedback` Session ID.
+- G0.6: the user supplied the `/feedback` Session ID for direct Devpost entry; the committed note records the external-only handling policy.
 
 ### Adversarial gate
 
@@ -199,7 +199,7 @@ Phase 0 survives the independent static skeptic and root runtime/browser verific
 
 ### Unresolved risks
 
-None for Phase 0. The Session ID is a deliberate submission-note exception to the general artifact-sanitization rule.
+None for Phase 0. The Session ID is retained outside version control and must be entered directly in Devpost.
 
 ### Next action
 
@@ -485,3 +485,50 @@ Story cameras intentionally use mechanism close-ups at some chapter endpoints. S
 ### Next action
 
 Commit and tag `wave-5`, complete Phase 6 without generating final renders, then rerun the blocking all-ten-machine Visual Gate before any render or deployment work.
+
+## Phase 6 Progress — Local Evidence Closed, GPT Artifacts Blocked
+
+### Route
+
+Full route with root-owned deterministic verification and three read-only adversarial audits. Phase 7 remains unopened, and `wave-6` remains untagged.
+
+### Scope
+
+Refresh source receipts, rerun the manual fifth poison needle, preserve the final all-machine Visual Gate, generate and review the 40 reconstruction views, and reconcile every remaining Phase 6 release requirement without changing authoritative machine data, dimensions, ratios, or provenance.
+
+### Findings
+
+- The 48→47 Chariot mutation was rejected with 12 signed-ratio and whitelisted-contact failures across the base, Yan Su clutch, and Lanchester schemes. Restoring 48 teeth returned all ten strict reports to zero failures and zero warnings.
+- All 33 source snapshots refreshed successfully and retained their verified quotations and content hashes; only `fetchedAt` values changed.
+- The render set contains exactly four 1056×928 JPEG views for each of ten machines. All 40 are distinct, the largest is 57,921 bytes, and the complete set is 1,240,942 bytes.
+- `OPENAI_API_KEY` is absent. `pnpm extract` and `pnpm run audit` therefore take G2.6's logged keyless-skip path; `artifacts/extractions/` and `artifacts/audits/` contain no generated machine artifacts. Final §9 is stricter than G2.6 and requires ten of each before project completion, so the explicit artifact-count gate remains blocking.
+
+### Changes
+
+- Added the licensed MIT reconstruction-render manifest, local Gallery integration, 40 optimized render assets, and the deterministic render capture script after the Visual Gate was green.
+- Strengthened validation, browser coverage, production mock isolation, Docent boundary behavior, and visual framing/semantic geometry while preserving the §7 facts and existing interaction semantics.
+- Updated submission evidence to state the external-only Session ID policy and to expose the incomplete GPT artifact gate honestly. The recorded default decision is that G2.6 governs keyless command behavior, while the later final §9 checklist governs whether the project may be declared complete.
+
+### Verification
+
+- `pnpm snapshot-sources` → 33/33 receipts verified, exit 0.
+- Manual Chariot 48→47 mutation → strict `pnpm validate` exit 1 with 12 failures; restored 48-tooth state → exit 0, ten reports green.
+- Preliminary exact chain `pnpm test && pnpm validate && pnpm poison && pnpm e2e && pnpm build` → exit 0: 181/181 unit tests, all ten reports fail=0 warn=0, four expected poison catches, 30/30 browser scenarios in 2.7 minutes, and a successful production build.
+- `pnpm i18n:check` → zero issues in the current release candidate.
+- Render checks → 40/40 JPEGs at 1056×928, zero duplicate hashes, every file below 300 KiB, total public asset budget below 25 MiB.
+- `pnpm extract` and `pnpm run audit` → exit 0 with explicit keyless-skip warnings, as required by G2.6; artifact counts remain zero and no output was fabricated.
+
+### Adversarial gate
+
+The release-readiness skeptic correctly rejected the temporary 47-tooth worktree while the poison run was active and identified the missing GPT audits, untracked render set, absent Phase 6 ledger, and unrun final chain. The tooth value and strict reports are restored, the preliminary chain is green, the render set is present for explicit staging, and this progress ledger closes the documentation gap. Two additional reviewers confirmed that Phase 7 clean-clone, deployment, and public-smoke claims would be premature. GPT artifact coverage, post-artifact completeness review, and the final repeated chain remain open.
+
+### Unresolved risks
+
+- Ten GPT-5.6 extraction artifacts and ten independent audit reports are mandatory but cannot be generated without an API key.
+- The completeness critic and final five-command chain must run after those artifacts exist and any audit conflicts are resolved.
+- The 40 render files are prepared for the release-candidate commit. A `wave-6` tag still requires the GPT artifacts, completeness closure, and repeated final chain.
+- GitHub is unauthenticated and no remote exists; deployment and public-route smoke remain Phase 7 external work.
+
+### Next action
+
+Provide `OPENAI_API_KEY` in the execution environment, run `pnpm extract` and `pnpm run audit`, resolve every load-bearing conflict, then rerun the completeness critic and the exact five-command chain before committing and tagging `wave-6`.

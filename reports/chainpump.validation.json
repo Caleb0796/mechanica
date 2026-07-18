@@ -1,6 +1,6 @@
 {
   "slug": "chainpump",
-  "when": "2026-07-18T16:27:43.874Z",
+  "when": "2026-07-18T23:25:13.921Z",
   "checks": [
     {
       "id": "base:provenance:part:trough",
@@ -512,6 +512,46 @@
       "message": "Image asset public/assets/museum/chainpump/6.jpg exists."
     },
     {
+      "id": "base:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chainpump/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chainpump/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chainpump/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:10:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:10:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/chainpump/exploded.jpg exists."
+    },
+    {
       "id": "base:integrity:snapshot:hhs-bilan",
       "status": "pass",
       "message": "Source snapshot hhs-bilan verifies its source.",
@@ -642,7 +682,7 @@
     }
   ],
   "summary": {
-    "pass": 111,
+    "pass": 119,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

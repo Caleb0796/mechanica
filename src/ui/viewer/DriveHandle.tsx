@@ -13,7 +13,7 @@ import type { PartDef } from "../../sim/types";
 
 interface DriveHandleProps {
   children: ReactNode;
-  drive: (delta: number) => void;
+  drive: (delta: number, secondaryDelta?: number) => void;
   onDraggingChange: (dragging: boolean) => void;
   onSelect: () => void;
   part: PartDef;
@@ -32,9 +32,15 @@ export default function DriveHandle({
   const activePointer = useRef<number | null>(null);
   const activeHtmlPointer = useRef<number | null>(null);
   const lastHtmlX = useRef(0);
+  const lastHtmlY = useRef(0);
   const lastPoint = useRef(new Vector3());
   const tangent = useRef(new Vector3(1, 0, 0));
   const radius = useRef(0.1);
+  const handleDepth =
+    part.geometry.type === "custom" &&
+    part.geometry.builder === "gimbalCutawayShell"
+      ? part.geometry.params.radius * 1.1
+      : 0.08;
 
   const beginDrag = (event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
@@ -68,7 +74,14 @@ export default function DriveHandle({
       delta =
         (event.nativeEvent.movementX - event.nativeEvent.movementY) * 0.008;
     }
-    if (Number.isFinite(delta) && Math.abs(delta) > 0) drive(delta);
+    const secondaryDelta = -event.nativeEvent.movementY * 0.008;
+    if (
+      Number.isFinite(delta) &&
+      Number.isFinite(secondaryDelta) &&
+      (Math.abs(delta) > 0 || Math.abs(secondaryDelta) > 0)
+    ) {
+      drive(delta, secondaryDelta);
+    }
     lastPoint.current.copy(event.point);
   };
 
@@ -95,9 +108,11 @@ export default function DriveHandle({
 
   const beginHtmlDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
     event.stopPropagation();
+    if ((event.target as Element).closest("button")) return;
     onSelect();
     activeHtmlPointer.current = event.pointerId;
     lastHtmlX.current = event.clientX;
+    lastHtmlY.current = event.clientY;
     event.currentTarget.setPointerCapture(event.pointerId);
     onDraggingChange(true);
   };
@@ -106,8 +121,16 @@ export default function DriveHandle({
     if (activeHtmlPointer.current !== event.pointerId) return;
     event.stopPropagation();
     const delta = (event.clientX - lastHtmlX.current) * 0.008;
-    if (Number.isFinite(delta) && Math.abs(delta) > 0) drive(delta);
+    const secondaryDelta = -(event.clientY - lastHtmlY.current) * 0.008;
+    if (
+      Number.isFinite(delta) &&
+      Number.isFinite(secondaryDelta) &&
+      (Math.abs(delta) > 0 || Math.abs(secondaryDelta) > 0)
+    ) {
+      drive(delta, secondaryDelta);
+    }
     lastHtmlX.current = event.clientX;
+    lastHtmlY.current = event.clientY;
   };
 
   const endHtmlDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -128,7 +151,7 @@ export default function DriveHandle({
       onPointerUp={endDrag}
     >
       {children}
-      <Html center position={[0, 0, 0.08]}>
+      <Html center position={[0, 0, handleDepth]}>
         <div
           className="drive-buttons"
           data-drive-part-id={part.id}
@@ -148,6 +171,18 @@ export default function DriveHandle({
           >
             −
           </button>
+          <span
+            aria-hidden="true"
+            className="drive-drag-pad"
+            style={{
+              alignSelf: "center",
+              color: "#d9b86d",
+              cursor: "grab",
+              padding: "0.2rem 0.25rem",
+            }}
+          >
+            ↔
+          </span>
           <button
             aria-label={t("viewer.driveForward", { part: part.name.en })}
             onClick={(event) => {

@@ -1,6 +1,6 @@
 {
   "slug": "typecase",
-  "when": "2026-07-18T16:27:41.142Z",
+  "when": "2026-07-18T23:25:11.207Z",
   "checks": [
     {
       "id": "base:provenance:part:left-axle-stand",
@@ -545,6 +545,46 @@
       "message": "Image asset public/assets/museum/typecase/5.jpg exists."
     },
     {
+      "id": "base:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/typecase/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/typecase/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/typecase/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/typecase/exploded.jpg exists."
+    },
+    {
       "id": "base:integrity:snapshot:mengxi-bisheng",
       "status": "pass",
       "message": "Source snapshot mengxi-bisheng verifies its source.",
@@ -605,7 +645,7 @@
     }
   ],
   "summary": {
-    "pass": 103,
+    "pass": 111,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

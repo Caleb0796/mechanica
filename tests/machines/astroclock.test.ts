@@ -27,8 +27,20 @@ function trigger(id: string) {
 function runTrigger(id: string, param?: number) {
   const graph = new KinematicGraph(machine.spec);
   const events: Array<{ type: string; part: string }> = [];
-  trigger(id).run(graph, (type, part) => events.push({ type, part }), param);
-  return { events, graph };
+  const eventStates: Array<{
+    type: string;
+    part: string;
+    state: Record<string, number>;
+  }> = [];
+  trigger(id).run(
+    graph,
+    (type, part) => {
+      events.push({ type, part });
+      eventStates.push({ type, part, state: graph.state() });
+    },
+    param,
+  );
+  return { events, eventStates, graph };
 }
 
 describe("astroclock machine module", () => {
@@ -145,7 +157,7 @@ describe("astroclock machine module", () => {
   });
 
   it("runs the spotlight through one beat and closes with a done state", () => {
-    const { events, graph } = runTrigger("spotlight");
+    const { events, eventStates, graph } = runTrigger("spotlight");
     expect(events).toEqual([
       { type: "camera", part: "tower-shell" },
       { type: "highlight", part: "scoop-01" },
@@ -161,6 +173,31 @@ describe("astroclock machine module", () => {
       { type: "highlight", part: "celestial-globe" },
       { type: "spotlight:done", part: "shulun" },
     ]);
+    const stateAt = (type: string) =>
+      eventStates.find((event) => event.type === type)!.state;
+    expect(stateAt("caption:fill")["scoop-01"]).toBeCloseTo(0.35, 12);
+    expect(stateAt("caption:fill").shulun).toBeCloseTo(
+      (Math.PI * 2) / 36 / 10,
+      12,
+    );
+    expect(stateAt("caption:yield").gecha).toBeCloseTo(-0.35, 12);
+    expect(stateAt("caption:yield").tianguan).toBeCloseTo(-0.35, 12);
+    expect(stateAt("caption:open").guanshe).toBeCloseTo(0.35, 12);
+    expect(stateAt("caption:open")["tiansuo-l"]).toBeCloseTo(0.35, 12);
+    expect(stateAt("caption:open")["tiansuo-r"]).toBeCloseTo(-0.35, 12);
+    expect(stateAt("caption:advance").shulun).toBeCloseTo(
+      (Math.PI * 2) / 36,
+      12,
+    );
+    expect(stateAt("caption:advance")["scoop-01"]).toBeCloseTo(-0.35, 12);
+    expect(stateAt("caption:relock")).toMatchObject({
+      "scoop-01": 0,
+      gecha: 0,
+      guanshe: 0,
+      tianguan: 0,
+      "tiansuo-l": -0.35,
+      "tiansuo-r": 0.35,
+    });
     expect(graph.state().shulun).toBeCloseTo((Math.PI * 2) / 36, 12);
     expect(events.at(-1)?.type).toBe("spotlight:done");
   });

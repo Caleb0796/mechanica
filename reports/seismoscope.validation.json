@@ -1,6 +1,6 @@
 {
   "slug": "seismoscope",
-  "when": "2026-07-18T16:25:32.693Z",
+  "when": "2026-07-18T23:22:59.737Z",
   "checks": [
     {
       "id": "base:provenance:part:vessel",
@@ -501,6 +501,46 @@
       "id": "base:integrity:image:6:asset",
       "status": "pass",
       "message": "Image asset public/assets/museum/seismoscope/6.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:10:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:10:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/exploded.jpg exists."
     },
     {
       "id": "base:integrity:snapshot:houfeng-196",
@@ -1274,6 +1314,46 @@
       "id": "wangzhenduo:integrity:image:6:asset",
       "status": "pass",
       "message": "Image asset public/assets/museum/seismoscope/6.jpg exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/overall.jpg exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/cutaway.jpg exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:10:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:10:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/exploded.jpg exists."
     },
     {
       "id": "wangzhenduo:integrity:snapshot:houfeng-196",
@@ -2054,6 +2134,46 @@
       "message": "Image asset public/assets/museum/seismoscope/6.jpg exists."
     },
     {
+      "id": "fengrui:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "fengrui:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/overall.jpg exists."
+    },
+    {
+      "id": "fengrui:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "fengrui:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/cutaway.jpg exists."
+    },
+    {
+      "id": "fengrui:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "fengrui:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "fengrui:integrity:image:10:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "fengrui:integrity:image:10:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/seismoscope/exploded.jpg exists."
+    },
+    {
       "id": "fengrui:integrity:snapshot:houfeng-196",
       "status": "pass",
       "message": "Source snapshot houfeng-196 verifies its source.",
@@ -2111,7 +2231,7 @@
     }
   ],
   "summary": {
-    "pass": 364,
+    "pass": 388,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

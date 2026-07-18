@@ -278,14 +278,23 @@ a {
 
 .machine-thumbnail {
   position: absolute;
-  top: 1.75rem;
+  top: 0;
   right: 2rem;
-  padding: 0.35rem 0.5rem;
-  border: 1px solid rgba(214, 179, 101, 0.22);
-  color: #8b754a;
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  width: 54%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.58;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to left, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 45%, transparent 100%);
+}
+
+.machine-thumbnail img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.78) contrast(1.06);
 }
 
 .machine-card h2 {
@@ -294,6 +303,7 @@ a {
   color: #e9e0ce;
   font-size: clamp(1.35rem, 3vw, 2rem);
   font-weight: 500;
+  text-shadow: 0 2px 1rem #090a0a;
 }
 
 .machine-card .machine-era {
@@ -385,6 +395,27 @@ a {
 
 .viewer-toolbar[hidden] {
   display: none;
+}
+
+@media (min-width: 821px) {
+  .viewer-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 0.55rem;
+    padding: 0.6rem;
+  }
+
+  .viewer-toolbar > .ghost-button:first-child,
+  .viewer-toolbar > .range-control,
+  .viewer-toolbar > .assembly-step-controls,
+  .viewer-toolbar > .assembly-target-slot,
+  .viewer-toolbar > .assembly-current,
+  .viewer-toolbar > .assembly-hint {
+    grid-column: 1 / -1;
+  }
+
+  .viewer-toolbar .ghost-button {
+    padding: 0.4rem 0.6rem;
+  }
 }
 
 .drive-buttons {

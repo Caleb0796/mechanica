@@ -1,6 +1,6 @@
 {
   "slug": "gimbal",
-  "when": "2026-07-18T16:27:58.415Z",
+  "when": "2026-07-18T23:25:30.844Z",
   "checks": [
     {
       "id": "base:provenance:part:display-base",
@@ -272,6 +272,46 @@
       "message": "Linkout image has no local file."
     },
     {
+      "id": "base:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/gimbal/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:7:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:7:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/gimbal/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:8:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:8:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/gimbal/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:9:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:9:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/gimbal/exploded.jpg exists."
+    },
+    {
       "id": "base:integrity:snapshot:xijingzaji-dinghuan",
       "status": "pass",
       "message": "Source snapshot xijingzaji-dinghuan verifies its source.",
@@ -307,7 +347,7 @@
     }
   ],
   "summary": {
-    "pass": 53,
+    "pass": 61,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

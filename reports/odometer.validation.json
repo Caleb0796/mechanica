@@ -1,6 +1,6 @@
 {
   "slug": "odometer",
-  "when": "2026-07-18T16:25:46.581Z",
+  "when": "2026-07-18T23:23:13.407Z",
   "checks": [
     {
       "id": "base:provenance:part:chassis-base",
@@ -657,6 +657,46 @@
       "id": "base:integrity:image:2:asset",
       "status": "pass",
       "message": "Image asset public/assets/museum/odometer/2.png exists."
+    },
+    {
+      "id": "base:integrity:image:3:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/odometer/overall.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/odometer/cutaway.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/odometer/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "base:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/odometer/exploded.jpg exists."
     },
     {
       "id": "base:integrity:snapshot:songshi-waiguan",
@@ -1373,6 +1413,46 @@
       "message": "Image asset public/assets/museum/odometer/2.png exists."
     },
     {
+      "id": "ludaolong:integrity:image:3:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "ludaolong:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/odometer/overall.jpg exists."
+    },
+    {
+      "id": "ludaolong:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "ludaolong:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/odometer/cutaway.jpg exists."
+    },
+    {
+      "id": "ludaolong:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "ludaolong:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/odometer/mechanism-close-up.jpg exists."
+    },
+    {
+      "id": "ludaolong:integrity:image:6:attribution",
+      "status": "pass",
+      "message": "Project render includes its MIT license attribution."
+    },
+    {
+      "id": "ludaolong:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/renders/odometer/exploded.jpg exists."
+    },
+    {
       "id": "ludaolong:integrity:snapshot:songshi-waiguan",
       "status": "pass",
       "message": "Source snapshot songshi-waiguan verifies its source.",
@@ -1432,7 +1512,7 @@
     }
   ],
   "summary": {
-    "pass": 244,
+    "pass": 260,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 1.8900000000000001

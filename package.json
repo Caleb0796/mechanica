@@ -1,0 +1,44 @@
+{
+  "name": "mechanica",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "validate": "tsx scripts/validate.mts",
+    "poison": "tsx scripts/poison-test.mts",
+    "e2e": "VITE_E2E=1 vite build && playwright test",
+    "snapshot-sources": "tsx scripts/snapshot-sources.mts",
+    "fetch-images": "node scripts/fetch-images.mjs",
+    "extract": "node scripts/extract-parts.mjs",
+    "audit": "node scripts/audit-llm.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.4",
+    "@react-three/fiber": "^9.3.0",
+    "i18next": "^25.3.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-i18next": "^15.7.3",
+    "three": "^0.179.1",
+    "three-mesh-bvh": "^0.9.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@types/three": "^0.179.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^9.34.0",
+    "playwright": "^1.55.0",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.5",
+    "typescript": "5.7.3",
+    "vite": "^6.4.1",
+    "vitest": "^3.2.4"
+  }
+}

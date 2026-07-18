@@ -516,17 +516,19 @@ Refresh source receipts, rerun the manual fifth poison needle, preserve the fina
 - Preliminary exact chain `pnpm test && pnpm validate && pnpm poison && pnpm e2e && pnpm build` → exit 0: 181/181 unit tests, all ten reports fail=0 warn=0, four expected poison catches, 30/30 browser scenarios in 2.7 minutes, and a successful production build.
 - `pnpm i18n:check` → zero issues in the current release candidate.
 - Render checks → 40/40 JPEGs at 1056×928, zero duplicate hashes, every file below 300 KiB, total public asset budget below 25 MiB.
+- Isolated clone of commit `2b353d2`: `pnpm install --frozen-lockfile` → exit 0; `pnpm build` → exit 0; built output contains all 40 render JPEGs, with no file above 300 KiB.
+- Deletion audit from `wave-5..2b353d2` found only `public/assets/renders/.gitkeep`, intentionally replaced by the 40 committed render files; no teammate or application file was deleted.
 - `pnpm extract` and `pnpm run audit` → exit 0 with explicit keyless-skip warnings, as required by G2.6; artifact counts remain zero and no output was fabricated.
 
 ### Adversarial gate
 
-The release-readiness skeptic correctly rejected the temporary 47-tooth worktree while the poison run was active and identified the missing GPT audits, untracked render set, absent Phase 6 ledger, and unrun final chain. The tooth value and strict reports are restored, the preliminary chain is green, the render set is present for explicit staging, and this progress ledger closes the documentation gap. Two additional reviewers confirmed that Phase 7 clean-clone, deployment, and public-smoke claims would be premature. GPT artifact coverage, post-artifact completeness review, and the final repeated chain remain open.
+The release-readiness skeptic correctly rejected the temporary 47-tooth worktree while the poison run was active and identified the missing GPT audits, untracked render set, absent Phase 6 ledger, and unrun final chain. The tooth value and strict reports are restored, the preliminary chain is green, the render set is committed, and the isolated clone proves the asset closed loop. Two additional reviewers confirmed that deployment and public-smoke claims would be premature. GPT artifact coverage, post-artifact completeness review, and the final repeated chain remain open.
 
 ### Unresolved risks
 
 - Ten GPT-5.6 extraction artifacts and ten independent audit reports are mandatory but cannot be generated without an API key.
 - The completeness critic and final five-command chain must run after those artifacts exist and any audit conflicts are resolved.
-- The 40 render files are prepared for the release-candidate commit. A `wave-6` tag still requires the GPT artifacts, completeness closure, and repeated final chain.
+- Commit `2b353d2` preserves the green local release candidate without a phase tag. A `wave-6` tag still requires the GPT artifacts, completeness closure, and repeated final chain.
 - GitHub is unauthenticated and no remote exists; deployment and public-route smoke remain Phase 7 external work.
 
 ### Next action

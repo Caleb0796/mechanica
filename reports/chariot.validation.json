@@ -1,0 +1,3128 @@
+{
+  "slug": "chariot",
+  "when": "2026-07-18T14:30:05.222Z",
+  "checks": [
+    {
+      "id": "base:provenance:part:chassis-pivot",
+      "status": "pass",
+      "message": "Part chassis-pivot has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:part:chassis-spine",
+      "status": "pass",
+      "message": "Part chassis-spine has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:chassis-front-crossbar",
+      "status": "pass",
+      "message": "Part chassis-front-crossbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:chassis-rear-crossbar",
+      "status": "pass",
+      "message": "Part chassis-rear-crossbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:platform",
+      "status": "pass",
+      "message": "Part platform has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:drawbar",
+      "status": "pass",
+      "message": "Part drawbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:left-road-wheel",
+      "status": "pass",
+      "message": "Part left-road-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:right-road-wheel",
+      "status": "pass",
+      "message": "Part right-road-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:left-road-axle",
+      "status": "pass",
+      "message": "Part left-road-axle has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:right-road-axle",
+      "status": "pass",
+      "message": "Part right-road-axle has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:left-upright-wheel",
+      "status": "pass",
+      "message": "Part left-upright-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:right-upright-wheel",
+      "status": "pass",
+      "message": "Part right-upright-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:left-sub-wheel",
+      "status": "pass",
+      "message": "Part left-sub-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:right-sub-wheel",
+      "status": "pass",
+      "message": "Part right-sub-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:left-small-wheel",
+      "status": "pass",
+      "message": "Part left-small-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:right-small-wheel",
+      "status": "pass",
+      "message": "Part right-small-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:great-wheel",
+      "status": "pass",
+      "message": "Part great-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:central-shaft",
+      "status": "pass",
+      "message": "Part central-shaft has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:figure-turntable",
+      "status": "pass",
+      "message": "Part figure-turntable has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:part:south-figure-body",
+      "status": "pass",
+      "message": "Part south-figure-body has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:part:south-figure-head",
+      "status": "pass",
+      "message": "Part south-figure-head has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:part:south-figure-left-arm",
+      "status": "pass",
+      "message": "Part south-figure-left-arm has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:part:south-figure-right-arm",
+      "status": "pass",
+      "message": "Part south-figure-right-arm has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:part:south-pointer",
+      "status": "pass",
+      "message": "Part south-pointer has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:part:left-clutch-dog",
+      "status": "pass",
+      "message": "Part left-clutch-dog has valid provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:part:right-clutch-dog",
+      "status": "pass",
+      "message": "Part right-clutch-dog has valid provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:part:clutch-yoke",
+      "status": "pass",
+      "message": "Part clutch-yoke has valid provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:part:canopy-left-post",
+      "status": "pass",
+      "message": "Part canopy-left-post has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:canopy-right-post",
+      "status": "pass",
+      "message": "Part canopy-right-post has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:canopy-beam",
+      "status": "pass",
+      "message": "Part canopy-beam has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:left-drive-housing",
+      "status": "pass",
+      "message": "Part left-drive-housing has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:part:right-drive-housing",
+      "status": "pass",
+      "message": "Part right-drive-housing has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-pivot:length",
+      "status": "pass",
+      "message": "chassis-pivot.length has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-pivot:radius",
+      "status": "pass",
+      "message": "chassis-pivot.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-spine:size.0",
+      "status": "pass",
+      "message": "chassis-spine.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-spine:size.1",
+      "status": "pass",
+      "message": "chassis-spine.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-spine:size.2",
+      "status": "pass",
+      "message": "chassis-spine.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-front-crossbar:size.0",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-front-crossbar:size.1",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-front-crossbar:size.2",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-rear-crossbar:size.0",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-rear-crossbar:size.1",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-rear-crossbar:size.2",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:platform:size.0",
+      "status": "pass",
+      "message": "platform.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:platform:size.1",
+      "status": "pass",
+      "message": "platform.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:platform:size.2",
+      "status": "pass",
+      "message": "platform.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:drawbar:size.0",
+      "status": "pass",
+      "message": "drawbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:drawbar:size.1",
+      "status": "pass",
+      "message": "drawbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:drawbar:size.2",
+      "status": "pass",
+      "message": "drawbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-road-wheel:radius",
+      "status": "pass",
+      "message": "left-road-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-road-wheel:spokes",
+      "status": "pass",
+      "message": "left-road-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-road-wheel:width",
+      "status": "pass",
+      "message": "left-road-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-road-wheel:radius",
+      "status": "pass",
+      "message": "right-road-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-road-wheel:spokes",
+      "status": "pass",
+      "message": "right-road-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-road-wheel:width",
+      "status": "pass",
+      "message": "right-road-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-road-axle:length",
+      "status": "pass",
+      "message": "left-road-axle.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-road-axle:radius",
+      "status": "pass",
+      "message": "left-road-axle.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-road-axle:length",
+      "status": "pass",
+      "message": "right-road-axle.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-road-axle:radius",
+      "status": "pass",
+      "message": "right-road-axle.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-upright-wheel:radius",
+      "status": "pass",
+      "message": "left-upright-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-upright-wheel:spokes",
+      "status": "pass",
+      "message": "left-upright-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-upright-wheel:width",
+      "status": "pass",
+      "message": "left-upright-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-upright-wheel:radius",
+      "status": "pass",
+      "message": "right-upright-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-upright-wheel:spokes",
+      "status": "pass",
+      "message": "right-upright-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-upright-wheel:width",
+      "status": "pass",
+      "message": "right-upright-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-sub-wheel:module",
+      "status": "pass",
+      "message": "left-sub-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-sub-wheel:teeth",
+      "status": "pass",
+      "message": "left-sub-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-sub-wheel:thickness",
+      "status": "pass",
+      "message": "left-sub-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-sub-wheel:module",
+      "status": "pass",
+      "message": "right-sub-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-sub-wheel:teeth",
+      "status": "pass",
+      "message": "right-sub-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-sub-wheel:thickness",
+      "status": "pass",
+      "message": "right-sub-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-small-wheel:module",
+      "status": "pass",
+      "message": "left-small-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-small-wheel:teeth",
+      "status": "pass",
+      "message": "left-small-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-small-wheel:thickness",
+      "status": "pass",
+      "message": "left-small-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-small-wheel:module",
+      "status": "pass",
+      "message": "right-small-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-small-wheel:teeth",
+      "status": "pass",
+      "message": "right-small-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-small-wheel:thickness",
+      "status": "pass",
+      "message": "right-small-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:great-wheel:module",
+      "status": "pass",
+      "message": "great-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:great-wheel:teeth",
+      "status": "pass",
+      "message": "great-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:great-wheel:thickness",
+      "status": "pass",
+      "message": "great-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:central-shaft:length",
+      "status": "pass",
+      "message": "central-shaft.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:central-shaft:radius",
+      "status": "pass",
+      "message": "central-shaft.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:figure-turntable:radius",
+      "status": "pass",
+      "message": "figure-turntable.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:figure-turntable:spokes",
+      "status": "pass",
+      "message": "figure-turntable.spokes has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:figure-turntable:width",
+      "status": "pass",
+      "message": "figure-turntable.width has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-body:size.0",
+      "status": "pass",
+      "message": "south-figure-body.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-body:size.1",
+      "status": "pass",
+      "message": "south-figure-body.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-body:size.2",
+      "status": "pass",
+      "message": "south-figure-body.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-head:radius",
+      "status": "pass",
+      "message": "south-figure-head.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-left-arm:size.0",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-left-arm:size.1",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-left-arm:size.2",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-right-arm:size.0",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-right-arm:size.1",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-figure-right-arm:size.2",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-pointer:size.0",
+      "status": "pass",
+      "message": "south-pointer.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-pointer:size.1",
+      "status": "pass",
+      "message": "south-pointer.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:south-pointer:size.2",
+      "status": "pass",
+      "message": "south-pointer.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:provenance:dimension:left-clutch-dog:joint.limits.0",
+      "status": "pass",
+      "message": "left-clutch-dog.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:left-clutch-dog:joint.limits.1",
+      "status": "pass",
+      "message": "left-clutch-dog.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:left-clutch-dog:size.0",
+      "status": "pass",
+      "message": "left-clutch-dog.size.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:left-clutch-dog:size.1",
+      "status": "pass",
+      "message": "left-clutch-dog.size.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:left-clutch-dog:size.2",
+      "status": "pass",
+      "message": "left-clutch-dog.size.2 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:right-clutch-dog:joint.limits.0",
+      "status": "pass",
+      "message": "right-clutch-dog.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:right-clutch-dog:joint.limits.1",
+      "status": "pass",
+      "message": "right-clutch-dog.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:right-clutch-dog:size.0",
+      "status": "pass",
+      "message": "right-clutch-dog.size.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:right-clutch-dog:size.1",
+      "status": "pass",
+      "message": "right-clutch-dog.size.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:right-clutch-dog:size.2",
+      "status": "pass",
+      "message": "right-clutch-dog.size.2 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:clutch-yoke:joint.limits.0",
+      "status": "pass",
+      "message": "clutch-yoke.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:clutch-yoke:joint.limits.1",
+      "status": "pass",
+      "message": "clutch-yoke.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:clutch-yoke:size.0",
+      "status": "pass",
+      "message": "clutch-yoke.size.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:clutch-yoke:size.1",
+      "status": "pass",
+      "message": "clutch-yoke.size.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:clutch-yoke:size.2",
+      "status": "pass",
+      "message": "clutch-yoke.size.2 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-left-post:size.0",
+      "status": "pass",
+      "message": "canopy-left-post.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-left-post:size.1",
+      "status": "pass",
+      "message": "canopy-left-post.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-left-post:size.2",
+      "status": "pass",
+      "message": "canopy-left-post.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-right-post:size.0",
+      "status": "pass",
+      "message": "canopy-right-post.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-right-post:size.1",
+      "status": "pass",
+      "message": "canopy-right-post.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-right-post:size.2",
+      "status": "pass",
+      "message": "canopy-right-post.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-beam:size.0",
+      "status": "pass",
+      "message": "canopy-beam.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-beam:size.1",
+      "status": "pass",
+      "message": "canopy-beam.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-beam:size.2",
+      "status": "pass",
+      "message": "canopy-beam.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-drive-housing:size.0",
+      "status": "pass",
+      "message": "left-drive-housing.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-drive-housing:size.1",
+      "status": "pass",
+      "message": "left-drive-housing.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:left-drive-housing:size.2",
+      "status": "pass",
+      "message": "left-drive-housing.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-drive-housing:size.0",
+      "status": "pass",
+      "message": "right-drive-housing.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-drive-housing:size.1",
+      "status": "pass",
+      "message": "right-drive-housing.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:dimension:right-drive-housing:size.2",
+      "status": "pass",
+      "message": "right-drive-housing.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:ratio:1",
+      "status": "pass",
+      "message": "Expected ratio left-sub-wheel → left-small-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:ratio:2",
+      "status": "pass",
+      "message": "Expected ratio left-small-wheel → great-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:ratio:3",
+      "status": "pass",
+      "message": "Expected ratio right-sub-wheel → right-small-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:ratio:4",
+      "status": "pass",
+      "message": "Expected ratio right-small-wheel → great-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:provenance:data-dimension:5",
+      "status": "pass",
+      "message": "Data dimension 5 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:integrity:constraint:1:provenance",
+      "status": "pass",
+      "message": "Constraint 1 has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:integrity:constraint:2:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 2 joins two gears."
+    },
+    {
+      "id": "base:integrity:constraint:3:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 3 joins two gears."
+    },
+    {
+      "id": "base:integrity:constraint:4:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 4 joins two gears."
+    },
+    {
+      "id": "base:integrity:constraint:5:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 5 joins two gears."
+    },
+    {
+      "id": "base:integrity:constraint:6:provenance",
+      "status": "pass",
+      "message": "Constraint 6 has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "base:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:drive:left-road-wheel",
+      "status": "pass",
+      "message": "Trigger drive:left-road-wheel runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:drive:right-road-wheel",
+      "status": "pass",
+      "message": "Trigger drive:right-road-wheel runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:chariot-heading",
+      "status": "pass",
+      "message": "Chariot spotlight preserves the figure world heading."
+    },
+    {
+      "id": "base:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/1.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:2:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:2:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/2.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:3:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/3.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/4.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/5.jpg exists."
+    },
+    {
+      "id": "base:integrity:snapshot:songshi-yansu",
+      "status": "pass",
+      "message": "Source snapshot songshi-yansu verifies its source.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:integrity:snapshot:songshi-turn",
+      "status": "pass",
+      "message": "Source snapshot songshi-turn verifies its source.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "base:integrity:snapshot:songshi-wuderen",
+      "status": "pass",
+      "message": "Source snapshot songshi-wuderen verifies its source.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "base:integrity:snapshot:sanguozhi-majun",
+      "status": "pass",
+      "message": "Source snapshot sanguozhi-majun verifies its source.",
+      "sourceRef": "sanguozhi-majun"
+    },
+    {
+      "id": "base:ratio-1",
+      "status": "pass",
+      "expected": -2,
+      "actual": -2,
+      "message": "Signed ratio left-sub-wheel → left-small-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:ratio-2",
+      "status": "pass",
+      "expected": -0.25,
+      "actual": -0.25,
+      "message": "Signed ratio left-small-wheel → great-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:ratio-3",
+      "status": "pass",
+      "expected": -2,
+      "actual": -2,
+      "message": "Signed ratio right-sub-wheel → right-small-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:ratio-4",
+      "status": "pass",
+      "expected": -0.25,
+      "actual": -0.25,
+      "message": "Signed ratio right-small-wheel → great-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "base:range:left-clutch-dog",
+      "status": "pass",
+      "message": "Joint left-clutch-dog remains within [0, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "base:range:right-clutch-dog",
+      "status": "pass",
+      "message": "Joint right-clutch-dog remains within [0, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "base:range:clutch-yoke",
+      "status": "pass",
+      "message": "Joint clutch-yoke remains within [-0.08, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "base:collision:whitelist:left-sub-wheel:left-small-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair left-sub-wheel/left-small-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "base:collision:whitelist:left-small-wheel:great-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair left-small-wheel/great-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "base:collision:whitelist:right-sub-wheel:right-small-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair right-sub-wheel/right-small-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "base:collision:whitelist:right-small-wheel:great-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair right-small-wheel/great-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "base:collision:whitelist:platform:central-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/central-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:great-wheel:central-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair great-wheel/central-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:left-clutch-dog:clutch-yoke",
+      "status": "pass",
+      "message": "Whitelisted contact pair left-clutch-dog/clutch-yoke intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:right-clutch-dog:clutch-yoke",
+      "status": "pass",
+      "message": "Whitelisted contact pair right-clutch-dog/clutch-yoke intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    },
+    {
+      "id": "yansu-clutch:provenance:part:chassis-pivot",
+      "status": "pass",
+      "message": "Part chassis-pivot has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:chassis-spine",
+      "status": "pass",
+      "message": "Part chassis-spine has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:chassis-front-crossbar",
+      "status": "pass",
+      "message": "Part chassis-front-crossbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:chassis-rear-crossbar",
+      "status": "pass",
+      "message": "Part chassis-rear-crossbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:platform",
+      "status": "pass",
+      "message": "Part platform has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:drawbar",
+      "status": "pass",
+      "message": "Part drawbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:left-road-wheel",
+      "status": "pass",
+      "message": "Part left-road-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:right-road-wheel",
+      "status": "pass",
+      "message": "Part right-road-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:left-road-axle",
+      "status": "pass",
+      "message": "Part left-road-axle has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:right-road-axle",
+      "status": "pass",
+      "message": "Part right-road-axle has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:left-upright-wheel",
+      "status": "pass",
+      "message": "Part left-upright-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:right-upright-wheel",
+      "status": "pass",
+      "message": "Part right-upright-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:left-sub-wheel",
+      "status": "pass",
+      "message": "Part left-sub-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:right-sub-wheel",
+      "status": "pass",
+      "message": "Part right-sub-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:left-small-wheel",
+      "status": "pass",
+      "message": "Part left-small-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:right-small-wheel",
+      "status": "pass",
+      "message": "Part right-small-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:great-wheel",
+      "status": "pass",
+      "message": "Part great-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:central-shaft",
+      "status": "pass",
+      "message": "Part central-shaft has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:figure-turntable",
+      "status": "pass",
+      "message": "Part figure-turntable has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:south-figure-body",
+      "status": "pass",
+      "message": "Part south-figure-body has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:south-figure-head",
+      "status": "pass",
+      "message": "Part south-figure-head has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:south-figure-left-arm",
+      "status": "pass",
+      "message": "Part south-figure-left-arm has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:south-figure-right-arm",
+      "status": "pass",
+      "message": "Part south-figure-right-arm has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:south-pointer",
+      "status": "pass",
+      "message": "Part south-pointer has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:left-clutch-dog",
+      "status": "pass",
+      "message": "Part left-clutch-dog has valid provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:right-clutch-dog",
+      "status": "pass",
+      "message": "Part right-clutch-dog has valid provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:clutch-yoke",
+      "status": "pass",
+      "message": "Part clutch-yoke has valid provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:canopy-left-post",
+      "status": "pass",
+      "message": "Part canopy-left-post has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:canopy-right-post",
+      "status": "pass",
+      "message": "Part canopy-right-post has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:canopy-beam",
+      "status": "pass",
+      "message": "Part canopy-beam has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:left-drive-housing",
+      "status": "pass",
+      "message": "Part left-drive-housing has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:part:right-drive-housing",
+      "status": "pass",
+      "message": "Part right-drive-housing has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-pivot:length",
+      "status": "pass",
+      "message": "chassis-pivot.length has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-pivot:radius",
+      "status": "pass",
+      "message": "chassis-pivot.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-spine:size.0",
+      "status": "pass",
+      "message": "chassis-spine.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-spine:size.1",
+      "status": "pass",
+      "message": "chassis-spine.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-spine:size.2",
+      "status": "pass",
+      "message": "chassis-spine.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-front-crossbar:size.0",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-front-crossbar:size.1",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-front-crossbar:size.2",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-rear-crossbar:size.0",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-rear-crossbar:size.1",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:chassis-rear-crossbar:size.2",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:platform:size.0",
+      "status": "pass",
+      "message": "platform.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:platform:size.1",
+      "status": "pass",
+      "message": "platform.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:platform:size.2",
+      "status": "pass",
+      "message": "platform.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:drawbar:size.0",
+      "status": "pass",
+      "message": "drawbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:drawbar:size.1",
+      "status": "pass",
+      "message": "drawbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:drawbar:size.2",
+      "status": "pass",
+      "message": "drawbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-road-wheel:radius",
+      "status": "pass",
+      "message": "left-road-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-road-wheel:spokes",
+      "status": "pass",
+      "message": "left-road-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-road-wheel:width",
+      "status": "pass",
+      "message": "left-road-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-road-wheel:radius",
+      "status": "pass",
+      "message": "right-road-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-road-wheel:spokes",
+      "status": "pass",
+      "message": "right-road-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-road-wheel:width",
+      "status": "pass",
+      "message": "right-road-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-road-axle:length",
+      "status": "pass",
+      "message": "left-road-axle.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-road-axle:radius",
+      "status": "pass",
+      "message": "left-road-axle.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-road-axle:length",
+      "status": "pass",
+      "message": "right-road-axle.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-road-axle:radius",
+      "status": "pass",
+      "message": "right-road-axle.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-upright-wheel:radius",
+      "status": "pass",
+      "message": "left-upright-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-upright-wheel:spokes",
+      "status": "pass",
+      "message": "left-upright-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-upright-wheel:width",
+      "status": "pass",
+      "message": "left-upright-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-upright-wheel:radius",
+      "status": "pass",
+      "message": "right-upright-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-upright-wheel:spokes",
+      "status": "pass",
+      "message": "right-upright-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-upright-wheel:width",
+      "status": "pass",
+      "message": "right-upright-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-sub-wheel:module",
+      "status": "pass",
+      "message": "left-sub-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-sub-wheel:teeth",
+      "status": "pass",
+      "message": "left-sub-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-sub-wheel:thickness",
+      "status": "pass",
+      "message": "left-sub-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-sub-wheel:module",
+      "status": "pass",
+      "message": "right-sub-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-sub-wheel:teeth",
+      "status": "pass",
+      "message": "right-sub-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-sub-wheel:thickness",
+      "status": "pass",
+      "message": "right-sub-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-small-wheel:module",
+      "status": "pass",
+      "message": "left-small-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-small-wheel:teeth",
+      "status": "pass",
+      "message": "left-small-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-small-wheel:thickness",
+      "status": "pass",
+      "message": "left-small-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-small-wheel:module",
+      "status": "pass",
+      "message": "right-small-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-small-wheel:teeth",
+      "status": "pass",
+      "message": "right-small-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-small-wheel:thickness",
+      "status": "pass",
+      "message": "right-small-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:great-wheel:module",
+      "status": "pass",
+      "message": "great-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:great-wheel:teeth",
+      "status": "pass",
+      "message": "great-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:great-wheel:thickness",
+      "status": "pass",
+      "message": "great-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:central-shaft:length",
+      "status": "pass",
+      "message": "central-shaft.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:central-shaft:radius",
+      "status": "pass",
+      "message": "central-shaft.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:figure-turntable:radius",
+      "status": "pass",
+      "message": "figure-turntable.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:figure-turntable:spokes",
+      "status": "pass",
+      "message": "figure-turntable.spokes has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:figure-turntable:width",
+      "status": "pass",
+      "message": "figure-turntable.width has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-body:size.0",
+      "status": "pass",
+      "message": "south-figure-body.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-body:size.1",
+      "status": "pass",
+      "message": "south-figure-body.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-body:size.2",
+      "status": "pass",
+      "message": "south-figure-body.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-head:radius",
+      "status": "pass",
+      "message": "south-figure-head.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-left-arm:size.0",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-left-arm:size.1",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-left-arm:size.2",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-right-arm:size.0",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-right-arm:size.1",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-figure-right-arm:size.2",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-pointer:size.0",
+      "status": "pass",
+      "message": "south-pointer.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-pointer:size.1",
+      "status": "pass",
+      "message": "south-pointer.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:south-pointer:size.2",
+      "status": "pass",
+      "message": "south-pointer.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-clutch-dog:joint.limits.0",
+      "status": "pass",
+      "message": "left-clutch-dog.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-clutch-dog:joint.limits.1",
+      "status": "pass",
+      "message": "left-clutch-dog.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-clutch-dog:size.0",
+      "status": "pass",
+      "message": "left-clutch-dog.size.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-clutch-dog:size.1",
+      "status": "pass",
+      "message": "left-clutch-dog.size.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-clutch-dog:size.2",
+      "status": "pass",
+      "message": "left-clutch-dog.size.2 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-clutch-dog:joint.limits.0",
+      "status": "pass",
+      "message": "right-clutch-dog.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-clutch-dog:joint.limits.1",
+      "status": "pass",
+      "message": "right-clutch-dog.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-clutch-dog:size.0",
+      "status": "pass",
+      "message": "right-clutch-dog.size.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-clutch-dog:size.1",
+      "status": "pass",
+      "message": "right-clutch-dog.size.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-clutch-dog:size.2",
+      "status": "pass",
+      "message": "right-clutch-dog.size.2 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:clutch-yoke:joint.limits.0",
+      "status": "pass",
+      "message": "clutch-yoke.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:clutch-yoke:joint.limits.1",
+      "status": "pass",
+      "message": "clutch-yoke.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:clutch-yoke:size.0",
+      "status": "pass",
+      "message": "clutch-yoke.size.0 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:clutch-yoke:size.1",
+      "status": "pass",
+      "message": "clutch-yoke.size.1 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:clutch-yoke:size.2",
+      "status": "pass",
+      "message": "clutch-yoke.size.2 has dimension provenance.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-left-post:size.0",
+      "status": "pass",
+      "message": "canopy-left-post.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-left-post:size.1",
+      "status": "pass",
+      "message": "canopy-left-post.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-left-post:size.2",
+      "status": "pass",
+      "message": "canopy-left-post.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-right-post:size.0",
+      "status": "pass",
+      "message": "canopy-right-post.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-right-post:size.1",
+      "status": "pass",
+      "message": "canopy-right-post.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-right-post:size.2",
+      "status": "pass",
+      "message": "canopy-right-post.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-beam:size.0",
+      "status": "pass",
+      "message": "canopy-beam.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-beam:size.1",
+      "status": "pass",
+      "message": "canopy-beam.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:canopy-beam:size.2",
+      "status": "pass",
+      "message": "canopy-beam.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-drive-housing:size.0",
+      "status": "pass",
+      "message": "left-drive-housing.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-drive-housing:size.1",
+      "status": "pass",
+      "message": "left-drive-housing.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:left-drive-housing:size.2",
+      "status": "pass",
+      "message": "left-drive-housing.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-drive-housing:size.0",
+      "status": "pass",
+      "message": "right-drive-housing.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-drive-housing:size.1",
+      "status": "pass",
+      "message": "right-drive-housing.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:dimension:right-drive-housing:size.2",
+      "status": "pass",
+      "message": "right-drive-housing.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:ratio:1",
+      "status": "pass",
+      "message": "Expected ratio left-sub-wheel → left-small-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:ratio:2",
+      "status": "pass",
+      "message": "Expected ratio left-small-wheel → great-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:ratio:3",
+      "status": "pass",
+      "message": "Expected ratio right-sub-wheel → right-small-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:ratio:4",
+      "status": "pass",
+      "message": "Expected ratio right-small-wheel → great-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:provenance:data-dimension:5",
+      "status": "pass",
+      "message": "Data dimension 5 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:integrity:constraint:1:provenance",
+      "status": "pass",
+      "message": "Constraint 1 has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:integrity:constraint:2:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 2 joins two gears."
+    },
+    {
+      "id": "yansu-clutch:integrity:constraint:3:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 3 joins two gears."
+    },
+    {
+      "id": "yansu-clutch:integrity:constraint:4:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 4 joins two gears."
+    },
+    {
+      "id": "yansu-clutch:integrity:constraint:5:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 5 joins two gears."
+    },
+    {
+      "id": "yansu-clutch:integrity:constraint:6:provenance",
+      "status": "pass",
+      "message": "Constraint 6 has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "yansu-clutch:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "yansu-clutch:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "yansu-clutch:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "yansu-clutch:integrity:mechanism:trigger:drive:left-road-wheel",
+      "status": "pass",
+      "message": "Trigger drive:left-road-wheel runs on a fresh graph."
+    },
+    {
+      "id": "yansu-clutch:integrity:mechanism:trigger:drive:right-road-wheel",
+      "status": "pass",
+      "message": "Trigger drive:right-road-wheel runs on a fresh graph."
+    },
+    {
+      "id": "yansu-clutch:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "yansu-clutch:integrity:mechanism:chariot-heading",
+      "status": "pass",
+      "message": "Chariot spotlight preserves the figure world heading."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/1.jpg exists."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:2:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:2:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/2.jpg exists."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:3:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/3.jpg exists."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/4.jpg exists."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "yansu-clutch:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/5.jpg exists."
+    },
+    {
+      "id": "yansu-clutch:integrity:snapshot:songshi-yansu",
+      "status": "pass",
+      "message": "Source snapshot songshi-yansu verifies its source.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:integrity:snapshot:songshi-turn",
+      "status": "pass",
+      "message": "Source snapshot songshi-turn verifies its source.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "yansu-clutch:integrity:snapshot:songshi-wuderen",
+      "status": "pass",
+      "message": "Source snapshot songshi-wuderen verifies its source.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "yansu-clutch:integrity:snapshot:sanguozhi-majun",
+      "status": "pass",
+      "message": "Source snapshot sanguozhi-majun verifies its source.",
+      "sourceRef": "sanguozhi-majun"
+    },
+    {
+      "id": "yansu-clutch:ratio-1",
+      "status": "pass",
+      "expected": -2,
+      "actual": -2,
+      "message": "Signed ratio left-sub-wheel → left-small-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:ratio-2",
+      "status": "pass",
+      "expected": -0.25,
+      "actual": -0.25,
+      "message": "Signed ratio left-small-wheel → great-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:ratio-3",
+      "status": "pass",
+      "expected": -2,
+      "actual": -2,
+      "message": "Signed ratio right-sub-wheel → right-small-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:ratio-4",
+      "status": "pass",
+      "expected": -0.25,
+      "actual": -0.25,
+      "message": "Signed ratio right-small-wheel → great-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "yansu-clutch:range:left-clutch-dog",
+      "status": "pass",
+      "message": "Joint left-clutch-dog remains within [0, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "yansu-clutch:range:right-clutch-dog",
+      "status": "pass",
+      "message": "Joint right-clutch-dog remains within [0, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "yansu-clutch:range:clutch-yoke",
+      "status": "pass",
+      "message": "Joint clutch-yoke remains within [-0.08, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "yansu-clutch:collision:whitelist:left-sub-wheel:left-small-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair left-sub-wheel/left-small-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "yansu-clutch:collision:whitelist:left-small-wheel:great-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair left-small-wheel/great-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "yansu-clutch:collision:whitelist:right-sub-wheel:right-small-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair right-sub-wheel/right-small-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "yansu-clutch:collision:whitelist:right-small-wheel:great-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair right-small-wheel/great-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "yansu-clutch:collision:whitelist:platform:central-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/central-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "yansu-clutch:collision:whitelist:great-wheel:central-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair great-wheel/central-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "yansu-clutch:collision:whitelist:left-clutch-dog:clutch-yoke",
+      "status": "pass",
+      "message": "Whitelisted contact pair left-clutch-dog/clutch-yoke intersects during its complete motion sweep."
+    },
+    {
+      "id": "yansu-clutch:collision:whitelist:right-clutch-dog:clutch-yoke",
+      "status": "pass",
+      "message": "Whitelisted contact pair right-clutch-dog/clutch-yoke intersects during its complete motion sweep."
+    },
+    {
+      "id": "yansu-clutch:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    },
+    {
+      "id": "lanchester-diff:provenance:part:chassis-pivot",
+      "status": "pass",
+      "message": "Part chassis-pivot has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:chassis-spine",
+      "status": "pass",
+      "message": "Part chassis-spine has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:chassis-front-crossbar",
+      "status": "pass",
+      "message": "Part chassis-front-crossbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:chassis-rear-crossbar",
+      "status": "pass",
+      "message": "Part chassis-rear-crossbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:platform",
+      "status": "pass",
+      "message": "Part platform has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:drawbar",
+      "status": "pass",
+      "message": "Part drawbar has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:left-road-wheel",
+      "status": "pass",
+      "message": "Part left-road-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:right-road-wheel",
+      "status": "pass",
+      "message": "Part right-road-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:left-road-axle",
+      "status": "pass",
+      "message": "Part left-road-axle has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:right-road-axle",
+      "status": "pass",
+      "message": "Part right-road-axle has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:left-upright-wheel",
+      "status": "pass",
+      "message": "Part left-upright-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:right-upright-wheel",
+      "status": "pass",
+      "message": "Part right-upright-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:left-sub-wheel",
+      "status": "pass",
+      "message": "Part left-sub-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:right-sub-wheel",
+      "status": "pass",
+      "message": "Part right-sub-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:left-small-wheel",
+      "status": "pass",
+      "message": "Part left-small-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:right-small-wheel",
+      "status": "pass",
+      "message": "Part right-small-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:great-wheel",
+      "status": "pass",
+      "message": "Part great-wheel has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:central-shaft",
+      "status": "pass",
+      "message": "Part central-shaft has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:figure-turntable",
+      "status": "pass",
+      "message": "Part figure-turntable has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:south-figure-body",
+      "status": "pass",
+      "message": "Part south-figure-body has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:south-figure-head",
+      "status": "pass",
+      "message": "Part south-figure-head has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:south-figure-left-arm",
+      "status": "pass",
+      "message": "Part south-figure-left-arm has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:south-figure-right-arm",
+      "status": "pass",
+      "message": "Part south-figure-right-arm has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:south-pointer",
+      "status": "pass",
+      "message": "Part south-pointer has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:canopy-left-post",
+      "status": "pass",
+      "message": "Part canopy-left-post has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:canopy-right-post",
+      "status": "pass",
+      "message": "Part canopy-right-post has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:canopy-beam",
+      "status": "pass",
+      "message": "Part canopy-beam has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:left-drive-housing",
+      "status": "pass",
+      "message": "Part left-drive-housing has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:right-drive-housing",
+      "status": "pass",
+      "message": "Part right-drive-housing has valid provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:differential-carrier",
+      "status": "pass",
+      "message": "Part differential-carrier has valid provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:differential-sun-left",
+      "status": "pass",
+      "message": "Part differential-sun-left has valid provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:part:differential-sun-right",
+      "status": "pass",
+      "message": "Part differential-sun-right has valid provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-pivot:length",
+      "status": "pass",
+      "message": "chassis-pivot.length has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-pivot:radius",
+      "status": "pass",
+      "message": "chassis-pivot.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-spine:size.0",
+      "status": "pass",
+      "message": "chassis-spine.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-spine:size.1",
+      "status": "pass",
+      "message": "chassis-spine.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-spine:size.2",
+      "status": "pass",
+      "message": "chassis-spine.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-front-crossbar:size.0",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-front-crossbar:size.1",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-front-crossbar:size.2",
+      "status": "pass",
+      "message": "chassis-front-crossbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-rear-crossbar:size.0",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-rear-crossbar:size.1",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:chassis-rear-crossbar:size.2",
+      "status": "pass",
+      "message": "chassis-rear-crossbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:platform:size.0",
+      "status": "pass",
+      "message": "platform.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:platform:size.1",
+      "status": "pass",
+      "message": "platform.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:platform:size.2",
+      "status": "pass",
+      "message": "platform.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:drawbar:size.0",
+      "status": "pass",
+      "message": "drawbar.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:drawbar:size.1",
+      "status": "pass",
+      "message": "drawbar.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:drawbar:size.2",
+      "status": "pass",
+      "message": "drawbar.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-road-wheel:radius",
+      "status": "pass",
+      "message": "left-road-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-road-wheel:spokes",
+      "status": "pass",
+      "message": "left-road-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-road-wheel:width",
+      "status": "pass",
+      "message": "left-road-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-road-wheel:radius",
+      "status": "pass",
+      "message": "right-road-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-road-wheel:spokes",
+      "status": "pass",
+      "message": "right-road-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-road-wheel:width",
+      "status": "pass",
+      "message": "right-road-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-road-axle:length",
+      "status": "pass",
+      "message": "left-road-axle.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-road-axle:radius",
+      "status": "pass",
+      "message": "left-road-axle.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-road-axle:length",
+      "status": "pass",
+      "message": "right-road-axle.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-road-axle:radius",
+      "status": "pass",
+      "message": "right-road-axle.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-upright-wheel:radius",
+      "status": "pass",
+      "message": "left-upright-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-upright-wheel:spokes",
+      "status": "pass",
+      "message": "left-upright-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-upright-wheel:width",
+      "status": "pass",
+      "message": "left-upright-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-upright-wheel:radius",
+      "status": "pass",
+      "message": "right-upright-wheel.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-upright-wheel:spokes",
+      "status": "pass",
+      "message": "right-upright-wheel.spokes has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-upright-wheel:width",
+      "status": "pass",
+      "message": "right-upright-wheel.width has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-sub-wheel:module",
+      "status": "pass",
+      "message": "left-sub-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-sub-wheel:teeth",
+      "status": "pass",
+      "message": "left-sub-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-sub-wheel:thickness",
+      "status": "pass",
+      "message": "left-sub-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-sub-wheel:module",
+      "status": "pass",
+      "message": "right-sub-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-sub-wheel:teeth",
+      "status": "pass",
+      "message": "right-sub-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-sub-wheel:thickness",
+      "status": "pass",
+      "message": "right-sub-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-small-wheel:module",
+      "status": "pass",
+      "message": "left-small-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-small-wheel:teeth",
+      "status": "pass",
+      "message": "left-small-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-small-wheel:thickness",
+      "status": "pass",
+      "message": "left-small-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-small-wheel:module",
+      "status": "pass",
+      "message": "right-small-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-small-wheel:teeth",
+      "status": "pass",
+      "message": "right-small-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-small-wheel:thickness",
+      "status": "pass",
+      "message": "right-small-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:great-wheel:module",
+      "status": "pass",
+      "message": "great-wheel.module has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:great-wheel:teeth",
+      "status": "pass",
+      "message": "great-wheel.teeth has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:great-wheel:thickness",
+      "status": "pass",
+      "message": "great-wheel.thickness has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:central-shaft:length",
+      "status": "pass",
+      "message": "central-shaft.length has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:central-shaft:radius",
+      "status": "pass",
+      "message": "central-shaft.radius has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:figure-turntable:radius",
+      "status": "pass",
+      "message": "figure-turntable.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:figure-turntable:spokes",
+      "status": "pass",
+      "message": "figure-turntable.spokes has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:figure-turntable:width",
+      "status": "pass",
+      "message": "figure-turntable.width has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-body:size.0",
+      "status": "pass",
+      "message": "south-figure-body.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-body:size.1",
+      "status": "pass",
+      "message": "south-figure-body.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-body:size.2",
+      "status": "pass",
+      "message": "south-figure-body.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-head:radius",
+      "status": "pass",
+      "message": "south-figure-head.radius has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-left-arm:size.0",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-left-arm:size.1",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-left-arm:size.2",
+      "status": "pass",
+      "message": "south-figure-left-arm.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-right-arm:size.0",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-right-arm:size.1",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-figure-right-arm:size.2",
+      "status": "pass",
+      "message": "south-figure-right-arm.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-pointer:size.0",
+      "status": "pass",
+      "message": "south-pointer.size.0 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-pointer:size.1",
+      "status": "pass",
+      "message": "south-pointer.size.1 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:south-pointer:size.2",
+      "status": "pass",
+      "message": "south-pointer.size.2 has dimension provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-left-post:size.0",
+      "status": "pass",
+      "message": "canopy-left-post.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-left-post:size.1",
+      "status": "pass",
+      "message": "canopy-left-post.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-left-post:size.2",
+      "status": "pass",
+      "message": "canopy-left-post.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-right-post:size.0",
+      "status": "pass",
+      "message": "canopy-right-post.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-right-post:size.1",
+      "status": "pass",
+      "message": "canopy-right-post.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-right-post:size.2",
+      "status": "pass",
+      "message": "canopy-right-post.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-beam:size.0",
+      "status": "pass",
+      "message": "canopy-beam.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-beam:size.1",
+      "status": "pass",
+      "message": "canopy-beam.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:canopy-beam:size.2",
+      "status": "pass",
+      "message": "canopy-beam.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-drive-housing:size.0",
+      "status": "pass",
+      "message": "left-drive-housing.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-drive-housing:size.1",
+      "status": "pass",
+      "message": "left-drive-housing.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:left-drive-housing:size.2",
+      "status": "pass",
+      "message": "left-drive-housing.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-drive-housing:size.0",
+      "status": "pass",
+      "message": "right-drive-housing.size.0 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-drive-housing:size.1",
+      "status": "pass",
+      "message": "right-drive-housing.size.1 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:right-drive-housing:size.2",
+      "status": "pass",
+      "message": "right-drive-housing.size.2 has dimension provenance.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:differential-carrier:radius",
+      "status": "pass",
+      "message": "differential-carrier.radius has dimension provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:differential-carrier:tube",
+      "status": "pass",
+      "message": "differential-carrier.tube has dimension provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:differential-sun-left:module",
+      "status": "pass",
+      "message": "differential-sun-left.module has dimension provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:differential-sun-left:teeth",
+      "status": "pass",
+      "message": "differential-sun-left.teeth has dimension provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:differential-sun-left:thickness",
+      "status": "pass",
+      "message": "differential-sun-left.thickness has dimension provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:differential-sun-right:module",
+      "status": "pass",
+      "message": "differential-sun-right.module has dimension provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:differential-sun-right:teeth",
+      "status": "pass",
+      "message": "differential-sun-right.teeth has dimension provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:dimension:differential-sun-right:thickness",
+      "status": "pass",
+      "message": "differential-sun-right.thickness has dimension provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:provenance:ratio:1",
+      "status": "pass",
+      "message": "Expected ratio left-sub-wheel → left-small-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:ratio:2",
+      "status": "pass",
+      "message": "Expected ratio left-small-wheel → great-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:ratio:3",
+      "status": "pass",
+      "message": "Expected ratio right-sub-wheel → right-small-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:ratio:4",
+      "status": "pass",
+      "message": "Expected ratio right-small-wheel → great-wheel resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:provenance:data-dimension:5",
+      "status": "pass",
+      "message": "Data dimension 5 resolves source songshi-yansu.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:1:provenance",
+      "status": "pass",
+      "message": "Constraint 1 has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:2:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 2 joins two gears."
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:3:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 3 joins two gears."
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:4:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 4 joins two gears."
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:5:mesh-endpoints",
+      "status": "pass",
+      "message": "Mesh 5 joins two gears."
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:6:provenance",
+      "status": "pass",
+      "message": "Constraint 6 has valid provenance.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:7:provenance",
+      "status": "pass",
+      "message": "Constraint 7 has valid provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:8:provenance",
+      "status": "pass",
+      "message": "Constraint 8 has valid provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:integrity:constraint:9:provenance",
+      "status": "pass",
+      "message": "Constraint 9 has valid provenance.",
+      "sourceRef": "lanchester-diff"
+    },
+    {
+      "id": "lanchester-diff:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "lanchester-diff:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "lanchester-diff:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "lanchester-diff:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "lanchester-diff:integrity:mechanism:trigger:drive:left-road-wheel",
+      "status": "pass",
+      "message": "Trigger drive:left-road-wheel runs on a fresh graph."
+    },
+    {
+      "id": "lanchester-diff:integrity:mechanism:trigger:drive:right-road-wheel",
+      "status": "pass",
+      "message": "Trigger drive:right-road-wheel runs on a fresh graph."
+    },
+    {
+      "id": "lanchester-diff:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "lanchester-diff:integrity:mechanism:chariot-heading",
+      "status": "pass",
+      "message": "Chariot spotlight preserves the figure world heading."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/1.jpg exists."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:2:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:2:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/2.jpg exists."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:3:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/3.jpg exists."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/4.jpg exists."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:5:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "lanchester-diff:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chariot/5.jpg exists."
+    },
+    {
+      "id": "lanchester-diff:integrity:snapshot:songshi-yansu",
+      "status": "pass",
+      "message": "Source snapshot songshi-yansu verifies its source.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:integrity:snapshot:songshi-turn",
+      "status": "pass",
+      "message": "Source snapshot songshi-turn verifies its source.",
+      "sourceRef": "songshi-turn"
+    },
+    {
+      "id": "lanchester-diff:integrity:snapshot:songshi-wuderen",
+      "status": "pass",
+      "message": "Source snapshot songshi-wuderen verifies its source.",
+      "sourceRef": "songshi-wuderen"
+    },
+    {
+      "id": "lanchester-diff:integrity:snapshot:sanguozhi-majun",
+      "status": "pass",
+      "message": "Source snapshot sanguozhi-majun verifies its source.",
+      "sourceRef": "sanguozhi-majun"
+    },
+    {
+      "id": "lanchester-diff:ratio-1",
+      "status": "pass",
+      "expected": -2,
+      "actual": -2,
+      "message": "Signed ratio left-sub-wheel → left-small-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:ratio-2",
+      "status": "pass",
+      "expected": -0.25,
+      "actual": -0.25,
+      "message": "Signed ratio left-small-wheel → great-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:ratio-3",
+      "status": "pass",
+      "expected": -2,
+      "actual": -2,
+      "message": "Signed ratio right-sub-wheel → right-small-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:ratio-4",
+      "status": "pass",
+      "expected": -0.25,
+      "actual": -0.25,
+      "message": "Signed ratio right-small-wheel → great-wheel matches the declared value.",
+      "sourceRef": "songshi-yansu"
+    },
+    {
+      "id": "lanchester-diff:collision:whitelist:left-sub-wheel:left-small-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair left-sub-wheel/left-small-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "lanchester-diff:collision:whitelist:left-small-wheel:great-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair left-small-wheel/great-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "lanchester-diff:collision:whitelist:right-sub-wheel:right-small-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair right-sub-wheel/right-small-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "lanchester-diff:collision:whitelist:right-small-wheel:great-wheel",
+      "status": "pass",
+      "message": "Whitelisted gear pair right-small-wheel/great-wheel passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
+    },
+    {
+      "id": "lanchester-diff:collision:whitelist:platform:central-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/central-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "lanchester-diff:collision:whitelist:great-wheel:central-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair great-wheel/central-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "lanchester-diff:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    }
+  ],
+  "summary": {
+    "pass": 531,
+    "fail": 0,
+    "warn": 0,
+    "resolutionDeg": 0.5
+  }
+}

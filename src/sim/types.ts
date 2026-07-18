@@ -1,5 +1,5 @@
 // src/sim/types.ts — project-wide data contracts (FROZEN file)
-export type ProvenanceKind = 'wenxian' | 'wenwu' | 'tuice';
+export type ProvenanceKind = "wenxian" | "wenwu" | "tuice";
 export interface Provenance {
   kind: ProvenanceKind;
   /** points to a data-JSON sources[].id, or a short quotation */
@@ -8,41 +8,41 @@ export interface Provenance {
 }
 export interface Quantity {
   value: number;
-  unit: 'm' | 'rad' | 'ratio' | 'count';
+  unit: "m" | "rad" | "ratio" | "count";
   ancient?: string;
   provenance: Provenance;
 }
 
 export type GeometryDef =
   | {
-      type: 'gear';
+      type: "gear";
       module: number;
       teeth: number;
       thickness: number;
-      toothStyle: 'involute' | 'trapezoid' | 'pin';
+      toothStyle: "involute" | "trapezoid" | "pin";
       pressureAngleDeg?: number;
       innerRadius?: number;
     }
-  | { type: 'shaft'; radius: number; length: number }
-  | { type: 'beam'; size: [number, number, number] }
-  | { type: 'wheel'; radius: number; width: number; spokes?: number }
-  | { type: 'scoop'; size: [number, number, number] }
-  | { type: 'shell'; radius: number; cutaway?: boolean }
-  | { type: 'ring'; radius: number; tube: number }
-  | { type: 'link'; length: number; width: number }
-  | { type: 'box'; size: [number, number, number] }
-  | { type: 'custom'; builder: string; params: Record<string, number> };
+  | { type: "shaft"; radius: number; length: number }
+  | { type: "beam"; size: [number, number, number] }
+  | { type: "wheel"; radius: number; width: number; spokes?: number }
+  | { type: "scoop"; size: [number, number, number] }
+  | { type: "shell"; radius: number; cutaway?: boolean }
+  | { type: "ring"; radius: number; tube: number }
+  | { type: "link"; length: number; width: number }
+  | { type: "box"; size: [number, number, number] }
+  | { type: "custom"; builder: string; params: Record<string, number> };
 
 export interface PartDef {
   id: string;
   name: { zh: string; en: string };
   geometry: GeometryDef;
-  material: 'wood' | 'bronze' | 'iron' | 'silver' | 'silk' | 'clay';
+  material: "wood" | "bronze" | "iron" | "silver" | "silk" | "clay";
   position: [number, number, number];
   rotationEuler?: [number, number, number];
   parent?: string;
   joint?: {
-    kind: 'revolute' | 'prismatic' | 'fixed';
+    kind: "revolute" | "prismatic" | "fixed";
     axis: [number, number, number];
     limits?: [number, number];
   };
@@ -56,10 +56,10 @@ export interface PartDef {
 }
 
 export type ConstraintDef =
-  | { type: 'mesh'; a: string; b: string; internal?: boolean }
-  | { type: 'belt'; a: string; b: string; crossed?: boolean }
+  | { type: "mesh"; a: string; b: string; internal?: boolean }
+  | { type: "belt"; a: string; b: string; crossed?: boolean }
   | {
-      type: 'crank';
+      type: "crank";
       wheel: string;
       rod: string;
       slider: string;
@@ -69,28 +69,29 @@ export type ConstraintDef =
       provenance: Provenance;
     }
   | {
-      type: 'cam';
+      type: "cam";
       cam: string;
       follower: string;
-      profile: 'lift' | 'heddle';
+      profile: "lift" | "heddle";
       liftHeight: number;
       dwellRatio?: number;
       provenance: Provenance;
     }
   | {
-      type: 'differential';
+      type: "differential";
       carrier: string;
       sunA: string;
       sunB: string;
       ratio: number;
       provenance: Provenance;
     }
-  | { type: 'gimbal'; outer: string; middle: string; inner: string }
+  | { type: "gimbal"; outer: string; middle: string; inner: string }
   | {
-      type: 'lockstep';
+      type: "lockstep";
       a: string;
       b: string;
       ratio: number;
+      phase?: number;
       provenance?: Provenance;
     };
 
@@ -118,6 +119,7 @@ export interface SchemePatch {
   overrideParts?: Array<Partial<PartDef> & { id: string }>;
   addConstraints?: ConstraintDef[];
   removeConstraintIndexes?: number[];
+  collisionWhitelist?: Array<[string, string]>;
   notes?: { zh: string; en: string };
 }
 
@@ -144,23 +146,26 @@ export interface SolveResult {
 }
 
 export const MACHINE_SLUGS = [
-  'astroclock',
-  'seismoscope',
-  'chariot',
-  'odometer',
-  'wooden-ox',
-  'loom',
-  'typecase',
-  'chainpump',
-  'bellows',
-  'gimbal',
+  "astroclock",
+  "seismoscope",
+  "chariot",
+  "odometer",
+  "wooden-ox",
+  "loom",
+  "typecase",
+  "chainpump",
+  "bellows",
+  "gimbal",
 ] as const;
 export type MachineSlug = (typeof MACHINE_SLUGS)[number];
 
 export interface IKinematicGraph {
   drive(nodeId: string, deltaRad: number): SolveResult;
   setInput(nodeId: string, absoluteRad: number): SolveResult;
-  setAttitude(nodeId: string, quat: [number, number, number, number]): SolveResult;
+  setAttitude(
+    nodeId: string,
+    quat: [number, number, number, number],
+  ): SolveResult;
   ratioBetween(from: string, to: string): number | null;
   setScheme(patch?: SchemePatch): void;
   state(): Record<string, number>;
@@ -227,7 +232,7 @@ export interface MachineData {
     title: string;
     angle: string;
     author?: string;
-    license: 'CC0' | 'PD' | 'CC-BY' | 'CC-BY-SA' | 'linkout';
+    license: "CC0" | "PD" | "CC-BY" | "CC-BY-SA" | "linkout";
     licenseUrl?: string;
     attributionText?: string;
     sourceUrl: string;

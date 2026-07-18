@@ -1,5 +1,6 @@
 import {
   camFollowerPosition,
+  crankRodAngle,
   crankSliderDerivative,
   crankSliderPosition,
   isLinearConstraint,
@@ -20,11 +21,31 @@ type Event = SolveResult["events"][number];
 interface LinearEdge {
   to: string;
   ratio: number;
+  offset: number;
 }
 
 const RATIO_EPSILON = 1e-9;
 const DERIVATIVE_EPSILON = 1e-10;
 const CRANK_POSITION_EPSILON = 1e-12;
+const ATTITUDE_COMPONENTS = ["x", "y", "z", "w"] as const;
+
+function attitudeStateKey(
+  nodeId: string,
+  component: (typeof ATTITUDE_COMPONENTS)[number],
+): string {
+  return `@attitude:${nodeId}:${component}`;
+}
+
+export function attitudeQuaternion(
+  state: Record<string, number>,
+  nodeId: string,
+): [number, number, number, number] | null {
+  const values = ATTITUDE_COMPONENTS.map(
+    (component) => state[attitudeStateKey(nodeId, component)],
+  );
+  if (values.some((value) => !Number.isFinite(value))) return null;
+  return normalizeQuaternion(values as [number, number, number, number]);
+}
 
 export class OverConstrainedError extends Error {
   constructor(message: string) {
@@ -41,6 +62,7 @@ export class KinematicGraph implements IKinematicGraph {
   private adjacency = new Map<string, LinearEdge[]>();
   private component = new Map<string, number>();
   private factor = new Map<string, number>();
+  private offset = new Map<string, number>();
   private eventTime = 0;
 
   constructor(spec: MachineSpec) {
@@ -65,7 +87,8 @@ export class KinematicGraph implements IKinematicGraph {
   ): SolveResult {
     this.requireNode(nodeId);
     const gimbal = this.spec.constraints.find(
-      (constraint) => constraint.type === "gimbal" && constraint.outer === nodeId,
+      (constraint) =>
+        constraint.type === "gimbal" && constraint.outer === nodeId,
     );
     if (!gimbal || gimbal.type !== "gimbal") {
       throw new Error(`Part is not a gimbal outer shell: ${nodeId}`);
@@ -77,11 +100,15 @@ export class KinematicGraph implements IKinematicGraph {
       conjugateQuaternion(normalized),
     );
 
-    // Convention: outer is a local-Z yaw and middle is a local-X pitch.
-    // Rz(outer) * Rx(middle) maps local up to the shell's world-up vector.
-    this.values[gimbal.outer] = Math.atan2(-localUp[0], localUp[1]);
-    this.values[gimbal.middle] = Math.asin(clamp(localUp[2], -1, 1));
-    // The inner value is the stabilized bowl's own rotation and is invariant.
+    for (const [index, component] of ATTITUDE_COMPONENTS.entries()) {
+      this.values[attitudeStateKey(gimbal.outer, component)] =
+        normalized[index];
+    }
+    this.values[gimbal.outer] = 0;
+    // The shell quaternion is followed by local-Z and local-X gimbal rings.
+    // Their product maps local up to the shell-local world-up vector.
+    this.values[gimbal.middle] = Math.atan2(-localUp[0], localUp[1]);
+    this.values[gimbal.inner] = Math.asin(clamp(localUp[2], -1, 1));
 
     return this.result([]);
   }
@@ -103,7 +130,7 @@ export class KinematicGraph implements IKinematicGraph {
 
   setScheme(patch?: SchemePatch): void {
     const previous = this.values;
-    this.spec = applyScheme(this.baseSpec, patch);
+    this.spec = applySchemePatch(this.baseSpec, patch);
     this.rebuild(previous);
   }
 
@@ -114,7 +141,8 @@ export class KinematicGraph implements IKinematicGraph {
   private solveInput(nodeId: string, value: number): SolveResult {
     const events: Event[] = [];
     const reverseCrank = this.spec.constraints.find(
-      (constraint) => constraint.type === "crank" && constraint.slider === nodeId,
+      (constraint) =>
+        constraint.type === "crank" && constraint.slider === nodeId,
     );
 
     if (reverseCrank?.type === "crank") {
@@ -134,7 +162,7 @@ export class KinematicGraph implements IKinematicGraph {
       this.propagateLinear(nodeId);
     }
 
-    this.evaluateFunctions();
+    this.evaluateFunctions(nodeId);
     return this.result(events);
   }
 
@@ -151,11 +179,9 @@ export class KinematicGraph implements IKinematicGraph {
       crankRadius,
       rodLength,
     );
-    const currentDerivative = Math.abs(crankSliderDerivative(
-      currentTheta,
-      crankRadius,
-      rodLength,
-    ));
+    const currentDerivative = Math.abs(
+      crankSliderDerivative(currentTheta, crankRadius, rodLength),
+    );
     const boundedTarget = clamp(target, 0, 2 * crankRadius);
 
     if (
@@ -199,40 +225,66 @@ export class KinematicGraph implements IKinematicGraph {
     return theta;
   }
 
-  private evaluateFunctions(): void {
+  private evaluateFunctions(drivenNodeId?: string): void {
+    const drivenComponent =
+      drivenNodeId === undefined ? undefined : this.component.get(drivenNodeId);
     for (const constraint of this.spec.constraints) {
       if (constraint.type === "crank") {
+        this.values[constraint.rod] = crankRodAngle(
+          this.values[constraint.wheel],
+          constraint.crankRadius,
+          constraint.rodLength,
+        );
+        this.propagateLinear(constraint.rod);
         this.values[constraint.slider] = crankSliderPosition(
           this.values[constraint.wheel],
           constraint.crankRadius,
           constraint.rodLength,
         );
+        this.propagateLinear(constraint.slider);
       } else if (constraint.type === "cam") {
         this.values[constraint.follower] = camFollowerPosition(
           this.values[constraint.cam],
           constraint.profile,
           constraint.liftHeight,
         );
+        this.propagateLinear(constraint.follower);
       } else if (constraint.type === "differential") {
-        this.values[constraint.carrier] =
-          (constraint.ratio *
-            (this.values[constraint.sunA] + this.values[constraint.sunB])) /
-          2;
+        if (drivenComponent === this.component.get(constraint.carrier)) {
+          const difference =
+            this.values[constraint.sunA] - this.values[constraint.sunB];
+          const mean = this.values[constraint.carrier] / constraint.ratio;
+          this.values[constraint.sunA] = mean + difference / 2;
+          this.propagateLinear(constraint.sunA);
+          this.values[constraint.sunB] = mean - difference / 2;
+          this.propagateLinear(constraint.sunB);
+        } else {
+          this.values[constraint.carrier] =
+            (constraint.ratio *
+              (this.values[constraint.sunA] + this.values[constraint.sunB])) /
+            2;
+          this.propagateLinear(constraint.carrier);
+        }
       }
     }
   }
 
   private propagateLinear(anchor: string): void {
     const anchorFactor = this.factor.get(anchor);
+    const anchorOffset = this.offset.get(anchor);
     const anchorComponent = this.component.get(anchor);
-    if (anchorFactor === undefined || anchorComponent === undefined) {
+    if (
+      anchorFactor === undefined ||
+      anchorOffset === undefined ||
+      anchorComponent === undefined
+    ) {
       return;
     }
-    const anchorValue = this.values[anchor];
+    const rootValue = (this.values[anchor] - anchorOffset) / anchorFactor;
     for (const [nodeId, component] of this.component) {
       if (component === anchorComponent) {
         this.values[nodeId] =
-          anchorValue * (this.factor.get(nodeId)! / anchorFactor);
+          rootValue * this.factor.get(nodeId)! + this.offset.get(nodeId)!;
       }
     }
   }
@@ -242,6 +294,12 @@ export class KinematicGraph implements IKinematicGraph {
     this.values = Object.fromEntries(
       this.spec.parts.map((part) => [part.id, previous[part.id] ?? 0]),
     );
+    for (const part of this.spec.parts) {
+      for (const component of ATTITUDE_COMPONENTS) {
+        const key = attitudeStateKey(part.id, component);
+        if (Number.isFinite(previous[key])) this.values[key] = previous[key];
+      }
+    }
     this.adjacency = new Map(
       this.spec.parts.map((part) => [part.id, [] as LinearEdge[]]),
     );
@@ -272,19 +330,29 @@ export class KinematicGraph implements IKinematicGraph {
 
   private addLinearConstraint(constraint: LinearConstraint): void {
     const ratio = linearRatio(constraint, this.parts);
+    const phase = constraint.type === "lockstep" ? (constraint.phase ?? 0) : 0;
     if (!Number.isFinite(ratio) || ratio === 0) {
       throw new Error(`Linear constraint has invalid ratio: ${ratio}`);
     }
-    this.adjacency.get(constraint.a)!.push({ to: constraint.b, ratio });
+    if (!Number.isFinite(phase)) {
+      throw new Error(`Linear constraint has invalid phase: ${phase}`);
+    }
+    this.adjacency.get(constraint.a)!.push({
+      to: constraint.b,
+      ratio,
+      offset: phase,
+    });
     this.adjacency.get(constraint.b)!.push({
       to: constraint.a,
       ratio: 1 / ratio,
+      offset: -phase / ratio,
     });
   }
 
   private buildComponents(): void {
     this.component.clear();
     this.factor.clear();
+    this.offset.clear();
     let componentId = 0;
 
     for (const part of this.spec.parts) {
@@ -293,21 +361,31 @@ export class KinematicGraph implements IKinematicGraph {
       }
       this.component.set(part.id, componentId);
       this.factor.set(part.id, 1);
+      this.offset.set(part.id, 0);
       const queue = [part.id];
 
       for (let index = 0; index < queue.length; index += 1) {
         const from = queue[index];
         const fromFactor = this.factor.get(from)!;
+        const fromOffset = this.offset.get(from)!;
         for (const edge of this.adjacency.get(from) ?? []) {
-          const candidate = fromFactor * edge.ratio;
-          const known = this.factor.get(edge.to);
-          if (known === undefined) {
-            this.factor.set(edge.to, candidate);
+          const candidateFactor = fromFactor * edge.ratio;
+          const candidateOffset = fromOffset * edge.ratio + edge.offset;
+          const knownFactor = this.factor.get(edge.to);
+          const knownOffset = this.offset.get(edge.to);
+          if (knownFactor === undefined || knownOffset === undefined) {
+            this.factor.set(edge.to, candidateFactor);
+            this.offset.set(edge.to, candidateOffset);
             this.component.set(edge.to, componentId);
             queue.push(edge.to);
-          } else if (!ratiosAgree(known, candidate)) {
+          } else if (
+            !ratiosAgree(knownFactor, candidateFactor) ||
+            !valuesAgree(knownOffset, candidateOffset)
+          ) {
             throw new OverConstrainedError(
-              `Inconsistent linear paths to ${edge.to}: ${known} vs ${candidate}`,
+              `Inconsistent linear paths to ${edge.to}: ` +
+                `${knownFactor}x + ${knownOffset} vs ` +
+                `${candidateFactor}x + ${candidateOffset}`,
             );
           }
         }
@@ -341,7 +419,10 @@ export class KinematicGraph implements IKinematicGraph {
   }
 }
 
-function applyScheme(base: MachineSpec, patch?: SchemePatch): MachineSpec {
+export function applySchemePatch(
+  base: MachineSpec,
+  patch?: SchemePatch,
+): MachineSpec {
   const spec = cloneSpec(base);
   if (!patch) {
     return spec;
@@ -353,9 +434,11 @@ function applyScheme(base: MachineSpec, patch?: SchemePatch): MachineSpec {
   );
   const parts = spec.parts
     .filter((part) => !removedParts.has(part.id))
-    .map((part) => ({ ...part, ...overrides.get(part.id) } as Part));
+    .map((part) => ({ ...part, ...overrides.get(part.id) }) as Part);
   for (const part of patch.addParts ?? []) {
-    const existingIndex = parts.findIndex((candidate) => candidate.id === part.id);
+    const existingIndex = parts.findIndex(
+      (candidate) => candidate.id === part.id,
+    );
     if (existingIndex === -1) {
       parts.push(part);
     } else {
@@ -369,7 +452,12 @@ function applyScheme(base: MachineSpec, patch?: SchemePatch): MachineSpec {
   );
   constraints.push(...(patch.addConstraints ?? []));
 
-  return { ...spec, parts, constraints };
+  return {
+    ...spec,
+    parts,
+    constraints,
+    collisionWhitelist: patch.collisionWhitelist ?? spec.collisionWhitelist,
+  };
 }
 
 function cloneSpec(spec: MachineSpec): MachineSpec {
@@ -377,7 +465,15 @@ function cloneSpec(spec: MachineSpec): MachineSpec {
 }
 
 function ratiosAgree(a: number, b: number): boolean {
-  return Math.abs(a - b) <= RATIO_EPSILON * Math.max(1, Math.abs(a), Math.abs(b));
+  return (
+    Math.abs(a - b) <= RATIO_EPSILON * Math.max(1, Math.abs(a), Math.abs(b))
+  );
+}
+
+function valuesAgree(a: number, b: number): boolean {
+  return (
+    Math.abs(a - b) <= RATIO_EPSILON * Math.max(1, Math.abs(a), Math.abs(b))
+  );
 }
 
 function constraintPartIds(constraint: Constraint): string[] {

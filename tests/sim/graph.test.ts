@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { KinematicGraph, OverConstrainedError } from "../../src/sim/graph";
+import {
+  attitudeQuaternion,
+  KinematicGraph,
+  OverConstrainedError,
+} from "../../src/sim/graph";
 import type { MachineSpec } from "../../src/sim/types";
 
 type Part = MachineSpec["parts"][number];
@@ -44,7 +48,11 @@ function plain(id: string): Part {
   } as unknown as Part;
 }
 
-function spec(parts: Part[], constraints: Constraint[], primaryDrive?: string): MachineSpec {
+function spec(
+  parts: Part[],
+  constraints: Constraint[],
+  primaryDrive?: string,
+): MachineSpec {
   const drive = primaryDrive ?? parts[0].id;
   return {
     slug: "sim-test",
@@ -77,19 +85,17 @@ describe("KinematicGraph linear layers", () => {
     ];
     const graph = new KinematicGraph(spec(parts, constraints, "zulun"));
 
-    expect(Math.abs(graph.ratioBetween("zulun", "zhongpinglun100")!)).toBeCloseTo(
-      1 / 100,
-      12,
-    );
-    expect(Math.abs(graph.ratioBetween("zulun", "shangpinglun100")!)).toBeCloseTo(
-      1 / 1000,
-      12,
-    );
+    expect(
+      Math.abs(graph.ratioBetween("zulun", "zhongpinglun100")!),
+    ).toBeCloseTo(1 / 100, 12);
+    expect(
+      Math.abs(graph.ratioBetween("zulun", "shangpinglun100")!),
+    ).toBeCloseTo(1 / 1000, 12);
     graph.setInput("shangpinglun100", 0.001);
     expect(Math.abs(graph.state().zulun)).toBeCloseTo(1, 12);
-    expect([18, 54, 3, 100, 10, 100].reduce((sum, teeth) => sum + teeth, 0)).toBe(
-      285,
-    );
+    expect(
+      [18, 54, 3, 100, 10, 100].reduce((sum, teeth) => sum + teeth, 0),
+    ).toBe(285);
   });
 
   it("computes the chariot 12/48 reduction as 90 degrees", () => {
@@ -100,7 +106,10 @@ describe("KinematicGraph linear layers", () => {
       ),
     );
     graph.setInput("drive12", Math.PI * 2);
-    expect(Math.abs((graph.state().driven48 * 180) / Math.PI)).toBeCloseTo(90, 12);
+    expect(Math.abs((graph.state().driven48 * 180) / Math.PI)).toBeCloseTo(
+      90,
+      12,
+    );
   });
 
   it("propagates open and crossed belts in both directions", () => {
@@ -136,6 +145,26 @@ describe("KinematicGraph linear layers", () => {
           ),
         ),
     ).toThrow(OverConstrainedError);
+  });
+
+  it("propagates lockstep phase offsets in both directions", () => {
+    const phaseLock = {
+      type: "lockstep",
+      a: "drive",
+      b: "crank",
+      ratio: 1,
+      phase: Math.PI / 2,
+      provenance,
+    } as unknown as Constraint;
+    const graph = new KinematicGraph(
+      spec([plain("drive"), plain("crank")], [phaseLock]),
+    );
+
+    graph.setInput("drive", Math.PI);
+    expect(graph.state().crank).toBeCloseTo((3 * Math.PI) / 2, 12);
+    graph.setInput("crank", 0);
+    expect(graph.state().drive).toBeCloseTo(-Math.PI / 2, 12);
+    expect(graph.ratioBetween("drive", "crank")).toBe(1);
   });
 
   it("rejects a mesh with a non-gear endpoint", () => {
@@ -179,6 +208,39 @@ describe("KinematicGraph function layers", () => {
     expect(first.ratioBetween("sunA", "carrier")).toBeNull();
   });
 
+  it("propagates differential output and back-solves direct carrier drive", () => {
+    const definition = spec(
+      [plain("carrier"), gear("sunA", 20), gear("sunB", 20), plain("output")],
+      [
+        {
+          type: "differential",
+          carrier: "carrier",
+          sunA: "sunA",
+          sunB: "sunB",
+          ratio: 1,
+          provenance,
+        },
+        { type: "lockstep", a: "carrier", b: "output", ratio: -2, provenance },
+      ],
+      "sunA",
+    );
+    const graph = new KinematicGraph(definition);
+    graph.setInput("sunA", 2);
+    graph.setInput("sunB", 4);
+    expect(graph.state().carrier).toBeCloseTo(3, 12);
+    expect(graph.state().output).toBeCloseTo(-6, 12);
+
+    graph.setInput("output", 10);
+    expect(graph.state().carrier).toBeCloseTo(-5, 12);
+    expect(graph.state().output).toBeCloseTo(10, 12);
+    expect(graph.state().sunA).toBeCloseTo(-6, 12);
+    expect(graph.state().sunB).toBeCloseTo(-4, 12);
+    expect(graph.state().carrier).toBeCloseTo(
+      (graph.state().sunA + graph.state().sunB) / 2,
+      12,
+    );
+  });
+
   it("solves crank endpoints and clamps reverse drive at dead center", () => {
     const graph = new KinematicGraph(
       spec(
@@ -198,7 +260,15 @@ describe("KinematicGraph function layers", () => {
       ),
     );
     expect(graph.setInput("wheel", 0).angles.slider).toBeCloseTo(0, 12);
-    expect(graph.setInput("wheel", Math.PI).angles.slider).toBeCloseTo(0.48, 12);
+    expect(graph.setInput("wheel", Math.PI).angles.slider).toBeCloseTo(
+      0.48,
+      12,
+    );
+    expect(graph.setInput("wheel", Math.PI / 2).angles.rod).toBeCloseTo(
+      Math.asin(0.24 / 0.6),
+      12,
+    );
+    graph.setInput("wheel", Math.PI);
     const reverse = graph.setInput("slider", 0.4);
     expect(reverse.angles.wheel).toBeCloseTo(Math.PI, 12);
     expect(reverse.events).toEqual([
@@ -209,16 +279,18 @@ describe("KinematicGraph function layers", () => {
   it("preserves the crank branch and clamps reverse input to its stroke", () => {
     const definition = spec(
       [gear("wheel", 20), plain("rod"), plain("slider")],
-      [{
-        type: "crank",
-        wheel: "wheel",
-        rod: "rod",
-        slider: "slider",
-        crankRadius: 0.24,
-        rodLength: 0.6,
-        axis: [1, 0, 0],
-        provenance,
-      }],
+      [
+        {
+          type: "crank",
+          wheel: "wheel",
+          rod: "rod",
+          slider: "slider",
+          crankRadius: 0.24,
+          rodLength: 0.6,
+          axis: [1, 0, 0],
+          provenance,
+        },
+      ],
     );
     const ascending = new KinematicGraph(definition);
     ascending.setInput("wheel", Math.PI / 3);
@@ -243,7 +315,12 @@ describe("KinematicGraph function layers", () => {
   it("evaluates lift and heddle cam profiles", () => {
     const graph = new KinematicGraph(
       spec(
-        [gear("liftCam", 20), plain("liftFollower"), gear("heddleCam", 20), plain("heddleFollower")],
+        [
+          gear("liftCam", 20),
+          plain("liftFollower"),
+          gear("heddleCam", 20),
+          plain("heddleFollower"),
+        ],
         [
           {
             type: "cam",
@@ -279,8 +356,6 @@ describe("KinematicGraph function layers", () => {
         [{ type: "gimbal", outer: "outer", middle: "middle", inner: "inner" }],
       ),
     );
-    graph.setInput("inner", 0.37);
-
     for (let index = 0; index < 50; index += 1) {
       const angle = -1.2 + (2.4 * index) / 49;
       const axis = normalizeVector([
@@ -299,24 +374,23 @@ describe("KinematicGraph function layers", () => {
       graph.setAttitude("outer", quaternion);
       const state = graph.state();
       const localUp: [number, number, number] = [
-        -Math.sin(state.outer) * Math.cos(state.middle),
-        Math.cos(state.outer) * Math.cos(state.middle),
-        Math.sin(state.middle),
+        -Math.sin(state.middle) * Math.cos(state.inner),
+        Math.cos(state.middle) * Math.cos(state.inner),
+        Math.sin(state.inner),
       ];
-      const worldUp = rotateVector(localUp, normalizeQuaternion(quaternion));
+      const rendered = attitudeQuaternion(state, "outer");
+      expect(rendered).not.toBeNull();
+      const worldUp = rotateVector(localUp, rendered!);
       const deviation =
         Math.acos(Math.max(-1, Math.min(1, worldUp[1]))) * (180 / Math.PI);
       expect(deviation).toBeLessThan(0.5);
-      expect(state.inner).toBeCloseTo(0.37, 12);
+      expect(state.outer).toBe(0);
     }
   });
 
   it("applies scheme patches from the immutable base and returns snapshots", () => {
     const graph = new KinematicGraph(
-      spec(
-        [gear("a", 10), gear("b", 20)],
-        [{ type: "mesh", a: "a", b: "b" }],
-      ),
+      spec([gear("a", 10), gear("b", 20)], [{ type: "mesh", a: "a", b: "b" }]),
     );
     graph.setInput("a", 2);
     const snapshot = graph.state();
@@ -339,16 +413,11 @@ describe("KinematicGraph function layers", () => {
   });
 });
 
-function normalizeVector(vector: [number, number, number]): [number, number, number] {
+function normalizeVector(
+  vector: [number, number, number],
+): [number, number, number] {
   const length = Math.hypot(...vector);
   return vector.map((value) => value / length) as [number, number, number];
-}
-
-function normalizeQuaternion(
-  quaternion: [number, number, number, number],
-): [number, number, number, number] {
-  const length = Math.hypot(...quaternion);
-  return quaternion.map((value) => value / length) as [number, number, number, number];
 }
 
 function rotateVector(

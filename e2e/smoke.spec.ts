@@ -53,16 +53,36 @@ test('demo exposes operable ratio, inspection, and explosion hooks', async ({ pa
   const spread = await page.evaluate(() => window.__mechExplodeSpread?.() ?? 0)
   expect(spread).toBeGreaterThan(0.1)
 
+  await page.evaluate(() => {
+    const caption = document.querySelector<HTMLElement>('[data-testid="event-captions"]')
+    const canvas = document.querySelector<HTMLElement>('.viewer-canvas')
+    if (!caption || !canvas) throw new Error('Spotlight event surface is unavailable')
+    const record = () => {
+      const event = caption.textContent?.trim()
+      const events = canvas.dataset.spotlightEvents?.split('\n').filter(Boolean) ?? []
+      if (event && events.at(-1) !== event) {
+        canvas.dataset.spotlightEvents = [...events, event].join('\n')
+      }
+    }
+    record()
+    new MutationObserver(record).observe(caption, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    })
+  })
   await page.getByTestId('spotlight-play').click()
   await expect(page.locator('.viewer-canvas')).toHaveAttribute(
     'data-spotlight-active',
     'true',
   )
-  await expect(page.getByTestId('event-captions')).toContainText(
-    'spotlight:highlight · large-gear',
-  )
-  await expect(page.locator('.spotlight-done')).toHaveCount(0)
   await expect(page.locator('.spotlight-done')).toBeVisible({ timeout: 10_000 })
+  const spotlightEvents =
+    await page.locator('.viewer-canvas').getAttribute('data-spotlight-events')
+  expect(spotlightEvents).toContain('spotlight:highlight · large-gear')
+  expect(spotlightEvents?.indexOf('spotlight:highlight · large-gear')).toBeLessThan(
+    spotlightEvents?.indexOf('spotlight:done · large-gear') ?? -1,
+  )
   await expect(page.locator('.viewer-canvas')).toHaveAttribute(
     'data-spotlight-active',
     'false',

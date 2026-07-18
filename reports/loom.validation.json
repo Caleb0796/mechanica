@@ -1,0 +1,3425 @@
+{
+  "slug": "loom",
+  "when": "2026-07-18T14:32:06.504Z",
+  "checks": [
+    {
+      "id": "base:provenance:part:loom-frame",
+      "status": "pass",
+      "message": "Part loom-frame has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:warp-beam",
+      "status": "pass",
+      "message": "Part warp-beam has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:cloth-beam",
+      "status": "pass",
+      "message": "Part cloth-beam has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:treadle-bank",
+      "status": "pass",
+      "message": "Part treadle-bank has valid provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:part:warp-shed",
+      "status": "pass",
+      "message": "Part warp-shed has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:warp-shed-odd",
+      "status": "pass",
+      "message": "Part warp-shed-odd has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:woven-cloth",
+      "status": "pass",
+      "message": "Part woven-cloth has valid provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "base:provenance:part:beater",
+      "status": "pass",
+      "message": "Part beater has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:shuttle",
+      "status": "pass",
+      "message": "Part shuttle has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:single-hook",
+      "status": "pass",
+      "message": "Part single-hook has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:selector-carriage",
+      "status": "pass",
+      "message": "Part selector-carriage has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:weft-counter",
+      "status": "pass",
+      "message": "Part weft-counter has valid provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "base:provenance:part:selector-cam-0",
+      "status": "pass",
+      "message": "Part selector-cam-0 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:selector-cam-1",
+      "status": "pass",
+      "message": "Part selector-cam-1 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:selector-cam-2",
+      "status": "pass",
+      "message": "Part selector-cam-2 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:selector-cam-3",
+      "status": "pass",
+      "message": "Part selector-cam-3 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:selector-cam-4",
+      "status": "pass",
+      "message": "Part selector-cam-4 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:selector-cam-5",
+      "status": "pass",
+      "message": "Part selector-cam-5 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:selector-cam-6",
+      "status": "pass",
+      "message": "Part selector-cam-6 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:selector-cam-7",
+      "status": "pass",
+      "message": "Part selector-cam-7 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:part:heddle-0",
+      "status": "pass",
+      "message": "Part heddle-0 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:part:heddle-1",
+      "status": "pass",
+      "message": "Part heddle-1 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:part:heddle-2",
+      "status": "pass",
+      "message": "Part heddle-2 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:part:heddle-3",
+      "status": "pass",
+      "message": "Part heddle-3 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:part:heddle-4",
+      "status": "pass",
+      "message": "Part heddle-4 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:part:heddle-5",
+      "status": "pass",
+      "message": "Part heddle-5 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:part:heddle-6",
+      "status": "pass",
+      "message": "Part heddle-6 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:part:heddle-7",
+      "status": "pass",
+      "message": "Part heddle-7 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:dimension:loom-frame:params.beam",
+      "status": "pass",
+      "message": "loom-frame.params.beam has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:loom-frame:params.height",
+      "status": "pass",
+      "message": "loom-frame.params.height has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:loom-frame:params.length",
+      "status": "pass",
+      "message": "loom-frame.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:loom-frame:params.width",
+      "status": "pass",
+      "message": "loom-frame.params.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-beam:length",
+      "status": "pass",
+      "message": "warp-beam.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-beam:radius",
+      "status": "pass",
+      "message": "warp-beam.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:cloth-beam:length",
+      "status": "pass",
+      "message": "cloth-beam.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:cloth-beam:radius",
+      "status": "pass",
+      "message": "cloth-beam.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:treadle-bank:params.count",
+      "status": "pass",
+      "message": "treadle-bank.params.count has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:dimension:treadle-bank:params.depth",
+      "status": "pass",
+      "message": "treadle-bank.params.depth has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:dimension:treadle-bank:params.length",
+      "status": "pass",
+      "message": "treadle-bank.params.length has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:dimension:treadle-bank:params.spread",
+      "status": "pass",
+      "message": "treadle-bank.params.spread has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:dimension:treadle-bank:params.width",
+      "status": "pass",
+      "message": "treadle-bank.params.width has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:joint.limits.0",
+      "status": "pass",
+      "message": "warp-shed.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:joint.limits.1",
+      "status": "pass",
+      "message": "warp-shed.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:params.count",
+      "status": "pass",
+      "message": "warp-shed.params.count has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:params.indexOffset",
+      "status": "pass",
+      "message": "warp-shed.params.indexOffset has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:params.indexStep",
+      "status": "pass",
+      "message": "warp-shed.params.indexStep has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:params.length",
+      "status": "pass",
+      "message": "warp-shed.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:params.radius",
+      "status": "pass",
+      "message": "warp-shed.params.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:params.spread",
+      "status": "pass",
+      "message": "warp-shed.params.spread has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed:params.totalCount",
+      "status": "pass",
+      "message": "warp-shed.params.totalCount has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:joint.limits.0",
+      "status": "pass",
+      "message": "warp-shed-odd.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:joint.limits.1",
+      "status": "pass",
+      "message": "warp-shed-odd.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:params.count",
+      "status": "pass",
+      "message": "warp-shed-odd.params.count has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:params.indexOffset",
+      "status": "pass",
+      "message": "warp-shed-odd.params.indexOffset has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:params.indexStep",
+      "status": "pass",
+      "message": "warp-shed-odd.params.indexStep has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:params.length",
+      "status": "pass",
+      "message": "warp-shed-odd.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:params.radius",
+      "status": "pass",
+      "message": "warp-shed-odd.params.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:params.spread",
+      "status": "pass",
+      "message": "warp-shed-odd.params.spread has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:warp-shed-odd:params.totalCount",
+      "status": "pass",
+      "message": "warp-shed-odd.params.totalCount has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:woven-cloth:size.0",
+      "status": "pass",
+      "message": "woven-cloth.size.0 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "base:provenance:dimension:woven-cloth:size.1",
+      "status": "pass",
+      "message": "woven-cloth.size.1 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "base:provenance:dimension:woven-cloth:size.2",
+      "status": "pass",
+      "message": "woven-cloth.size.2 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "base:provenance:dimension:beater:joint.limits.0",
+      "status": "pass",
+      "message": "beater.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:beater:joint.limits.1",
+      "status": "pass",
+      "message": "beater.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:beater:length",
+      "status": "pass",
+      "message": "beater.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:beater:width",
+      "status": "pass",
+      "message": "beater.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:shuttle:joint.limits.0",
+      "status": "pass",
+      "message": "shuttle.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:shuttle:joint.limits.1",
+      "status": "pass",
+      "message": "shuttle.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:shuttle:size.0",
+      "status": "pass",
+      "message": "shuttle.size.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:shuttle:size.1",
+      "status": "pass",
+      "message": "shuttle.size.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:shuttle:size.2",
+      "status": "pass",
+      "message": "shuttle.size.2 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:single-hook:joint.limits.0",
+      "status": "pass",
+      "message": "single-hook.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:single-hook:joint.limits.1",
+      "status": "pass",
+      "message": "single-hook.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:single-hook:length",
+      "status": "pass",
+      "message": "single-hook.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:single-hook:width",
+      "status": "pass",
+      "message": "single-hook.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-carriage:joint.limits.0",
+      "status": "pass",
+      "message": "selector-carriage.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-carriage:joint.limits.1",
+      "status": "pass",
+      "message": "selector-carriage.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-carriage:size.0",
+      "status": "pass",
+      "message": "selector-carriage.size.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-carriage:size.1",
+      "status": "pass",
+      "message": "selector-carriage.size.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-carriage:size.2",
+      "status": "pass",
+      "message": "selector-carriage.size.2 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:weft-counter:length",
+      "status": "pass",
+      "message": "weft-counter.length has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "base:provenance:dimension:weft-counter:radius",
+      "status": "pass",
+      "message": "weft-counter.radius has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-0:length",
+      "status": "pass",
+      "message": "selector-cam-0.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-0:radius",
+      "status": "pass",
+      "message": "selector-cam-0.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-1:length",
+      "status": "pass",
+      "message": "selector-cam-1.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-1:radius",
+      "status": "pass",
+      "message": "selector-cam-1.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-2:length",
+      "status": "pass",
+      "message": "selector-cam-2.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-2:radius",
+      "status": "pass",
+      "message": "selector-cam-2.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-3:length",
+      "status": "pass",
+      "message": "selector-cam-3.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-3:radius",
+      "status": "pass",
+      "message": "selector-cam-3.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-4:length",
+      "status": "pass",
+      "message": "selector-cam-4.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-4:radius",
+      "status": "pass",
+      "message": "selector-cam-4.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-5:length",
+      "status": "pass",
+      "message": "selector-cam-5.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-5:radius",
+      "status": "pass",
+      "message": "selector-cam-5.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-6:length",
+      "status": "pass",
+      "message": "selector-cam-6.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-6:radius",
+      "status": "pass",
+      "message": "selector-cam-6.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-7:length",
+      "status": "pass",
+      "message": "selector-cam-7.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:selector-cam-7:radius",
+      "status": "pass",
+      "message": "selector-cam-7.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-0:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-0:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-0:length",
+      "status": "pass",
+      "message": "heddle-0.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-0:width",
+      "status": "pass",
+      "message": "heddle-0.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-1:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-1:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-1:length",
+      "status": "pass",
+      "message": "heddle-1.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-1:width",
+      "status": "pass",
+      "message": "heddle-1.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-2:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-2:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-2:length",
+      "status": "pass",
+      "message": "heddle-2.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-2:width",
+      "status": "pass",
+      "message": "heddle-2.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-3:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-3:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-3:length",
+      "status": "pass",
+      "message": "heddle-3.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-3:width",
+      "status": "pass",
+      "message": "heddle-3.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-4:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-4:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-4:length",
+      "status": "pass",
+      "message": "heddle-4.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-4:width",
+      "status": "pass",
+      "message": "heddle-4.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-5:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-5:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-5:length",
+      "status": "pass",
+      "message": "heddle-5.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-5:width",
+      "status": "pass",
+      "message": "heddle-5.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-6:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-6:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-6:length",
+      "status": "pass",
+      "message": "heddle-6.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-6:width",
+      "status": "pass",
+      "message": "heddle-6.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-7:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-7:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-7:length",
+      "status": "pass",
+      "message": "heddle-7.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:dimension:heddle-7:width",
+      "status": "pass",
+      "message": "heddle-7.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:data-dimension:5",
+      "status": "pass",
+      "message": "Data dimension 5 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:data-dimension:6",
+      "status": "pass",
+      "message": "Data dimension 6 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:data-dimension:7",
+      "status": "pass",
+      "message": "Data dimension 7 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:provenance:data-dimension:8",
+      "status": "pass",
+      "message": "Data dimension 8 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:integrity:constraint:2:provenance",
+      "status": "pass",
+      "message": "Constraint 2 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "base:integrity:constraint:3:provenance",
+      "status": "pass",
+      "message": "Constraint 3 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "base:integrity:constraint:4:provenance",
+      "status": "pass",
+      "message": "Constraint 4 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "base:integrity:constraint:5:provenance",
+      "status": "pass",
+      "message": "Constraint 5 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "base:integrity:constraint:6:provenance",
+      "status": "pass",
+      "message": "Constraint 6 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "base:integrity:constraint:7:provenance",
+      "status": "pass",
+      "message": "Constraint 7 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "base:integrity:constraint:8:provenance",
+      "status": "pass",
+      "message": "Constraint 8 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "base:integrity:constraint:9:provenance",
+      "status": "pass",
+      "message": "Constraint 9 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "base:integrity:constraint:10:provenance",
+      "status": "pass",
+      "message": "Constraint 10 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "base:integrity:constraint:11:provenance",
+      "status": "pass",
+      "message": "Constraint 11 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "base:integrity:constraint:12:provenance",
+      "status": "pass",
+      "message": "Constraint 12 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "base:integrity:constraint:13:provenance",
+      "status": "pass",
+      "message": "Constraint 13 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "base:integrity:constraint:14:provenance",
+      "status": "pass",
+      "message": "Constraint 14 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "base:integrity:constraint:15:provenance",
+      "status": "pass",
+      "message": "Constraint 15 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "base:integrity:constraint:16:provenance",
+      "status": "pass",
+      "message": "Constraint 16 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "base:integrity:constraint:17:provenance",
+      "status": "pass",
+      "message": "Constraint 17 has valid provenance.",
+      "sourceRef": "sliding-frame selector"
+    },
+    {
+      "id": "base:integrity:constraint:18:provenance",
+      "status": "pass",
+      "message": "Constraint 18 has valid provenance.",
+      "sourceRef": "single-hook selector"
+    },
+    {
+      "id": "base:integrity:constraint:19:provenance",
+      "status": "pass",
+      "message": "Constraint 19 has valid provenance.",
+      "sourceRef": "weaving sequence"
+    },
+    {
+      "id": "base:integrity:constraint:20:provenance",
+      "status": "pass",
+      "message": "Constraint 20 has valid provenance.",
+      "sourceRef": "weaving shed"
+    },
+    {
+      "id": "base:integrity:constraint:21:provenance",
+      "status": "pass",
+      "message": "Constraint 21 has valid provenance.",
+      "sourceRef": "weaving shed"
+    },
+    {
+      "id": "base:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "base:integrity:mechanism:specific",
+      "status": "pass",
+      "message": "Mechanism exposes a machine-specific trigger."
+    },
+    {
+      "id": "base:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:reorder-heddles",
+      "status": "pass",
+      "message": "Trigger reorder-heddles runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:weft-insertion",
+      "status": "pass",
+      "message": "Trigger weft-insertion runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:image:1:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/loom/1.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:2:linkout",
+      "status": "pass",
+      "message": "Linkout image has no local file."
+    },
+    {
+      "id": "base:integrity:image:3:linkout",
+      "status": "pass",
+      "message": "Linkout image has no local file."
+    },
+    {
+      "id": "base:integrity:snapshot:xijingzaji-loom",
+      "status": "pass",
+      "message": "Source snapshot xijingzaji-loom verifies its source.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "base:integrity:snapshot:sgz-majun-loom",
+      "status": "pass",
+      "message": "Source snapshot sgz-majun-loom verifies its source.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "base:integrity:snapshot:kaogu-laoguanshan",
+      "status": "pass",
+      "message": "Source snapshot kaogu-laoguanshan verifies its source.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "base:range:warp-shed",
+      "status": "pass",
+      "message": "Joint warp-shed remains within [0, 0.025] over the sampled cycle."
+    },
+    {
+      "id": "base:range:warp-shed-odd",
+      "status": "pass",
+      "message": "Joint warp-shed-odd remains within [0, 0.025] over the sampled cycle."
+    },
+    {
+      "id": "base:range:beater",
+      "status": "pass",
+      "message": "Joint beater remains within [0, 0.15] over the sampled cycle."
+    },
+    {
+      "id": "base:range:shuttle",
+      "status": "pass",
+      "message": "Joint shuttle remains within [-0.12, 0.12] over the sampled cycle."
+    },
+    {
+      "id": "base:range:single-hook",
+      "status": "pass",
+      "message": "Joint single-hook remains within [0, 0.02] over the sampled cycle."
+    },
+    {
+      "id": "base:range:selector-carriage",
+      "status": "pass",
+      "message": "Joint selector-carriage remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:range:heddle-0",
+      "status": "pass",
+      "message": "Joint heddle-0 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:range:heddle-1",
+      "status": "pass",
+      "message": "Joint heddle-1 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:range:heddle-2",
+      "status": "pass",
+      "message": "Joint heddle-2 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:range:heddle-3",
+      "status": "pass",
+      "message": "Joint heddle-3 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:range:heddle-4",
+      "status": "pass",
+      "message": "Joint heddle-4 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:range:heddle-5",
+      "status": "pass",
+      "message": "Joint heddle-5 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:range:heddle-6",
+      "status": "pass",
+      "message": "Joint heddle-6 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:range:heddle-7",
+      "status": "pass",
+      "message": "Joint heddle-7 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "base:collision:whitelist:warp-shed:woven-cloth",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed/woven-cloth intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:warp-shed-odd:heddle-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:warp-shed-odd:heddle-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:warp-shed-odd:heddle-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:warp-shed-odd:heddle-7",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-7 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    },
+    {
+      "id": "sliding-frame:provenance:part:loom-frame",
+      "status": "pass",
+      "message": "Part loom-frame has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:warp-beam",
+      "status": "pass",
+      "message": "Part warp-beam has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:cloth-beam",
+      "status": "pass",
+      "message": "Part cloth-beam has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:treadle-bank",
+      "status": "pass",
+      "message": "Part treadle-bank has valid provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:warp-shed",
+      "status": "pass",
+      "message": "Part warp-shed has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:warp-shed-odd",
+      "status": "pass",
+      "message": "Part warp-shed-odd has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:woven-cloth",
+      "status": "pass",
+      "message": "Part woven-cloth has valid provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:beater",
+      "status": "pass",
+      "message": "Part beater has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:shuttle",
+      "status": "pass",
+      "message": "Part shuttle has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:single-hook",
+      "status": "pass",
+      "message": "Part single-hook has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-carriage",
+      "status": "pass",
+      "message": "Part selector-carriage has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:weft-counter",
+      "status": "pass",
+      "message": "Part weft-counter has valid provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-cam-0",
+      "status": "pass",
+      "message": "Part selector-cam-0 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-cam-1",
+      "status": "pass",
+      "message": "Part selector-cam-1 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-cam-2",
+      "status": "pass",
+      "message": "Part selector-cam-2 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-cam-3",
+      "status": "pass",
+      "message": "Part selector-cam-3 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-cam-4",
+      "status": "pass",
+      "message": "Part selector-cam-4 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-cam-5",
+      "status": "pass",
+      "message": "Part selector-cam-5 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-cam-6",
+      "status": "pass",
+      "message": "Part selector-cam-6 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:selector-cam-7",
+      "status": "pass",
+      "message": "Part selector-cam-7 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:part:heddle-0",
+      "status": "pass",
+      "message": "Part heddle-0 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:heddle-1",
+      "status": "pass",
+      "message": "Part heddle-1 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:heddle-2",
+      "status": "pass",
+      "message": "Part heddle-2 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:heddle-3",
+      "status": "pass",
+      "message": "Part heddle-3 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:heddle-4",
+      "status": "pass",
+      "message": "Part heddle-4 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:heddle-5",
+      "status": "pass",
+      "message": "Part heddle-5 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:heddle-6",
+      "status": "pass",
+      "message": "Part heddle-6 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:part:heddle-7",
+      "status": "pass",
+      "message": "Part heddle-7 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:loom-frame:params.beam",
+      "status": "pass",
+      "message": "loom-frame.params.beam has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:loom-frame:params.height",
+      "status": "pass",
+      "message": "loom-frame.params.height has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:loom-frame:params.length",
+      "status": "pass",
+      "message": "loom-frame.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:loom-frame:params.width",
+      "status": "pass",
+      "message": "loom-frame.params.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-beam:length",
+      "status": "pass",
+      "message": "warp-beam.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-beam:radius",
+      "status": "pass",
+      "message": "warp-beam.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:cloth-beam:length",
+      "status": "pass",
+      "message": "cloth-beam.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:cloth-beam:radius",
+      "status": "pass",
+      "message": "cloth-beam.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:treadle-bank:params.count",
+      "status": "pass",
+      "message": "treadle-bank.params.count has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:treadle-bank:params.depth",
+      "status": "pass",
+      "message": "treadle-bank.params.depth has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:treadle-bank:params.length",
+      "status": "pass",
+      "message": "treadle-bank.params.length has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:treadle-bank:params.spread",
+      "status": "pass",
+      "message": "treadle-bank.params.spread has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:treadle-bank:params.width",
+      "status": "pass",
+      "message": "treadle-bank.params.width has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:joint.limits.0",
+      "status": "pass",
+      "message": "warp-shed.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:joint.limits.1",
+      "status": "pass",
+      "message": "warp-shed.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:params.count",
+      "status": "pass",
+      "message": "warp-shed.params.count has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:params.indexOffset",
+      "status": "pass",
+      "message": "warp-shed.params.indexOffset has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:params.indexStep",
+      "status": "pass",
+      "message": "warp-shed.params.indexStep has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:params.length",
+      "status": "pass",
+      "message": "warp-shed.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:params.radius",
+      "status": "pass",
+      "message": "warp-shed.params.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:params.spread",
+      "status": "pass",
+      "message": "warp-shed.params.spread has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed:params.totalCount",
+      "status": "pass",
+      "message": "warp-shed.params.totalCount has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:joint.limits.0",
+      "status": "pass",
+      "message": "warp-shed-odd.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:joint.limits.1",
+      "status": "pass",
+      "message": "warp-shed-odd.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:params.count",
+      "status": "pass",
+      "message": "warp-shed-odd.params.count has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:params.indexOffset",
+      "status": "pass",
+      "message": "warp-shed-odd.params.indexOffset has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:params.indexStep",
+      "status": "pass",
+      "message": "warp-shed-odd.params.indexStep has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:params.length",
+      "status": "pass",
+      "message": "warp-shed-odd.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:params.radius",
+      "status": "pass",
+      "message": "warp-shed-odd.params.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:params.spread",
+      "status": "pass",
+      "message": "warp-shed-odd.params.spread has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:warp-shed-odd:params.totalCount",
+      "status": "pass",
+      "message": "warp-shed-odd.params.totalCount has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:woven-cloth:size.0",
+      "status": "pass",
+      "message": "woven-cloth.size.0 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:woven-cloth:size.1",
+      "status": "pass",
+      "message": "woven-cloth.size.1 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:woven-cloth:size.2",
+      "status": "pass",
+      "message": "woven-cloth.size.2 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:beater:joint.limits.0",
+      "status": "pass",
+      "message": "beater.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:beater:joint.limits.1",
+      "status": "pass",
+      "message": "beater.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:beater:length",
+      "status": "pass",
+      "message": "beater.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:beater:width",
+      "status": "pass",
+      "message": "beater.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:shuttle:joint.limits.0",
+      "status": "pass",
+      "message": "shuttle.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:shuttle:joint.limits.1",
+      "status": "pass",
+      "message": "shuttle.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:shuttle:size.0",
+      "status": "pass",
+      "message": "shuttle.size.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:shuttle:size.1",
+      "status": "pass",
+      "message": "shuttle.size.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:shuttle:size.2",
+      "status": "pass",
+      "message": "shuttle.size.2 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:single-hook:joint.limits.0",
+      "status": "pass",
+      "message": "single-hook.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:single-hook:joint.limits.1",
+      "status": "pass",
+      "message": "single-hook.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:single-hook:length",
+      "status": "pass",
+      "message": "single-hook.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:single-hook:width",
+      "status": "pass",
+      "message": "single-hook.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-carriage:joint.limits.0",
+      "status": "pass",
+      "message": "selector-carriage.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-carriage:joint.limits.1",
+      "status": "pass",
+      "message": "selector-carriage.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-carriage:size.0",
+      "status": "pass",
+      "message": "selector-carriage.size.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-carriage:size.1",
+      "status": "pass",
+      "message": "selector-carriage.size.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-carriage:size.2",
+      "status": "pass",
+      "message": "selector-carriage.size.2 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:weft-counter:length",
+      "status": "pass",
+      "message": "weft-counter.length has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:weft-counter:radius",
+      "status": "pass",
+      "message": "weft-counter.radius has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-0:length",
+      "status": "pass",
+      "message": "selector-cam-0.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-0:radius",
+      "status": "pass",
+      "message": "selector-cam-0.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-1:length",
+      "status": "pass",
+      "message": "selector-cam-1.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-1:radius",
+      "status": "pass",
+      "message": "selector-cam-1.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-2:length",
+      "status": "pass",
+      "message": "selector-cam-2.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-2:radius",
+      "status": "pass",
+      "message": "selector-cam-2.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-3:length",
+      "status": "pass",
+      "message": "selector-cam-3.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-3:radius",
+      "status": "pass",
+      "message": "selector-cam-3.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-4:length",
+      "status": "pass",
+      "message": "selector-cam-4.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-4:radius",
+      "status": "pass",
+      "message": "selector-cam-4.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-5:length",
+      "status": "pass",
+      "message": "selector-cam-5.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-5:radius",
+      "status": "pass",
+      "message": "selector-cam-5.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-6:length",
+      "status": "pass",
+      "message": "selector-cam-6.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-6:radius",
+      "status": "pass",
+      "message": "selector-cam-6.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-7:length",
+      "status": "pass",
+      "message": "selector-cam-7.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:selector-cam-7:radius",
+      "status": "pass",
+      "message": "selector-cam-7.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-0:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-0:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-0:length",
+      "status": "pass",
+      "message": "heddle-0.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-0:width",
+      "status": "pass",
+      "message": "heddle-0.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-1:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-1:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-1:length",
+      "status": "pass",
+      "message": "heddle-1.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-1:width",
+      "status": "pass",
+      "message": "heddle-1.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-2:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-2:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-2:length",
+      "status": "pass",
+      "message": "heddle-2.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-2:width",
+      "status": "pass",
+      "message": "heddle-2.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-3:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-3:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-3:length",
+      "status": "pass",
+      "message": "heddle-3.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-3:width",
+      "status": "pass",
+      "message": "heddle-3.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-4:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-4:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-4:length",
+      "status": "pass",
+      "message": "heddle-4.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-4:width",
+      "status": "pass",
+      "message": "heddle-4.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-5:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-5:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-5:length",
+      "status": "pass",
+      "message": "heddle-5.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-5:width",
+      "status": "pass",
+      "message": "heddle-5.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-6:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-6:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-6:length",
+      "status": "pass",
+      "message": "heddle-6.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-6:width",
+      "status": "pass",
+      "message": "heddle-6.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-7:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-7:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-7:length",
+      "status": "pass",
+      "message": "heddle-7.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:dimension:heddle-7:width",
+      "status": "pass",
+      "message": "heddle-7.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:data-dimension:5",
+      "status": "pass",
+      "message": "Data dimension 5 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:data-dimension:6",
+      "status": "pass",
+      "message": "Data dimension 6 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:data-dimension:7",
+      "status": "pass",
+      "message": "Data dimension 7 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:provenance:data-dimension:8",
+      "status": "pass",
+      "message": "Data dimension 8 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:2:provenance",
+      "status": "pass",
+      "message": "Constraint 2 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:3:provenance",
+      "status": "pass",
+      "message": "Constraint 3 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:4:provenance",
+      "status": "pass",
+      "message": "Constraint 4 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:5:provenance",
+      "status": "pass",
+      "message": "Constraint 5 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:6:provenance",
+      "status": "pass",
+      "message": "Constraint 6 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:7:provenance",
+      "status": "pass",
+      "message": "Constraint 7 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:8:provenance",
+      "status": "pass",
+      "message": "Constraint 8 has valid provenance.",
+      "sourceRef": "sliding-frame program"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:9:provenance",
+      "status": "pass",
+      "message": "Constraint 9 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:10:provenance",
+      "status": "pass",
+      "message": "Constraint 10 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:11:provenance",
+      "status": "pass",
+      "message": "Constraint 11 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:12:provenance",
+      "status": "pass",
+      "message": "Constraint 12 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:13:provenance",
+      "status": "pass",
+      "message": "Constraint 13 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:14:provenance",
+      "status": "pass",
+      "message": "Constraint 14 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:15:provenance",
+      "status": "pass",
+      "message": "Constraint 15 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:16:provenance",
+      "status": "pass",
+      "message": "Constraint 16 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:17:provenance",
+      "status": "pass",
+      "message": "Constraint 17 has valid provenance.",
+      "sourceRef": "sliding-frame selector"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:18:provenance",
+      "status": "pass",
+      "message": "Constraint 18 has valid provenance.",
+      "sourceRef": "single-hook selector"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:19:provenance",
+      "status": "pass",
+      "message": "Constraint 19 has valid provenance.",
+      "sourceRef": "weaving sequence"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:20:provenance",
+      "status": "pass",
+      "message": "Constraint 20 has valid provenance.",
+      "sourceRef": "weaving shed"
+    },
+    {
+      "id": "sliding-frame:integrity:constraint:21:provenance",
+      "status": "pass",
+      "message": "Constraint 21 has valid provenance.",
+      "sourceRef": "weaving shed"
+    },
+    {
+      "id": "sliding-frame:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "sliding-frame:integrity:mechanism:specific",
+      "status": "pass",
+      "message": "Mechanism exposes a machine-specific trigger."
+    },
+    {
+      "id": "sliding-frame:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "sliding-frame:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "sliding-frame:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "sliding-frame:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "sliding-frame:integrity:mechanism:trigger:reorder-heddles",
+      "status": "pass",
+      "message": "Trigger reorder-heddles runs on a fresh graph."
+    },
+    {
+      "id": "sliding-frame:integrity:mechanism:trigger:weft-insertion",
+      "status": "pass",
+      "message": "Trigger weft-insertion runs on a fresh graph."
+    },
+    {
+      "id": "sliding-frame:integrity:image:1:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "sliding-frame:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/loom/1.jpg exists."
+    },
+    {
+      "id": "sliding-frame:integrity:image:2:linkout",
+      "status": "pass",
+      "message": "Linkout image has no local file."
+    },
+    {
+      "id": "sliding-frame:integrity:image:3:linkout",
+      "status": "pass",
+      "message": "Linkout image has no local file."
+    },
+    {
+      "id": "sliding-frame:integrity:snapshot:xijingzaji-loom",
+      "status": "pass",
+      "message": "Source snapshot xijingzaji-loom verifies its source.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "sliding-frame:integrity:snapshot:sgz-majun-loom",
+      "status": "pass",
+      "message": "Source snapshot sgz-majun-loom verifies its source.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "sliding-frame:integrity:snapshot:kaogu-laoguanshan",
+      "status": "pass",
+      "message": "Source snapshot kaogu-laoguanshan verifies its source.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "sliding-frame:range:warp-shed",
+      "status": "pass",
+      "message": "Joint warp-shed remains within [0, 0.025] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:warp-shed-odd",
+      "status": "pass",
+      "message": "Joint warp-shed-odd remains within [0, 0.025] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:beater",
+      "status": "pass",
+      "message": "Joint beater remains within [0, 0.15] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:shuttle",
+      "status": "pass",
+      "message": "Joint shuttle remains within [-0.12, 0.12] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:single-hook",
+      "status": "pass",
+      "message": "Joint single-hook remains within [0, 0.02] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:selector-carriage",
+      "status": "pass",
+      "message": "Joint selector-carriage remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:heddle-0",
+      "status": "pass",
+      "message": "Joint heddle-0 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:heddle-1",
+      "status": "pass",
+      "message": "Joint heddle-1 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:heddle-2",
+      "status": "pass",
+      "message": "Joint heddle-2 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:heddle-3",
+      "status": "pass",
+      "message": "Joint heddle-3 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:heddle-4",
+      "status": "pass",
+      "message": "Joint heddle-4 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:heddle-5",
+      "status": "pass",
+      "message": "Joint heddle-5 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:heddle-6",
+      "status": "pass",
+      "message": "Joint heddle-6 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:range:heddle-7",
+      "status": "pass",
+      "message": "Joint heddle-7 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "sliding-frame:collision:whitelist:warp-shed:woven-cloth",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed/woven-cloth intersects during its complete motion sweep."
+    },
+    {
+      "id": "sliding-frame:collision:whitelist:warp-shed-odd:heddle-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "sliding-frame:collision:whitelist:warp-shed-odd:heddle-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "sliding-frame:collision:whitelist:warp-shed-odd:heddle-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "sliding-frame:collision:whitelist:warp-shed-odd:heddle-7",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-7 intersects during its complete motion sweep."
+    },
+    {
+      "id": "sliding-frame:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    },
+    {
+      "id": "linkage:provenance:part:loom-frame",
+      "status": "pass",
+      "message": "Part loom-frame has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:warp-beam",
+      "status": "pass",
+      "message": "Part warp-beam has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:cloth-beam",
+      "status": "pass",
+      "message": "Part cloth-beam has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:treadle-bank",
+      "status": "pass",
+      "message": "Part treadle-bank has valid provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:warp-shed",
+      "status": "pass",
+      "message": "Part warp-shed has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:warp-shed-odd",
+      "status": "pass",
+      "message": "Part warp-shed-odd has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:woven-cloth",
+      "status": "pass",
+      "message": "Part woven-cloth has valid provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "linkage:provenance:part:beater",
+      "status": "pass",
+      "message": "Part beater has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:shuttle",
+      "status": "pass",
+      "message": "Part shuttle has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:single-hook",
+      "status": "pass",
+      "message": "Part single-hook has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:weft-counter",
+      "status": "pass",
+      "message": "Part weft-counter has valid provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "linkage:provenance:part:selector-cam-0",
+      "status": "pass",
+      "message": "Part selector-cam-0 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:selector-cam-1",
+      "status": "pass",
+      "message": "Part selector-cam-1 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:selector-cam-2",
+      "status": "pass",
+      "message": "Part selector-cam-2 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:selector-cam-3",
+      "status": "pass",
+      "message": "Part selector-cam-3 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:selector-cam-4",
+      "status": "pass",
+      "message": "Part selector-cam-4 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:selector-cam-5",
+      "status": "pass",
+      "message": "Part selector-cam-5 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:selector-cam-6",
+      "status": "pass",
+      "message": "Part selector-cam-6 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:selector-cam-7",
+      "status": "pass",
+      "message": "Part selector-cam-7 has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:heddle-0",
+      "status": "pass",
+      "message": "Part heddle-0 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:heddle-1",
+      "status": "pass",
+      "message": "Part heddle-1 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:heddle-2",
+      "status": "pass",
+      "message": "Part heddle-2 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:heddle-3",
+      "status": "pass",
+      "message": "Part heddle-3 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:heddle-4",
+      "status": "pass",
+      "message": "Part heddle-4 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:heddle-5",
+      "status": "pass",
+      "message": "Part heddle-5 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:heddle-6",
+      "status": "pass",
+      "message": "Part heddle-6 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:heddle-7",
+      "status": "pass",
+      "message": "Part heddle-7 has valid provenance.",
+      "sourceRef": "xijingzaji-loom+sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:part:linkage-crank",
+      "status": "pass",
+      "message": "Part linkage-crank has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:linkage-bar-low",
+      "status": "pass",
+      "message": "Part linkage-bar-low has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:part:linkage-bar-high",
+      "status": "pass",
+      "message": "Part linkage-bar-high has valid provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:loom-frame:params.beam",
+      "status": "pass",
+      "message": "loom-frame.params.beam has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:loom-frame:params.height",
+      "status": "pass",
+      "message": "loom-frame.params.height has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:loom-frame:params.length",
+      "status": "pass",
+      "message": "loom-frame.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:loom-frame:params.width",
+      "status": "pass",
+      "message": "loom-frame.params.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-beam:length",
+      "status": "pass",
+      "message": "warp-beam.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-beam:radius",
+      "status": "pass",
+      "message": "warp-beam.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:cloth-beam:length",
+      "status": "pass",
+      "message": "cloth-beam.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:cloth-beam:radius",
+      "status": "pass",
+      "message": "cloth-beam.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:treadle-bank:params.count",
+      "status": "pass",
+      "message": "treadle-bank.params.count has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:treadle-bank:params.depth",
+      "status": "pass",
+      "message": "treadle-bank.params.depth has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:treadle-bank:params.length",
+      "status": "pass",
+      "message": "treadle-bank.params.length has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:treadle-bank:params.spread",
+      "status": "pass",
+      "message": "treadle-bank.params.spread has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:treadle-bank:params.width",
+      "status": "pass",
+      "message": "treadle-bank.params.width has dimension provenance.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:joint.limits.0",
+      "status": "pass",
+      "message": "warp-shed.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:joint.limits.1",
+      "status": "pass",
+      "message": "warp-shed.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:params.count",
+      "status": "pass",
+      "message": "warp-shed.params.count has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:params.indexOffset",
+      "status": "pass",
+      "message": "warp-shed.params.indexOffset has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:params.indexStep",
+      "status": "pass",
+      "message": "warp-shed.params.indexStep has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:params.length",
+      "status": "pass",
+      "message": "warp-shed.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:params.radius",
+      "status": "pass",
+      "message": "warp-shed.params.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:params.spread",
+      "status": "pass",
+      "message": "warp-shed.params.spread has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed:params.totalCount",
+      "status": "pass",
+      "message": "warp-shed.params.totalCount has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:joint.limits.0",
+      "status": "pass",
+      "message": "warp-shed-odd.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:joint.limits.1",
+      "status": "pass",
+      "message": "warp-shed-odd.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:params.count",
+      "status": "pass",
+      "message": "warp-shed-odd.params.count has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:params.indexOffset",
+      "status": "pass",
+      "message": "warp-shed-odd.params.indexOffset has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:params.indexStep",
+      "status": "pass",
+      "message": "warp-shed-odd.params.indexStep has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:params.length",
+      "status": "pass",
+      "message": "warp-shed-odd.params.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:params.radius",
+      "status": "pass",
+      "message": "warp-shed-odd.params.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:params.spread",
+      "status": "pass",
+      "message": "warp-shed-odd.params.spread has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:warp-shed-odd:params.totalCount",
+      "status": "pass",
+      "message": "warp-shed-odd.params.totalCount has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:woven-cloth:size.0",
+      "status": "pass",
+      "message": "woven-cloth.size.0 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:woven-cloth:size.1",
+      "status": "pass",
+      "message": "woven-cloth.size.1 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:woven-cloth:size.2",
+      "status": "pass",
+      "message": "woven-cloth.size.2 has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:beater:joint.limits.0",
+      "status": "pass",
+      "message": "beater.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:beater:joint.limits.1",
+      "status": "pass",
+      "message": "beater.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:beater:length",
+      "status": "pass",
+      "message": "beater.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:beater:width",
+      "status": "pass",
+      "message": "beater.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:shuttle:joint.limits.0",
+      "status": "pass",
+      "message": "shuttle.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:shuttle:joint.limits.1",
+      "status": "pass",
+      "message": "shuttle.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:shuttle:size.0",
+      "status": "pass",
+      "message": "shuttle.size.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:shuttle:size.1",
+      "status": "pass",
+      "message": "shuttle.size.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:shuttle:size.2",
+      "status": "pass",
+      "message": "shuttle.size.2 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:single-hook:joint.limits.0",
+      "status": "pass",
+      "message": "single-hook.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:single-hook:joint.limits.1",
+      "status": "pass",
+      "message": "single-hook.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:single-hook:length",
+      "status": "pass",
+      "message": "single-hook.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:single-hook:width",
+      "status": "pass",
+      "message": "single-hook.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:weft-counter:length",
+      "status": "pass",
+      "message": "weft-counter.length has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:weft-counter:radius",
+      "status": "pass",
+      "message": "weft-counter.radius has dimension provenance.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-0:length",
+      "status": "pass",
+      "message": "selector-cam-0.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-0:radius",
+      "status": "pass",
+      "message": "selector-cam-0.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-1:length",
+      "status": "pass",
+      "message": "selector-cam-1.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-1:radius",
+      "status": "pass",
+      "message": "selector-cam-1.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-2:length",
+      "status": "pass",
+      "message": "selector-cam-2.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-2:radius",
+      "status": "pass",
+      "message": "selector-cam-2.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-3:length",
+      "status": "pass",
+      "message": "selector-cam-3.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-3:radius",
+      "status": "pass",
+      "message": "selector-cam-3.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-4:length",
+      "status": "pass",
+      "message": "selector-cam-4.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-4:radius",
+      "status": "pass",
+      "message": "selector-cam-4.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-5:length",
+      "status": "pass",
+      "message": "selector-cam-5.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-5:radius",
+      "status": "pass",
+      "message": "selector-cam-5.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-6:length",
+      "status": "pass",
+      "message": "selector-cam-6.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-6:radius",
+      "status": "pass",
+      "message": "selector-cam-6.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-7:length",
+      "status": "pass",
+      "message": "selector-cam-7.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:selector-cam-7:radius",
+      "status": "pass",
+      "message": "selector-cam-7.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-0:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-0:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-0:length",
+      "status": "pass",
+      "message": "heddle-0.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-0:width",
+      "status": "pass",
+      "message": "heddle-0.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-1:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-1:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-1:length",
+      "status": "pass",
+      "message": "heddle-1.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-1:width",
+      "status": "pass",
+      "message": "heddle-1.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-2:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-2:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-2:length",
+      "status": "pass",
+      "message": "heddle-2.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-2:width",
+      "status": "pass",
+      "message": "heddle-2.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-3:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-3:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-3:length",
+      "status": "pass",
+      "message": "heddle-3.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-3:width",
+      "status": "pass",
+      "message": "heddle-3.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-4:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-4:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-4:length",
+      "status": "pass",
+      "message": "heddle-4.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-4:width",
+      "status": "pass",
+      "message": "heddle-4.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-5:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-5:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-5:length",
+      "status": "pass",
+      "message": "heddle-5.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-5:width",
+      "status": "pass",
+      "message": "heddle-5.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-6:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-6:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-6:length",
+      "status": "pass",
+      "message": "heddle-6.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-6:width",
+      "status": "pass",
+      "message": "heddle-6.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-7:joint.limits.0",
+      "status": "pass",
+      "message": "heddle-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-7:joint.limits.1",
+      "status": "pass",
+      "message": "heddle-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-7:length",
+      "status": "pass",
+      "message": "heddle-7.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:heddle-7:width",
+      "status": "pass",
+      "message": "heddle-7.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:linkage-crank:length",
+      "status": "pass",
+      "message": "linkage-crank.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:linkage-crank:radius",
+      "status": "pass",
+      "message": "linkage-crank.radius has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:linkage-bar-low:length",
+      "status": "pass",
+      "message": "linkage-bar-low.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:linkage-bar-low:width",
+      "status": "pass",
+      "message": "linkage-bar-low.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:linkage-bar-high:joint.limits.0",
+      "status": "pass",
+      "message": "linkage-bar-high.joint.limits.0 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:linkage-bar-high:joint.limits.1",
+      "status": "pass",
+      "message": "linkage-bar-high.joint.limits.1 has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:linkage-bar-high:length",
+      "status": "pass",
+      "message": "linkage-bar-high.length has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:dimension:linkage-bar-high:width",
+      "status": "pass",
+      "message": "linkage-bar-high.width has dimension provenance.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:data-dimension:5",
+      "status": "pass",
+      "message": "Data dimension 5 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:data-dimension:6",
+      "status": "pass",
+      "message": "Data dimension 6 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:data-dimension:7",
+      "status": "pass",
+      "message": "Data dimension 7 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:provenance:data-dimension:8",
+      "status": "pass",
+      "message": "Data dimension 8 resolves source kaogu-laoguanshan.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:integrity:constraint:1:provenance",
+      "status": "pass",
+      "message": "Constraint 1 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "linkage:integrity:constraint:2:provenance",
+      "status": "pass",
+      "message": "Constraint 2 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "linkage:integrity:constraint:3:provenance",
+      "status": "pass",
+      "message": "Constraint 3 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "linkage:integrity:constraint:4:provenance",
+      "status": "pass",
+      "message": "Constraint 4 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "linkage:integrity:constraint:5:provenance",
+      "status": "pass",
+      "message": "Constraint 5 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "linkage:integrity:constraint:6:provenance",
+      "status": "pass",
+      "message": "Constraint 6 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "linkage:integrity:constraint:7:provenance",
+      "status": "pass",
+      "message": "Constraint 7 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "linkage:integrity:constraint:8:provenance",
+      "status": "pass",
+      "message": "Constraint 8 has valid provenance.",
+      "sourceRef": "eight-heddle simplification"
+    },
+    {
+      "id": "linkage:integrity:constraint:9:provenance",
+      "status": "pass",
+      "message": "Constraint 9 has valid provenance.",
+      "sourceRef": "single-hook selector"
+    },
+    {
+      "id": "linkage:integrity:constraint:10:provenance",
+      "status": "pass",
+      "message": "Constraint 10 has valid provenance.",
+      "sourceRef": "weaving sequence"
+    },
+    {
+      "id": "linkage:integrity:constraint:11:provenance",
+      "status": "pass",
+      "message": "Constraint 11 has valid provenance.",
+      "sourceRef": "weaving shed"
+    },
+    {
+      "id": "linkage:integrity:constraint:12:provenance",
+      "status": "pass",
+      "message": "Constraint 12 has valid provenance.",
+      "sourceRef": "weaving shed"
+    },
+    {
+      "id": "linkage:integrity:constraint:13:provenance",
+      "status": "pass",
+      "message": "Constraint 13 has valid provenance.",
+      "sourceRef": "linkage program"
+    },
+    {
+      "id": "linkage:integrity:constraint:14:provenance",
+      "status": "pass",
+      "message": "Constraint 14 has valid provenance.",
+      "sourceRef": "linkage program"
+    },
+    {
+      "id": "linkage:integrity:constraint:15:provenance",
+      "status": "pass",
+      "message": "Constraint 15 has valid provenance.",
+      "sourceRef": "linkage program"
+    },
+    {
+      "id": "linkage:integrity:constraint:16:provenance",
+      "status": "pass",
+      "message": "Constraint 16 has valid provenance.",
+      "sourceRef": "linkage program"
+    },
+    {
+      "id": "linkage:integrity:constraint:17:provenance",
+      "status": "pass",
+      "message": "Constraint 17 has valid provenance.",
+      "sourceRef": "linkage program"
+    },
+    {
+      "id": "linkage:integrity:constraint:18:provenance",
+      "status": "pass",
+      "message": "Constraint 18 has valid provenance.",
+      "sourceRef": "linkage program"
+    },
+    {
+      "id": "linkage:integrity:constraint:19:provenance",
+      "status": "pass",
+      "message": "Constraint 19 has valid provenance.",
+      "sourceRef": "linkage program"
+    },
+    {
+      "id": "linkage:integrity:constraint:22:provenance",
+      "status": "pass",
+      "message": "Constraint 22 has valid provenance.",
+      "sourceRef": "linkage selector"
+    },
+    {
+      "id": "linkage:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "linkage:integrity:mechanism:specific",
+      "status": "pass",
+      "message": "Mechanism exposes a machine-specific trigger."
+    },
+    {
+      "id": "linkage:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "linkage:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "linkage:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "linkage:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "linkage:integrity:mechanism:trigger:reorder-heddles",
+      "status": "pass",
+      "message": "Trigger reorder-heddles runs on a fresh graph."
+    },
+    {
+      "id": "linkage:integrity:mechanism:trigger:weft-insertion",
+      "status": "pass",
+      "message": "Trigger weft-insertion runs on a fresh graph."
+    },
+    {
+      "id": "linkage:integrity:image:1:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "linkage:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/loom/1.jpg exists."
+    },
+    {
+      "id": "linkage:integrity:image:2:linkout",
+      "status": "pass",
+      "message": "Linkout image has no local file."
+    },
+    {
+      "id": "linkage:integrity:image:3:linkout",
+      "status": "pass",
+      "message": "Linkout image has no local file."
+    },
+    {
+      "id": "linkage:integrity:snapshot:xijingzaji-loom",
+      "status": "pass",
+      "message": "Source snapshot xijingzaji-loom verifies its source.",
+      "sourceRef": "xijingzaji-loom"
+    },
+    {
+      "id": "linkage:integrity:snapshot:sgz-majun-loom",
+      "status": "pass",
+      "message": "Source snapshot sgz-majun-loom verifies its source.",
+      "sourceRef": "sgz-majun-loom"
+    },
+    {
+      "id": "linkage:integrity:snapshot:kaogu-laoguanshan",
+      "status": "pass",
+      "message": "Source snapshot kaogu-laoguanshan verifies its source.",
+      "sourceRef": "kaogu-laoguanshan"
+    },
+    {
+      "id": "linkage:range:warp-shed",
+      "status": "pass",
+      "message": "Joint warp-shed remains within [0, 0.025] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:warp-shed-odd",
+      "status": "pass",
+      "message": "Joint warp-shed-odd remains within [0, 0.025] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:beater",
+      "status": "pass",
+      "message": "Joint beater remains within [0, 0.15] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:shuttle",
+      "status": "pass",
+      "message": "Joint shuttle remains within [-0.12, 0.12] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:single-hook",
+      "status": "pass",
+      "message": "Joint single-hook remains within [0, 0.02] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:heddle-0",
+      "status": "pass",
+      "message": "Joint heddle-0 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:heddle-1",
+      "status": "pass",
+      "message": "Joint heddle-1 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:heddle-2",
+      "status": "pass",
+      "message": "Joint heddle-2 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:heddle-3",
+      "status": "pass",
+      "message": "Joint heddle-3 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:heddle-4",
+      "status": "pass",
+      "message": "Joint heddle-4 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:heddle-5",
+      "status": "pass",
+      "message": "Joint heddle-5 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:heddle-6",
+      "status": "pass",
+      "message": "Joint heddle-6 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:heddle-7",
+      "status": "pass",
+      "message": "Joint heddle-7 remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:range:linkage-bar-high",
+      "status": "pass",
+      "message": "Joint linkage-bar-high remains within [0, 0.05] over the sampled cycle."
+    },
+    {
+      "id": "linkage:collision:whitelist:warp-shed:woven-cloth",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed/woven-cloth intersects during its complete motion sweep."
+    },
+    {
+      "id": "linkage:collision:whitelist:warp-shed-odd:heddle-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "linkage:collision:whitelist:warp-shed-odd:heddle-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "linkage:collision:whitelist:warp-shed-odd:heddle-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "linkage:collision:whitelist:warp-shed-odd:heddle-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "linkage:collision:whitelist:warp-shed-odd:heddle-6",
+      "status": "pass",
+      "message": "Whitelisted contact pair warp-shed-odd/heddle-6 intersects during its complete motion sweep."
+    },
+    {
+      "id": "linkage:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    }
+  ],
+  "summary": {
+    "pass": 585,
+    "fail": 0,
+    "warn": 0,
+    "resolutionDeg": 0.5
+  }
+}

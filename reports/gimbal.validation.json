@@ -1,0 +1,315 @@
+{
+  "slug": "gimbal",
+  "when": "2026-07-18T14:32:22.747Z",
+  "checks": [
+    {
+      "id": "base:provenance:part:display-base",
+      "status": "pass",
+      "message": "Part display-base has valid provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:part:hanger-post",
+      "status": "pass",
+      "message": "Part hanger-post has valid provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:part:hanger-arm",
+      "status": "pass",
+      "message": "Part hanger-arm has valid provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:part:suspension-chain",
+      "status": "pass",
+      "message": "Part suspension-chain has valid provenance.",
+      "sourceRef": "sxhm-hejiacun"
+    },
+    {
+      "id": "base:provenance:part:outer-shell",
+      "status": "pass",
+      "message": "Part outer-shell has valid provenance.",
+      "sourceRef": "sxhm-hejiacun"
+    },
+    {
+      "id": "base:provenance:part:outer-ring",
+      "status": "pass",
+      "message": "Part outer-ring has valid provenance.",
+      "sourceRef": "xijingzaji-dinghuan"
+    },
+    {
+      "id": "base:provenance:part:inner-ring",
+      "status": "pass",
+      "message": "Part inner-ring has valid provenance.",
+      "sourceRef": "xijingzaji-dinghuan"
+    },
+    {
+      "id": "base:provenance:part:incense-bowl",
+      "status": "pass",
+      "message": "Part incense-bowl has valid provenance.",
+      "sourceRef": "bttc-hejiacun-bowl"
+    },
+    {
+      "id": "base:provenance:part:flame",
+      "status": "pass",
+      "message": "Part flame has valid provenance.",
+      "sourceRef": "demo-flame"
+    },
+    {
+      "id": "base:provenance:dimension:display-base:size.0",
+      "status": "pass",
+      "message": "display-base.size.0 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:display-base:size.1",
+      "status": "pass",
+      "message": "display-base.size.1 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:display-base:size.2",
+      "status": "pass",
+      "message": "display-base.size.2 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:hanger-post:size.0",
+      "status": "pass",
+      "message": "hanger-post.size.0 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:hanger-post:size.1",
+      "status": "pass",
+      "message": "hanger-post.size.1 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:hanger-post:size.2",
+      "status": "pass",
+      "message": "hanger-post.size.2 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:hanger-arm:size.0",
+      "status": "pass",
+      "message": "hanger-arm.size.0 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:hanger-arm:size.1",
+      "status": "pass",
+      "message": "hanger-arm.size.1 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:hanger-arm:size.2",
+      "status": "pass",
+      "message": "hanger-arm.size.2 has dimension provenance.",
+      "sourceRef": "display-support"
+    },
+    {
+      "id": "base:provenance:dimension:suspension-chain:length",
+      "status": "pass",
+      "message": "suspension-chain.length has dimension provenance.",
+      "sourceRef": "sxhm-hejiacun"
+    },
+    {
+      "id": "base:provenance:dimension:suspension-chain:width",
+      "status": "pass",
+      "message": "suspension-chain.width has dimension provenance.",
+      "sourceRef": "chain-link-section"
+    },
+    {
+      "id": "base:provenance:dimension:outer-shell:params.radius",
+      "status": "pass",
+      "message": "outer-shell.params.radius has dimension provenance.",
+      "sourceRef": "sxhm-hejiacun"
+    },
+    {
+      "id": "base:provenance:dimension:outer-ring:radius",
+      "status": "pass",
+      "message": "outer-ring.radius has dimension provenance.",
+      "sourceRef": "gimbal-ring-clearance"
+    },
+    {
+      "id": "base:provenance:dimension:outer-ring:tube",
+      "status": "pass",
+      "message": "outer-ring.tube has dimension provenance.",
+      "sourceRef": "gimbal-ring-clearance"
+    },
+    {
+      "id": "base:provenance:dimension:inner-ring:params.radius",
+      "status": "pass",
+      "message": "inner-ring.params.radius has dimension provenance.",
+      "sourceRef": "gimbal-ring-clearance"
+    },
+    {
+      "id": "base:provenance:dimension:inner-ring:params.tube",
+      "status": "pass",
+      "message": "inner-ring.params.tube has dimension provenance.",
+      "sourceRef": "gimbal-ring-clearance"
+    },
+    {
+      "id": "base:provenance:dimension:incense-bowl:params.baseRadius",
+      "status": "pass",
+      "message": "incense-bowl.params.baseRadius has dimension provenance.",
+      "sourceRef": "bowl-profile"
+    },
+    {
+      "id": "base:provenance:dimension:incense-bowl:params.depth",
+      "status": "pass",
+      "message": "incense-bowl.params.depth has dimension provenance.",
+      "sourceRef": "bowl-profile"
+    },
+    {
+      "id": "base:provenance:dimension:incense-bowl:params.radius",
+      "status": "pass",
+      "message": "incense-bowl.params.radius has dimension provenance.",
+      "sourceRef": "bttc-hejiacun-bowl"
+    },
+    {
+      "id": "base:provenance:dimension:flame:params.height",
+      "status": "pass",
+      "message": "flame.params.height has dimension provenance.",
+      "sourceRef": "demo-flame"
+    },
+    {
+      "id": "base:provenance:dimension:flame:params.radius",
+      "status": "pass",
+      "message": "flame.params.radius has dimension provenance.",
+      "sourceRef": "demo-flame"
+    },
+    {
+      "id": "base:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source sxhm-hejiacun.",
+      "sourceRef": "sxhm-hejiacun"
+    },
+    {
+      "id": "base:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source bttc-hejiacun-bowl.",
+      "sourceRef": "bttc-hejiacun-bowl"
+    },
+    {
+      "id": "base:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source sxhm-hejiacun.",
+      "sourceRef": "sxhm-hejiacun"
+    },
+    {
+      "id": "base:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source chnmuseum-famen.",
+      "sourceRef": "chnmuseum-famen"
+    },
+    {
+      "id": "base:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "base:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:drive:outer-shell",
+      "status": "pass",
+      "message": "Trigger drive:outer-shell runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/gimbal/1.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:2:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/gimbal/2.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:3:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/gimbal/3.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:4:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/gimbal/4.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:5:linkout",
+      "status": "pass",
+      "message": "Linkout image has no local file."
+    },
+    {
+      "id": "base:integrity:snapshot:xijingzaji-dinghuan",
+      "status": "pass",
+      "message": "Source snapshot xijingzaji-dinghuan verifies its source.",
+      "sourceRef": "xijingzaji-dinghuan"
+    },
+    {
+      "id": "base:integrity:snapshot:sxhm-hejiacun",
+      "status": "pass",
+      "message": "Source snapshot sxhm-hejiacun verifies its source.",
+      "sourceRef": "sxhm-hejiacun"
+    },
+    {
+      "id": "base:integrity:snapshot:bttc-hejiacun-bowl",
+      "status": "pass",
+      "message": "Source snapshot bttc-hejiacun-bowl verifies its source.",
+      "sourceRef": "bttc-hejiacun-bowl"
+    },
+    {
+      "id": "base:integrity:snapshot:chnmuseum-famen",
+      "status": "pass",
+      "message": "Source snapshot chnmuseum-famen verifies its source.",
+      "sourceRef": "chnmuseum-famen"
+    },
+    {
+      "id": "base:collision:whitelist:hanger-arm:suspension-chain",
+      "status": "pass",
+      "message": "Whitelisted contact pair hanger-arm/suspension-chain intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    }
+  ],
+  "summary": {
+    "pass": 53,
+    "fail": 0,
+    "warn": 0,
+    "resolutionDeg": 0.5
+  }
+}

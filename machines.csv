@@ -1,0 +1,11 @@
+slug,tier,schemes,notes,status
+astroclock,S,"fixed-scoop|combridge-hinged",escapement state machine + five-tier chime,DONE
+seismoscope,S,"wangzhenduo|fengrui",the dual schemes are the soul,DONE
+chariot,S,"yansu-clutch|lanchester-diff",golden tooth-count data,DONE
+odometer,A,"ludaolong",golden ratios 1/100 and 1/1000,DONE
+wooden-ox,A,"wheelbarrow|walker",open reconstruction, dual schemes,DONE
+loom,A,"sliding-frame|linkage",sliding-frame/linkage dual schemes,DONE
+typecase,B,"",revolving case + movable-type process,DONE
+chainpump,B,"",chain drive,DONE
+bellows,B,"",crank & connecting rod,DONE
+gimbal,B,"",gimbal suspension,DONE

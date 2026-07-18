@@ -297,3 +297,52 @@ Two independent skeptic rounds exercised philology, schema cardinality, receipt 
 ### Next action
 
 Create the four scoped Phase 2 commits, tag `wave-2`, then start the Phase 3 ten-machine fan-out in bounded ownership batches.
+
+## Phase 3 Complete — Ten Reborn Machines
+
+### Route
+
+Full route with wave fan-out, root integration, focused repair rounds, rendered browser verification, and independent final skeptics for the load-bearing Typecase, Chainpump, Bellows, and Gimbal fixes.
+
+### Scope
+
+Deliver all ten parametric machine modules, reconstruction schemes, sourced ratios, mechanisms, deterministic motion/collision reports, and the permanent strict-manifest CI transition.
+
+### Findings
+
+- Typecase needed a real GPU `InstancedMesh` rather than merged boxes, plus a persistent five-stage printing stepper with exact source text.
+- Chainpump phase must advance by `rθ/P`; one sprocket revolution moves `2πr`, not one pallet pitch. Runtime instances now update individually while collision validation expands them only transiently.
+- Bellows requires visible perpendicular cord spans and exact rocker geometry `-asin(s/L)` throughout the stroke, not endpoint-fitted scalar motion.
+- Gimbal leveling depends on a nested shell/ring/bowl hierarchy and attitude-quaternion counter-rotation.
+- The poison harness initialized its shared provenance after top-level needle execution; moving that constant before execution removed the TDZ crash.
+- The demo e2e test sampled a transient caption and could miss it after a fast completion. Recording the full caption sequence now proves highlight precedes done without a timing race.
+
+### Changes
+
+- Added all ten `src/machines/<slug>` modules and ten machine test suites.
+- Extended the solver/viewer/validator for scheme overlays, stateful mechanisms, attitude drives, dynamic instance matrices, custom material overrides, and instance-aware collision bounds.
+- Added `machines.csv` with ten `DONE` rows, strict CI (`VALIDATE_FLAGS: ""`), final reports, and GATE-3 poison evidence in `docs/SUBMISSION_NOTES.md`.
+
+### Verification
+
+- G3.1: `pnpm test -- tests/machines` and final `pnpm test` → 15 files, 151 tests passed; `pnpm exec tsc --noEmit` → exit 0.
+- G3.2: restored strict `pnpm validate` → exit 0; all ten reports have zero fail/warn. Nine resolve at approximately 0.5°, while the explicitly capped Odometer report resolves at 1.89°.
+- G3.3: Astroclock, Chariot, Loom, Seismoscope, and Wooden Ox each report base plus both named scheme sections with no non-pass checks.
+- G3.4: 31 ratio checks passed; zero failed and zero lacked a source reference.
+- G3.5: saved browser evidence covers all ten routes. Final repaired-path checks proved Typecase ordering/reset/spotlight, Chainpump crank-sprocket-chain lockstep, Bellows full 0.48 m linkage stroke, Gimbal 10° shell attitude with level bowl, and the complete Chariot drive/three-part/explode/assemble/reset/spotlight surface. Browser console errors were limited to missing `favicon.ico`.
+- G3.6: CI now has `VALIDATE_FLAGS: ""`; local CI-equivalent checks are green. `pnpm build` exits 0 with first-route gzip 338.56 KB; `pnpm e2e` passes 3/3.
+- G3.7: corrected `pnpm poison` prints four `caught by the validator ✓` lines. The manual 48→47 Chariot needle made strict validation exit 1 with 12 failures; restoring 48 returned strict validation to exit 0.
+- G3.8: `machines.csv` records all ten rows as `DONE`; every worker/skeptic concern was addressed and the four final independent reviews returned `PASS`.
+
+### Adversarial gate
+
+Independent final reviews found no remaining concrete defect in Typecase instancing/process flow, Chainpump phase/instances/water/collision truth, Bellows cord/linkage/provenance, or Gimbal hierarchy/stabilization.
+
+### Unresolved risks
+
+- CI has been reproduced locally but cannot be observed remotely until the commit is pushed.
+- The only browser console error is the pre-existing missing `favicon.ico`; it does not affect the acceptance surfaces.
+
+### Next action
+
+Commit the integrated Phase 3 wave, tag `wave-3`, then begin Phase 4 docent, compare-mode, and interaction-completeness work.

@@ -1,0 +1,718 @@
+[
+  {
+    "id": "chassis-pivot",
+    "name": { "zh": "车架转轴", "en": "Chassis pivot" },
+    "geometry": { "type": "shaft", "radius": 0.06, "length": 0.18 },
+    "material": "iron",
+    "position": [0, 0.3, 0],
+    "explodeVector": [0, -0.8, 0],
+    "assemblyStep": 0,
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-turn",
+      "note": "Pivot abstraction used to verify the described heading correction."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-turn",
+        "note": "Pivot dimensions are visualization assumptions."
+      }
+    },
+    "interactive": true
+  },
+  {
+    "id": "chassis-spine",
+    "name": { "zh": "车架纵梁", "en": "Chassis spine" },
+    "geometry": { "type": "beam", "size": [2.4, 0.14, 0.16] },
+    "material": "wood",
+    "position": [0, 0.32, 0],
+    "explodeVector": [0, -0.7, 0],
+    "assemblyStep": 0,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Structural placement inferred from the single-shaft cart description."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-yansu",
+        "note": "Beam dimensions are visualization assumptions."
+      }
+    }
+  },
+  {
+    "id": "chassis-front-crossbar",
+    "name": { "zh": "前横梁", "en": "Front crossbar" },
+    "geometry": { "type": "beam", "size": [0.14, 0.14, 1.42] },
+    "material": "wood",
+    "position": [0.68, 0.15, 0],
+    "explodeVector": [0.7, 0, 0],
+    "assemblyStep": 0,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Crossbar placement and dimensions are structural inferences."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "chassis-rear-crossbar",
+    "name": { "zh": "后横梁", "en": "Rear crossbar" },
+    "geometry": { "type": "beam", "size": [0.14, 0.14, 1.42] },
+    "material": "wood",
+    "position": [-0.68, 0.15, 0],
+    "explodeVector": [-0.7, 0, 0],
+    "assemblyStep": 0,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Crossbar placement and dimensions are structural inferences."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "platform",
+    "name": { "zh": "车台", "en": "Platform" },
+    "geometry": { "type": "box", "size": [1.72, 0.12, 1.28] },
+    "material": "wood",
+    "position": [0, 0.48, 0],
+    "explodeVector": [0, 0.8, 0],
+    "assemblyStep": 1,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Platform form is inferred to support the documented mechanism."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "drawbar",
+    "name": { "zh": "独辕", "en": "Single drawbar" },
+    "geometry": { "type": "beam", "size": [2.15, 0.11, 0.11] },
+    "material": "wood",
+    "position": [1.82, -0.02, 0],
+    "explodeVector": [1.1, 0, 0],
+    "assemblyStep": 1,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-yansu",
+        "note": "The text specifies a single drawbar but not its dimensions."
+      }
+    }
+  },
+  {
+    "id": "left-road-wheel",
+    "name": { "zh": "左车轮", "en": "Left road wheel" },
+    "geometry": {
+      "type": "wheel",
+      "radius": 0.936,
+      "width": 0.12,
+      "spokes": 16
+    },
+    "material": "wood",
+    "position": [0, 0.636, -0.78],
+    "explodeVector": [0, 0, -1],
+    "assemblyStep": 2,
+    "parent": "chassis-pivot",
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Half of the documented 1.872 m road-wheel diameter."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-yansu",
+        "note": "Width and spoke count are visualization assumptions."
+      }
+    },
+    "interactive": true
+  },
+  {
+    "id": "right-road-wheel",
+    "name": { "zh": "右车轮", "en": "Right road wheel" },
+    "geometry": {
+      "type": "wheel",
+      "radius": 0.936,
+      "width": 0.12,
+      "spokes": 16
+    },
+    "material": "wood",
+    "position": [0, 0.636, 0.78],
+    "explodeVector": [0, 0, 1],
+    "assemblyStep": 2,
+    "parent": "chassis-pivot",
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Half of the documented 1.872 m road-wheel diameter."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-yansu",
+        "note": "Width and spoke count are visualization assumptions."
+      }
+    },
+    "interactive": true
+  },
+  {
+    "id": "left-road-axle",
+    "name": { "zh": "左轮轴", "en": "Left road axle" },
+    "geometry": { "type": "shaft", "radius": 0.055, "length": 0.68 },
+    "material": "wood",
+    "position": [0, 0.636, -0.37],
+    "explodeVector": [0, 0, -0.7],
+    "assemblyStep": 1,
+    "parent": "chassis-pivot",
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Axle dimensions and placement are engineering inferences."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "right-road-axle",
+    "name": { "zh": "右轮轴", "en": "Right road axle" },
+    "geometry": { "type": "shaft", "radius": 0.055, "length": 0.68 },
+    "material": "wood",
+    "position": [0, 0.636, 0.37],
+    "explodeVector": [0, 0, 0.7],
+    "assemblyStep": 1,
+    "parent": "chassis-pivot",
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Axle dimensions and placement are engineering inferences."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "left-upright-wheel",
+    "name": { "zh": "左立小轮", "en": "Left upright wheel" },
+    "geometry": {
+      "type": "wheel",
+      "radius": 0.0468,
+      "width": 0.035,
+      "spokes": 4
+    },
+    "material": "wood",
+    "position": [0.78, 0.63, -0.35],
+    "explodeVector": [0, 0, -0.6],
+    "assemblyStep": 2,
+    "parent": "chassis-pivot",
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Half of the recorded three-cun diameter."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-yansu",
+        "note": "Width, spoke count, and placement are reconstruction choices."
+      }
+    }
+  },
+  {
+    "id": "right-upright-wheel",
+    "name": { "zh": "右立小轮", "en": "Right upright wheel" },
+    "geometry": {
+      "type": "wheel",
+      "radius": 0.0468,
+      "width": 0.035,
+      "spokes": 4
+    },
+    "material": "wood",
+    "position": [0.78, 0.63, 0.35],
+    "explodeVector": [0, 0, 0.6],
+    "assemblyStep": 2,
+    "parent": "chassis-pivot",
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Half of the recorded three-cun diameter."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-yansu",
+        "note": "Width, spoke count, and placement are reconstruction choices."
+      }
+    }
+  },
+  {
+    "id": "left-sub-wheel",
+    "name": { "zh": "左子轮", "en": "Left sub-wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.0312083333333333,
+      "teeth": 24,
+      "thickness": 0.08,
+      "toothStyle": "pin"
+    },
+    "material": "wood",
+    "position": [-1.50062, 2.4, 0],
+    "explodeVector": [-0.7, 0.3, 0],
+    "assemblyStep": 4,
+    "parent": "chassis-pivot",
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "module": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Derived as 0.749 m pitch diameter divided by 24 teeth."
+      },
+      "teeth": { "kind": "wenxian", "ref": "songshi-yansu" },
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "right-sub-wheel",
+    "name": { "zh": "右子轮", "en": "Right sub-wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.0312083333333333,
+      "teeth": 24,
+      "thickness": 0.08,
+      "toothStyle": "pin"
+    },
+    "material": "wood",
+    "position": [1.50062, 2.4, 0],
+    "explodeVector": [0.7, 0.3, 0],
+    "assemblyStep": 4,
+    "parent": "chassis-pivot",
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "module": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Derived as 0.749 m pitch diameter divided by 24 teeth."
+      },
+      "teeth": { "kind": "wenxian", "ref": "songshi-yansu" },
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "left-small-wheel",
+    "name": { "zh": "左小平轮", "en": "Left small horizontal wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.0311666666666667,
+      "teeth": 12,
+      "thickness": 0.065,
+      "toothStyle": "pin"
+    },
+    "material": "wood",
+    "position": [-0.93756, 2.4, 0],
+    "explodeVector": [-0.5, 0.5, 0],
+    "assemblyStep": 5,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "module": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Derived as 0.374 m pitch diameter divided by 12 teeth."
+      },
+      "teeth": { "kind": "wenxian", "ref": "songshi-yansu" },
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "right-small-wheel",
+    "name": { "zh": "右小平轮", "en": "Right small horizontal wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.0311666666666667,
+      "teeth": 12,
+      "thickness": 0.065,
+      "toothStyle": "pin"
+    },
+    "material": "wood",
+    "position": [0.93756, 2.4, 0],
+    "explodeVector": [0.5, 0.5, 0],
+    "assemblyStep": 5,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "module": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Derived as 0.374 m pitch diameter divided by 12 teeth."
+      },
+      "teeth": { "kind": "wenxian", "ref": "songshi-yansu" },
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "great-wheel",
+    "name": { "zh": "中心大平轮", "en": "Central great wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.0312083333333333,
+      "teeth": 48,
+      "thickness": 0.1,
+      "toothStyle": "pin"
+    },
+    "material": "wood",
+    "position": [0, 2.4, 0],
+    "explodeVector": [0, 0.8, 0],
+    "assemblyStep": 6,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "module": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Derived as 1.498 m pitch diameter divided by 48 teeth."
+      },
+      "teeth": { "kind": "wenxian", "ref": "songshi-yansu" },
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    },
+    "interactive": true
+  },
+  {
+    "id": "central-shaft",
+    "name": { "zh": "中心立轴", "en": "Central vertical shaft" },
+    "geometry": { "type": "shaft", "radius": 0.0468, "length": 2.496 },
+    "material": "wood",
+    "position": [-0.22, 0.83, 0],
+    "explodeVector": [0, 0.8, 0],
+    "assemblyStep": 3,
+    "parent": "chassis-spine",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-yansu" },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "wenxian",
+        "ref": "songshi-yansu",
+        "note": "Half of the recorded three-cun shaft diameter."
+      },
+      "length": { "kind": "wenxian", "ref": "songshi-yansu" },
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "figure-turntable",
+    "name": { "zh": "木人转台", "en": "Figure turntable" },
+    "geometry": { "type": "wheel", "radius": 0.22, "width": 0.06, "spokes": 8 },
+    "material": "wood",
+    "position": [-0.22, 2.52, 0],
+    "explodeVector": [0, 0.8, 0],
+    "assemblyStep": 9,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-turn",
+      "note": "Kinematic turntable represents the text's corrected wooden figure."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-turn" }
+    }
+  },
+  {
+    "id": "south-figure-body",
+    "name": { "zh": "木人躯干", "en": "Wooden figure body" },
+    "geometry": { "type": "beam", "size": [0.22, 0.72, 0.18] },
+    "material": "wood",
+    "position": [0, 0.34, 0],
+    "explodeVector": [0, 0.5, 0],
+    "assemblyStep": 10,
+    "parent": "figure-turntable",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-turn" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-turn",
+        "note": "The text records the figure but gives no body dimensions."
+      }
+    }
+  },
+  {
+    "id": "south-figure-head",
+    "name": { "zh": "木人头部", "en": "Wooden figure head" },
+    "geometry": { "type": "shell", "radius": 0.14, "cutaway": false },
+    "material": "wood",
+    "position": [0, 0.52, 0],
+    "explodeVector": [0, 0.6, 0],
+    "assemblyStep": 11,
+    "parent": "south-figure-body",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-turn",
+      "note": "Head form and dimensions are visualization assumptions."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-turn" }
+    }
+  },
+  {
+    "id": "south-figure-left-arm",
+    "name": { "zh": "木人左臂", "en": "Wooden figure left arm" },
+    "geometry": { "type": "beam", "size": [0.48, 0.08, 0.08] },
+    "material": "wood",
+    "position": [0.2, 0.14, -0.16],
+    "explodeVector": [0, 0, -0.5],
+    "assemblyStep": 11,
+    "parent": "south-figure-body",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-turn",
+      "note": "Arm form and dimensions are visualization assumptions."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-turn" }
+    }
+  },
+  {
+    "id": "south-figure-right-arm",
+    "name": { "zh": "木人右臂", "en": "Wooden figure right arm" },
+    "geometry": { "type": "beam", "size": [0.48, 0.08, 0.08] },
+    "material": "wood",
+    "position": [0.2, 0.14, 0.16],
+    "explodeVector": [0, 0, 0.5],
+    "assemblyStep": 11,
+    "parent": "south-figure-body",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-turn",
+      "note": "Arm form and dimensions are visualization assumptions."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-turn" }
+    }
+  },
+  {
+    "id": "south-pointer",
+    "name": { "zh": "指南臂", "en": "South-pointing arm" },
+    "geometry": { "type": "beam", "size": [0.92, 0.06, 0.06] },
+    "material": "wood",
+    "position": [0.62, 0.14, 0],
+    "explodeVector": [0.8, 0, 0],
+    "assemblyStep": 11,
+    "parent": "south-figure-body",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-turn" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-turn",
+        "note": "The pointing function is textual; arm dimensions are inferred."
+      }
+    }
+  },
+  {
+    "id": "left-clutch-dog",
+    "name": { "zh": "左离合齿", "en": "Left clutch dog" },
+    "geometry": { "type": "box", "size": [0.16, 0.12, 0.1] },
+    "material": "iron",
+    "position": [0.18, 2.25, -0.42],
+    "explodeVector": [0, 0, -0.5],
+    "assemblyStep": 7,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "prismatic", "axis": [0, 0, 1], "limits": [0, 0.08] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-wuderen",
+      "note": "Visual abstraction of the side-drop clutch tradition."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-wuderen" }
+    },
+    "schemeTags": ["yansu-clutch"]
+  },
+  {
+    "id": "right-clutch-dog",
+    "name": { "zh": "右离合齿", "en": "Right clutch dog" },
+    "geometry": { "type": "box", "size": [0.16, 0.12, 0.1] },
+    "material": "iron",
+    "position": [0.18, 2.25, 0.42],
+    "explodeVector": [0, 0, 0.5],
+    "assemblyStep": 7,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "prismatic", "axis": [0, 0, -1], "limits": [0, 0.08] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-wuderen",
+      "note": "Visual abstraction of the side-drop clutch tradition."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-wuderen" }
+    },
+    "schemeTags": ["yansu-clutch"]
+  },
+  {
+    "id": "clutch-yoke",
+    "name": { "zh": "离合拨叉", "en": "Clutch yoke" },
+    "geometry": { "type": "beam", "size": [0.12, 0.12, 0.78] },
+    "material": "wood",
+    "position": [0.12, 2.23, 0],
+    "explodeVector": [0, 0.4, 0],
+    "assemblyStep": 7,
+    "parent": "chassis-pivot",
+    "joint": {
+      "kind": "prismatic",
+      "axis": [0, 0, 1],
+      "limits": [-0.08, 0.08]
+    },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-wuderen",
+      "note": "Control linkage inferred for the 1937 reconstruction scheme."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-wuderen" }
+    },
+    "schemeTags": ["yansu-clutch"]
+  },
+  {
+    "id": "canopy-left-post",
+    "name": { "zh": "左立柱", "en": "Left canopy post" },
+    "geometry": { "type": "beam", "size": [0.08, 1.35, 0.08] },
+    "material": "wood",
+    "position": [-0.52, 1.26, -0.5],
+    "explodeVector": [0, 0, -0.7],
+    "assemblyStep": 8,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Post placement and dimensions are structural inferences."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "canopy-right-post",
+    "name": { "zh": "右立柱", "en": "Right canopy post" },
+    "geometry": { "type": "beam", "size": [0.08, 1.35, 0.08] },
+    "material": "wood",
+    "position": [-0.52, 1.26, 0.5],
+    "explodeVector": [0, 0, 0.7],
+    "assemblyStep": 8,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Post placement and dimensions are structural inferences."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "canopy-beam",
+    "name": { "zh": "上横梁", "en": "Upper crossbeam" },
+    "geometry": { "type": "beam", "size": [0.1, 0.1, 1.1] },
+    "material": "wood",
+    "position": [-0.52, 2.01, 0],
+    "explodeVector": [0, 0.5, 0],
+    "assemblyStep": 8,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Upper crossbeam placement and dimensions are structural inferences."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "left-drive-housing",
+    "name": { "zh": "左传动罩", "en": "Left drive housing" },
+    "geometry": { "type": "box", "size": [0.86, 0.52, 0.08] },
+    "material": "wood",
+    "position": [0.15, 1.03, -0.54],
+    "explodeVector": [0, 0, -0.7],
+    "assemblyStep": 8,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Housing form is inferred to expose and frame the left gear train."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  },
+  {
+    "id": "right-drive-housing",
+    "name": { "zh": "右传动罩", "en": "Right drive housing" },
+    "geometry": { "type": "box", "size": [0.86, 0.52, 0.08] },
+    "material": "wood",
+    "position": [0.15, 1.03, 0.54],
+    "explodeVector": [0, 0, 0.7],
+    "assemblyStep": 8,
+    "parent": "chassis-pivot",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-yansu",
+      "note": "Housing form is inferred to expose and frame the right gear train."
+    },
+    "dimensionProvenance": {
+      "@rest": { "kind": "tuice", "ref": "songshi-yansu" }
+    }
+  }
+]

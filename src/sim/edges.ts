@@ -98,6 +98,62 @@ export function crankSliderPosition(
   );
 }
 
+export function crankRodAngle(
+  theta: number,
+  crankRadius: number,
+  rodLength: number,
+): number {
+  return Math.asin(
+    Math.max(-1, Math.min(1, (crankRadius / rodLength) * Math.sin(theta))),
+  );
+}
+
+export interface PlanarCrankRodPose {
+  center: [number, number, number];
+  crankPin: [number, number, number];
+  rotationZ: number;
+  sliderPin: [number, number, number];
+}
+
+export function planarCrankRodPose(
+  theta: number,
+  wheelPosition: [number, number, number],
+  crankRadius: number,
+  rodLength: number,
+): PlanarCrankRodPose {
+  const sinTheta = Math.sin(theta);
+  const cosTheta = Math.cos(theta);
+  const root = Math.sqrt(
+    Math.max(
+      0,
+      rodLength * rodLength - crankRadius * crankRadius * sinTheta * sinTheta,
+    ),
+  );
+  const crankPin: [number, number, number] = [
+    wheelPosition[0] + crankRadius * sinTheta,
+    wheelPosition[1] - crankRadius * cosTheta,
+    wheelPosition[2],
+  ];
+  const sliderPin: [number, number, number] = [
+    wheelPosition[0],
+    wheelPosition[1] - crankRadius * cosTheta - root,
+    wheelPosition[2],
+  ];
+  return {
+    center: [
+      (crankPin[0] + sliderPin[0]) / 2,
+      (crankPin[1] + sliderPin[1]) / 2,
+      wheelPosition[2],
+    ],
+    crankPin,
+    rotationZ: Math.atan2(
+      sliderPin[1] - crankPin[1],
+      sliderPin[0] - crankPin[0],
+    ),
+    sliderPin,
+  };
+}
+
 export function crankSliderDerivative(
   theta: number,
   crankRadius: number,

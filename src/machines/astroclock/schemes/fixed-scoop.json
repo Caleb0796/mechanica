@@ -1,0 +1,558 @@
+{
+  "id": "fixed-scoop",
+  "scholar": {
+    "zh": "王振铎",
+    "en": "Wang Zhenduo"
+  },
+  "year": 1958,
+  "summary": {
+    "zh": "三十六只受水壶刚性固定在枢轮上。",
+    "en": "Thirty-six receiving scoops are rigidly fixed to the scoop wheel."
+  },
+  "overrideParts": [
+    {
+      "id": "scoop-01",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-02",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-03",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-04",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-05",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-06",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-07",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-08",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-09",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-10",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-11",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-12",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-13",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-14",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-15",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-16",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-17",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-18",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-19",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-20",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-21",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-22",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-23",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-24",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-25",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-26",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-27",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-28",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-29",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-30",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-31",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-32",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-33",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-34",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-35",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-36",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    }
+  ],
+  "notes": {
+    "zh": "以正文三十六壶为默认读法；异本四十八壶保留在枢轮的尺寸注记中。",
+    "en": "Uses the main reading of thirty-six scoops; the forty-eight-scoop variant remains visible in the wheel's dimension notes."
+  }
+}

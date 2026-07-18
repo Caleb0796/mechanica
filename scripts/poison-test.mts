@@ -25,6 +25,7 @@ const fsModuleName = 'node:fs'
 const cryptoModuleName = 'node:crypto'
 const { existsSync, readFileSync } = await import(fsModuleName) as unknown as FileSystem
 const { createHash } = await import(cryptoModuleName) as unknown as CryptoModule
+const inferred: Provenance = { kind: 'tuice', ref: 'poison-test' }
 const repoRoot = process.cwd().replace(/[\\/]+$/, '')
 
 function quoteFingerprint(quote: string): string {
@@ -130,8 +131,6 @@ function poisonRange(module: MachineModule): MachineModule {
   part.joint.limits = [middle, middle]
   return poisoned
 }
-
-const inferred: Provenance = { kind: 'tuice', ref: 'poison-test' }
 
 function poisonPart(id: string, position: [number, number, number], size: [number, number, number]): PartDef {
   return {

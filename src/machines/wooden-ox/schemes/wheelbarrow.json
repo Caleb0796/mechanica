@@ -1,0 +1,55 @@
+{
+  "id": "wheelbarrow",
+  "scholar": {
+    "zh": "谭良啸等轮车说",
+    "en": "Tan Liangxiao et al., wheel-carrier reading"
+  },
+  "year": 1996,
+  "summary": {
+    "zh": "依据《事物纪原》的独轮车解释，以中央大轮承重、双辕供人平衡和转向。",
+    "en": "Reads the Shiwu Jiyuan as a central-wheel carrier whose twin shafts let the operator balance and steer."
+  },
+  "addParts": [
+    {
+      "id": "central-big-wheel",
+      "name": { "zh": "中央大轮", "en": "Central load wheel" },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.42,
+        "width": 0.07,
+        "spokes": 12
+      },
+      "material": "wood",
+      "position": [0, 0.43, 0],
+      "rotationEuler": [1.5707963267948966, 0, 0],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "shiwujiyuan",
+        "note": "The central-wheel arrangement is the wheelbarrow reconstruction, not a dimensioned ancient drawing."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "shiwujiyuan",
+          "note": "Wheel radius, width, and spoke count are reconstruction parameters."
+        }
+      },
+      "explodeVector": [0, -0.9, 0],
+      "assemblyStep": 7,
+      "schemeTags": ["wheelbarrow"]
+    }
+  ],
+  "addConstraints": [
+    {
+      "type": "lockstep",
+      "a": "drive-axle",
+      "b": "central-big-wheel",
+      "ratio": 1
+    }
+  ],
+  "notes": {
+    "zh": "原文没有中央轮尺寸；本方案仅把《事物纪原》的独推车解释和“仰双辕”落实为可交互模型。",
+    "en": "The sources give no central-wheel dimensions; this patch turns the one-person wheelbarrow reading into an interactive model. The year is the 1996 publication date of Tan Liangxiao's collected study, not an ancient construction date."
+  }
+}

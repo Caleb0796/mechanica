@@ -1,0 +1,413 @@
+{
+  "slug": "typecase",
+  "parts": [
+    {
+      "id": "left-axle-stand",
+      "name": { "zh": "韵轮轴架", "en": "Rhyme-wheel axle stand" },
+      "geometry": { "type": "box", "size": [0.09, 0.86, 0.09] },
+      "material": "wood",
+      "position": [-1.25, 0.43, 0],
+      "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-zaolun",
+          "note": "The text records the axle height; stand section and clearance are exhibit reconstruction choices."
+        }
+      },
+      "explodeVector": [-0.35, -0.2, 0],
+      "assemblyStep": 0
+    },
+    {
+      "id": "right-axle-stand",
+      "name": { "zh": "杂字轮轴架", "en": "Miscellaneous-wheel axle stand" },
+      "geometry": { "type": "box", "size": [0.09, 0.86, 0.09] },
+      "material": "wood",
+      "position": [1.25, 0.43, 0],
+      "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-zaolun",
+          "note": "The text records the axle height; stand section and clearance are exhibit reconstruction choices."
+        }
+      },
+      "explodeVector": [0.35, -0.2, 0],
+      "assemblyStep": 0
+    },
+    {
+      "id": "rhyme-wheel",
+      "name": { "zh": "韵字轮", "en": "Rhyme type wheel" },
+      "geometry": { "type": "wheel", "radius": 1.1025, "width": 0.08, "spokes": 16 },
+      "material": "wood",
+      "position": [-1.25, 0.945, 0],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" },
+      "dimensionProvenance": {
+        "radius": {
+          "kind": "wenxian",
+          "ref": "nongshu-zaolun",
+          "note": "Half of the recorded seven-chi wheel diameter."
+        },
+        "position.1": {
+          "kind": "wenxian",
+          "ref": "nongshu-zaolun",
+          "note": "The axle is recorded at three chi high."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-zaolun",
+          "note": "Wheel width, spoke count, horizontal placement, joint axis, and display offsets are inferred."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 2.205,
+          "unit": "m",
+          "ancient": "径可七尺",
+          "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" }
+        },
+        {
+          "value": 0.945,
+          "unit": "m",
+          "ancient": "轴高三尺许",
+          "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" }
+        }
+      ],
+      "explodeVector": [-0.45, 0.15, 0],
+      "assemblyStep": 1,
+      "interactive": true
+    },
+    {
+      "id": "misc-wheel",
+      "name": { "zh": "杂字轮", "en": "Miscellaneous type wheel" },
+      "geometry": { "type": "wheel", "radius": 1.1025, "width": 0.08, "spokes": 16 },
+      "material": "wood",
+      "position": [1.25, 0.945, 0],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" },
+      "dimensionProvenance": {
+        "radius": {
+          "kind": "wenxian",
+          "ref": "nongshu-zaolun",
+          "note": "Half of the recorded seven-chi wheel diameter."
+        },
+        "position.1": {
+          "kind": "wenxian",
+          "ref": "nongshu-zaolun",
+          "note": "The axle is recorded at three chi high."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-zaolun",
+          "note": "Wheel width, spoke count, horizontal placement, joint axis, and display offsets are inferred."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 2.205,
+          "unit": "m",
+          "ancient": "径可七尺",
+          "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" }
+        },
+        {
+          "value": 0.945,
+          "unit": "m",
+          "ancient": "轴高三尺许",
+          "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" }
+        }
+      ],
+      "explodeVector": [0.45, 0.15, 0],
+      "assemblyStep": 1,
+      "interactive": true
+    },
+    {
+      "id": "rhyme-index-board",
+      "name": { "zh": "韵字排版盘", "en": "Rhyme index board" },
+      "geometry": { "type": "wheel", "radius": 0.78, "width": 0.025, "spokes": 12 },
+      "material": "wood",
+      "position": [-1.25, 1.02, 0],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-zaolun",
+          "note": "The rhyme grouping is textual; board radius, thickness, spokes, placement, and joint are display choices."
+        }
+      },
+      "explodeVector": [-0.3, 0.28, 0],
+      "assemblyStep": 2
+    },
+    {
+      "id": "misc-index-board",
+      "name": { "zh": "杂字排版盘", "en": "Miscellaneous index board" },
+      "geometry": { "type": "wheel", "radius": 0.78, "width": 0.025, "spokes": 12 },
+      "material": "wood",
+      "position": [1.25, 1.02, 0],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-zaolun" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-zaolun",
+          "note": "The miscellaneous grouping is textual; board radius, thickness, spokes, placement, and joint are display choices."
+        }
+      },
+      "explodeVector": [0.3, 0.28, 0],
+      "assemblyStep": 2
+    },
+    {
+      "id": "type-grid",
+      "name": { "zh": "活字阵列", "en": "Movable-type grid" },
+      "geometry": {
+        "type": "custom",
+        "builder": "instancedTypeGrid",
+        "params": { "count": 320, "columns": 20, "cell": 0.045, "gap": 0.008, "thickness": 0.0025 }
+      },
+      "material": "clay",
+      "position": [0, 0.03, 0],
+      "parent": "rhyme-index-board",
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "mengxi-bisheng+nongshu-zaolun",
+        "note": "A single exhibit grid combines Bi Sheng's clay type with Wang Zhen's revolving typecase; the two sources describe different periods."
+      },
+      "dimensionProvenance": {
+        "params.thickness": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "The 2.5 mm display thickness lies within the data card's inferred 2–3 mm range."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng+nongshu-zaolun",
+          "note": "The 320 representative types, square grid, spacing, attachment, and display offsets are visualization choices."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 0.0025,
+          "unit": "m",
+          "ancient": "薄如钱唇（据文意推定2–3毫米）",
+          "provenance": {
+            "kind": "tuice",
+            "ref": "mengxi-bisheng",
+            "note": "Representative midpoint of the inferred range."
+          }
+        },
+        {
+          "value": 320,
+          "unit": "count",
+          "provenance": {
+            "kind": "tuice",
+            "ref": "mengxi-bisheng+nongshu-zaolun",
+            "note": "Representative display count; neither source gives this total."
+          }
+        }
+      ],
+      "explodeVector": [-0.3, 0.4, 0],
+      "assemblyStep": 3
+    },
+    {
+      "id": "iron-plate-a",
+      "name": { "zh": "铁板甲", "en": "Iron plate A" },
+      "geometry": { "type": "box", "size": [0.5, 0.025, 0.35] },
+      "material": "iron",
+      "position": [-0.35, 0.22, 1.55],
+      "provenance": { "kind": "wenxian", "ref": "mengxi-bisheng" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "The source specifies iron plates but not this exhibit envelope or placement."
+        }
+      },
+      "explodeVector": [-0.35, 0, 0.35],
+      "assemblyStep": 4
+    },
+    {
+      "id": "iron-plate-b",
+      "name": { "zh": "铁板乙", "en": "Iron plate B" },
+      "geometry": { "type": "box", "size": [0.5, 0.025, 0.35] },
+      "material": "iron",
+      "position": [0.35, 0.22, 1.55],
+      "provenance": { "kind": "wenxian", "ref": "mengxi-bisheng" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "The two alternating plates are textual; this exhibit envelope and placement are inferred."
+        }
+      },
+      "explodeVector": [0.35, 0, 0.35],
+      "assemblyStep": 4
+    },
+    {
+      "id": "resin-bed",
+      "name": { "zh": "松脂蜡纸灰药层", "en": "Resin-wax-ash bed" },
+      "geometry": { "type": "box", "size": [0.42, 0.006, 0.28] },
+      "material": "clay",
+      "position": [0, 0.016, 0],
+      "parent": "iron-plate-a",
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "mengxi-bisheng" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "The resin, wax, and paper-ash mixture is textual; layer depth, plan size, attachment, and display offsets are inferred."
+        }
+      },
+      "explodeVector": [-0.25, 0.16, 0.3],
+      "assemblyStep": 5
+    },
+    {
+      "id": "iron-forme",
+      "name": { "zh": "铁范", "en": "Iron forme" },
+      "geometry": {
+        "type": "custom",
+        "builder": "typecaseForme",
+        "params": { "width": 0.46, "depth": 0.32, "bar": 0.025, "height": 0.035 }
+      },
+      "material": "iron",
+      "position": [0, 0.021, 0],
+      "parent": "resin-bed",
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "mengxi-bisheng" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "The iron retaining forme is textual; frame dimensions, attachment, and display offsets are inferred."
+        }
+      },
+      "explodeVector": [-0.2, 0.25, 0.35],
+      "assemblyStep": 6
+    },
+    {
+      "id": "picked-type",
+      "name": { "zh": "拣出活字", "en": "Selected movable type" },
+      "geometry": { "type": "box", "size": [0.04, 0.0025, 0.04] },
+      "material": "clay",
+      "position": [-0.35, 0.32, 1.55],
+      "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
+      "provenance": { "kind": "wenxian", "ref": "mengxi-bisheng" },
+      "dimensionProvenance": {
+        "size.1": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "Representative midpoint of the inferred 2–3 mm thickness range."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "Glyph footprint, placement, lift direction, lift limit, and display offsets are inferred."
+        }
+      },
+      "explodeVector": [-0.12, 0.42, 0.35],
+      "assemblyStep": 6
+    },
+    {
+      "id": "heater",
+      "name": { "zh": "加热炉", "en": "Heating hearth" },
+      "geometry": { "type": "box", "size": [0.3, 0.12, 0.25] },
+      "material": "iron",
+      "position": [-0.35, 0.08, 1.55],
+      "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.02] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "mengxi-bisheng",
+        "note": "Heating the plate is textual; a separate hearth form is an exhibit reconstruction."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "Hearth envelope, placement, lift direction, lift limit, and display offsets are inferred."
+        }
+      },
+      "explodeVector": [-0.32, -0.22, 0.35],
+      "assemblyStep": 7
+    },
+    {
+      "id": "flat-press",
+      "name": { "zh": "平字板", "en": "Type-leveling press" },
+      "geometry": { "type": "box", "size": [0.48, 0.025, 0.34] },
+      "material": "wood",
+      "position": [-0.35, 0.44, 1.55],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.1] },
+      "provenance": { "kind": "wenxian", "ref": "mengxi-bisheng" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "A flat board is recorded; envelope, placement, press direction, travel, and display offsets are inferred."
+        }
+      },
+      "explodeVector": [-0.25, 0.45, 0.35],
+      "assemblyStep": 8
+    },
+    {
+      "id": "print-sheet",
+      "name": { "zh": "印纸", "en": "Printed sheet" },
+      "geometry": { "type": "box", "size": [0.46, 0.002, 0.32] },
+      "material": "silk",
+      "position": [0.35, 0.25, 1.55],
+      "joint": { "kind": "prismatic", "axis": [1, 0, 0], "limits": [0, 0.12] },
+      "provenance": { "kind": "wenxian", "ref": "mengxi-bisheng" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "mengxi-bisheng",
+          "note": "Printing is textual; sheet envelope, placement, delivery direction, travel, and display offsets are inferred."
+        }
+      },
+      "explodeVector": [0.35, 0.24, 0.35],
+      "assemblyStep": 9
+    }
+  ],
+  "constraints": [
+    {
+      "type": "lockstep",
+      "a": "rhyme-wheel",
+      "b": "rhyme-index-board",
+      "ratio": 1,
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "nongshu-zaolun",
+        "note": "The wheel and its attached type board turn as one hand-pushed assembly."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "misc-wheel",
+      "b": "misc-index-board",
+      "ratio": 1,
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "nongshu-zaolun",
+        "note": "The wheel and its attached type board turn as one hand-pushed assembly."
+      }
+    }
+  ],
+  "driveNodes": ["rhyme-wheel", "misc-wheel"],
+  "primaryDrive": "rhyme-wheel",
+  "cycleRad": 6.283185307179586,
+  "expectedRatios": [
+    {
+      "from": "rhyme-wheel",
+      "to": "rhyme-index-board",
+      "ratio": 1,
+      "sourceRef": "nongshu-zaolun"
+    },
+    {
+      "from": "misc-wheel",
+      "to": "misc-index-board",
+      "ratio": 1,
+      "sourceRef": "nongshu-zaolun"
+    }
+  ],
+  "collisionWhitelist": []
+}

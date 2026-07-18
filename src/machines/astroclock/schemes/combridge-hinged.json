@@ -1,0 +1,573 @@
+{
+  "id": "combridge-hinged",
+  "scholar": {
+    "zh": "约翰·康布里奇",
+    "en": "John Combridge"
+  },
+  "year": 1961,
+  "summary": {
+    "zh": "三十六只受水壶以铰链安装，可在受水后倾翻。",
+    "en": "Thirty-six scoops are hinged so each can tip after filling."
+  },
+  "overrideParts": [
+    {
+      "id": "scoop-01",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-02",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-03",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-04",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-05",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-06",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-07",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-08",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-09",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-10",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-11",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-12",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-13",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-14",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-15",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-16",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-17",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-18",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-19",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-20",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-21",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-22",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-23",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-24",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-25",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-26",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-27",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-28",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-29",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-30",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-31",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-32",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-33",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-34",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-35",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    },
+    {
+      "id": "scoop-36",
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      }
+    }
+  ],
+  "addConstraints": [
+    {
+      "type": "cam",
+      "cam": "shulun",
+      "follower": "scoop-01",
+      "profile": "lift",
+      "liftHeight": 0.35,
+      "dwellRatio": 0.5,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "combridge-hinged-motion",
+        "note": "A representative cam profile visualizes one hinged scoop tipping through its inferred angular limit."
+      }
+    }
+  ],
+  "notes": {
+    "zh": "铰接角限为演示推测；工作模型说明倾翻壶可能比刚性固定壶计时更稳定。",
+    "en": "The hinge limits are inferred for demonstration; working models suggest tipping scoops may regulate more steadily than rigid scoops."
+  }
+}

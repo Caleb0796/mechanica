@@ -4,7 +4,7 @@ env:
   # "--partial" until wave-3 completes (machine dirs may be missing);
   # the LAST step of P3 acceptance flips this to "" (strict ten-machine manifest)
   # and commits — this is the only sanctioned relaxation switch
-  VALIDATE_FLAGS: "--partial"
+  VALIDATE_FLAGS: ""
 jobs:
   build:
     runs-on: ubuntu-latest

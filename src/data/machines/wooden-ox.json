@@ -147,7 +147,48 @@
       "confidence": "tuice"
     }
   ],
-  "schemes": [],
+  "schemes": [
+    {
+      "id": "wheelbarrow",
+      "scholar": {
+        "zh": "谭良啸等",
+        "en": "Tan Liangxiao et al."
+      },
+      "year": 1996,
+      "summary": {
+        "zh": "以中央大轮承重、前方双辕平衡转向的轮车读法。",
+        "en": "A wheel-carrier reading with the load over a central wheel and twin shafts for balance and steering."
+      },
+      "evidence": {
+        "zh": "《事物纪原》把流马解释为独推车；1996年为谭良啸《八阵图与木牛流马》的出版年，并非古代制造年代。",
+        "en": "The Shiwu Jiyuan identifies the gliding horse with a one-person wheelbarrow; 1996 is the publication year of Tan Liangxiao's collected study, not an ancient construction date."
+      },
+      "critique": {
+        "zh": "中央轮尺寸与具体承架均无古代实测依据。",
+        "en": "No ancient measurement fixes the central wheel or its supporting frame."
+      }
+    },
+    {
+      "id": "walker",
+      "scholar": {
+        "zh": "王湔等",
+        "en": "Wang Jian et al."
+      },
+      "year": 1985,
+      "summary": {
+        "zh": "以四组相差四分之一周的曲柄连杆解释“一脚四足”。",
+        "en": "A four-leg linkage reading with quarter-cycle-phased crank mechanisms."
+      },
+      "evidence": {
+        "zh": "王湔于1985年制作步行式复原，以《诸葛亮集》所载“一脚四足”为解释起点。",
+        "en": "Wang Jian built a walking reconstruction in 1985, taking the recorded phrase 'one foot, four legs' as its starting point."
+      },
+      "critique": {
+        "zh": "该短语也可能指一轮四撑，四足步行并非权威定论。",
+        "en": "The phrase may instead mean one wheel with four supports; a walking machine is not an authoritative conclusion."
+      }
+    }
+  ],
   "controversies": [
     {
       "topic": {
@@ -155,13 +196,10 @@
         "en": "Wheelbarrow or walker"
       },
       "detail": {
-        "zh": "谭良啸等依据《事物纪原》主张中央大轮加前方双辕的轮车方案，陈从周的栈道考察支持其山道可行性；王建等把“一脚四足”解释为四足连杆步行机构。该句也可能指一轮四撑，没有权威结论，两个方案并列展示本身就是展品价值。",
+        "zh": "谭良啸等依据《事物纪原》主张中央大轮加前方双辕的轮车方案，陈从周的栈道考察支持其山道可行性；王湔等把“一脚四足”解释为四足连杆步行机构。该句也可能指一轮四撑，没有权威结论，两个方案并列展示本身就是展品价值。",
         "en": "Tan Liangxiao and colleagues read the Shiwu Jiyuan as a central-wheel carrier with twin front shafts, supported by Chen Congzhou's plank-road surveys; Wang Jian and colleagues read 'one foot, four legs' as a four-legged linkage walker. The phrase may also mean one wheel with four supports. There is no authoritative verdict, so presenting both reconstructions is itself the exhibit's value."
       },
-      "sourceIds": [
-        "sgz-muniu",
-        "shiwujiyuan"
-      ]
+      "sourceIds": ["sgz-muniu", "shiwujiyuan"]
     },
     {
       "topic": {
@@ -172,9 +210,7 @@
         "zh": "原文没有木牛尺寸表；2.08米长、1.4米高只来自现代复原，属于推测。",
         "en": "The text gives no wooden-ox dimension table; the 2.08-meter length and 1.4-meter height come only from a modern replica and remain inferred."
       },
-      "sourceIds": [
-        "sgz-muniu"
-      ]
+      "sourceIds": ["sgz-muniu"]
     },
     {
       "topic": {

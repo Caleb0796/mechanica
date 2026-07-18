@@ -1,0 +1,13 @@
+{
+  "id": "ludaolong",
+  "scholar": { "zh": "卢道隆", "en": "Lu Daolong" },
+  "year": 1027,
+  "summary": {
+    "zh": "按《宋史》复原八轮、二百八十五齿的两级十进制里程传动。",
+    "en": "The Song Shi eight-wheel, 285-tooth train with two decimal distance reductions."
+  },
+  "notes": {
+    "zh": "足轮每一百周使中平轮一周击鼓；每一千周使上平轮一周击镯。",
+    "en": "One hundred road-wheel turns rotate the middle wheel once for the drum; one thousand rotate the upper wheel once for the chime."
+  }
+}

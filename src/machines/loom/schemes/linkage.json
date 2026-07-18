@@ -1,0 +1,257 @@
+{
+  "id": "linkage",
+  "scholar": {
+    "zh": "中国丝绸博物馆复原团队",
+    "en": "China National Silk Museum reconstruction team"
+  },
+  "year": 2018,
+  "summary": {
+    "zh": "按189、190、191号模型复原的连杆式选综机构。",
+    "en": "A linkage heddle selector reconstructed from models 189, 190, and 191."
+  },
+  "removePartIds": ["selector-carriage"],
+  "overrideParts": [
+    {
+      "id": "loom-frame",
+      "name": {
+        "zh": "189至191号连杆式机架",
+        "en": "Nos. 189–191 linkage loom frame"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomFrame",
+        "params": {
+          "length": 0.63,
+          "width": 0.19,
+          "height": 0.37,
+          "beam": 0.018
+        }
+      },
+      "position": [0, 0.185, 0],
+      "dimensionNotes": [
+        {
+          "value": 0.63,
+          "unit": "m",
+          "ancient": "长63厘米",
+          "provenance": { "kind": "wenwu", "ref": "kaogu-laoguanshan" }
+        },
+        {
+          "value": 0.19,
+          "unit": "m",
+          "ancient": "宽19厘米",
+          "provenance": { "kind": "wenwu", "ref": "kaogu-laoguanshan" }
+        },
+        {
+          "value": 0.37,
+          "unit": "m",
+          "ancient": "高37厘米",
+          "provenance": { "kind": "wenwu", "ref": "kaogu-laoguanshan" }
+        }
+      ],
+      "schemeTags": ["linkage"]
+    },
+    {
+      "id": "single-hook",
+      "position": [-0.2, 0.22, 0.085],
+      "schemeTags": ["linkage"]
+    }
+  ],
+  "addParts": [
+    {
+      "id": "linkage-crank",
+      "name": { "zh": "连杆式选综曲柄", "en": "Linkage selector crank" },
+      "geometry": { "type": "shaft", "radius": 0.008, "length": 0.012 },
+      "material": "wood",
+      "position": [-0.18, 0.12, 0.085],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "kaogu-laoguanshan",
+        "note": "Simplified crank representation of the excavated linkage-type selector."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "kaogu-laoguanshan",
+          "note": "Display-scale linkage crank dimensions."
+        }
+      },
+      "explodeVector": [-0.14, 0, 0.14],
+      "assemblyStep": 4,
+      "schemeTags": ["linkage"]
+    },
+    {
+      "id": "linkage-bar-low",
+      "name": { "zh": "下选综连杆", "en": "Lower selector link" },
+      "geometry": { "type": "link", "length": 0.045, "width": 0.004 },
+      "material": "wood",
+      "position": [-0.145, 0.145, 0.085],
+      "rotationEuler": [0, 0, 0.45],
+      "provenance": {
+        "kind": "tuice",
+        "ref": "kaogu-laoguanshan",
+        "note": "Simplified planar link representing the linkage-type models."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "kaogu-laoguanshan",
+          "note": "Display-scale linkage dimensions."
+        }
+      },
+      "explodeVector": [-0.1, 0.08, 0.14],
+      "assemblyStep": 4,
+      "schemeTags": ["linkage"]
+    },
+    {
+      "id": "linkage-bar-high",
+      "name": { "zh": "上选综连杆", "en": "Upper selector link" },
+      "geometry": { "type": "link", "length": 0.04, "width": 0.004 },
+      "material": "wood",
+      "position": [-0.105, 0.19, 0.085],
+      "rotationEuler": [0, 0, -0.4],
+      "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "kaogu-laoguanshan",
+        "note": "Simplified moving link representing the linkage-type selector."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "kaogu-laoguanshan",
+          "note": "Display-scale linkage dimensions and lift."
+        }
+      },
+      "explodeVector": [-0.06, 0.12, 0.14],
+      "assemblyStep": 4,
+      "schemeTags": ["linkage"]
+    }
+  ],
+  "removeConstraintIndexes": [0, 1, 2, 3, 4, 5, 6, 7, 16],
+  "addConstraints": [
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "selector-cam-0",
+      "ratio": 8,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage program",
+        "note": "Reversed eight-heddle demonstration program."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "selector-cam-1",
+      "ratio": 6,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage program",
+        "note": "Reversed eight-heddle demonstration program."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "selector-cam-2",
+      "ratio": 4,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage program",
+        "note": "Reversed eight-heddle demonstration program."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "selector-cam-3",
+      "ratio": 2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage program",
+        "note": "Reversed eight-heddle demonstration program."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "selector-cam-4",
+      "ratio": 7,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage program",
+        "note": "Reversed eight-heddle demonstration program."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "selector-cam-5",
+      "ratio": 5,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage program",
+        "note": "Reversed eight-heddle demonstration program."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "selector-cam-6",
+      "ratio": 3,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage program",
+        "note": "Reversed eight-heddle demonstration program."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "selector-cam-7",
+      "ratio": 1,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage program",
+        "note": "Reversed eight-heddle demonstration program."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "treadle-bank",
+      "b": "linkage-crank",
+      "ratio": 1,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage selector",
+        "note": "The exhibit abstraction makes the linkage crank follow the treadle bank."
+      }
+    },
+    {
+      "type": "cam",
+      "cam": "selector-cam-0",
+      "follower": "linkage-bar-high",
+      "profile": "lift",
+      "liftHeight": 0.05,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "linkage selector",
+        "note": "Bounded lift visualizes the selector linkage stroke."
+      }
+    }
+  ],
+  "collisionWhitelist": [
+    ["warp-shed", "woven-cloth"],
+    ["warp-shed-odd", "heddle-1"],
+    ["warp-shed-odd", "heddle-2"],
+    ["warp-shed-odd", "heddle-3"],
+    ["warp-shed-odd", "heddle-4"],
+    ["warp-shed-odd", "heddle-6"]
+  ],
+  "notes": {
+    "zh": "按189、190、191号连杆型模型采用0.63×0.19×0.37米实测外廓；连杆运动与八综次序为展项简化。",
+    "en": "The linkage scheme uses the measured 0.63 by 0.19 by 0.37 m envelope of models 189–191; link motion and the eight-heddle ordering are exhibit simplifications."
+  }
+}

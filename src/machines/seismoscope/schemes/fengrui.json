@@ -1,0 +1,164 @@
+{
+  "id": "fengrui",
+  "scholar": { "zh": "冯锐", "en": "Feng Rui" },
+  "year": 2005,
+  "summary": {
+    "zh": "悬垂都柱配八条滚珠轨道的方向触发模型。",
+    "en": "A suspended duzhu with eight surrounding ball tracks for directional triggering."
+  },
+  "addParts": [
+    {
+      "id": "duzhu",
+      "name": { "zh": "悬垂都柱", "en": "Suspended pendulum duzhu" },
+      "geometry": { "type": "shaft", "radius": 0.03, "length": 2 },
+      "material": "bronze",
+      "position": [0, 0.25, -0.14],
+      "joint": {
+        "kind": "revolute",
+        "axis": [0, 0, 1],
+        "limits": [-0.2, 0.2]
+      },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "Feng Rui 2005 reconstruction",
+        "note": "The source names a duzhu; its suspended-pendulum form is Feng Rui's reconstruction."
+      },
+      "dimensionProvenance": {
+        "length": {
+          "kind": "tuice",
+          "ref": "Feng Rui height inference",
+          "note": "The approximately two-metre duzhu height is inferred, not recorded in the classical text."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "Feng Rui 2005 reconstruction",
+          "note": "Shaft radius and angular limits are reconstruction parameters."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 2,
+          "unit": "m",
+          "ancient": "约二米",
+          "provenance": {
+            "kind": "tuice",
+            "ref": "Feng Rui height inference",
+            "note": "Approximate reconstruction height."
+          }
+        }
+      ],
+      "explodeVector": [0, 1, -0.2],
+      "assemblyStep": 25,
+      "schemeTags": ["fengrui"],
+      "interactive": true
+    },
+    {
+      "id": "feng-track-0",
+      "name": { "zh": "北向滚珠轨道", "en": "North ball track" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.38, "width": 0.04, "height": 0.025 } },
+      "material": "bronze",
+      "position": [0, 0.06, 0.52],
+      "rotationEuler": [0, -1.5707963267948966, 0],
+      "provenance": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "The eight-track arrangement is a modern reconstruction of the recorded eight paths." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "Track dimensions are display reconstruction choices." } },
+      "explodeVector": [0, -0.1, 0.8],
+      "assemblyStep": 26,
+      "schemeTags": ["fengrui"]
+    },
+    {
+      "id": "feng-track-1",
+      "name": { "zh": "东北向滚珠轨道", "en": "Northeast ball track" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.38, "width": 0.04, "height": 0.025 } },
+      "material": "bronze",
+      "position": [0.3676955262170047, 0.06, 0.3676955262170047],
+      "rotationEuler": [0, -0.7853981633974483, 0],
+      "provenance": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "The eight-track arrangement is a modern reconstruction of the recorded eight paths." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "Track dimensions are display reconstruction choices." } },
+      "explodeVector": [0.565685424949238, -0.1, 0.565685424949238],
+      "assemblyStep": 27,
+      "schemeTags": ["fengrui"]
+    },
+    {
+      "id": "feng-track-2",
+      "name": { "zh": "东向滚珠轨道", "en": "East ball track" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.38, "width": 0.04, "height": 0.025 } },
+      "material": "bronze",
+      "position": [0.52, 0.06, 0],
+      "rotationEuler": [0, 0, 0],
+      "provenance": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "The eight-track arrangement is a modern reconstruction of the recorded eight paths." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "Track dimensions are display reconstruction choices." } },
+      "explodeVector": [0.8, -0.1, 0],
+      "assemblyStep": 28,
+      "schemeTags": ["fengrui"]
+    },
+    {
+      "id": "feng-track-3",
+      "name": { "zh": "东南向滚珠轨道", "en": "Southeast ball track" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.38, "width": 0.04, "height": 0.025 } },
+      "material": "bronze",
+      "position": [0.3676955262170047, 0.06, -0.3676955262170047],
+      "rotationEuler": [0, 0.7853981633974483, 0],
+      "provenance": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "The eight-track arrangement is a modern reconstruction of the recorded eight paths." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "Track dimensions are display reconstruction choices." } },
+      "explodeVector": [0.565685424949238, -0.1, -0.565685424949238],
+      "assemblyStep": 29,
+      "schemeTags": ["fengrui"]
+    },
+    {
+      "id": "feng-track-4",
+      "name": { "zh": "南向滚珠轨道", "en": "South ball track" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.38, "width": 0.04, "height": 0.025 } },
+      "material": "bronze",
+      "position": [0, 0.06, -0.52],
+      "rotationEuler": [0, 1.5707963267948966, 0],
+      "provenance": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "The eight-track arrangement is a modern reconstruction of the recorded eight paths." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "Track dimensions are display reconstruction choices." } },
+      "explodeVector": [0, -0.1, -0.8],
+      "assemblyStep": 30,
+      "schemeTags": ["fengrui"]
+    },
+    {
+      "id": "feng-track-5",
+      "name": { "zh": "西南向滚珠轨道", "en": "Southwest ball track" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.38, "width": 0.04, "height": 0.025 } },
+      "material": "bronze",
+      "position": [-0.3676955262170047, 0.06, -0.3676955262170047],
+      "rotationEuler": [0, 2.356194490192345, 0],
+      "provenance": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "The eight-track arrangement is a modern reconstruction of the recorded eight paths." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "Track dimensions are display reconstruction choices." } },
+      "explodeVector": [-0.565685424949238, -0.1, -0.565685424949238],
+      "assemblyStep": 31,
+      "schemeTags": ["fengrui"]
+    },
+    {
+      "id": "feng-track-6",
+      "name": { "zh": "西向滚珠轨道", "en": "West ball track" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.38, "width": 0.04, "height": 0.025 } },
+      "material": "bronze",
+      "position": [-0.52, 0.06, 0],
+      "rotationEuler": [0, 3.141592653589793, 0],
+      "provenance": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "The eight-track arrangement is a modern reconstruction of the recorded eight paths." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "Track dimensions are display reconstruction choices." } },
+      "explodeVector": [-0.8, -0.1, 0],
+      "assemblyStep": 32,
+      "schemeTags": ["fengrui"]
+    },
+    {
+      "id": "feng-track-7",
+      "name": { "zh": "西北向滚珠轨道", "en": "Northwest ball track" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.38, "width": 0.04, "height": 0.025 } },
+      "material": "bronze",
+      "position": [-0.3676955262170047, 0.06, 0.3676955262170047],
+      "rotationEuler": [0, -2.356194490192345, 0],
+      "provenance": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "The eight-track arrangement is a modern reconstruction of the recorded eight paths." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Feng Rui 2005 reconstruction", "note": "Track dimensions are display reconstruction choices." } },
+      "explodeVector": [-0.565685424949238, -0.1, 0.565685424949238],
+      "assemblyStep": 33,
+      "schemeTags": ["fengrui"]
+    }
+  ],
+  "notes": {
+    "zh": "此方案采用悬垂都柱与八条滚珠轨道；它是当前最佳解释，并非唯一被古文证明的结构。",
+    "en": "This patch uses a suspended duzhu and eight ball tracks; it is the strongest current interpretation, not a uniquely text-proven structure."
+  }
+}

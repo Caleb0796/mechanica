@@ -1,0 +1,650 @@
+{
+  "slug": "chainpump",
+  "when": "2026-07-18T14:32:09.019Z",
+  "checks": [
+    {
+      "id": "base:provenance:part:trough",
+      "status": "pass",
+      "message": "Part trough has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:guide-board",
+      "status": "pass",
+      "message": "Part guide-board has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:frame-rail-near",
+      "status": "pass",
+      "message": "Part frame-rail-near has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:frame-rail-far",
+      "status": "pass",
+      "message": "Part frame-rail-far has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:foot-post-near",
+      "status": "pass",
+      "message": "Part foot-post-near has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:foot-post-far",
+      "status": "pass",
+      "message": "Part foot-post-far has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:head-post-near",
+      "status": "pass",
+      "message": "Part head-post-near has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:head-post-far",
+      "status": "pass",
+      "message": "Part head-post-far has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:head-sprocket",
+      "status": "pass",
+      "message": "Part head-sprocket has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:head-axle",
+      "status": "pass",
+      "message": "Part head-axle has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:foot-sprocket",
+      "status": "pass",
+      "message": "Part foot-sprocket has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:foot-axle",
+      "status": "pass",
+      "message": "Part foot-axle has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:crank-spurs",
+      "status": "pass",
+      "message": "Part crank-spurs has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:pallet-chain",
+      "status": "pass",
+      "message": "Part pallet-chain has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:part:water-sheet",
+      "status": "pass",
+      "message": "Part water-sheet has valid provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:trough:params.height",
+      "status": "pass",
+      "message": "trough.params.height has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:trough:params.length",
+      "status": "pass",
+      "message": "trough.params.length has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:trough:params.wall",
+      "status": "pass",
+      "message": "trough.params.wall has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:trough:params.width",
+      "status": "pass",
+      "message": "trough.params.width has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:guide-board:size.0",
+      "status": "pass",
+      "message": "guide-board.size.0 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:guide-board:size.1",
+      "status": "pass",
+      "message": "guide-board.size.1 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:guide-board:size.2",
+      "status": "pass",
+      "message": "guide-board.size.2 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:frame-rail-near:size.0",
+      "status": "pass",
+      "message": "frame-rail-near.size.0 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:frame-rail-near:size.1",
+      "status": "pass",
+      "message": "frame-rail-near.size.1 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:frame-rail-near:size.2",
+      "status": "pass",
+      "message": "frame-rail-near.size.2 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:frame-rail-far:size.0",
+      "status": "pass",
+      "message": "frame-rail-far.size.0 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:frame-rail-far:size.1",
+      "status": "pass",
+      "message": "frame-rail-far.size.1 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:frame-rail-far:size.2",
+      "status": "pass",
+      "message": "frame-rail-far.size.2 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-post-near:size.0",
+      "status": "pass",
+      "message": "foot-post-near.size.0 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-post-near:size.1",
+      "status": "pass",
+      "message": "foot-post-near.size.1 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-post-near:size.2",
+      "status": "pass",
+      "message": "foot-post-near.size.2 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-post-far:size.0",
+      "status": "pass",
+      "message": "foot-post-far.size.0 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-post-far:size.1",
+      "status": "pass",
+      "message": "foot-post-far.size.1 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-post-far:size.2",
+      "status": "pass",
+      "message": "foot-post-far.size.2 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-post-near:size.0",
+      "status": "pass",
+      "message": "head-post-near.size.0 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-post-near:size.1",
+      "status": "pass",
+      "message": "head-post-near.size.1 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-post-near:size.2",
+      "status": "pass",
+      "message": "head-post-near.size.2 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-post-far:size.0",
+      "status": "pass",
+      "message": "head-post-far.size.0 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-post-far:size.1",
+      "status": "pass",
+      "message": "head-post-far.size.1 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-post-far:size.2",
+      "status": "pass",
+      "message": "head-post-far.size.2 has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-sprocket:innerRadius",
+      "status": "pass",
+      "message": "head-sprocket.innerRadius has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-sprocket:module",
+      "status": "pass",
+      "message": "head-sprocket.module has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-sprocket:teeth",
+      "status": "pass",
+      "message": "head-sprocket.teeth has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-sprocket:thickness",
+      "status": "pass",
+      "message": "head-sprocket.thickness has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-axle:length",
+      "status": "pass",
+      "message": "head-axle.length has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:head-axle:radius",
+      "status": "pass",
+      "message": "head-axle.radius has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-sprocket:innerRadius",
+      "status": "pass",
+      "message": "foot-sprocket.innerRadius has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-sprocket:module",
+      "status": "pass",
+      "message": "foot-sprocket.module has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-sprocket:teeth",
+      "status": "pass",
+      "message": "foot-sprocket.teeth has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-sprocket:thickness",
+      "status": "pass",
+      "message": "foot-sprocket.thickness has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-axle:length",
+      "status": "pass",
+      "message": "foot-axle.length has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:foot-axle:radius",
+      "status": "pass",
+      "message": "foot-axle.radius has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:crank-spurs:params.axleSpan",
+      "status": "pass",
+      "message": "crank-spurs.params.axleSpan has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:crank-spurs:params.countPerEnd",
+      "status": "pass",
+      "message": "crank-spurs.params.countPerEnd has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:crank-spurs:params.radius",
+      "status": "pass",
+      "message": "crank-spurs.params.radius has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:crank-spurs:params.spurLength",
+      "status": "pass",
+      "message": "crank-spurs.params.spurLength has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:crank-spurs:params.spurWidth",
+      "status": "pass",
+      "message": "crank-spurs.params.spurWidth has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:pallet-chain:params.palletCount",
+      "status": "pass",
+      "message": "pallet-chain.params.palletCount has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:pallet-chain:params.palletHeight",
+      "status": "pass",
+      "message": "pallet-chain.params.palletHeight has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:pallet-chain:params.palletLength",
+      "status": "pass",
+      "message": "pallet-chain.params.palletLength has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:pallet-chain:params.palletWidth",
+      "status": "pass",
+      "message": "pallet-chain.params.palletWidth has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:pallet-chain:params.phase",
+      "status": "pass",
+      "message": "pallet-chain.params.phase has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:pallet-chain:params.radius",
+      "status": "pass",
+      "message": "pallet-chain.params.radius has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:pallet-chain:params.straightLength",
+      "status": "pass",
+      "message": "pallet-chain.params.straightLength has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:water-sheet:params.height",
+      "status": "pass",
+      "message": "water-sheet.params.height has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:water-sheet:params.length",
+      "status": "pass",
+      "message": "water-sheet.params.length has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:dimension:water-sheet:params.width",
+      "status": "pass",
+      "message": "water-sheet.params.width has dimension provenance.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:ratio:1",
+      "status": "pass",
+      "message": "Expected ratio crank-spurs → head-sprocket resolves source nongshu-fanche.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:ratio:2",
+      "status": "pass",
+      "message": "Expected ratio head-sprocket → foot-sprocket resolves source nongshu-fanche.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source nongshu-fanche.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source nongshu-fanche.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source nongshu-fanche.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source nongshu-fanche.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:provenance:data-dimension:5",
+      "status": "pass",
+      "message": "Data dimension 5 resolves source nongshu-fanche.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:integrity:constraint:2:belt-endpoints",
+      "status": "pass",
+      "message": "Belt 2 joins endpoints with pitch radii."
+    },
+    {
+      "id": "base:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "base:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:drive:crank-spurs",
+      "status": "pass",
+      "message": "Trigger drive:crank-spurs runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chainpump/1.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:2:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chainpump/2.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chainpump/3.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chainpump/4.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chainpump/5.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/chainpump/6.jpg exists."
+    },
+    {
+      "id": "base:integrity:snapshot:hhs-bilan",
+      "status": "pass",
+      "message": "Source snapshot hhs-bilan verifies its source.",
+      "sourceRef": "hhs-bilan"
+    },
+    {
+      "id": "base:integrity:snapshot:sgz-majun-fanche",
+      "status": "pass",
+      "message": "Source snapshot sgz-majun-fanche verifies its source.",
+      "sourceRef": "sgz-majun-fanche"
+    },
+    {
+      "id": "base:integrity:snapshot:nongshu-fanche",
+      "status": "pass",
+      "message": "Source snapshot nongshu-fanche verifies its source.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:ratio-1",
+      "status": "pass",
+      "expected": 1,
+      "actual": 1,
+      "message": "Signed ratio crank-spurs → head-sprocket matches the declared value.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:ratio-2",
+      "status": "pass",
+      "expected": 1,
+      "actual": 1,
+      "message": "Signed ratio head-sprocket → foot-sprocket matches the declared value.",
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "id": "base:collision:whitelist:pallet-chain:head-sprocket",
+      "status": "pass",
+      "message": "Whitelisted contact pair pallet-chain/head-sprocket intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:pallet-chain:foot-sprocket",
+      "status": "pass",
+      "message": "Whitelisted contact pair pallet-chain/foot-sprocket intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:pallet-chain:trough",
+      "status": "pass",
+      "message": "Whitelisted contact pair pallet-chain/trough intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:pallet-chain:water-sheet",
+      "status": "pass",
+      "message": "Whitelisted contact pair pallet-chain/water-sheet intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:head-sprocket:water-sheet",
+      "status": "pass",
+      "message": "Whitelisted contact pair head-sprocket/water-sheet intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:foot-sprocket:water-sheet",
+      "status": "pass",
+      "message": "Whitelisted contact pair foot-sprocket/water-sheet intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:head-sprocket:trough",
+      "status": "pass",
+      "message": "Whitelisted contact pair head-sprocket/trough intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:foot-sprocket:trough",
+      "status": "pass",
+      "message": "Whitelisted contact pair foot-sprocket/trough intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:head-axle:trough",
+      "status": "pass",
+      "message": "Whitelisted contact pair head-axle/trough intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:foot-axle:trough",
+      "status": "pass",
+      "message": "Whitelisted contact pair foot-axle/trough intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:head-axle:head-post-near",
+      "status": "pass",
+      "message": "Whitelisted contact pair head-axle/head-post-near intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:head-axle:head-post-far",
+      "status": "pass",
+      "message": "Whitelisted contact pair head-axle/head-post-far intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:foot-axle:foot-post-near",
+      "status": "pass",
+      "message": "Whitelisted contact pair foot-axle/foot-post-near intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:foot-axle:foot-post-far",
+      "status": "pass",
+      "message": "Whitelisted contact pair foot-axle/foot-post-far intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:frame-rail-near:foot-post-near",
+      "status": "pass",
+      "message": "Whitelisted contact pair frame-rail-near/foot-post-near intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:frame-rail-near:head-post-near",
+      "status": "pass",
+      "message": "Whitelisted contact pair frame-rail-near/head-post-near intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:frame-rail-far:foot-post-far",
+      "status": "pass",
+      "message": "Whitelisted contact pair frame-rail-far/foot-post-far intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:frame-rail-far:head-post-far",
+      "status": "pass",
+      "message": "Whitelisted contact pair frame-rail-far/head-post-far intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    }
+  ],
+  "summary": {
+    "pass": 111,
+    "fail": 0,
+    "warn": 0,
+    "resolutionDeg": 0.5
+  }
+}

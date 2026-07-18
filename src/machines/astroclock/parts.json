@@ -1,0 +1,5080 @@
+{
+  "parts": [
+    {
+      "id": "tower-shell",
+      "name": {
+        "zh": "水运仪象台方台剖壳",
+        "en": "Tapered square clock-tower cutaway"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "astroclockTowerCutaway",
+        "params": {
+          "topHalfWidth": 2.4,
+          "bottomHalfWidth": 3.5,
+          "height": 12
+        }
+      },
+      "material": "wood",
+      "position": [
+        0,
+        6,
+        0
+      ],
+      "parent": "base-platform",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "xyxfy-taiti",
+        "note": "The received seven-metre base figure is not explicit in the cited Siku text; the shell is shown as a cutaway evidence boundary."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "xyxfy-taiti",
+          "note": "The tapered square proportions visualize the textual upper-narrow/lower-wide form using received overall dimensions."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 12,
+          "unit": "m",
+          "ancient": "约十二米",
+          "provenance": {
+            "kind": "tuice",
+            "ref": "xyxfy-taiti",
+            "note": "Received overall height; not explicit in volume three of the Siku edition."
+          }
+        },
+        {
+          "value": 7,
+          "unit": "m",
+          "ancient": "约七米",
+          "provenance": {
+            "kind": "tuice",
+            "ref": "xyxfy-taiti",
+            "note": "Received overall base width; not explicit in volume three of the Siku edition."
+          }
+        }
+      ],
+      "explodeVector": [
+        0,
+        0,
+        -3
+      ],
+      "assemblyStep": 1
+    },
+    {
+      "id": "base-platform",
+      "name": {
+        "zh": "仪象台基座",
+        "en": "Tower base platform"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          7,
+          0.5,
+          7
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "xyxfy-taiti",
+        "note": "The seven-metre plan is a received reconstruction figure."
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "tuice",
+          "ref": "xyxfy-taiti",
+          "note": "Received approximately seven-metre base width."
+        },
+        "size.2": {
+          "kind": "tuice",
+          "ref": "xyxfy-taiti",
+          "note": "Square plan inferred from the received base width."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        -1,
+        0
+      ],
+      "assemblyStep": 2
+    },
+    {
+      "id": "shulun",
+      "name": {
+        "zh": "枢轮",
+        "en": "Scoop escapement wheel"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 1.716,
+        "width": 0.18,
+        "spokes": 72
+      },
+      "material": "wood",
+      "position": [
+        0,
+        4.5,
+        0
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "radius": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun",
+          "note": "Half of the recorded 3.432 m diameter."
+        },
+        "spokes": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun",
+          "note": "The main reading records seventy-two spokes paired into thirty-six receiving cells."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 3.432,
+          "unit": "m",
+          "ancient": "一丈一尺",
+          "provenance": {
+            "kind": "wenxian",
+            "ref": "xyxfy-shulun",
+            "note": "Recorded scoop-wheel diameter."
+          }
+        },
+        {
+          "value": 48,
+          "unit": "count",
+          "ancient": "异本四十八壶",
+          "provenance": {
+            "kind": "wenxian",
+            "ref": "xyxfy-shulun",
+            "note": "Variant reading retained alongside the main thirty-six-scoop reconstruction."
+          }
+        }
+      ],
+      "explodeVector": [
+        0,
+        0,
+        2
+      ],
+      "assemblyStep": 3,
+      "interactive": true
+    },
+    {
+      "id": "celestial-column",
+      "name": {
+        "zh": "天柱",
+        "en": "Celestial column"
+      },
+      "geometry": {
+        "type": "shaft",
+        "radius": 0.12,
+        "length": 6.084
+      },
+      "material": "iron",
+      "position": [
+        5,
+        6,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-taiti"
+      },
+      "dimensionProvenance": {
+        "length": {
+          "kind": "wenxian",
+          "ref": "xyxfy-taiti"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 6.084,
+          "unit": "m",
+          "ancient": "一丈九尺五寸",
+          "provenance": {
+            "kind": "wenxian",
+            "ref": "xyxfy-taiti"
+          }
+        }
+      ],
+      "explodeVector": [
+        3,
+        0,
+        0
+      ],
+      "assemblyStep": 4,
+      "interactive": true
+    },
+    {
+      "id": "hour-drum-wheel",
+      "name": {
+        "zh": "时鼓轮",
+        "en": "Hour and drum wheel"
+      },
+      "geometry": {
+        "type": "gear",
+        "module": 0.0034833333333333335,
+        "teeth": 600,
+        "thickness": 0.18,
+        "toothStyle": "pin"
+      },
+      "material": "wood",
+      "position": [
+        1.5,
+        7.6,
+        0
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "module": {
+          "kind": "wenxian",
+          "ref": "xyxfy-baoshi",
+          "note": "Derived from the recorded 2.090 m diameter and 600 tooth slots."
+        },
+        "teeth": {
+          "kind": "wenxian",
+          "ref": "xyxfy-baoshi"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 2.09,
+          "unit": "m",
+          "ancient": "六尺七寸",
+          "provenance": {
+            "kind": "wenxian",
+            "ref": "xyxfy-baoshi"
+          }
+        },
+        {
+          "value": 600,
+          "unit": "count",
+          "ancient": "六百牙",
+          "provenance": {
+            "kind": "wenxian",
+            "ref": "xyxfy-baoshi"
+          }
+        }
+      ],
+      "explodeVector": [
+        2,
+        1,
+        0
+      ],
+      "assemblyStep": 5,
+      "interactive": true
+    },
+    {
+      "id": "day-night-wheel",
+      "name": {
+        "zh": "昼夜轮",
+        "en": "Day-night wheel"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.55,
+        "width": 0.12,
+        "spokes": 12
+      },
+      "material": "wood",
+      "position": [
+        -1.8,
+        6.6,
+        0
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        -2,
+        1,
+        0
+      ],
+      "assemblyStep": 6,
+      "interactive": true
+    },
+    {
+      "id": "celestial-ladder-lower",
+      "name": {
+        "zh": "天梯下轮",
+        "en": "Celestial-ladder lower sprocket"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.35,
+        "width": 0.08,
+        "spokes": 8
+      },
+      "material": "iron",
+      "position": [
+        0,
+        7.7,
+        0
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "celestial-ladder-illustration",
+          "note": "The sprocket dimensions are illustrative; the classical source supports the chain transmission but not these measurements."
+        }
+      },
+      "explodeVector": [
+        0,
+        2,
+        0
+      ],
+      "assemblyStep": 7,
+      "interactive": true
+    },
+    {
+      "id": "celestial-globe",
+      "name": {
+        "zh": "浑象",
+        "en": "Celestial globe drive"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.35,
+        "width": 0.08,
+        "spokes": 8
+      },
+      "material": "bronze",
+      "position": [
+        0,
+        8.7,
+        0
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "celestial-ladder-illustration",
+          "note": "Equal sprocket radii express the illustrative 1:1 celestial-ladder chain."
+        }
+      },
+      "explodeVector": [
+        0,
+        3,
+        0
+      ],
+      "assemblyStep": 8,
+      "interactive": true
+    },
+    {
+      "id": "water-lift-wheel",
+      "name": {
+        "zh": "上水轮",
+        "en": "Water-lift wheel"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.8735,
+        "width": 0.16,
+        "spokes": 12
+      },
+      "material": "wood",
+      "position": [
+        8,
+        3,
+        0
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-water"
+      },
+      "dimensionProvenance": {
+        "radius": {
+          "kind": "wenxian",
+          "ref": "xyxfy-water",
+          "note": "Half of the recorded 1.747 m diameter."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 1.747,
+          "unit": "m",
+          "ancient": "五尺六寸",
+          "provenance": {
+            "kind": "wenxian",
+            "ref": "xyxfy-water"
+          }
+        }
+      ],
+      "explodeVector": [
+        4,
+        -1,
+        0
+      ],
+      "assemblyStep": 9,
+      "interactive": true
+    },
+    {
+      "id": "water-trough",
+      "name": {
+        "zh": "上水槽",
+        "en": "Water supply trough"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          2.2,
+          0.3,
+          0.8
+        ]
+      },
+      "material": "wood",
+      "position": [
+        8,
+        1.5,
+        0
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-water"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        4,
+        -2,
+        0
+      ],
+      "assemblyStep": 10
+    },
+    {
+      "id": "water-reservoir",
+      "name": {
+        "zh": "天池",
+        "en": "Header reservoir"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          1.8,
+          0.7,
+          1.2
+        ]
+      },
+      "material": "wood",
+      "position": [
+        5.5,
+        0.8,
+        0
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-water"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "water-circuit-layout",
+          "note": "The text names the reservoir but does not record its dimensions or display placement."
+        }
+      },
+      "explodeVector": [
+        3,
+        -1,
+        0
+      ],
+      "assemblyStep": 10
+    },
+    {
+      "id": "constant-level-tank",
+      "name": {
+        "zh": "平水壶",
+        "en": "Constant-level tank"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          1.2,
+          0.45,
+          0.9
+        ]
+      },
+      "material": "wood",
+      "position": [
+        5.5,
+        1.7,
+        0
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-water"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "water-circuit-layout",
+          "note": "The text names the constant-level tank but does not record its dimensions or display placement."
+        }
+      },
+      "explodeVector": [
+        3,
+        0,
+        0
+      ],
+      "assemblyStep": 10
+    },
+    {
+      "id": "armillary-sphere",
+      "name": {
+        "zh": "浑仪",
+        "en": "Armillary sphere"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "astroclockArmillary",
+        "params": {
+          "radius": 0.9,
+          "tube": 0.035
+        }
+      },
+      "material": "bronze",
+      "position": [
+        0,
+        10.4,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-taiti"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "armillary-display-scale",
+          "note": "The source records the three-ring armillary instrument; display radius and tube thickness are illustrative."
+        }
+      },
+      "explodeVector": [
+        0,
+        4,
+        0
+      ],
+      "assemblyStep": 9
+    },
+    {
+      "id": "gecha",
+      "name": {
+        "zh": "格叉",
+        "en": "Regulating fork"
+      },
+      "geometry": {
+        "type": "link",
+        "length": 0.8,
+        "width": 0.08
+      },
+      "material": "iron",
+      "position": [
+        -1.2,
+        4,
+        2
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-action"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        -1.2,
+        0,
+        2
+      ],
+      "assemblyStep": 11,
+      "interactive": false
+    },
+    {
+      "id": "guanshe",
+      "name": {
+        "zh": "关舌",
+        "en": "Release tongue"
+      },
+      "geometry": {
+        "type": "link",
+        "length": 0.7,
+        "width": 0.08
+      },
+      "material": "iron",
+      "position": [
+        0,
+        4,
+        2.3
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-action"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        2
+      ],
+      "assemblyStep": 12,
+      "interactive": false
+    },
+    {
+      "id": "tianguan",
+      "name": {
+        "zh": "天关",
+        "en": "Celestial gate"
+      },
+      "geometry": {
+        "type": "link",
+        "length": 0.8,
+        "width": 0.08
+      },
+      "material": "iron",
+      "position": [
+        1.2,
+        4,
+        2
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-action"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        1.2,
+        0,
+        2
+      ],
+      "assemblyStep": 13,
+      "interactive": false
+    },
+    {
+      "id": "tiansuo-l",
+      "name": {
+        "zh": "左天锁",
+        "en": "Left celestial lock"
+      },
+      "geometry": {
+        "type": "link",
+        "length": 0.55,
+        "width": 0.08
+      },
+      "material": "iron",
+      "position": [
+        -0.7,
+        4.8,
+        2.3
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-action"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        -0.7,
+        0,
+        2
+      ],
+      "assemblyStep": 14,
+      "interactive": false
+    },
+    {
+      "id": "tiansuo-r",
+      "name": {
+        "zh": "右天锁",
+        "en": "Right celestial lock"
+      },
+      "geometry": {
+        "type": "link",
+        "length": 0.55,
+        "width": 0.08
+      },
+      "material": "iron",
+      "position": [
+        0.7,
+        4.8,
+        2.3
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-action"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0.7,
+        0,
+        2
+      ],
+      "assemblyStep": 15,
+      "interactive": true
+    },
+    {
+      "id": "scoop-01",
+      "name": {
+        "zh": "受水壶1",
+        "en": "Receiving scoop 1"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.85,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        1.570796,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun",
+        "note": "The main reading has 36 scoops; the 48-scoop textual variant is retained in the shulun dimension notes."
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.8,
+        0,
+        0
+      ],
+      "assemblyStep": 16,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-02",
+      "name": {
+        "zh": "受水壶2",
+        "en": "Receiving scoop 2"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.821894,
+        0,
+        0.321249
+      ],
+      "rotationEuler": [
+        0,
+        1.396263,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.757462,
+        0,
+        0.486215
+      ],
+      "assemblyStep": 17,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-03",
+      "name": {
+        "zh": "受水壶3",
+        "en": "Receiving scoop 3"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.738431,
+        0,
+        0.632737
+      ],
+      "rotationEuler": [
+        0,
+        1.22173,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.631139,
+        0,
+        0.957656
+      ],
+      "assemblyStep": 18,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-04",
+      "name": {
+        "zh": "受水壶4",
+        "en": "Receiving scoop 4"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.602147,
+        0,
+        0.925
+      ],
+      "rotationEuler": [
+        0,
+        1.047198,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.424871,
+        0,
+        1.4
+      ],
+      "assemblyStep": 19,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-05",
+      "name": {
+        "zh": "受水壶5",
+        "en": "Receiving scoop 5"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.417182,
+        0,
+        1.189157
+      ],
+      "rotationEuler": [
+        0,
+        0.872665,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.144924,
+        0,
+        1.799805
+      ],
+      "assemblyStep": 20,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-06",
+      "name": {
+        "zh": "受水壶6",
+        "en": "Receiving scoop 6"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.189157,
+        0,
+        1.417182
+      ],
+      "rotationEuler": [
+        0,
+        0.698132,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        1.799805,
+        0,
+        2.144924
+      ],
+      "assemblyStep": 21,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-07",
+      "name": {
+        "zh": "受水壶7",
+        "en": "Receiving scoop 7"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.925,
+        0,
+        1.602147
+      ],
+      "rotationEuler": [
+        0,
+        0.523599,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        1.4,
+        0,
+        2.424871
+      ],
+      "assemblyStep": 22,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-08",
+      "name": {
+        "zh": "受水壶8",
+        "en": "Receiving scoop 8"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.632737,
+        0,
+        1.738431
+      ],
+      "rotationEuler": [
+        0,
+        0.349066,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        0.957656,
+        0,
+        2.631139
+      ],
+      "assemblyStep": 23,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-09",
+      "name": {
+        "zh": "受水壶9",
+        "en": "Receiving scoop 9"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.321249,
+        0,
+        1.821894
+      ],
+      "rotationEuler": [
+        0,
+        0.174533,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        0.486215,
+        0,
+        2.757462
+      ],
+      "assemblyStep": 24,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-10",
+      "name": {
+        "zh": "受水壶10",
+        "en": "Receiving scoop 10"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        0,
+        1.85
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        2.8
+      ],
+      "assemblyStep": 25,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-11",
+      "name": {
+        "zh": "受水壶11",
+        "en": "Receiving scoop 11"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.321249,
+        0,
+        1.821894
+      ],
+      "rotationEuler": [
+        0,
+        -0.174533,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -0.486215,
+        0,
+        2.757462
+      ],
+      "assemblyStep": 26,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-12",
+      "name": {
+        "zh": "受水壶12",
+        "en": "Receiving scoop 12"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.632737,
+        0,
+        1.738431
+      ],
+      "rotationEuler": [
+        0,
+        -0.349066,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -0.957656,
+        0,
+        2.631139
+      ],
+      "assemblyStep": 27,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-13",
+      "name": {
+        "zh": "受水壶13",
+        "en": "Receiving scoop 13"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.925,
+        0,
+        1.602147
+      ],
+      "rotationEuler": [
+        0,
+        -0.523599,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -1.4,
+        0,
+        2.424871
+      ],
+      "assemblyStep": 28,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-14",
+      "name": {
+        "zh": "受水壶14",
+        "en": "Receiving scoop 14"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.189157,
+        0,
+        1.417182
+      ],
+      "rotationEuler": [
+        0,
+        -0.698132,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -1.799805,
+        0,
+        2.144924
+      ],
+      "assemblyStep": 29,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-15",
+      "name": {
+        "zh": "受水壶15",
+        "en": "Receiving scoop 15"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.417182,
+        0,
+        1.189157
+      ],
+      "rotationEuler": [
+        0,
+        -0.872665,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.144924,
+        0,
+        1.799805
+      ],
+      "assemblyStep": 30,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-16",
+      "name": {
+        "zh": "受水壶16",
+        "en": "Receiving scoop 16"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.602147,
+        0,
+        0.925
+      ],
+      "rotationEuler": [
+        0,
+        -1.047198,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.424871,
+        0,
+        1.4
+      ],
+      "assemblyStep": 31,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-17",
+      "name": {
+        "zh": "受水壶17",
+        "en": "Receiving scoop 17"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.738431,
+        0,
+        0.632737
+      ],
+      "rotationEuler": [
+        0,
+        -1.22173,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.631139,
+        0,
+        0.957656
+      ],
+      "assemblyStep": 32,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-18",
+      "name": {
+        "zh": "受水壶18",
+        "en": "Receiving scoop 18"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.821894,
+        0,
+        0.321249
+      ],
+      "rotationEuler": [
+        0,
+        -1.396263,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.757462,
+        0,
+        0.486215
+      ],
+      "assemblyStep": 33,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-19",
+      "name": {
+        "zh": "受水壶19",
+        "en": "Receiving scoop 19"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.85,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        -1.570796,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.8,
+        0,
+        0
+      ],
+      "assemblyStep": 34,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-20",
+      "name": {
+        "zh": "受水壶20",
+        "en": "Receiving scoop 20"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.821894,
+        0,
+        -0.321249
+      ],
+      "rotationEuler": [
+        0,
+        -1.745329,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.757462,
+        0,
+        -0.486215
+      ],
+      "assemblyStep": 35,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-21",
+      "name": {
+        "zh": "受水壶21",
+        "en": "Receiving scoop 21"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.738431,
+        0,
+        -0.632737
+      ],
+      "rotationEuler": [
+        0,
+        -1.919862,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.631139,
+        0,
+        -0.957656
+      ],
+      "assemblyStep": 36,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-22",
+      "name": {
+        "zh": "受水壶22",
+        "en": "Receiving scoop 22"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.602147,
+        0,
+        -0.925
+      ],
+      "rotationEuler": [
+        0,
+        -2.094395,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.424871,
+        0,
+        -1.4
+      ],
+      "assemblyStep": 37,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-23",
+      "name": {
+        "zh": "受水壶23",
+        "en": "Receiving scoop 23"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.417182,
+        0,
+        -1.189157
+      ],
+      "rotationEuler": [
+        0,
+        -2.268928,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -2.144924,
+        0,
+        -1.799805
+      ],
+      "assemblyStep": 38,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-24",
+      "name": {
+        "zh": "受水壶24",
+        "en": "Receiving scoop 24"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -1.189157,
+        0,
+        -1.417182
+      ],
+      "rotationEuler": [
+        0,
+        -2.443461,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -1.799805,
+        0,
+        -2.144924
+      ],
+      "assemblyStep": 39,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-25",
+      "name": {
+        "zh": "受水壶25",
+        "en": "Receiving scoop 25"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.925,
+        0,
+        -1.602147
+      ],
+      "rotationEuler": [
+        0,
+        -2.617994,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -1.4,
+        0,
+        -2.424871
+      ],
+      "assemblyStep": 40,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-26",
+      "name": {
+        "zh": "受水壶26",
+        "en": "Receiving scoop 26"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.632737,
+        0,
+        -1.738431
+      ],
+      "rotationEuler": [
+        0,
+        -2.792527,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -0.957656,
+        0,
+        -2.631139
+      ],
+      "assemblyStep": 41,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-27",
+      "name": {
+        "zh": "受水壶27",
+        "en": "Receiving scoop 27"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.321249,
+        0,
+        -1.821894
+      ],
+      "rotationEuler": [
+        0,
+        -2.96706,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        -0.486215,
+        0,
+        -2.757462
+      ],
+      "assemblyStep": 42,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-28",
+      "name": {
+        "zh": "受水壶28",
+        "en": "Receiving scoop 28"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        0,
+        -1.85
+      ],
+      "rotationEuler": [
+        0,
+        -3.141593,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        -2.8
+      ],
+      "assemblyStep": 43,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-29",
+      "name": {
+        "zh": "受水壶29",
+        "en": "Receiving scoop 29"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.321249,
+        0,
+        -1.821894
+      ],
+      "rotationEuler": [
+        0,
+        -3.316126,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        0.486215,
+        0,
+        -2.757462
+      ],
+      "assemblyStep": 44,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-30",
+      "name": {
+        "zh": "受水壶30",
+        "en": "Receiving scoop 30"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.632737,
+        0,
+        -1.738431
+      ],
+      "rotationEuler": [
+        0,
+        -3.490659,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        0.957656,
+        0,
+        -2.631139
+      ],
+      "assemblyStep": 45,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-31",
+      "name": {
+        "zh": "受水壶31",
+        "en": "Receiving scoop 31"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.925,
+        0,
+        -1.602147
+      ],
+      "rotationEuler": [
+        0,
+        -3.665191,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        1.4,
+        0,
+        -2.424871
+      ],
+      "assemblyStep": 46,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-32",
+      "name": {
+        "zh": "受水壶32",
+        "en": "Receiving scoop 32"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.189157,
+        0,
+        -1.417182
+      ],
+      "rotationEuler": [
+        0,
+        -3.839724,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        1.799805,
+        0,
+        -2.144924
+      ],
+      "assemblyStep": 47,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-33",
+      "name": {
+        "zh": "受水壶33",
+        "en": "Receiving scoop 33"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.417182,
+        0,
+        -1.189157
+      ],
+      "rotationEuler": [
+        0,
+        -4.014257,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.144924,
+        0,
+        -1.799805
+      ],
+      "assemblyStep": 48,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-34",
+      "name": {
+        "zh": "受水壶34",
+        "en": "Receiving scoop 34"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.602147,
+        0,
+        -0.925
+      ],
+      "rotationEuler": [
+        0,
+        -4.18879,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.424871,
+        0,
+        -1.4
+      ],
+      "assemblyStep": 49,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-35",
+      "name": {
+        "zh": "受水壶35",
+        "en": "Receiving scoop 35"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.738431,
+        0,
+        -0.632737
+      ],
+      "rotationEuler": [
+        0,
+        -4.363323,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.631139,
+        0,
+        -0.957656
+      ],
+      "assemblyStep": 50,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "scoop-36",
+      "name": {
+        "zh": "受水壶36",
+        "en": "Receiving scoop 36"
+      },
+      "geometry": {
+        "type": "scoop",
+        "size": [
+          0.312,
+          0.156,
+          0.125
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.821894,
+        0,
+        -0.321249
+      ],
+      "rotationEuler": [
+        0,
+        -4.537856,
+        0
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          -0.35,
+          0.35
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun"
+      },
+      "dimensionProvenance": {
+        "size.0": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.1": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "size.2": {
+          "kind": "wenxian",
+          "ref": "xyxfy-shulun"
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Mount angle and optional hinge range are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        2.757462,
+        0,
+        -0.486215
+      ],
+      "assemblyStep": 51,
+      "schemeTags": [
+        "fixed-scoop",
+        "combridge-hinged"
+      ]
+    },
+    {
+      "id": "chime-tier-1",
+      "name": {
+        "zh": "报时台第1层",
+        "en": "Chime tier 1"
+      },
+      "geometry": {
+        "type": "beam",
+        "size": [
+          2.4,
+          0.08,
+          0.6
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        1,
+        5
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        2.25
+      ],
+      "assemblyStep": 52
+    },
+    {
+      "id": "tier-cam-1",
+      "name": {
+        "zh": "第1层报时凸轮",
+        "en": "Tier 1 chime cam"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.16,
+        "width": 0.05,
+        "spokes": 6
+      },
+      "material": "wood",
+      "position": [
+        -1.55,
+        1.3,
+        5
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative five-tier cam dimensions are inferred; the text supports the reporting tiers."
+        }
+      },
+      "explodeVector": [
+        -2,
+        0,
+        2.25
+      ],
+      "assemblyStep": 53,
+      "interactive": true
+    },
+    {
+      "id": "tier-placard-1",
+      "name": {
+        "zh": "第1层报时牌",
+        "en": "Tier 1 reporting placard"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.4,
+          0.3,
+          0.08
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.25,
+        1.3,
+        5
+      ],
+      "joint": {
+        "kind": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          0,
+          0.08
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative placard geometry and lift are inferred."
+        }
+      },
+      "explodeVector": [
+        2,
+        0,
+        2.25
+      ],
+      "assemblyStep": 54
+    },
+    {
+      "id": "jack-01",
+      "name": {
+        "zh": "第1层木人1",
+        "en": "Tier 1 jack figure 1"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.35,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-1",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        -0.7,
+        0,
+        3.25
+      ],
+      "assemblyStep": 55
+    },
+    {
+      "id": "jack-02",
+      "name": {
+        "zh": "第1层木人2",
+        "en": "Tier 1 jack figure 2"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.35,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-1",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0.7,
+        0,
+        3.25
+      ],
+      "assemblyStep": 56
+    },
+    {
+      "id": "chime-tier-2",
+      "name": {
+        "zh": "报时台第2层",
+        "en": "Chime tier 2"
+      },
+      "geometry": {
+        "type": "beam",
+        "size": [
+          2.4,
+          0.08,
+          0.6
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        3,
+        5
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        2.5
+      ],
+      "assemblyStep": 57
+    },
+    {
+      "id": "tier-cam-2",
+      "name": {
+        "zh": "第2层报时凸轮",
+        "en": "Tier 2 chime cam"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.16,
+        "width": 0.05,
+        "spokes": 6
+      },
+      "material": "wood",
+      "position": [
+        -1.55,
+        3.3,
+        5
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative five-tier cam dimensions are inferred; the text supports the reporting tiers."
+        }
+      },
+      "explodeVector": [
+        -2,
+        0,
+        2.5
+      ],
+      "assemblyStep": 58,
+      "interactive": true
+    },
+    {
+      "id": "tier-placard-2",
+      "name": {
+        "zh": "第2层报时牌",
+        "en": "Tier 2 reporting placard"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.4,
+          0.3,
+          0.08
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.25,
+        3.3,
+        5
+      ],
+      "joint": {
+        "kind": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          0,
+          0.08
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative placard geometry and lift are inferred."
+        }
+      },
+      "explodeVector": [
+        2,
+        0,
+        2.5
+      ],
+      "assemblyStep": 59
+    },
+    {
+      "id": "jack-03",
+      "name": {
+        "zh": "第2层木人1",
+        "en": "Tier 2 jack figure 1"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.35,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-2",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        -0.7,
+        0,
+        3.5
+      ],
+      "assemblyStep": 60
+    },
+    {
+      "id": "jack-04",
+      "name": {
+        "zh": "第2层木人2",
+        "en": "Tier 2 jack figure 2"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.35,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-2",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0.7,
+        0,
+        3.5
+      ],
+      "assemblyStep": 61
+    },
+    {
+      "id": "chime-tier-3",
+      "name": {
+        "zh": "报时台第3层",
+        "en": "Chime tier 3"
+      },
+      "geometry": {
+        "type": "beam",
+        "size": [
+          2.4,
+          0.08,
+          0.6
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        5,
+        5
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        2.75
+      ],
+      "assemblyStep": 62
+    },
+    {
+      "id": "tier-cam-3",
+      "name": {
+        "zh": "第3层报时凸轮",
+        "en": "Tier 3 chime cam"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.16,
+        "width": 0.05,
+        "spokes": 6
+      },
+      "material": "wood",
+      "position": [
+        -1.55,
+        5.3,
+        5
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative five-tier cam dimensions are inferred; the text supports the reporting tiers."
+        }
+      },
+      "explodeVector": [
+        -2,
+        0,
+        2.75
+      ],
+      "assemblyStep": 63,
+      "interactive": true
+    },
+    {
+      "id": "tier-placard-3",
+      "name": {
+        "zh": "第3层报时牌",
+        "en": "Tier 3 reporting placard"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.4,
+          0.3,
+          0.08
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.25,
+        5.3,
+        5
+      ],
+      "joint": {
+        "kind": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          0,
+          0.08
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative placard geometry and lift are inferred."
+        }
+      },
+      "explodeVector": [
+        2,
+        0,
+        2.75
+      ],
+      "assemblyStep": 64
+    },
+    {
+      "id": "jack-05",
+      "name": {
+        "zh": "第3层木人1",
+        "en": "Tier 3 jack figure 1"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.35,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-3",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        -0.7,
+        0,
+        3.75
+      ],
+      "assemblyStep": 65
+    },
+    {
+      "id": "jack-06",
+      "name": {
+        "zh": "第3层木人2",
+        "en": "Tier 3 jack figure 2"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.35,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-3",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0.7,
+        0,
+        3.75
+      ],
+      "assemblyStep": 66
+    },
+    {
+      "id": "chime-tier-4",
+      "name": {
+        "zh": "报时台第4层",
+        "en": "Chime tier 4"
+      },
+      "geometry": {
+        "type": "beam",
+        "size": [
+          2.4,
+          0.08,
+          0.6
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        7,
+        5
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        3
+      ],
+      "assemblyStep": 67
+    },
+    {
+      "id": "tier-cam-4",
+      "name": {
+        "zh": "第4层报时凸轮",
+        "en": "Tier 4 chime cam"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.16,
+        "width": 0.05,
+        "spokes": 6
+      },
+      "material": "wood",
+      "position": [
+        -1.55,
+        7.3,
+        5
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative five-tier cam dimensions are inferred; the text supports the reporting tiers."
+        }
+      },
+      "explodeVector": [
+        -2,
+        0,
+        3
+      ],
+      "assemblyStep": 68,
+      "interactive": true
+    },
+    {
+      "id": "tier-placard-4",
+      "name": {
+        "zh": "第4层报时牌",
+        "en": "Tier 4 reporting placard"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.4,
+          0.3,
+          0.08
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.25,
+        7.3,
+        5
+      ],
+      "joint": {
+        "kind": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          0,
+          0.08
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative placard geometry and lift are inferred."
+        }
+      },
+      "explodeVector": [
+        2,
+        0,
+        3
+      ],
+      "assemblyStep": 69
+    },
+    {
+      "id": "jack-07",
+      "name": {
+        "zh": "第4层木人1",
+        "en": "Tier 4 jack figure 1"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.55,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-4",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        -1.1,
+        0,
+        4
+      ],
+      "assemblyStep": 70
+    },
+    {
+      "id": "jack-08",
+      "name": {
+        "zh": "第4层木人2",
+        "en": "Tier 4 jack figure 2"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-4",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        4
+      ],
+      "assemblyStep": 71
+    },
+    {
+      "id": "jack-09",
+      "name": {
+        "zh": "第4层木人3",
+        "en": "Tier 4 jack figure 3"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0.55,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-4",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        1.1,
+        0,
+        4
+      ],
+      "assemblyStep": 72
+    },
+    {
+      "id": "chime-tier-5",
+      "name": {
+        "zh": "报时台第5层",
+        "en": "Chime tier 5"
+      },
+      "geometry": {
+        "type": "beam",
+        "size": [
+          2.4,
+          0.08,
+          0.6
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        9,
+        5
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        3.25
+      ],
+      "assemblyStep": 73
+    },
+    {
+      "id": "tier-cam-5",
+      "name": {
+        "zh": "第5层报时凸轮",
+        "en": "Tier 5 chime cam"
+      },
+      "geometry": {
+        "type": "wheel",
+        "radius": 0.16,
+        "width": 0.05,
+        "spokes": 6
+      },
+      "material": "wood",
+      "position": [
+        -1.55,
+        9.3,
+        5
+      ],
+      "rotationEuler": [
+        1.5707963267948966,
+        0,
+        0
+      ],
+      "joint": {
+        "kind": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative five-tier cam dimensions are inferred; the text supports the reporting tiers."
+        }
+      },
+      "explodeVector": [
+        -2,
+        0,
+        3.25
+      ],
+      "assemblyStep": 74,
+      "interactive": true
+    },
+    {
+      "id": "tier-placard-5",
+      "name": {
+        "zh": "第5层报时牌",
+        "en": "Tier 5 reporting placard"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.4,
+          0.3,
+          0.08
+        ]
+      },
+      "material": "wood",
+      "position": [
+        1.25,
+        9.3,
+        5
+      ],
+      "joint": {
+        "kind": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          0,
+          0.08
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi"
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Representative placard geometry and lift are inferred."
+        }
+      },
+      "explodeVector": [
+        2,
+        0,
+        3.25
+      ],
+      "assemblyStep": 75
+    },
+    {
+      "id": "jack-10",
+      "name": {
+        "zh": "第5层木人1",
+        "en": "Tier 5 jack figure 1"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        -0.55,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-5",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        -1.1,
+        0,
+        4.25
+      ],
+      "assemblyStep": 76
+    },
+    {
+      "id": "jack-11",
+      "name": {
+        "zh": "第5层木人2",
+        "en": "Tier 5 jack figure 2"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.22,
+          0.45,
+          0.22
+        ]
+      },
+      "material": "wood",
+      "position": [
+        0,
+        0.29,
+        0
+      ],
+      "parent": "chime-tier-5",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "A representative set of twelve figures stands for the documented five-tier reporting display, not all 162 historical figures."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Geometry is an illustrative reconstruction where the classical text gives no measurement."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        4.25
+      ],
+      "assemblyStep": 77
+    }
+  ],
+  "constraints": [
+    {
+      "type": "lockstep",
+      "a": "shulun",
+      "b": "celestial-column",
+      "ratio": 1,
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-action",
+        "note": "The reconstruction couples the escapement output to the celestial column."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "celestial-column",
+      "b": "hour-drum-wheel",
+      "ratio": 0.36,
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun+xyxfy-baoshi",
+        "note": "Thirty-six scoop steps per shulun revolution; each step advances 6 of 600 tooth slots."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "celestial-column",
+      "b": "day-night-wheel",
+      "ratio": 0.36,
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-shulun+xyxfy-baoshi",
+        "note": "The reporting train follows the same 36/100 revolution ratio."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "celestial-column",
+      "b": "celestial-ladder-lower",
+      "ratio": 1,
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "Illustrative direct take-off into the celestial-ladder chain."
+      }
+    },
+    {
+      "type": "belt",
+      "a": "celestial-ladder-lower",
+      "b": "celestial-globe"
+    },
+    {
+      "type": "lockstep",
+      "a": "celestial-globe",
+      "b": "armillary-sphere",
+      "ratio": 1,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "armillary-display-coupling",
+        "note": "The synchronized armillary display is textual; its 1:1 visualization coupling is illustrative."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "shulun",
+      "b": "water-lift-wheel",
+      "ratio": 1,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "xyxfy-water",
+        "note": "The text records the recirculating lift; the 1:1 display coupling keeps that water circuit visibly active."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "shulun",
+      "b": "tier-cam-1",
+      "ratio": 1,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative phase staggering makes the five display tiers legible; the text does not supply these cam ratios."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "shulun",
+      "b": "tier-cam-2",
+      "ratio": 0.5,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative phase staggering makes the five display tiers legible; the text does not supply these cam ratios."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "shulun",
+      "b": "tier-cam-3",
+      "ratio": 0.3333333333333333,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative phase staggering makes the five display tiers legible; the text does not supply these cam ratios."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "shulun",
+      "b": "tier-cam-4",
+      "ratio": 0.25,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative phase staggering makes the five display tiers legible; the text does not supply these cam ratios."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "shulun",
+      "b": "tier-cam-5",
+      "ratio": 0.2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative phase staggering makes the five display tiers legible; the text does not supply these cam ratios."
+      }
+    },
+    {
+      "type": "cam",
+      "cam": "tier-cam-1",
+      "follower": "tier-placard-1",
+      "profile": "lift",
+      "liftHeight": 0.08,
+      "dwellRatio": 0.2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative cam lift and dwell are inferred for the placard demonstration."
+      }
+    },
+    {
+      "type": "cam",
+      "cam": "tier-cam-2",
+      "follower": "tier-placard-2",
+      "profile": "lift",
+      "liftHeight": 0.08,
+      "dwellRatio": 0.2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative cam lift and dwell are inferred for the placard demonstration."
+      }
+    },
+    {
+      "type": "cam",
+      "cam": "tier-cam-3",
+      "follower": "tier-placard-3",
+      "profile": "lift",
+      "liftHeight": 0.08,
+      "dwellRatio": 0.2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative cam lift and dwell are inferred for the placard demonstration."
+      }
+    },
+    {
+      "type": "cam",
+      "cam": "tier-cam-4",
+      "follower": "tier-placard-4",
+      "profile": "lift",
+      "liftHeight": 0.08,
+      "dwellRatio": 0.2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative cam lift and dwell are inferred for the placard demonstration."
+      }
+    },
+    {
+      "type": "cam",
+      "cam": "tier-cam-5",
+      "follower": "tier-placard-5",
+      "profile": "lift",
+      "liftHeight": 0.08,
+      "dwellRatio": 0.2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "chime-tier-choreography",
+        "note": "Representative cam lift and dwell are inferred for the placard demonstration."
+      }
+    }
+  ],
+  "escapement": {
+    "wheel": "shulun",
+    "scoops": 36,
+    "fillSecondsPerScoop": 24,
+    "stepRad": 0.17453292519943295,
+    "leverParts": {
+      "tianguan": "tianguan",
+      "gecha": "gecha",
+      "guanshe": "guanshe",
+      "tiansuoL": "tiansuo-l",
+      "tiansuoR": "tiansuo-r"
+    }
+  },
+  "driveNodes": [
+    "shulun",
+    "celestial-column",
+    "hour-drum-wheel",
+    "day-night-wheel",
+    "celestial-globe"
+  ],
+  "primaryDrive": "shulun",
+  "cycleRad": 6.283185307179586,
+  "expectedRatios": [
+    {
+      "from": "shulun",
+      "to": "hour-drum-wheel",
+      "ratio": 0.36,
+      "sourceRef": "xyxfy-shulun+xyxfy-baoshi"
+    },
+    {
+      "from": "shulun",
+      "to": "day-night-wheel",
+      "ratio": 0.36,
+      "sourceRef": "xyxfy-shulun+xyxfy-baoshi"
+    },
+    {
+      "from": "celestial-ladder-lower",
+      "to": "celestial-globe",
+      "ratio": 1,
+      "sourceRef": "xyxfy-baoshi"
+    }
+  ],
+  "collisionWhitelist": []
+}

@@ -1,0 +1,704 @@
+[
+  {
+    "id": "chassis-base",
+    "name": { "zh": "赤质车架", "en": "Red carriage chassis" },
+    "geometry": { "type": "beam", "size": [2.8, 0.18, 0.7] },
+    "material": "wood",
+    "position": [0, 0.45, 0],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Chassis proportions are inferred from the recorded decorated carriage form."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.8,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Display-scale chassis length."
+        }
+      }
+    ],
+    "explodeVector": [0, -0.8, 0],
+    "assemblyStep": 0
+  },
+  {
+    "id": "road-axle",
+    "name": { "zh": "足轮轴", "en": "Road-wheel axle" },
+    "geometry": { "type": "shaft", "radius": 0.055, "length": 2.1 },
+    "material": "wood",
+    "position": [0, 0.936, 0],
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-ludaolong",
+      "note": "The axle is required by the paired road wheels; its dimensions are not recorded."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Axle radius and length are reconstruction dimensions."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.1,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-ludaolong",
+          "note": "Axle length inferred from the road-wheel spacing."
+        }
+      }
+    ],
+    "explodeVector": [0, 0, 0.9],
+    "assemblyStep": 1
+  },
+  {
+    "id": "zulun",
+    "name": { "zh": "左足轮", "en": "Left road wheel" },
+    "geometry": { "type": "wheel", "radius": 0.936, "width": 0.12, "spokes": 16 },
+    "material": "wood",
+    "position": [0, -1.05, 0],
+    "parent": "road-axle",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "wenxian",
+        "ref": "songshi-ludaolong",
+        "note": "Half of the recorded six-Song-chi diameter."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Wheel width and spoke count are visualization assumptions."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 1.872,
+        "unit": "m",
+        "ancient": "徑六尺，圍一丈八尺",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      }
+    ],
+    "explodeVector": [0, 0, -1],
+    "assemblyStep": 2,
+    "interactive": true
+  },
+  {
+    "id": "right-zulun",
+    "name": { "zh": "右足轮", "en": "Right road wheel" },
+    "geometry": { "type": "wheel", "radius": 0.936, "width": 0.12, "spokes": 16 },
+    "material": "wood",
+    "position": [0, 1.05, 0],
+    "parent": "road-axle",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "wenxian",
+        "ref": "songshi-ludaolong",
+        "note": "Half of the recorded six-Song-chi diameter."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Wheel width and spoke count are visualization assumptions."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 1.872,
+        "unit": "m",
+        "ancient": "徑六尺，圍一丈八尺",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      }
+    ],
+    "explodeVector": [0, 0, 1],
+    "assemblyStep": 2
+  },
+  {
+    "id": "platform",
+    "name": { "zh": "重台", "en": "Two-tier platform" },
+    "geometry": { "type": "box", "size": [2.6, 0.12, 1.8] },
+    "material": "wood",
+    "position": [0, 1.91, 0],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The text records a raised platform but not its dimensions."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.6,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Platform length inferred from the wheel spacing."
+        }
+      }
+    ],
+    "explodeVector": [0, 0.8, 0],
+    "assemblyStep": 3
+  },
+  {
+    "id": "drawbar",
+    "name": { "zh": "独辕凤首", "en": "Single phoenix-headed drawbar" },
+    "geometry": { "type": "beam", "size": [2.3, 0.12, 0.12] },
+    "material": "wood",
+    "position": [2.7, 0.55, 0],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The single drawbar is recorded, but its dimensions are not."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.3,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Display-scale drawbar length."
+        }
+      }
+    ],
+    "explodeVector": [1.2, 0, 0],
+    "assemblyStep": 3
+  },
+  {
+    "id": "lilun",
+    "name": { "zh": "十八齿立轮", "en": "18-tooth vertical wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.02392,
+      "teeth": 18,
+      "thickness": 0.07,
+      "toothStyle": "pin"
+    },
+    "material": "wood",
+    "position": [0, 0, 0],
+    "parent": "road-axle",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+    "dimensionProvenance": {
+      "module": {
+        "kind": "wenxian",
+        "ref": "songshi-ludaolong",
+        "note": "Derived from the recorded 0.431 m diameter and 18 teeth."
+      },
+      "teeth": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Thickness and tooth profile are reconstruction choices."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.431,
+        "unit": "m",
+        "ancient": "徑一尺三寸八分，出齒十八",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      },
+      {
+        "value": 18,
+        "unit": "count",
+        "ancient": "出齒十八",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      }
+    ],
+    "explodeVector": [-0.8, 0.2, 0],
+    "assemblyStep": 4
+  },
+  {
+    "id": "xiapinglun",
+    "name": { "zh": "五十四齿下平轮", "en": "54-tooth lower horizontal wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.02392,
+      "teeth": 54,
+      "thickness": 0.07,
+      "toothStyle": "trapezoid"
+    },
+    "material": "wood",
+    "position": [0.86212, 0.936, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+    "dimensionProvenance": {
+      "module": {
+        "kind": "wenxian",
+        "ref": "songshi-ludaolong",
+        "note": "Derived from the recorded 1.292 m diameter and 54 teeth."
+      },
+      "teeth": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Thickness and tooth profile are reconstruction choices."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 1.292,
+        "unit": "m",
+        "ancient": "徑四尺一寸四分，出齒五十四",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      },
+      {
+        "value": 54,
+        "unit": "count",
+        "ancient": "出齒五十四",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      }
+    ],
+    "explodeVector": [-0.3, 0.7, 0],
+    "assemblyStep": 5
+  },
+  {
+    "id": "xuanfenglun",
+    "name": { "zh": "三齿旋风轮", "en": "3-tooth whirlwind wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.01248,
+      "teeth": 3,
+      "thickness": 0.05,
+      "toothStyle": "trapezoid"
+    },
+    "material": "bronze",
+    "position": [0.86212, 1.05, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+    "dimensionProvenance": {
+      "teeth": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Pitch module, thickness, and tooth profile are inferred because only the tooth count is recorded."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 3,
+        "unit": "count",
+        "ancient": "銅旋風輪一，出齒三",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      }
+    ],
+    "explodeVector": [-0.2, 1, 0],
+    "assemblyStep": 6
+  },
+  {
+    "id": "zhongpinglun",
+    "name": { "zh": "百齿中平轮", "en": "100-tooth middle wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.01248,
+      "teeth": 100,
+      "thickness": 0.07,
+      "toothStyle": "trapezoid"
+    },
+    "material": "wood",
+    "position": [1.50584, 1.05, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+    "dimensionProvenance": {
+      "module": {
+        "kind": "wenxian",
+        "ref": "songshi-ludaolong",
+        "note": "Derived from the recorded four-Song-chi diameter and 100 teeth."
+      },
+      "teeth": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Thickness and tooth profile are reconstruction choices."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 1.248,
+        "unit": "m",
+        "ancient": "徑四尺，出齒百",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      },
+      {
+        "value": 100,
+        "unit": "count",
+        "ancient": "出齒百",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      }
+    ],
+    "explodeVector": [0.3, 0.8, 0],
+    "assemblyStep": 7,
+    "interactive": true
+  },
+  {
+    "id": "xiaopinglun",
+    "name": { "zh": "十齿小平轮", "en": "10-tooth small wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.01248,
+      "teeth": 10,
+      "thickness": 0.05,
+      "toothStyle": "trapezoid"
+    },
+    "material": "wood",
+    "position": [1.50584, 1.15, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+    "dimensionProvenance": {
+      "teeth": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Pitch module, thickness, and tooth profile are inferred because only the tooth count is recorded."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 10,
+        "unit": "count",
+        "ancient": "出齒十",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      }
+    ],
+    "explodeVector": [0.3, 1, 0],
+    "assemblyStep": 8
+  },
+  {
+    "id": "shangpinglun",
+    "name": { "zh": "百齿上平轮", "en": "100-tooth upper wheel" },
+    "geometry": {
+      "type": "gear",
+      "module": 0.01248,
+      "teeth": 100,
+      "thickness": 0.07,
+      "toothStyle": "trapezoid"
+    },
+    "material": "wood",
+    "position": [2.19324, 1.15, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+    "dimensionProvenance": {
+      "teeth": { "kind": "wenxian", "ref": "songshi-ludaolong" },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Pitch module, thickness, and tooth profile are inferred because the source records only 100 teeth."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 100,
+        "unit": "count",
+        "ancient": "出齒百",
+        "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
+      }
+    ],
+    "explodeVector": [0.8, 0.9, 0],
+    "assemblyStep": 9,
+    "interactive": true
+  },
+  {
+    "id": "front-left-post",
+    "name": { "zh": "前左台柱", "en": "Front-left platform post" },
+    "geometry": { "type": "beam", "size": [0.09, 2.25, 0.09] },
+    "material": "wood",
+    "position": [1.2, 3.15, -0.82],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Post dimensions follow the recorded raised-platform form."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.25,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Post height inferred for display."
+        }
+      }
+    ],
+    "explodeVector": [0.8, 0, -0.8],
+    "assemblyStep": 3
+  },
+  {
+    "id": "front-right-post",
+    "name": { "zh": "前右台柱", "en": "Front-right platform post" },
+    "geometry": { "type": "beam", "size": [0.09, 2.25, 0.09] },
+    "material": "wood",
+    "position": [1.2, 3.15, 0.82],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Post dimensions follow the recorded raised-platform form."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.25,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Post height inferred for display."
+        }
+      }
+    ],
+    "explodeVector": [0.8, 0, 0.8],
+    "assemblyStep": 3
+  },
+  {
+    "id": "rear-left-post",
+    "name": { "zh": "后左台柱", "en": "Rear-left platform post" },
+    "geometry": { "type": "beam", "size": [0.09, 2.25, 0.09] },
+    "material": "wood",
+    "position": [-1.2, 3.15, -0.82],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Post dimensions follow the recorded raised-platform form."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.25,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Post height inferred for display."
+        }
+      }
+    ],
+    "explodeVector": [-0.8, 0, -0.8],
+    "assemblyStep": 3
+  },
+  {
+    "id": "rear-right-post",
+    "name": { "zh": "后右台柱", "en": "Rear-right platform post" },
+    "geometry": { "type": "beam", "size": [0.09, 2.25, 0.09] },
+    "material": "wood",
+    "position": [-1.2, 3.15, 0.82],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Post dimensions follow the recorded raised-platform form."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.25,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Post height inferred for display."
+        }
+      }
+    ],
+    "explodeVector": [-0.8, 0, 0.8],
+    "assemblyStep": 3
+  },
+  {
+    "id": "canopy-roof",
+    "name": { "zh": "重台顶盖", "en": "Upper canopy roof" },
+    "geometry": { "type": "box", "size": [2.7, 0.12, 1.9] },
+    "material": "wood",
+    "position": [0, 4.35, 0],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Canopy dimensions are inferred from the recorded double-tier structure."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 2.7,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Canopy width chosen to clear the gear train."
+        }
+      }
+    ],
+    "explodeVector": [0, 1.1, 0],
+    "assemblyStep": 10
+  },
+  {
+    "id": "lower-figure",
+    "name": { "zh": "击鼓木人", "en": "Drum-striking figure" },
+    "geometry": { "type": "box", "size": [0.22, 0.65, 0.22] },
+    "material": "wood",
+    "position": [-0.55, 4.82, 0],
+    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.28] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "joint.limits.0": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The reconstructed striking arc begins at rest."
+      },
+      "joint.limits.1": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The reconstructed striking arc is limited to 0.28 rad."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Figure proportions are not recorded."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.65,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Representative figure height."
+        }
+      }
+    ],
+    "explodeVector": [-0.5, 0.8, 0],
+    "assemblyStep": 11
+  },
+  {
+    "id": "upper-figure",
+    "name": { "zh": "击镯木人", "en": "Chime-striking figure" },
+    "geometry": { "type": "box", "size": [0.22, 0.65, 0.22] },
+    "material": "wood",
+    "position": [0.55, 4.82, 0],
+    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.28] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "joint.limits.0": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The reconstructed striking arc begins at rest."
+      },
+      "joint.limits.1": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The reconstructed striking arc is limited to 0.28 rad."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Figure proportions are not recorded."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.65,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Representative figure height."
+        }
+      }
+    ],
+    "explodeVector": [0.5, 0.8, 0],
+    "assemblyStep": 11
+  },
+  {
+    "id": "drum",
+    "name": { "zh": "里鼓", "en": "Li drum" },
+    "geometry": { "type": "shaft", "radius": 0.19, "length": 0.26 },
+    "material": "wood",
+    "position": [-0.55, 5.28, 0.42],
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The drum is recorded but its dimensions are not."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.38,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Reconstructed drum diameter."
+        }
+      }
+    ],
+    "explodeVector": [-0.5, 0.7, 0.7],
+    "assemblyStep": 12
+  },
+  {
+    "id": "chime",
+    "name": { "zh": "十里镯", "en": "Ten-li chime" },
+    "geometry": { "type": "ring", "radius": 0.18, "tube": 0.025 },
+    "material": "bronze",
+    "position": [0.55, 5.28, 0.42],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The chime is recorded but its dimensions are not."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.36,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Reconstructed chime diameter."
+        }
+      }
+    ],
+    "explodeVector": [0.5, 0.7, 0.7],
+    "assemblyStep": 12
+  }
+]

@@ -42,7 +42,7 @@
       "id": "xyxfy-shulun",
       "book": "新儀象法要",
       "chapter": "卷下",
-      "quote": "樞輪直徑一丈一尺，以七十二輻（七十二一本云九十六）雙植於一轂為三十六（三十六一本云四十八）洪，束以三輞，每洪夾持受水壺一，總三十六壺，每壺長一尺、闊五寸、深四寸，於壺側置鐵撥牙以撥天衡關舌",
+      "quote": "樞輪直徑一丈一尺，以七十二輻（一本云九十六）雙植於一轂為三十六洪（一本云四十八），束以三輞，每洪夾持受水壺一，總三十六壺，每壺長一尺、闊五寸、深四寸，於壺側置鐵撥牙以撥天衡關舌",
       "translation": {
         "zh": "枢轮直径一丈一尺，辐条成对组成三十六格，每格夹一只受水壶；另有版本记作四十八格。每壶长一尺、宽五寸、深四寸，侧面铁拨牙推动天衡关舌。",
         "en": "The 1-zhang-1-chi wheel has paired spokes forming 36 cells, each holding a scoop; another edition gives 48. Each scoop is 1 chi long, 5 cun wide, and 4 cun deep, with an iron tooth that moves the escapement tongue."
@@ -64,7 +64,7 @@
       "id": "xyxfy-action",
       "book": "新儀象法要",
       "chapter": "卷下",
-      "quote": "壺虛即為格叉所格……水實即格叉不能勝壺，故格叉落，格叉落即壺側鐵撥擊開天衡關舌……一輻過則左天鎖及天關開……一壺落則關鎖再拒次壺，則激輪右回，故以右天鎖拒之使不能西也",
+      "quote": "（受水）壺虛即為格叉所格……水實即格叉不能勝壺，故格叉落，格叉落即壺側鐵撥擊（開關舌）……一輻過則左天鎖及天關開……一壺落則關鎖再拒次壺；激輪右回，故以右天鎖拒之使不能西也",
       "translation": {
         "zh": "空壶被格叉托住；水满后格叉下落，铁拨牙打开关舌。轮子走过一格后锁和关重新挡住下一壶，右锁阻止倒转。",
         "en": "An empty scoop rests on the fork; when full it overcomes the fork and its iron tooth opens the tongue. After one cell passes, the locks catch the next scoop, while the right lock prevents reverse motion."

@@ -1,0 +1,16 @@
+{
+  "id": "yansu-clutch",
+  "scholar": {
+    "zh": "燕肃；王振铎复原",
+    "en": "Yan Su; reconstructed by Wang Zhenduo"
+  },
+  "year": 1937,
+  "summary": {
+    "zh": "以左右子轮、小平轮和中心大平轮组成转向传动，并以侧落式离合机构选择转向侧。",
+    "en": "Uses the paired sub-wheels, small horizontal wheels, and central great wheel with a side-selecting clutch."
+  },
+  "notes": {
+    "zh": "齿数严格采用《宋史》所记的24、12、48齿；离合控制件的形制属于推测。",
+    "en": "Tooth counts strictly preserve the Song History's 24, 12, and 48; clutch-control geometry is inferred."
+  }
+}

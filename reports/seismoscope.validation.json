@@ -1,0 +1,2119 @@
+{
+  "slug": "seismoscope",
+  "when": "2026-07-18T14:30:04.430Z",
+  "checks": [
+    {
+      "id": "base:provenance:part:vessel",
+      "status": "pass",
+      "message": "Part vessel has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:dragon-0",
+      "status": "pass",
+      "message": "Part dragon-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:dragon-1",
+      "status": "pass",
+      "message": "Part dragon-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:dragon-2",
+      "status": "pass",
+      "message": "Part dragon-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:dragon-3",
+      "status": "pass",
+      "message": "Part dragon-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:dragon-4",
+      "status": "pass",
+      "message": "Part dragon-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:dragon-5",
+      "status": "pass",
+      "message": "Part dragon-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:dragon-6",
+      "status": "pass",
+      "message": "Part dragon-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:dragon-7",
+      "status": "pass",
+      "message": "Part dragon-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:toad-0",
+      "status": "pass",
+      "message": "Part toad-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:toad-1",
+      "status": "pass",
+      "message": "Part toad-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:toad-2",
+      "status": "pass",
+      "message": "Part toad-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:toad-3",
+      "status": "pass",
+      "message": "Part toad-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:toad-4",
+      "status": "pass",
+      "message": "Part toad-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:toad-5",
+      "status": "pass",
+      "message": "Part toad-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:toad-6",
+      "status": "pass",
+      "message": "Part toad-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:toad-7",
+      "status": "pass",
+      "message": "Part toad-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:ball-0",
+      "status": "pass",
+      "message": "Part ball-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:ball-1",
+      "status": "pass",
+      "message": "Part ball-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:ball-2",
+      "status": "pass",
+      "message": "Part ball-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:ball-3",
+      "status": "pass",
+      "message": "Part ball-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:ball-4",
+      "status": "pass",
+      "message": "Part ball-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:ball-5",
+      "status": "pass",
+      "message": "Part ball-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:ball-6",
+      "status": "pass",
+      "message": "Part ball-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:ball-7",
+      "status": "pass",
+      "message": "Part ball-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:dimension:vessel:radius",
+      "status": "pass",
+      "message": "vessel.radius has dimension provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-0:params.radius",
+      "status": "pass",
+      "message": "dragon-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-1:params.radius",
+      "status": "pass",
+      "message": "dragon-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-2:params.radius",
+      "status": "pass",
+      "message": "dragon-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-3:params.radius",
+      "status": "pass",
+      "message": "dragon-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-4:params.radius",
+      "status": "pass",
+      "message": "dragon-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-5:params.radius",
+      "status": "pass",
+      "message": "dragon-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-6:params.radius",
+      "status": "pass",
+      "message": "dragon-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-7:params.radius",
+      "status": "pass",
+      "message": "dragon-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-0:params.radius",
+      "status": "pass",
+      "message": "toad-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-1:params.radius",
+      "status": "pass",
+      "message": "toad-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-2:params.radius",
+      "status": "pass",
+      "message": "toad-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-3:params.radius",
+      "status": "pass",
+      "message": "toad-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-4:params.radius",
+      "status": "pass",
+      "message": "toad-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-5:params.radius",
+      "status": "pass",
+      "message": "toad-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-6:params.radius",
+      "status": "pass",
+      "message": "toad-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-7:params.radius",
+      "status": "pass",
+      "message": "toad-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-0:joint.limits.0",
+      "status": "pass",
+      "message": "ball-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-0:joint.limits.1",
+      "status": "pass",
+      "message": "ball-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-0:params.radius",
+      "status": "pass",
+      "message": "ball-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-1:joint.limits.0",
+      "status": "pass",
+      "message": "ball-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-1:joint.limits.1",
+      "status": "pass",
+      "message": "ball-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-1:params.radius",
+      "status": "pass",
+      "message": "ball-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-2:joint.limits.0",
+      "status": "pass",
+      "message": "ball-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-2:joint.limits.1",
+      "status": "pass",
+      "message": "ball-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-2:params.radius",
+      "status": "pass",
+      "message": "ball-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-3:joint.limits.0",
+      "status": "pass",
+      "message": "ball-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-3:joint.limits.1",
+      "status": "pass",
+      "message": "ball-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-3:params.radius",
+      "status": "pass",
+      "message": "ball-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-4:joint.limits.0",
+      "status": "pass",
+      "message": "ball-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-4:joint.limits.1",
+      "status": "pass",
+      "message": "ball-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-4:params.radius",
+      "status": "pass",
+      "message": "ball-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-5:joint.limits.0",
+      "status": "pass",
+      "message": "ball-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-5:joint.limits.1",
+      "status": "pass",
+      "message": "ball-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-5:params.radius",
+      "status": "pass",
+      "message": "ball-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-6:joint.limits.0",
+      "status": "pass",
+      "message": "ball-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-6:joint.limits.1",
+      "status": "pass",
+      "message": "ball-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-6:params.radius",
+      "status": "pass",
+      "message": "ball-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-7:joint.limits.0",
+      "status": "pass",
+      "message": "ball-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-7:joint.limits.1",
+      "status": "pass",
+      "message": "ball-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:ball-7:params.radius",
+      "status": "pass",
+      "message": "ball-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "base:integrity:mechanism:specific",
+      "status": "pass",
+      "message": "Mechanism exposes a machine-specific trigger."
+    },
+    {
+      "id": "base:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "base:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:quake",
+      "status": "pass",
+      "message": "Trigger quake runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:seismoscope-latch",
+      "status": "pass",
+      "message": "Seismoscope pulse response matches its active scheme and latch."
+    },
+    {
+      "id": "base:integrity:image:1:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/1.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:2:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "base:integrity:image:2:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/2.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/3.jpg exists."
+    },
+    {
+      "id": "base:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/4.png exists."
+    },
+    {
+      "id": "base:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/5.png exists."
+    },
+    {
+      "id": "base:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/6.jpg exists."
+    },
+    {
+      "id": "base:integrity:snapshot:houfeng-196",
+      "status": "pass",
+      "message": "Source snapshot houfeng-196 verifies its source.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:range:ball-0",
+      "status": "pass",
+      "message": "Joint ball-0 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "base:range:ball-1",
+      "status": "pass",
+      "message": "Joint ball-1 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "base:range:ball-2",
+      "status": "pass",
+      "message": "Joint ball-2 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "base:range:ball-3",
+      "status": "pass",
+      "message": "Joint ball-3 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "base:range:ball-4",
+      "status": "pass",
+      "message": "Joint ball-4 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "base:range:ball-5",
+      "status": "pass",
+      "message": "Joint ball-5 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "base:range:ball-6",
+      "status": "pass",
+      "message": "Joint ball-6 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "base:range:ball-7",
+      "status": "pass",
+      "message": "Joint ball-7 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "base:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    },
+    {
+      "id": "wangzhenduo:provenance:part:vessel",
+      "status": "pass",
+      "message": "Part vessel has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:dragon-0",
+      "status": "pass",
+      "message": "Part dragon-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:dragon-1",
+      "status": "pass",
+      "message": "Part dragon-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:dragon-2",
+      "status": "pass",
+      "message": "Part dragon-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:dragon-3",
+      "status": "pass",
+      "message": "Part dragon-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:dragon-4",
+      "status": "pass",
+      "message": "Part dragon-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:dragon-5",
+      "status": "pass",
+      "message": "Part dragon-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:dragon-6",
+      "status": "pass",
+      "message": "Part dragon-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:dragon-7",
+      "status": "pass",
+      "message": "Part dragon-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:toad-0",
+      "status": "pass",
+      "message": "Part toad-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:toad-1",
+      "status": "pass",
+      "message": "Part toad-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:toad-2",
+      "status": "pass",
+      "message": "Part toad-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:toad-3",
+      "status": "pass",
+      "message": "Part toad-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:toad-4",
+      "status": "pass",
+      "message": "Part toad-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:toad-5",
+      "status": "pass",
+      "message": "Part toad-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:toad-6",
+      "status": "pass",
+      "message": "Part toad-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:toad-7",
+      "status": "pass",
+      "message": "Part toad-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:ball-0",
+      "status": "pass",
+      "message": "Part ball-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:ball-1",
+      "status": "pass",
+      "message": "Part ball-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:ball-2",
+      "status": "pass",
+      "message": "Part ball-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:ball-3",
+      "status": "pass",
+      "message": "Part ball-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:ball-4",
+      "status": "pass",
+      "message": "Part ball-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:ball-5",
+      "status": "pass",
+      "message": "Part ball-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:ball-6",
+      "status": "pass",
+      "message": "Part ball-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:ball-7",
+      "status": "pass",
+      "message": "Part ball-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:duzhu",
+      "status": "pass",
+      "message": "Part duzhu has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:wang-chute-0",
+      "status": "pass",
+      "message": "Part wang-chute-0 has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:wang-chute-1",
+      "status": "pass",
+      "message": "Part wang-chute-1 has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:wang-chute-2",
+      "status": "pass",
+      "message": "Part wang-chute-2 has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:wang-chute-3",
+      "status": "pass",
+      "message": "Part wang-chute-3 has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:wang-chute-4",
+      "status": "pass",
+      "message": "Part wang-chute-4 has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:wang-chute-5",
+      "status": "pass",
+      "message": "Part wang-chute-5 has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:wang-chute-6",
+      "status": "pass",
+      "message": "Part wang-chute-6 has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:wang-chute-7",
+      "status": "pass",
+      "message": "Part wang-chute-7 has valid provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:vessel:radius",
+      "status": "pass",
+      "message": "vessel.radius has dimension provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-0:params.radius",
+      "status": "pass",
+      "message": "dragon-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-1:params.radius",
+      "status": "pass",
+      "message": "dragon-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-2:params.radius",
+      "status": "pass",
+      "message": "dragon-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-3:params.radius",
+      "status": "pass",
+      "message": "dragon-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-4:params.radius",
+      "status": "pass",
+      "message": "dragon-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-5:params.radius",
+      "status": "pass",
+      "message": "dragon-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-6:params.radius",
+      "status": "pass",
+      "message": "dragon-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-7:params.radius",
+      "status": "pass",
+      "message": "dragon-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-0:params.radius",
+      "status": "pass",
+      "message": "toad-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-1:params.radius",
+      "status": "pass",
+      "message": "toad-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-2:params.radius",
+      "status": "pass",
+      "message": "toad-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-3:params.radius",
+      "status": "pass",
+      "message": "toad-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-4:params.radius",
+      "status": "pass",
+      "message": "toad-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-5:params.radius",
+      "status": "pass",
+      "message": "toad-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-6:params.radius",
+      "status": "pass",
+      "message": "toad-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-7:params.radius",
+      "status": "pass",
+      "message": "toad-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-0:joint.limits.0",
+      "status": "pass",
+      "message": "ball-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-0:joint.limits.1",
+      "status": "pass",
+      "message": "ball-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-0:params.radius",
+      "status": "pass",
+      "message": "ball-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-1:joint.limits.0",
+      "status": "pass",
+      "message": "ball-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-1:joint.limits.1",
+      "status": "pass",
+      "message": "ball-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-1:params.radius",
+      "status": "pass",
+      "message": "ball-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-2:joint.limits.0",
+      "status": "pass",
+      "message": "ball-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-2:joint.limits.1",
+      "status": "pass",
+      "message": "ball-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-2:params.radius",
+      "status": "pass",
+      "message": "ball-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-3:joint.limits.0",
+      "status": "pass",
+      "message": "ball-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-3:joint.limits.1",
+      "status": "pass",
+      "message": "ball-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-3:params.radius",
+      "status": "pass",
+      "message": "ball-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-4:joint.limits.0",
+      "status": "pass",
+      "message": "ball-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-4:joint.limits.1",
+      "status": "pass",
+      "message": "ball-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-4:params.radius",
+      "status": "pass",
+      "message": "ball-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-5:joint.limits.0",
+      "status": "pass",
+      "message": "ball-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-5:joint.limits.1",
+      "status": "pass",
+      "message": "ball-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-5:params.radius",
+      "status": "pass",
+      "message": "ball-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-6:joint.limits.0",
+      "status": "pass",
+      "message": "ball-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-6:joint.limits.1",
+      "status": "pass",
+      "message": "ball-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-6:params.radius",
+      "status": "pass",
+      "message": "ball-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-7:joint.limits.0",
+      "status": "pass",
+      "message": "ball-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-7:joint.limits.1",
+      "status": "pass",
+      "message": "ball-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:ball-7:params.radius",
+      "status": "pass",
+      "message": "ball-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:duzhu:joint.limits.0",
+      "status": "pass",
+      "message": "duzhu.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:duzhu:joint.limits.1",
+      "status": "pass",
+      "message": "duzhu.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:duzhu:length",
+      "status": "pass",
+      "message": "duzhu.length has dimension provenance.",
+      "sourceRef": "Feng Rui height inference"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:duzhu:radius",
+      "status": "pass",
+      "message": "duzhu.radius has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-0:params.height",
+      "status": "pass",
+      "message": "wang-chute-0.params.height has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-0:params.length",
+      "status": "pass",
+      "message": "wang-chute-0.params.length has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-0:params.width",
+      "status": "pass",
+      "message": "wang-chute-0.params.width has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-1:params.height",
+      "status": "pass",
+      "message": "wang-chute-1.params.height has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-1:params.length",
+      "status": "pass",
+      "message": "wang-chute-1.params.length has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-1:params.width",
+      "status": "pass",
+      "message": "wang-chute-1.params.width has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-2:params.height",
+      "status": "pass",
+      "message": "wang-chute-2.params.height has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-2:params.length",
+      "status": "pass",
+      "message": "wang-chute-2.params.length has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-2:params.width",
+      "status": "pass",
+      "message": "wang-chute-2.params.width has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-3:params.height",
+      "status": "pass",
+      "message": "wang-chute-3.params.height has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-3:params.length",
+      "status": "pass",
+      "message": "wang-chute-3.params.length has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-3:params.width",
+      "status": "pass",
+      "message": "wang-chute-3.params.width has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-4:params.height",
+      "status": "pass",
+      "message": "wang-chute-4.params.height has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-4:params.length",
+      "status": "pass",
+      "message": "wang-chute-4.params.length has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-4:params.width",
+      "status": "pass",
+      "message": "wang-chute-4.params.width has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-5:params.height",
+      "status": "pass",
+      "message": "wang-chute-5.params.height has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-5:params.length",
+      "status": "pass",
+      "message": "wang-chute-5.params.length has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-5:params.width",
+      "status": "pass",
+      "message": "wang-chute-5.params.width has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-6:params.height",
+      "status": "pass",
+      "message": "wang-chute-6.params.height has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-6:params.length",
+      "status": "pass",
+      "message": "wang-chute-6.params.length has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-6:params.width",
+      "status": "pass",
+      "message": "wang-chute-6.params.width has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-7:params.height",
+      "status": "pass",
+      "message": "wang-chute-7.params.height has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-7:params.length",
+      "status": "pass",
+      "message": "wang-chute-7.params.length has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:wang-chute-7:params.width",
+      "status": "pass",
+      "message": "wang-chute-7.params.width has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "wangzhenduo:integrity:mechanism:specific",
+      "status": "pass",
+      "message": "Mechanism exposes a machine-specific trigger."
+    },
+    {
+      "id": "wangzhenduo:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "wangzhenduo:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "wangzhenduo:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "wangzhenduo:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "wangzhenduo:integrity:mechanism:trigger:quake",
+      "status": "pass",
+      "message": "Trigger quake runs on a fresh graph."
+    },
+    {
+      "id": "wangzhenduo:integrity:mechanism:seismoscope-latch",
+      "status": "pass",
+      "message": "Seismoscope pulse response matches its active scheme and latch."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:1:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/1.jpg exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:2:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:2:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/2.jpg exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/3.jpg exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/4.png exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/5.png exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/6.jpg exists."
+    },
+    {
+      "id": "wangzhenduo:integrity:snapshot:houfeng-196",
+      "status": "pass",
+      "message": "Source snapshot houfeng-196 verifies its source.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:range:ball-0",
+      "status": "pass",
+      "message": "Joint ball-0 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:ball-1",
+      "status": "pass",
+      "message": "Joint ball-1 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:ball-2",
+      "status": "pass",
+      "message": "Joint ball-2 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:ball-3",
+      "status": "pass",
+      "message": "Joint ball-3 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:ball-4",
+      "status": "pass",
+      "message": "Joint ball-4 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:ball-5",
+      "status": "pass",
+      "message": "Joint ball-5 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:ball-6",
+      "status": "pass",
+      "message": "Joint ball-6 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:ball-7",
+      "status": "pass",
+      "message": "Joint ball-7 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:duzhu",
+      "status": "pass",
+      "message": "Joint duzhu remains within [-0.12, 0.12] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    },
+    {
+      "id": "fengrui:provenance:part:vessel",
+      "status": "pass",
+      "message": "Part vessel has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:dragon-0",
+      "status": "pass",
+      "message": "Part dragon-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:dragon-1",
+      "status": "pass",
+      "message": "Part dragon-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:dragon-2",
+      "status": "pass",
+      "message": "Part dragon-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:dragon-3",
+      "status": "pass",
+      "message": "Part dragon-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:dragon-4",
+      "status": "pass",
+      "message": "Part dragon-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:dragon-5",
+      "status": "pass",
+      "message": "Part dragon-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:dragon-6",
+      "status": "pass",
+      "message": "Part dragon-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:dragon-7",
+      "status": "pass",
+      "message": "Part dragon-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:toad-0",
+      "status": "pass",
+      "message": "Part toad-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:toad-1",
+      "status": "pass",
+      "message": "Part toad-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:toad-2",
+      "status": "pass",
+      "message": "Part toad-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:toad-3",
+      "status": "pass",
+      "message": "Part toad-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:toad-4",
+      "status": "pass",
+      "message": "Part toad-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:toad-5",
+      "status": "pass",
+      "message": "Part toad-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:toad-6",
+      "status": "pass",
+      "message": "Part toad-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:toad-7",
+      "status": "pass",
+      "message": "Part toad-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:ball-0",
+      "status": "pass",
+      "message": "Part ball-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:ball-1",
+      "status": "pass",
+      "message": "Part ball-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:ball-2",
+      "status": "pass",
+      "message": "Part ball-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:ball-3",
+      "status": "pass",
+      "message": "Part ball-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:ball-4",
+      "status": "pass",
+      "message": "Part ball-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:ball-5",
+      "status": "pass",
+      "message": "Part ball-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:ball-6",
+      "status": "pass",
+      "message": "Part ball-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:ball-7",
+      "status": "pass",
+      "message": "Part ball-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:duzhu",
+      "status": "pass",
+      "message": "Part duzhu has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:feng-track-0",
+      "status": "pass",
+      "message": "Part feng-track-0 has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:feng-track-1",
+      "status": "pass",
+      "message": "Part feng-track-1 has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:feng-track-2",
+      "status": "pass",
+      "message": "Part feng-track-2 has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:feng-track-3",
+      "status": "pass",
+      "message": "Part feng-track-3 has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:feng-track-4",
+      "status": "pass",
+      "message": "Part feng-track-4 has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:feng-track-5",
+      "status": "pass",
+      "message": "Part feng-track-5 has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:feng-track-6",
+      "status": "pass",
+      "message": "Part feng-track-6 has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:feng-track-7",
+      "status": "pass",
+      "message": "Part feng-track-7 has valid provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:vessel:radius",
+      "status": "pass",
+      "message": "vessel.radius has dimension provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-0:params.radius",
+      "status": "pass",
+      "message": "dragon-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-1:params.radius",
+      "status": "pass",
+      "message": "dragon-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-2:params.radius",
+      "status": "pass",
+      "message": "dragon-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-3:params.radius",
+      "status": "pass",
+      "message": "dragon-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-4:params.radius",
+      "status": "pass",
+      "message": "dragon-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-5:params.radius",
+      "status": "pass",
+      "message": "dragon-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-6:params.radius",
+      "status": "pass",
+      "message": "dragon-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-7:params.radius",
+      "status": "pass",
+      "message": "dragon-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-0:params.radius",
+      "status": "pass",
+      "message": "toad-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-1:params.radius",
+      "status": "pass",
+      "message": "toad-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-2:params.radius",
+      "status": "pass",
+      "message": "toad-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-3:params.radius",
+      "status": "pass",
+      "message": "toad-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-4:params.radius",
+      "status": "pass",
+      "message": "toad-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-5:params.radius",
+      "status": "pass",
+      "message": "toad-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-6:params.radius",
+      "status": "pass",
+      "message": "toad-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-7:params.radius",
+      "status": "pass",
+      "message": "toad-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-0:joint.limits.0",
+      "status": "pass",
+      "message": "ball-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-0:joint.limits.1",
+      "status": "pass",
+      "message": "ball-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-0:params.radius",
+      "status": "pass",
+      "message": "ball-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-1:joint.limits.0",
+      "status": "pass",
+      "message": "ball-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-1:joint.limits.1",
+      "status": "pass",
+      "message": "ball-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-1:params.radius",
+      "status": "pass",
+      "message": "ball-1.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-2:joint.limits.0",
+      "status": "pass",
+      "message": "ball-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-2:joint.limits.1",
+      "status": "pass",
+      "message": "ball-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-2:params.radius",
+      "status": "pass",
+      "message": "ball-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-3:joint.limits.0",
+      "status": "pass",
+      "message": "ball-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-3:joint.limits.1",
+      "status": "pass",
+      "message": "ball-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-3:params.radius",
+      "status": "pass",
+      "message": "ball-3.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-4:joint.limits.0",
+      "status": "pass",
+      "message": "ball-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-4:joint.limits.1",
+      "status": "pass",
+      "message": "ball-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-4:params.radius",
+      "status": "pass",
+      "message": "ball-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-5:joint.limits.0",
+      "status": "pass",
+      "message": "ball-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-5:joint.limits.1",
+      "status": "pass",
+      "message": "ball-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-5:params.radius",
+      "status": "pass",
+      "message": "ball-5.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-6:joint.limits.0",
+      "status": "pass",
+      "message": "ball-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-6:joint.limits.1",
+      "status": "pass",
+      "message": "ball-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-6:params.radius",
+      "status": "pass",
+      "message": "ball-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-7:joint.limits.0",
+      "status": "pass",
+      "message": "ball-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-7:joint.limits.1",
+      "status": "pass",
+      "message": "ball-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:ball-7:params.radius",
+      "status": "pass",
+      "message": "ball-7.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:duzhu:joint.limits.0",
+      "status": "pass",
+      "message": "duzhu.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:duzhu:joint.limits.1",
+      "status": "pass",
+      "message": "duzhu.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:duzhu:length",
+      "status": "pass",
+      "message": "duzhu.length has dimension provenance.",
+      "sourceRef": "Feng Rui height inference"
+    },
+    {
+      "id": "fengrui:provenance:dimension:duzhu:radius",
+      "status": "pass",
+      "message": "duzhu.radius has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-0:params.height",
+      "status": "pass",
+      "message": "feng-track-0.params.height has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-0:params.length",
+      "status": "pass",
+      "message": "feng-track-0.params.length has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-0:params.width",
+      "status": "pass",
+      "message": "feng-track-0.params.width has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-1:params.height",
+      "status": "pass",
+      "message": "feng-track-1.params.height has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-1:params.length",
+      "status": "pass",
+      "message": "feng-track-1.params.length has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-1:params.width",
+      "status": "pass",
+      "message": "feng-track-1.params.width has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-2:params.height",
+      "status": "pass",
+      "message": "feng-track-2.params.height has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-2:params.length",
+      "status": "pass",
+      "message": "feng-track-2.params.length has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-2:params.width",
+      "status": "pass",
+      "message": "feng-track-2.params.width has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-3:params.height",
+      "status": "pass",
+      "message": "feng-track-3.params.height has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-3:params.length",
+      "status": "pass",
+      "message": "feng-track-3.params.length has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-3:params.width",
+      "status": "pass",
+      "message": "feng-track-3.params.width has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-4:params.height",
+      "status": "pass",
+      "message": "feng-track-4.params.height has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-4:params.length",
+      "status": "pass",
+      "message": "feng-track-4.params.length has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-4:params.width",
+      "status": "pass",
+      "message": "feng-track-4.params.width has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-5:params.height",
+      "status": "pass",
+      "message": "feng-track-5.params.height has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-5:params.length",
+      "status": "pass",
+      "message": "feng-track-5.params.length has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-5:params.width",
+      "status": "pass",
+      "message": "feng-track-5.params.width has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-6:params.height",
+      "status": "pass",
+      "message": "feng-track-6.params.height has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-6:params.length",
+      "status": "pass",
+      "message": "feng-track-6.params.length has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-6:params.width",
+      "status": "pass",
+      "message": "feng-track-6.params.width has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-7:params.height",
+      "status": "pass",
+      "message": "feng-track-7.params.height has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-7:params.length",
+      "status": "pass",
+      "message": "feng-track-7.params.length has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:feng-track-7:params.width",
+      "status": "pass",
+      "message": "feng-track-7.params.width has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:data-dimension:1",
+      "status": "pass",
+      "message": "Data dimension 1 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:data-dimension:2",
+      "status": "pass",
+      "message": "Data dimension 2 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:data-dimension:3",
+      "status": "pass",
+      "message": "Data dimension 3 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:data-dimension:4",
+      "status": "pass",
+      "message": "Data dimension 4 resolves source houfeng-196.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:integrity:mechanism:spotlight",
+      "status": "pass",
+      "message": "Mechanism exposes the spotlight trigger."
+    },
+    {
+      "id": "fengrui:integrity:mechanism:specific",
+      "status": "pass",
+      "message": "Mechanism exposes a machine-specific trigger."
+    },
+    {
+      "id": "fengrui:integrity:ingenuity:hook",
+      "status": "pass",
+      "message": "Ingenuity hook is bilingual."
+    },
+    {
+      "id": "fengrui:integrity:ingenuity:demo",
+      "status": "pass",
+      "message": "Ingenuity demo is bilingual."
+    },
+    {
+      "id": "fengrui:integrity:ingenuity:echo",
+      "status": "pass",
+      "message": "Ingenuity echo is bilingual."
+    },
+    {
+      "id": "fengrui:integrity:mechanism:trigger:spotlight",
+      "status": "pass",
+      "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "fengrui:integrity:mechanism:trigger:quake",
+      "status": "pass",
+      "message": "Trigger quake runs on a fresh graph."
+    },
+    {
+      "id": "fengrui:integrity:mechanism:seismoscope-latch",
+      "status": "pass",
+      "message": "Seismoscope pulse response matches its active scheme and latch."
+    },
+    {
+      "id": "fengrui:integrity:image:1:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "fengrui:integrity:image:1:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/1.jpg exists."
+    },
+    {
+      "id": "fengrui:integrity:image:2:attribution",
+      "status": "pass",
+      "message": "Licensed local image includes complete attribution."
+    },
+    {
+      "id": "fengrui:integrity:image:2:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/2.jpg exists."
+    },
+    {
+      "id": "fengrui:integrity:image:3:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/3.jpg exists."
+    },
+    {
+      "id": "fengrui:integrity:image:4:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/4.png exists."
+    },
+    {
+      "id": "fengrui:integrity:image:5:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/5.png exists."
+    },
+    {
+      "id": "fengrui:integrity:image:6:asset",
+      "status": "pass",
+      "message": "Image asset public/assets/museum/seismoscope/6.jpg exists."
+    },
+    {
+      "id": "fengrui:integrity:snapshot:houfeng-196",
+      "status": "pass",
+      "message": "Source snapshot houfeng-196 verifies its source.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:range:ball-0",
+      "status": "pass",
+      "message": "Joint ball-0 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:ball-1",
+      "status": "pass",
+      "message": "Joint ball-1 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:ball-2",
+      "status": "pass",
+      "message": "Joint ball-2 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:ball-3",
+      "status": "pass",
+      "message": "Joint ball-3 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:ball-4",
+      "status": "pass",
+      "message": "Joint ball-4 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:ball-5",
+      "status": "pass",
+      "message": "Joint ball-5 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:ball-6",
+      "status": "pass",
+      "message": "Joint ball-6 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:ball-7",
+      "status": "pass",
+      "message": "Joint ball-7 remains within [0, 0.65] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:duzhu",
+      "status": "pass",
+      "message": "Joint duzhu remains within [-0.2, 0.2] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:collision:bvh",
+      "status": "pass",
+      "message": "No issue found at 0.5° resolution."
+    }
+  ],
+  "summary": {
+    "pass": 364,
+    "fail": 0,
+    "warn": 0,
+    "resolutionDeg": 0.5
+  }
+}

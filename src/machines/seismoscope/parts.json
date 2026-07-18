@@ -1,0 +1,365 @@
+{
+  "slug": "seismoscope",
+  "parts": [
+    {
+      "id": "vessel",
+      "name": { "zh": "尊体剖壳", "en": "Cutaway vessel shell" },
+      "geometry": { "type": "shell", "radius": 0.924, "cutaway": true },
+      "material": "bronze",
+      "position": [0, 0.25, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "radius": {
+          "kind": "wenxian",
+          "ref": "houfeng-196",
+          "note": "Half of the recorded eight-Han-chi diameter (1.848 m)."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 1.848,
+          "unit": "m",
+          "ancient": "八尺",
+          "provenance": { "kind": "wenxian", "ref": "houfeng-196" }
+        }
+      ],
+      "explodeVector": [0, 0.5, 0],
+      "assemblyStep": 0,
+      "interactive": true
+    },
+    {
+      "id": "dragon-0",
+      "name": { "zh": "北龙首", "en": "North dragon head" },
+      "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
+      "material": "bronze",
+      "position": [0, 0.3, 1.22],
+      "rotationEuler": [0, 0, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+      },
+      "explodeVector": [0, 0, 1],
+      "assemblyStep": 1
+    },
+    {
+      "id": "dragon-1",
+      "name": { "zh": "东北龙首", "en": "Northeast dragon head" },
+      "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
+      "material": "bronze",
+      "position": [0.86267, 0.3, 0.86267],
+      "rotationEuler": [0, -0.7853981633974483, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+      },
+      "explodeVector": [0.7071067811865476, 0, 0.7071067811865476],
+      "assemblyStep": 2
+    },
+    {
+      "id": "dragon-2",
+      "name": { "zh": "东龙首", "en": "East dragon head" },
+      "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
+      "material": "bronze",
+      "position": [1.22, 0.3, 0],
+      "rotationEuler": [0, -1.5707963267948966, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+      },
+      "explodeVector": [1, 0, 0],
+      "assemblyStep": 3
+    },
+    {
+      "id": "dragon-3",
+      "name": { "zh": "东南龙首", "en": "Southeast dragon head" },
+      "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
+      "material": "bronze",
+      "position": [0.86267, 0.3, -0.86267],
+      "rotationEuler": [0, -2.356194490192345, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+      },
+      "explodeVector": [0.7071067811865476, 0, -0.7071067811865476],
+      "assemblyStep": 4
+    },
+    {
+      "id": "dragon-4",
+      "name": { "zh": "南龙首", "en": "South dragon head" },
+      "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
+      "material": "bronze",
+      "position": [0, 0.3, -1.22],
+      "rotationEuler": [0, 3.141592653589793, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+      },
+      "explodeVector": [0, 0, -1],
+      "assemblyStep": 5
+    },
+    {
+      "id": "dragon-5",
+      "name": { "zh": "西南龙首", "en": "Southwest dragon head" },
+      "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
+      "material": "bronze",
+      "position": [-0.86267, 0.3, -0.86267],
+      "rotationEuler": [0, 2.356194490192345, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+      },
+      "explodeVector": [-0.7071067811865476, 0, -0.7071067811865476],
+      "assemblyStep": 6
+    },
+    {
+      "id": "dragon-6",
+      "name": { "zh": "西龙首", "en": "West dragon head" },
+      "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
+      "material": "bronze",
+      "position": [-1.22, 0.3, 0],
+      "rotationEuler": [0, 1.5707963267948966, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+      },
+      "explodeVector": [-1, 0, 0],
+      "assemblyStep": 7
+    },
+    {
+      "id": "dragon-7",
+      "name": { "zh": "西北龙首", "en": "Northwest dragon head" },
+      "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
+      "material": "bronze",
+      "position": [-0.86267, 0.3, 0.86267],
+      "rotationEuler": [0, 0.7853981633974483, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+      },
+      "explodeVector": [-0.7071067811865476, 0, 0.7071067811865476],
+      "assemblyStep": 8
+    },
+    {
+      "id": "toad-0",
+      "name": { "zh": "北蟾蜍", "en": "North toad" },
+      "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
+      "material": "bronze",
+      "position": [0, -0.55, 1.5],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+      },
+      "explodeVector": [0, -0.3, 1],
+      "assemblyStep": 9
+    },
+    {
+      "id": "toad-1",
+      "name": { "zh": "东北蟾蜍", "en": "Northeast toad" },
+      "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
+      "material": "bronze",
+      "position": [1.06066, -0.55, 1.06066],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+      },
+      "explodeVector": [0.7071067811865476, -0.3, 0.7071067811865476],
+      "assemblyStep": 10
+    },
+    {
+      "id": "toad-2",
+      "name": { "zh": "东蟾蜍", "en": "East toad" },
+      "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
+      "material": "bronze",
+      "position": [1.5, -0.55, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+      },
+      "explodeVector": [1, -0.3, 0],
+      "assemblyStep": 11
+    },
+    {
+      "id": "toad-3",
+      "name": { "zh": "东南蟾蜍", "en": "Southeast toad" },
+      "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
+      "material": "bronze",
+      "position": [1.06066, -0.55, -1.06066],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+      },
+      "explodeVector": [0.7071067811865476, -0.3, -0.7071067811865476],
+      "assemblyStep": 12
+    },
+    {
+      "id": "toad-4",
+      "name": { "zh": "南蟾蜍", "en": "South toad" },
+      "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
+      "material": "bronze",
+      "position": [0, -0.55, -1.5],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+      },
+      "explodeVector": [0, -0.3, -1],
+      "assemblyStep": 13
+    },
+    {
+      "id": "toad-5",
+      "name": { "zh": "西南蟾蜍", "en": "Southwest toad" },
+      "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
+      "material": "bronze",
+      "position": [-1.06066, -0.55, -1.06066],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+      },
+      "explodeVector": [-0.7071067811865476, -0.3, -0.7071067811865476],
+      "assemblyStep": 14
+    },
+    {
+      "id": "toad-6",
+      "name": { "zh": "西蟾蜍", "en": "West toad" },
+      "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
+      "material": "bronze",
+      "position": [-1.5, -0.55, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+      },
+      "explodeVector": [-1, -0.3, 0],
+      "assemblyStep": 15
+    },
+    {
+      "id": "toad-7",
+      "name": { "zh": "西北蟾蜍", "en": "Northwest toad" },
+      "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
+      "material": "bronze",
+      "position": [-1.06066, -0.55, 1.06066],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+      },
+      "explodeVector": [-0.7071067811865476, -0.3, 0.7071067811865476],
+      "assemblyStep": 16
+    },
+    {
+      "id": "ball-0",
+      "name": { "zh": "北路铜丸", "en": "North bronze ball" },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "material": "bronze",
+      "position": [0, 0, 1.22],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+      },
+      "explodeVector": [0, 0.2, 1],
+      "assemblyStep": 17
+    },
+    {
+      "id": "ball-1",
+      "name": { "zh": "东北路铜丸", "en": "Northeast bronze ball" },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "material": "bronze",
+      "position": [0.86267, 0, 0.86267],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+      },
+      "explodeVector": [0.7071067811865476, 0.2, 0.7071067811865476],
+      "assemblyStep": 18
+    },
+    {
+      "id": "ball-2",
+      "name": { "zh": "东路铜丸", "en": "East bronze ball" },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "material": "bronze",
+      "position": [1.22, 0, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+      },
+      "explodeVector": [1, 0.2, 0],
+      "assemblyStep": 19
+    },
+    {
+      "id": "ball-3",
+      "name": { "zh": "东南路铜丸", "en": "Southeast bronze ball" },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "material": "bronze",
+      "position": [0.86267, 0, -0.86267],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+      },
+      "explodeVector": [0.7071067811865476, 0.2, -0.7071067811865476],
+      "assemblyStep": 20
+    },
+    {
+      "id": "ball-4",
+      "name": { "zh": "南路铜丸", "en": "South bronze ball" },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "material": "bronze",
+      "position": [0, 0, -1.22],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+      },
+      "explodeVector": [0, 0.2, -1],
+      "assemblyStep": 21
+    },
+    {
+      "id": "ball-5",
+      "name": { "zh": "西南路铜丸", "en": "Southwest bronze ball" },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "material": "bronze",
+      "position": [-0.86267, 0, -0.86267],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+      },
+      "explodeVector": [-0.7071067811865476, 0.2, -0.7071067811865476],
+      "assemblyStep": 22
+    },
+    {
+      "id": "ball-6",
+      "name": { "zh": "西路铜丸", "en": "West bronze ball" },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "material": "bronze",
+      "position": [-1.22, 0, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+      },
+      "explodeVector": [-1, 0.2, 0],
+      "assemblyStep": 23
+    },
+    {
+      "id": "ball-7",
+      "name": { "zh": "西北路铜丸", "en": "Northwest bronze ball" },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "material": "bronze",
+      "position": [-0.86267, 0, 0.86267],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+      },
+      "explodeVector": [-0.7071067811865476, 0.2, 0.7071067811865476],
+      "assemblyStep": 24
+    }
+  ],
+  "constraints": [],
+  "driveNodes": ["vessel"],
+  "primaryDrive": "vessel",
+  "cycleRad": 6.283185307179586,
+  "expectedRatios": [],
+  "collisionWhitelist": []
+}

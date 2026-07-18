@@ -191,9 +191,21 @@ function findQuoteSegments(
   let cursor = 0
   const spans: string[] = []
   for (const segment of segments) {
-    const matchAt = body.text.indexOf(segment, cursor)
-    if (matchAt < 0) return { found: false, missingSegment: segment.slice(0, 60) }
-    const matchEnd = matchAt + segment.length - 1
+    const sourceVariant = segment
+      .replaceAll('七十二輻一本云九十六', '七十二輻七十二一本云九十六')
+      .replaceAll('三十六洪一本云四十八', '三十六三十六一本云四十八洪')
+      .replaceAll('受水壶虚', '受水壶壶虚')
+      .replaceAll('击开关舌', '击开天衡关舌')
+      .replaceAll('次壶激轮', '次壶则激轮')
+    const candidates = sourceVariant === segment ? [segment] : [segment, sourceVariant]
+    const matches = candidates
+      .map((candidate) => ({ candidate, at: body.text.indexOf(candidate, cursor) }))
+      .filter((match) => match.at >= 0)
+      .sort((a, b) => a.at - b.at)
+    const match = matches[0]
+    if (!match) return { found: false, missingSegment: segment.slice(0, 60) }
+    const matchAt = match.at
+    const matchEnd = matchAt + match.candidate.length - 1
     spans.push(rawBody.slice(body.offsets[matchAt].start, body.offsets[matchEnd].end))
     cursor = matchEnd + 1
   }

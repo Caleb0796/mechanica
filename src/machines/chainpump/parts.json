@@ -1,0 +1,441 @@
+{
+  "slug": "chainpump",
+  "parts": [
+    {
+      "id": "trough",
+      "name": { "zh": "木槽", "en": "Wooden trough" },
+      "geometry": {
+        "type": "custom",
+        "builder": "chainpumpTrough",
+        "params": {
+          "length": 6.3,
+          "width": 0.18,
+          "height": 0.315,
+          "wall": 0.025
+        }
+      },
+      "material": "wood",
+      "position": [0, 0.96, 0],
+      "rotationEuler": [0, 0, 0.2],
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "params.length": { "kind": "wenxian", "ref": "nongshu-fanche" },
+        "params.width": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "A representative 0.18 m width is selected within the sourced 0.126–0.22 m range."
+        },
+        "params.height": { "kind": "wenxian", "ref": "nongshu-fanche" },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Wall section, incline, and display placement are reconstruction dimensions."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 6.3,
+          "unit": "m",
+          "ancient": "二丈",
+          "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" }
+        }
+      ],
+      "explodeVector": [0, -0.25, 0],
+      "assemblyStep": 1
+    },
+    {
+      "id": "guide-board",
+      "name": { "zh": "行道板", "en": "Pallet guide board" },
+      "geometry": { "type": "beam", "size": [5.3, 0.025, 0.07] },
+      "material": "wood",
+      "position": [0, 0.96, 0],
+      "rotationEuler": [0, 0, 0.2],
+      "joint": { "kind": "fixed", "axis": [0, 0, 1] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "The guide board is textual; its section and 5.3 m clear span are inferred to stop short of both sprocket envelopes."
+        }
+      },
+      "explodeVector": [0, 0.18, 0],
+      "assemblyStep": 2
+    },
+    {
+      "id": "frame-rail-near",
+      "name": { "zh": "近侧机架纵梁", "en": "Near frame rail" },
+      "geometry": { "type": "beam", "size": [6.15, 0.07, 0.06] },
+      "material": "wood",
+      "position": [0, 0.72, -0.18],
+      "rotationEuler": [0, 0, 0.2],
+      "joint": { "kind": "fixed", "axis": [0, 0, 1] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "The bank frame is textual; rail section and setback are inferred."
+        }
+      },
+      "explodeVector": [0, -0.1, -0.25],
+      "assemblyStep": 1
+    },
+    {
+      "id": "frame-rail-far",
+      "name": { "zh": "远侧机架纵梁", "en": "Far frame rail" },
+      "geometry": { "type": "beam", "size": [6.15, 0.07, 0.06] },
+      "material": "wood",
+      "position": [0, 0.72, 0.18],
+      "rotationEuler": [0, 0, 0.2],
+      "joint": { "kind": "fixed", "axis": [0, 0, 1] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "The bank frame is textual; rail section and setback are inferred."
+        }
+      },
+      "explodeVector": [0, -0.1, 0.25],
+      "assemblyStep": 1
+    },
+    {
+      "id": "foot-post-near",
+      "name": { "zh": "下轴近侧立柱", "en": "Near foot-axle post" },
+      "geometry": { "type": "beam", "size": [0.1, 0.78, 0.06] },
+      "material": "wood",
+      "position": [-2.79319, 0.39, -0.18],
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Post section and height are inferred for the reconstructed axle bearing."
+        }
+      },
+      "explodeVector": [-0.16, 0, -0.2],
+      "assemblyStep": 1
+    },
+    {
+      "id": "foot-post-far",
+      "name": { "zh": "下轴远侧立柱", "en": "Far foot-axle post" },
+      "geometry": { "type": "beam", "size": [0.1, 0.78, 0.06] },
+      "material": "wood",
+      "position": [-2.79319, 0.39, 0.18],
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Post section and height are inferred for the reconstructed axle bearing."
+        }
+      },
+      "explodeVector": [-0.16, 0, 0.2],
+      "assemblyStep": 1
+    },
+    {
+      "id": "head-post-near",
+      "name": { "zh": "上轴近侧立柱", "en": "Near head-axle post" },
+      "geometry": { "type": "beam", "size": [0.1, 1.74, 0.06] },
+      "material": "wood",
+      "position": [2.79319, 0.87, -0.18],
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Post section and height are inferred for the sourced bank-side frame."
+        }
+      },
+      "explodeVector": [0.16, 0, -0.2],
+      "assemblyStep": 1
+    },
+    {
+      "id": "head-post-far",
+      "name": { "zh": "上轴远侧立柱", "en": "Far head-axle post" },
+      "geometry": { "type": "beam", "size": [0.1, 1.74, 0.06] },
+      "material": "wood",
+      "position": [2.79319, 0.87, 0.18],
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Post section and height are inferred for the sourced bank-side frame."
+        }
+      },
+      "explodeVector": [0.16, 0, 0.2],
+      "assemblyStep": 1
+    },
+    {
+      "id": "head-sprocket",
+      "name": { "zh": "上端链轮", "en": "Head sprocket" },
+      "geometry": {
+        "type": "gear",
+        "module": 0.015,
+        "teeth": 24,
+        "thickness": 0.065,
+        "toothStyle": "pin",
+        "innerRadius": 0.05
+      },
+      "material": "wood",
+      "position": [2.79319, 1.526208, 0],
+      "rotationEuler": [1.5707963267948966, 0, 0],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "nongshu-fanche",
+        "note": "A pin sprocket reconstructs the upper axle's engagement with the dragon-bone chain."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Module, tooth count, thickness, attitude, and position are functional reconstruction values."
+        }
+      },
+      "explodeVector": [0.2, 0.15, 0],
+      "assemblyStep": 3
+    },
+    {
+      "id": "head-axle",
+      "name": { "zh": "上大轴", "en": "Upper main axle" },
+      "geometry": { "type": "shaft", "radius": 0.025, "length": 0.6 },
+      "material": "wood",
+      "position": [0, 0, 0],
+      "parent": "head-sprocket",
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "The upper main axle is textual; its 0.6 m span clears the crank pedals beyond the two frame rails."
+        }
+      },
+      "explodeVector": [0, 0, 0.24],
+      "assemblyStep": 3
+    },
+    {
+      "id": "foot-sprocket",
+      "name": { "zh": "下端链轮", "en": "Foot sprocket" },
+      "geometry": {
+        "type": "gear",
+        "module": 0.015,
+        "teeth": 24,
+        "thickness": 0.065,
+        "toothStyle": "pin",
+        "innerRadius": 0.05
+      },
+      "material": "wood",
+      "position": [-2.79319, 0.393792, 0],
+      "rotationEuler": [1.5707963267948966, 0, 0],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "nongshu-fanche",
+        "note": "A matching lower pin sprocket closes the sourced pallet loop."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Equal inferred tooth count and pitch radius preserve a direct one-to-one belt ratio."
+        }
+      },
+      "explodeVector": [-0.2, -0.15, 0],
+      "assemblyStep": 3
+    },
+    {
+      "id": "foot-axle",
+      "name": { "zh": "下轴", "en": "Lower axle" },
+      "geometry": { "type": "shaft", "radius": 0.025, "length": 0.4 },
+      "material": "wood",
+      "position": [0, 0, 0],
+      "parent": "foot-sprocket",
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "nongshu-fanche",
+        "note": "The lower return axle is required by the closed-loop reconstruction."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Lower axle diameter and span are inferred to match the head axle."
+        }
+      },
+      "explodeVector": [0, 0, -0.24],
+      "assemblyStep": 3
+    },
+    {
+      "id": "crank-spurs",
+      "name": {
+        "zh": "两端四拐木",
+        "en": "Four-spur pedals at both axle ends"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "chainpumpCrankSpurs",
+        "params": {
+          "countPerEnd": 4,
+          "radius": 0.28,
+          "spurLength": 0.22,
+          "spurWidth": 0.045,
+          "axleSpan": 0.6
+        }
+      },
+      "material": "wood",
+      "position": [0, 0, 0],
+      "parent": "head-sprocket",
+      "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "params.countPerEnd": { "kind": "wenxian", "ref": "nongshu-fanche" },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Crank radius, timber section, and axle span are not dimensioned in the text."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 4,
+          "unit": "count",
+          "ancient": "各帶拐木四莖",
+          "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" }
+        }
+      ],
+      "explodeVector": [0.18, 0.2, 0.3],
+      "assemblyStep": 4,
+      "interactive": true
+    },
+    {
+      "id": "pallet-chain",
+      "name": { "zh": "龙骨板叶链", "en": "Dragon-bone pallet chain" },
+      "geometry": {
+        "type": "custom",
+        "builder": "chainpumpPalletLoop",
+        "params": {
+          "palletCount": 32,
+          "straightLength": 5.7,
+          "radius": 0.18,
+          "palletLength": 0.16,
+          "palletHeight": 0.075,
+          "palletWidth": 0.12,
+          "phase": 0
+        }
+      },
+      "material": "wood",
+      "position": [0, 0.96, 0],
+      "rotationEuler": [0, 0, 0.2],
+      "joint": { "kind": "fixed", "axis": [0, 0, 1] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "Pallet count, spacing, section, path radius, phase, and placement are inferred for continuous display motion."
+        }
+      },
+      "explodeVector": [0, 0.25, 0],
+      "assemblyStep": 5
+    },
+    {
+      "id": "water-sheet",
+      "name": { "zh": "槽内水面", "en": "Water sheet in the trough" },
+      "geometry": {
+        "type": "custom",
+        "builder": "chainpumpWaterSurface",
+        "params": { "length": 5.4, "height": 0.055, "width": 0.115 }
+      },
+      "material": "silk",
+      "position": [-0.0238403, 1.077608, 0],
+      "rotationEuler": [0, 0, 0.2],
+      "joint": { "kind": "fixed", "axis": [0, 0, 1] },
+      "provenance": { "kind": "wenxian", "ref": "nongshu-fanche" },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "nongshu-fanche",
+          "note": "The water is sourced; this thin display surface and its placement are inferred."
+        }
+      },
+      "explodeVector": [0, 0.35, 0],
+      "assemblyStep": 2
+    }
+  ],
+  "constraints": [
+    {
+      "type": "lockstep",
+      "a": "crank-spurs",
+      "b": "head-sprocket",
+      "ratio": 1,
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "nongshu-fanche",
+        "note": "The four crank timbers and head sprocket share the sourced upper main axle."
+      }
+    },
+    {
+      "type": "belt",
+      "a": "head-sprocket",
+      "b": "foot-sprocket",
+      "crossed": false
+    },
+    {
+      "type": "lockstep",
+      "a": "head-sprocket",
+      "b": "pallet-chain",
+      "ratio": 1,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "nongshu-fanche",
+        "note": "The pallet-chain state carries the upper sprocket angle; the renderer converts angle to path distance by the sprocket pitch radius."
+      }
+    }
+  ],
+  "driveNodes": ["crank-spurs", "head-sprocket", "foot-sprocket"],
+  "primaryDrive": "crank-spurs",
+  "cycleRad": 6.283185307179586,
+  "expectedRatios": [
+    {
+      "from": "crank-spurs",
+      "to": "head-sprocket",
+      "ratio": 1,
+      "sourceRef": "nongshu-fanche"
+    },
+    {
+      "from": "head-sprocket",
+      "to": "foot-sprocket",
+      "ratio": 1,
+      "sourceRef": "nongshu-fanche"
+    }
+  ],
+  "collisionWhitelist": [
+    ["pallet-chain", "head-sprocket"],
+    ["pallet-chain", "foot-sprocket"],
+    ["pallet-chain", "trough"],
+    ["pallet-chain", "water-sheet"],
+    ["head-sprocket", "water-sheet"],
+    ["foot-sprocket", "water-sheet"],
+    ["head-sprocket", "trough"],
+    ["foot-sprocket", "trough"],
+    ["head-axle", "trough"],
+    ["foot-axle", "trough"],
+    ["head-axle", "head-post-near"],
+    ["head-axle", "head-post-far"],
+    ["foot-axle", "foot-post-near"],
+    ["foot-axle", "foot-post-far"],
+    ["frame-rail-near", "foot-post-near"],
+    ["frame-rail-near", "head-post-near"],
+    ["frame-rail-far", "foot-post-far"],
+    ["frame-rail-far", "head-post-far"]
+  ]
+}

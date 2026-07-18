@@ -1,0 +1,164 @@
+{
+  "id": "wangzhenduo",
+  "scholar": { "zh": "王振铎", "en": "Wang Zhenduo" },
+  "year": 1951,
+  "summary": {
+    "zh": "竖立都柱的倒立摆模型，以八道滑槽分配方向。",
+    "en": "A standing duzhu used as an inverted pendulum with eight directional chutes."
+  },
+  "addParts": [
+    {
+      "id": "duzhu",
+      "name": { "zh": "竖立都柱", "en": "Standing inverted-pendulum duzhu" },
+      "geometry": { "type": "shaft", "radius": 0.035, "length": 2 },
+      "material": "bronze",
+      "position": [0, 0.25, -0.14],
+      "joint": {
+        "kind": "revolute",
+        "axis": [1, 0, 0],
+        "limits": [-0.12, 0.12]
+      },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "Wang Zhenduo 1951 reconstruction",
+        "note": "The source names a duzhu; its standing inverted-pendulum form is Wang's reconstruction."
+      },
+      "dimensionProvenance": {
+        "length": {
+          "kind": "tuice",
+          "ref": "Feng Rui height inference",
+          "note": "The approximately two-metre duzhu height is inferred, not recorded in the classical text."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "Wang Zhenduo 1951 reconstruction",
+          "note": "Shaft radius and angular limits are reconstruction parameters."
+        }
+      },
+      "dimensionNotes": [
+        {
+          "value": 2,
+          "unit": "m",
+          "ancient": "约二米",
+          "provenance": {
+            "kind": "tuice",
+            "ref": "Feng Rui height inference",
+            "note": "Approximate reconstruction height."
+          }
+        }
+      ],
+      "explodeVector": [0, 1, -0.2],
+      "assemblyStep": 25,
+      "schemeTags": ["wangzhenduo"],
+      "interactive": true
+    },
+    {
+      "id": "wang-chute-0",
+      "name": { "zh": "北道滑槽", "en": "North directional chute" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.36, "width": 0.045, "height": 0.03 } },
+      "material": "bronze",
+      "position": [0, 0.16, 0.5],
+      "rotationEuler": [0, -1.5707963267948966, 0],
+      "provenance": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "The text records eight paths but not their chute geometry." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "Chute dimensions are display reconstruction choices." } },
+      "explodeVector": [0, 0.2, 0.8],
+      "assemblyStep": 26,
+      "schemeTags": ["wangzhenduo"]
+    },
+    {
+      "id": "wang-chute-1",
+      "name": { "zh": "东北道滑槽", "en": "Northeast directional chute" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.36, "width": 0.045, "height": 0.03 } },
+      "material": "bronze",
+      "position": [0.3535533905932738, 0.16, 0.3535533905932738],
+      "rotationEuler": [0, -0.7853981633974483, 0],
+      "provenance": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "The text records eight paths but not their chute geometry." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "Chute dimensions are display reconstruction choices." } },
+      "explodeVector": [0.565685424949238, 0.2, 0.565685424949238],
+      "assemblyStep": 27,
+      "schemeTags": ["wangzhenduo"]
+    },
+    {
+      "id": "wang-chute-2",
+      "name": { "zh": "东道滑槽", "en": "East directional chute" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.36, "width": 0.045, "height": 0.03 } },
+      "material": "bronze",
+      "position": [0.5, 0.16, 0],
+      "rotationEuler": [0, 0, 0],
+      "provenance": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "The text records eight paths but not their chute geometry." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "Chute dimensions are display reconstruction choices." } },
+      "explodeVector": [0.8, 0.2, 0],
+      "assemblyStep": 28,
+      "schemeTags": ["wangzhenduo"]
+    },
+    {
+      "id": "wang-chute-3",
+      "name": { "zh": "东南道滑槽", "en": "Southeast directional chute" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.36, "width": 0.045, "height": 0.03 } },
+      "material": "bronze",
+      "position": [0.3535533905932738, 0.16, -0.3535533905932738],
+      "rotationEuler": [0, 0.7853981633974483, 0],
+      "provenance": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "The text records eight paths but not their chute geometry." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "Chute dimensions are display reconstruction choices." } },
+      "explodeVector": [0.565685424949238, 0.2, -0.565685424949238],
+      "assemblyStep": 29,
+      "schemeTags": ["wangzhenduo"]
+    },
+    {
+      "id": "wang-chute-4",
+      "name": { "zh": "南道滑槽", "en": "South directional chute" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.36, "width": 0.045, "height": 0.03 } },
+      "material": "bronze",
+      "position": [0, 0.16, -0.5],
+      "rotationEuler": [0, 1.5707963267948966, 0],
+      "provenance": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "The text records eight paths but not their chute geometry." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "Chute dimensions are display reconstruction choices." } },
+      "explodeVector": [0, 0.2, -0.8],
+      "assemblyStep": 30,
+      "schemeTags": ["wangzhenduo"]
+    },
+    {
+      "id": "wang-chute-5",
+      "name": { "zh": "西南道滑槽", "en": "Southwest directional chute" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.36, "width": 0.045, "height": 0.03 } },
+      "material": "bronze",
+      "position": [-0.3535533905932738, 0.16, -0.3535533905932738],
+      "rotationEuler": [0, 2.356194490192345, 0],
+      "provenance": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "The text records eight paths but not their chute geometry." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "Chute dimensions are display reconstruction choices." } },
+      "explodeVector": [-0.565685424949238, 0.2, -0.565685424949238],
+      "assemblyStep": 31,
+      "schemeTags": ["wangzhenduo"]
+    },
+    {
+      "id": "wang-chute-6",
+      "name": { "zh": "西道滑槽", "en": "West directional chute" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.36, "width": 0.045, "height": 0.03 } },
+      "material": "bronze",
+      "position": [-0.5, 0.16, 0],
+      "rotationEuler": [0, 3.141592653589793, 0],
+      "provenance": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "The text records eight paths but not their chute geometry." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "Chute dimensions are display reconstruction choices." } },
+      "explodeVector": [-0.8, 0.2, 0],
+      "assemblyStep": 32,
+      "schemeTags": ["wangzhenduo"]
+    },
+    {
+      "id": "wang-chute-7",
+      "name": { "zh": "西北道滑槽", "en": "Northwest directional chute" },
+      "geometry": { "type": "custom", "builder": "seismoscopeTrack", "params": { "length": 0.36, "width": 0.045, "height": 0.03 } },
+      "material": "bronze",
+      "position": [-0.3535533905932738, 0.16, 0.3535533905932738],
+      "rotationEuler": [0, -2.356194490192345, 0],
+      "provenance": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "The text records eight paths but not their chute geometry." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Wang Zhenduo 1951 reconstruction", "note": "Chute dimensions are display reconstruction choices." } },
+      "explodeVector": [-0.565685424949238, 0.2, 0.565685424949238],
+      "assemblyStep": 33,
+      "schemeTags": ["wangzhenduo"]
+    }
+  ],
+  "notes": {
+    "zh": "此方案依据“中有都柱，傍行八道”作倒立摆复原；形制与限位均属王振铎方案推测。",
+    "en": "This patch reads the central column and eight paths as an inverted pendulum with chutes; its form and stops are reconstruction choices."
+  }
+}

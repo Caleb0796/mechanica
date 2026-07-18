@@ -1,0 +1,158 @@
+{
+  "id": "lanchester-diff",
+  "scholar": {
+    "zh": "乔治·兰彻斯特",
+    "en": "George Lanchester"
+  },
+  "year": 1932,
+  "summary": {
+    "zh": "以连续差动机构求两侧车轮反向输入的平均值，替代燕肃式侧落离合传动。",
+    "en": "Replaces the side-selecting clutch train with a continuous differential averaging oppositely signed road-wheel inputs."
+  },
+  "addParts": [
+    {
+      "id": "differential-carrier",
+      "name": { "zh": "差动架", "en": "Differential carrier" },
+      "geometry": { "type": "ring", "radius": 0.5, "tube": 0.025 },
+      "material": "bronze",
+      "position": [-1.25, 0.88, 0],
+      "explodeVector": [-0.8, 0.4, 0],
+      "assemblyStep": 7,
+      "parent": "chassis-pivot",
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "lanchester-diff",
+        "note": "Alternative differential scheme without a direct ancient textual basis."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "lanchester-diff",
+          "note": "All carrier dimensions are visualization assumptions."
+        }
+      },
+      "schemeTags": ["lanchester-diff"]
+    },
+    {
+      "id": "differential-sun-left",
+      "name": { "zh": "左差动轮", "en": "Left differential sun" },
+      "geometry": {
+        "type": "gear",
+        "module": 0.015,
+        "teeth": 20,
+        "thickness": 0.06,
+        "toothStyle": "involute"
+      },
+      "material": "bronze",
+      "position": [-1.25, 0.88, -0.18],
+      "explodeVector": [-0.6, 0, -0.5],
+      "assemblyStep": 7,
+      "parent": "chassis-pivot",
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "lanchester-diff",
+        "note": "Alternative differential scheme without a direct ancient textual basis."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "lanchester-diff",
+          "note": "All sun-wheel dimensions are visualization assumptions."
+        }
+      },
+      "schemeTags": ["lanchester-diff"]
+    },
+    {
+      "id": "differential-sun-right",
+      "name": { "zh": "右差动轮", "en": "Right differential sun" },
+      "geometry": {
+        "type": "gear",
+        "module": 0.015,
+        "teeth": 20,
+        "thickness": 0.06,
+        "toothStyle": "involute"
+      },
+      "material": "bronze",
+      "position": [-1.25, 0.88, 0.18],
+      "explodeVector": [-0.6, 0, 0.5],
+      "assemblyStep": 7,
+      "parent": "chassis-pivot",
+      "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "lanchester-diff",
+        "note": "Alternative differential scheme without a direct ancient textual basis."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "lanchester-diff",
+          "note": "All sun-wheel dimensions are visualization assumptions."
+        }
+      },
+      "schemeTags": ["lanchester-diff"]
+    }
+  ],
+  "removePartIds": ["left-clutch-dog", "right-clutch-dog", "clutch-yoke"],
+  "addConstraints": [
+    {
+      "type": "lockstep",
+      "a": "left-road-wheel",
+      "b": "differential-sun-left",
+      "ratio": 2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "lanchester-diff",
+        "note": "Signed input scaling yields chassis yaw from the left-right wheel difference."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "right-road-wheel",
+      "b": "differential-sun-right",
+      "ratio": -2,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "lanchester-diff",
+        "note": "The opposite sign converts the differential average into wheel-angle subtraction."
+      }
+    },
+    {
+      "type": "differential",
+      "carrier": "chassis-pivot",
+      "sunA": "differential-sun-left",
+      "sunB": "differential-sun-right",
+      "ratio": 1,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "lanchester-diff",
+        "note": "Continuous differential alternative; no direct textual basis."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "chassis-pivot",
+      "b": "differential-carrier",
+      "ratio": 1,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "lanchester-diff",
+        "note": "The visible carrier follows the computed differential output."
+      }
+    }
+  ],
+  "collisionWhitelist": [
+    ["left-sub-wheel", "left-small-wheel"],
+    ["left-small-wheel", "great-wheel"],
+    ["right-sub-wheel", "right-small-wheel"],
+    ["right-small-wheel", "great-wheel"],
+    ["platform", "central-shaft"],
+    ["great-wheel", "central-shaft"]
+  ],
+  "notes": {
+    "zh": "该方案是近代工程解释，不代表《宋史》明确记载的构造。",
+    "en": "This is a modern engineering interpretation, not a mechanism explicitly described by the Song History."
+  }
+}

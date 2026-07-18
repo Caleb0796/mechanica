@@ -1,0 +1,277 @@
+[
+  {
+    "id": "waterwheel",
+    "name": { "zh": "卧式水轮", "en": "Horizontal waterwheel" },
+    "geometry": { "type": "wheel", "radius": 3.0, "width": 0.18, "spokes": 16 },
+    "material": "wood",
+    "position": [-3.5, 1.2, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The Nong Shu records a horizontal waterwheel as the source of the transmission."
+    },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "The 3.0 m radius is the chosen reconstruction value for the 5:1 cord-drive demonstration."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Wheel width and spoke count are inferred display dimensions."
+      }
+    },
+    "explodeVector": [-0.7, 0.4, 0.2],
+    "assemblyStep": 1,
+    "interactive": true
+  },
+  {
+    "id": "waterwheel-pier",
+    "name": { "zh": "水轮立轴", "en": "Waterwheel upright shaft" },
+    "geometry": { "type": "shaft", "radius": 0.12, "length": 2.0 },
+    "material": "wood",
+    "position": [-3.5, 0.1, 0],
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The source describes a timber frame and upright shaft beside the rapid stream."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Shaft radius and rendered length are inferred from the exhibit layout."
+      }
+    },
+    "explodeVector": [-0.5, -0.6, -0.2],
+    "assemblyStep": 0
+  },
+  {
+    "id": "drive-cord",
+    "name": { "zh": "絃索", "en": "Drive cord" },
+    "geometry": {
+      "type": "custom",
+      "builder": "bellowsTwistedCord",
+      "params": {
+        "run": 1.413797,
+        "rise": 0.8,
+        "waterSpread": 0.18,
+        "drumSpread": 0.1,
+        "radius": 0.02
+      }
+    },
+    "material": "silk",
+    "position": [0.201494, 1.6, 0],
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The Nong Shu explicitly runs a cord from the upper horizontal wheel to the forward drum."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "The two quarter-turn cord spans, section, and tangent offsets follow the inferred perpendicular wheel placement."
+      }
+    },
+    "explodeVector": [0, 0.5, 0.5],
+    "assemblyStep": 2
+  },
+  {
+    "id": "small-drum",
+    "name": { "zh": "旋鼓", "en": "Forward rotating drum" },
+    "geometry": { "type": "wheel", "radius": 0.6, "width": 0.2, "spokes": 12 },
+    "material": "wood",
+    "position": [1.5, 2.0, 0],
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The source names the forward rotating drum driven by the cord."
+    },
+    "dimensionProvenance": {
+      "radius": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "The 0.6 m radius is chosen with the 3.0 m waterwheel radius to demonstrate a 5:1 speed-up."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Drum width and spoke count are inferred display dimensions."
+      }
+    },
+    "explodeVector": [0.4, 0.5, -0.4],
+    "assemblyStep": 3
+  },
+  {
+    "id": "crank-wheel",
+    "name": { "zh": "掉枝曲柄", "en": "Crank branch" },
+    "geometry": { "type": "wheel", "radius": 0.28, "width": 0.12, "spokes": 4 },
+    "material": "wood",
+    "position": [1.5, 2.0, 0.15],
+    "rotationEuler": [1.5707963267948966, 0, 0],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The source states that the crank branch turns with the forward drum."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "The visible crank disc, width, and spoke count are inferred around the 0.24 m crank throw."
+      }
+    },
+    "explodeVector": [0.5, 0.4, 0.6],
+    "assemblyStep": 4
+  },
+  {
+    "id": "connecting-rod",
+    "name": { "zh": "行桄连杆", "en": "Connecting beam" },
+    "geometry": { "type": "link", "length": 1.2, "width": 0.08 },
+    "material": "wood",
+    "position": [1.5, 1.16, 0.15],
+    "rotationEuler": [0, 0, -1.5707963267948966],
+    "joint": { "kind": "revolute", "axis": [0, 0, 1] },
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The source says the crank passes through the connecting beam and pushes and pulls it."
+    },
+    "dimensionProvenance": {
+      "length": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "The 1.2 m connecting-rod length is an inferred reconstruction parameter."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Rod thickness is inferred for legibility and collision sampling."
+      }
+    },
+    "explodeVector": [0, 0.4, 0.7],
+    "assemblyStep": 5
+  },
+  {
+    "id": "front-upright",
+    "name": { "zh": "排前直木", "en": "Front upright timber" },
+    "geometry": { "type": "beam", "size": [0.32, 0.6, 0.16] },
+    "material": "wood",
+    "position": [1.5, 0.56, 0.15],
+    "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.5] },
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The source names the front upright timber moved by the connecting beam and rocker."
+    },
+    "dimensionProvenance": {
+      "joint.limits.0": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Zero is the reconstructed closed-stroke datum."
+      },
+      "joint.limits.1": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "The 0.5 m travel limit safely contains the inferred 0.48 m stroke."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Upright cross-section and 0.6 m rendered length are inferred to preserve clearance below the forward drum throughout the stroke."
+      }
+    },
+    "explodeVector": [-0.5, -0.4, 0.4],
+    "assemblyStep": 6
+  },
+  {
+    "id": "rocker",
+    "name": { "zh": "攀耳摇杆", "en": "Bellows rocker" },
+    "geometry": {
+      "type": "custom",
+      "builder": "bellowsRocker",
+      "params": { "length": 2.0, "width": 0.08, "depth": 0.08 }
+    },
+    "material": "wood",
+    "position": [2.5, 0.56, 0.15],
+    "joint": { "kind": "fixed", "axis": [0, 0, 1] },
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The Nong Shu describes the paired rocker ears between the connecting beam and bellows timber."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Rocker dimensions, fixed transform carrier, and display placement are inferred; its geometry converts the solved linear state to the exact linkage angle."
+      }
+    },
+    "explodeVector": [0.5, 0.1, 0.6],
+    "assemblyStep": 6
+  },
+  {
+    "id": "bellows-board",
+    "name": { "zh": "风箱板", "en": "Bellows board" },
+    "geometry": { "type": "beam", "size": [0.5, 0.94, 0.16] },
+    "material": "wood",
+    "position": [3.5, 0.56, 0.15],
+    "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.5] },
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The source records the bellows timber that reciprocates under the rocker transmission."
+    },
+    "dimensionProvenance": {
+      "size.1": {
+        "kind": "wenxian",
+        "ref": "nongshu-shuipai",
+        "note": "The data card preserves the scattered approximately three-chi timber length as 0.94 m."
+      },
+      "joint.limits.0": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Zero is the reconstructed closed-stroke datum."
+      },
+      "joint.limits.1": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "The 0.5 m travel limit safely contains the inferred 0.48 m stroke."
+      },
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Board width and thickness are inferred display dimensions."
+      }
+    },
+    "explodeVector": [0.7, -0.2, 0.5],
+    "assemblyStep": 8
+  },
+  {
+    "id": "bellows-chest",
+    "name": { "zh": "风箱箱体", "en": "Bellows chest" },
+    "geometry": { "type": "beam", "size": [2.4, 1.6, 0.6] },
+    "material": "wood",
+    "position": [4.3, 0.55, -0.65],
+    "provenance": {
+      "kind": "wenxian",
+      "ref": "nongshu-shuipai",
+      "note": "The recorded apparatus is a water-powered bellows installation; this chest locates the reconstructed working board."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "nongshu-shuipai",
+        "note": "Chest dimensions and offset are inferred exhibit geometry rather than recorded measurements."
+      }
+    },
+    "explodeVector": [0.7, -0.5, -0.6],
+    "assemblyStep": 7
+  }
+]

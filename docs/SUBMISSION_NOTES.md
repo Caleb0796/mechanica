@@ -2,7 +2,7 @@
 
 ## Codex Session ID
 
-Pending capture through `/feedback`. Do not substitute internal task or thread identifiers.
+`019f7356-3808-7a10-a445-faf293232674`
 
 ## Verification excerpts
 

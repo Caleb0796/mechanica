@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import type { MachineModule, MachineSlug } from '../sim/types'
 import demoModule from './demo'
-import MachineViewer from './viewer/MachineViewer'
+import { ScrollStory, type StoryStep } from './story'
+import MachineViewer, { MachineStoryStage } from './viewer/MachineViewer'
 
 export const MACHINE_SLUGS = [
   'astroclock',
@@ -109,6 +110,9 @@ const machineCards: Record<MachineSlug, MachineCardCopy> = {
 
 const machineModules = import.meta.glob<{ default: MachineModule }>(
   '../machines/*/build.ts',
+)
+const storyModules = import.meta.glob<{ default: StoryStep[] }>(
+  '../machines/*/story.ts',
 )
 
 function currentPath() {
@@ -220,6 +224,97 @@ function MachineRoute({ slug }: { slug: string }) {
   return <MachineViewer module={module} schemeId={module.defaultSchemeId} />
 }
 
+function StoryRoute({ slug }: { slug: string }) {
+  const { i18n, t } = useTranslation()
+  const language = i18n.resolvedLanguage === 'en' ? 'en' : 'zh'
+  const [bundle, setBundle] = useState<{
+    module: MachineModule
+    steps: StoryStep[]
+  } | null>(null)
+  const [error, setError] = useState(false)
+  const [spotlightRunId, setSpotlightRunId] = useState(0)
+
+  useEffect(() => {
+    let cancelled = false
+    setBundle(null)
+    setError(false)
+    setSpotlightRunId(0)
+    const machineLoader = machineModules[`../machines/${slug}/build.ts`]
+    const storyLoader = storyModules[`../machines/${slug}/story.ts`]
+    if (!machineLoader || !storyLoader) {
+      setError(true)
+      return () => {
+        cancelled = true
+      }
+    }
+
+    void Promise.all([machineLoader(), storyLoader()])
+      .then(([loadedMachine, loadedStory]) => {
+        if (!cancelled) {
+          setBundle({
+            module: loadedMachine.default,
+            steps: loadedStory.default,
+          })
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setError(true)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [slug])
+
+  const runSpotlight = useCallback(() => {
+    setSpotlightRunId((current) => current + 1)
+  }, [])
+
+  if (error) {
+    return (
+      <main className="error-page">
+        <h1>{t('app.loadError')}</h1>
+        <p>{slug}</p>
+        <a className="gold-button" href="#/">
+          {t('app.home')}
+        </a>
+      </main>
+    )
+  }
+
+  if (!bundle) {
+    return (
+      <main aria-live="polite" className="loading-page">
+        <p>{t('app.loading')}</p>
+      </main>
+    )
+  }
+
+  return (
+    <>
+      <a
+        className="story-back-link"
+        data-testid="story-back-link"
+        href={`#/m/${slug}`}
+      >
+        {language === 'zh' ? '返回模型' : 'Back to model'}
+      </a>
+      <ScrollStory
+        module={bundle.module}
+        onSpotlight={runSpotlight}
+        renderStage={(state) => (
+          <MachineStoryStage
+            module={bundle.module}
+            spotlightRunId={spotlightRunId}
+            state={state}
+          />
+        )}
+        steps={bundle.steps}
+      />
+    </>
+  )
+}
+
 export default function RouterView() {
   const [path, setPath] = useState(currentPath)
 
@@ -229,6 +324,10 @@ export default function RouterView() {
     return () => window.removeEventListener('hashchange', updatePath)
   }, [])
 
+  const storyMatch = path.match(/^\/story\/([^/]+)\/?$/)
+  if (storyMatch) {
+    return <StoryRoute slug={decodeURIComponent(storyMatch[1])} />
+  }
   const match = path.match(/^\/m\/([^/]+)\/?$/)
   return match ? <MachineRoute slug={decodeURIComponent(match[1])} /> : <HomePage />
 }

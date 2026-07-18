@@ -4,6 +4,7 @@ declare const process: { env: { CI?: string } }
 
 export default defineConfig({
   testDir: './e2e',
+  workers: 1,
   use: {
     baseURL: 'http://localhost:4173',
   },

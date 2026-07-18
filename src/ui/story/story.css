@@ -1,0 +1,164 @@
+.scroll-story {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background: #090a0a;
+}
+
+.scroll-story__stage {
+  position: sticky;
+  z-index: 0;
+  top: 0;
+  height: calc(100vh - 4.5rem);
+  overflow: hidden;
+}
+
+.scroll-story__stage > * {
+  height: 100%;
+}
+
+.story-machine-stage {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(
+      circle at 58% 48%,
+      rgba(136, 110, 58, 0.13),
+      transparent 32rem
+    ),
+    #090a0a;
+}
+
+.story-machine-stage canvas {
+  display: block;
+}
+
+.scroll-story__chapters {
+  position: relative;
+  z-index: 2;
+  width: min(29rem, calc(100% - 2rem));
+  margin-top: calc(-100vh + 4.5rem);
+  margin-left: clamp(1rem, 5vw, 5rem);
+  pointer-events: none;
+}
+
+.scroll-story__chapter {
+  display: flex;
+  min-height: 88vh;
+  align-items: center;
+  opacity: 0.62;
+  transition: opacity 240ms ease;
+}
+
+.scroll-story__chapter[data-active="true"] {
+  opacity: 1;
+}
+
+.scroll-story__card {
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid rgba(217, 184, 109, 0.28);
+  background: rgba(9, 10, 10, 0.9);
+  box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(16px);
+  pointer-events: auto;
+}
+
+.scroll-story__index,
+.scroll-story__source-label {
+  color: #c7a660;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.scroll-story__card h2 {
+  margin: 0.6rem 0 0.8rem;
+  color: #f0e6d3;
+  font-family: "Noto Serif CJK SC", "Songti SC", STSong, Georgia, serif;
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.12;
+}
+
+.scroll-story__card p {
+  margin: 0;
+  color: #aaa69d;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.scroll-story__source-button {
+  margin-top: 1.1rem;
+  padding: 0.55rem 0;
+  border: 0;
+  border-bottom: 1px solid #b8944f;
+  color: #dfbd72;
+  background: transparent;
+  cursor: pointer;
+}
+
+.scroll-story__source-panel {
+  position: fixed;
+  z-index: 20;
+  right: clamp(1rem, 3vw, 3rem);
+  bottom: clamp(1rem, 3vw, 3rem);
+  width: min(26rem, calc(100% - 2rem));
+  max-height: min(34rem, calc(100vh - 6rem));
+  padding: 1.5rem;
+  overflow-y: auto;
+  border: 1px solid #6a5735;
+  background: rgba(13, 14, 14, 0.97);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.65);
+}
+
+.scroll-story__source-panel blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #8b754a;
+  color: #d5cbbb;
+  font-family: "Noto Serif CJK SC", "Songti SC", STSong, Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.scroll-story__source-panel a {
+  color: #dfbd72;
+  font-size: 0.78rem;
+}
+
+.scroll-story__source-close {
+  float: right;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #705c37;
+  color: #e8d7b1;
+  background: #171714;
+  cursor: pointer;
+}
+
+@media (max-width: 820px) {
+  .scroll-story__stage {
+    top: 0;
+    height: 68vh;
+  }
+
+  .scroll-story__chapters {
+    width: calc(100% - 1.5rem);
+    margin-top: -68vh;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .scroll-story__chapter {
+    min-height: 76vh;
+    align-items: flex-end;
+    padding-bottom: 4vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-story__chapter {
+    transition: none;
+  }
+}

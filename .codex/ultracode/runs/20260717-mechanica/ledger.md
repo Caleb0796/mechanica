@@ -445,3 +445,43 @@ Fine ornament remains intentionally optional. Typecase is inherently flat and wi
 ### Next action
 
 Commit and tag this green Visual Recovery checkpoint. Resume Phase 5 only afterward, and rerun the full Visual Gate after the remaining functionality is complete and before generating final renders.
+
+## Phase 5 Complete — Flagship Scroll Stories
+
+### Route
+
+Full route with three disjoint story authors, root integration and headed-browser repair, then an independent read-only adversarial re-review. Final render generation remained blocked.
+
+### Scope
+
+Add bilingual, source-linked scroll stories for Astroclock, Chariot, and Seismoscope with camera choreography, exploded states, visible mechanism drives, reconstruction handoffs, and the existing spotlight triggers. No authoritative machine data, dimensions, ratios, provenance, parts, or scheme definitions changed.
+
+### Findings and changes
+
+- Added nine Astroclock, seven Chariot, and eight Seismoscope chapters plus responsive story routing, source drawers, and model-entry links.
+- Repaired drive interpolation so missing targets ease to zero and drive-node changes cross through zero. Story graphs persist between same-scheme chapters instead of resetting at active-step thresholds.
+- Chariot now drives the constrained right sub-wheel through the documented 24/12/48 train; its turn camera contains the complete figure and mechanism.
+- Seismoscope now drives the visible Feng duzhu, keeps all balls available for the following first-event spotlight, and uses story-only vessel opacity for readable cutaways.
+- Reconstruction changes crossfade both models with complementary opacity. A midpoint dolly-out keeps the complete Wang/Feng and Yan Su/Lanchester handoffs in frame.
+- The performance check now samples animation frames during sustained wheel input. A separate mobile Chromium context dispatches a native touch swipe.
+
+### Verification
+
+- `pnpm test` → 20 files, 180/180 tests passed.
+- Strict `pnpm validate` → exit 0.
+- `pnpm build` → exit 0; the known non-blocking large-chunk warning remains.
+- `pnpm e2e` → 21/21 scenarios passed, including all prior interactions, three sustained-scroll story checks, source drawers, spotlight reuse, language switching, and native touch scrolling.
+- Headed two-second wheel samples: Astroclock 58.45 fps, Chariot 59.48 fps, Seismoscope 58.95 fps; console and page errors were empty.
+- Browser evidence includes each story's start, source drawer, ingenuity step, repaired Chariot turn, both scheme-crossfade midpoints, Seismoscope cutaway pulse, and a mobile layout.
+
+### Adversarial gate
+
+The first skeptic pass returned RED for ineffective drives, stale/snapping drive state, hard scheme swaps, and an idle-only performance test. After repair, the same independent reviewer inspected code and final evidence and returned `GREEN` with every finding closed.
+
+### Remaining limitations
+
+Story cameras intentionally use mechanism close-ups at some chapter endpoints. Sustained headed samples cluster just below the display's nominal 60 Hz while remaining smooth and above the automated 45 fps floor. Final all-machine visual acceptance is still pending after Phase 6; no project renders may be generated before that gate is green.
+
+### Next action
+
+Commit and tag `wave-5`, complete Phase 6 without generating final renders, then rerun the blocking all-ten-machine Visual Gate before any render or deployment work.

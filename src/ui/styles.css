@@ -195,6 +195,34 @@ a {
   white-space: nowrap;
 }
 
+.story-launch-button,
+.story-back-link {
+  border: 1px solid #806634;
+  color: #e7d3a6;
+  background: rgba(12, 13, 12, 0.86);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+}
+
+.story-launch-button {
+  position: absolute;
+  z-index: 4;
+  top: 1.5rem;
+  right: 1.5rem;
+  padding: 0.65rem 0.8rem;
+}
+
+.story-back-link {
+  position: fixed;
+  z-index: 12;
+  top: 5.35rem;
+  right: 1rem;
+  padding: 0.55rem 0.7rem;
+}
+
 .machine-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -835,6 +863,12 @@ a {
 
   .machine-card h2 {
     margin-top: 3.5rem;
+  }
+
+  .story-launch-button {
+    top: auto;
+    right: 1rem;
+    bottom: 1rem;
   }
 }
 

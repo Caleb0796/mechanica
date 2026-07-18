@@ -54,6 +54,7 @@ import DocentChat from "../panels/DocentChat";
 import PartInspector from "../panels/PartInspector";
 import SchemeSwitcher from "../panels/SchemeSwitcher";
 import { useUiStore } from "../store";
+import type { StoryStageState } from "../story/types";
 import DriveHandle from "./DriveHandle";
 import ExplodedControl from "./ExplodedControl";
 import {
@@ -710,6 +711,7 @@ interface MachineSceneProps {
   displayState: { current: Record<string, number> | null };
   explode: number;
   graph: IKinematicGraph;
+  interactionDisabled?: boolean;
   module: MachineModule;
   onDrivePart: (partId: string, delta: number) => void;
   paused: boolean;
@@ -717,10 +719,33 @@ interface MachineSceneProps {
   spotlightActive: boolean;
   spotlightPartIds: string[];
   spotlightRunId: number;
+  storyCamera?: StoryStageState["camera"];
+  storyHighlightPartIds?: string[];
   transitionLayer?: {
     appearance: PartAppearance;
     spec: MachineSpec;
   };
+}
+
+function StoryCameraRig({ pose }: { pose?: StoryStageState["camera"] }) {
+  const camera = useThree((state) => state.camera);
+  const targetPosition = useMemo(() => new Vector3(), []);
+  const targetPoint = useMemo(() => new Vector3(), []);
+  const targetQuaternion = useMemo(() => new Quaternion(), []);
+  const lookAtMatrix = useMemo(() => new Matrix4(), []);
+
+  useFrame(() => {
+    if (!pose) return;
+    targetPosition.set(...pose.position);
+    targetPoint.set(...pose.target);
+    lookAtMatrix.lookAt(targetPosition, targetPoint, camera.up);
+    targetQuaternion.setFromRotationMatrix(lookAtMatrix);
+    camera.position.copy(targetPosition);
+    camera.quaternion.copy(targetQuaternion);
+    camera.updateMatrixWorld();
+  });
+
+  return null;
 }
 
 function GhostPartLayer({
@@ -806,6 +831,7 @@ function MachineScene({
   displayState,
   explode,
   graph,
+  interactionDisabled,
   module,
   onDrivePart,
   paused,
@@ -813,6 +839,8 @@ function MachineScene({
   spotlightActive,
   spotlightPartIds,
   spotlightRunId,
+  storyCamera,
+  storyHighlightPartIds,
   transitionLayer,
 }: MachineSceneProps) {
   const dragging = useRef(false);
@@ -863,6 +891,8 @@ function MachineScene({
       Math.max(1, ...activeSpec.parts.map((part) => part.assemblyStep ?? 0)),
     [activeSpec],
   );
+  const highlightedPartIds = storyHighlightPartIds ?? spotlightPartIds;
+  const highlightActive = spotlightActive || highlightedPartIds.length > 0;
 
   useFrame((_, delta) => {
     if (paused || dragging.current) return;
@@ -899,7 +929,7 @@ function MachineScene({
       <OrbitControls
         autoRotate={false}
         enableDamping
-        enabled={!spotlightActive}
+        enabled={!spotlightActive && !storyCamera}
         makeDefault
         onChange={() => {
           const target = orbitControls.current?.target;
@@ -921,7 +951,7 @@ function MachineScene({
         maxDuration={compareContext ? 0.2 : 0.45}
       >
         <BoundsRefit
-          active={spotlightActive}
+          active={spotlightActive || Boolean(storyCamera)}
           explode={explode}
           profile={viewerProfile}
           spec={activeSpec}
@@ -944,6 +974,7 @@ function MachineScene({
             displayState={displayState}
             explode={explode}
             graph={graph}
+            interactionDisabled={interactionDisabled}
             key={part.id}
             maxAssemblyStep={maxAssemblyStep}
             module={module}
@@ -954,12 +985,12 @@ function MachineScene({
             part={part}
             partsById={partsById}
             schemeId={schemeId}
-            spotlightActive={spotlightActive}
-            spotlightPartIds={spotlightPartIds}
+            spotlightActive={highlightActive}
+            spotlightPartIds={highlightedPartIds}
           />
         ))}
       </Bounds>
-      {!compareContext ? (
+      {!compareContext && !storyCamera ? (
         <ContactShadows
           blur={2.5}
           far={3}
@@ -968,11 +999,14 @@ function MachineScene({
           scale={2}
         />
       ) : null}
-      <SpotlightRig
-        active={spotlightActive}
-        runId={spotlightRunId}
-        targetPartId={spotlightPartIds.at(-1)}
-      />
+      <StoryCameraRig pose={storyCamera} />
+      {!storyCamera ? (
+        <SpotlightRig
+          active={spotlightActive}
+          runId={spotlightRunId}
+          targetPartId={spotlightPartIds.at(-1)}
+        />
+      ) : null}
     </>
   );
 }
@@ -1051,12 +1085,250 @@ export function captureSpotlightState(
   return captured;
 }
 
+export function MachineStoryStage({
+  module,
+  spotlightRunId,
+  state,
+}: {
+  module: MachineModule;
+  spotlightRunId: number;
+  state: StoryStageState;
+}) {
+  const fromSchemeId = state.fromStep.schemeId ?? module.defaultSchemeId;
+  const toSchemeId = state.toStep.schemeId ?? module.defaultSchemeId;
+  const fromSpec = useMemo(
+    () =>
+      applySchemePatch(
+        module.spec,
+        fromSchemeId ? module.schemes?.[fromSchemeId] : undefined,
+      ),
+    [fromSchemeId, module.schemes, module.spec],
+  );
+  const toSpec = useMemo(
+    () =>
+      applySchemePatch(
+        module.spec,
+        toSchemeId ? module.schemes?.[toSchemeId] : undefined,
+      ),
+    [module.schemes, module.spec, toSchemeId],
+  );
+  const schemeTransition = fromSchemeId !== toSchemeId;
+  const showingFromScheme = !schemeTransition || state.segmentProgress < 0.5;
+  const schemeId = showingFromScheme ? fromSchemeId : toSchemeId;
+  const activeSpec = showingFromScheme ? fromSpec : toSpec;
+  const graph = useMemo(() => new KinematicGraph(activeSpec), [activeSpec]);
+  const cutawayAppearance = useMemo(
+    () =>
+      state.activeStep.cutaway
+        ? {
+            opacity: state.activeStep.cutaway.opacity,
+            partIds: new Set(state.activeStep.cutaway.partIds),
+          }
+        : undefined,
+    [state.activeStep.cutaway],
+  );
+  const displayState = useRef<Record<string, number> | null>(null);
+  const driveState = useRef<{ node: string; value: number } | null>(null);
+  const spotlightFrame = useRef<number | null>(null);
+  const [spotlightActive, setSpotlightActive] = useState(false);
+  const [spotlightParts, setSpotlightParts] = useState<string[]>([]);
+  const [spotlightRuns, setSpotlightRuns] = useState(0);
+
+  useLayoutEffect(() => {
+    driveState.current = null;
+    displayState.current = null;
+  }, [graph]);
+
+  useLayoutEffect(() => {
+    if (state.spotlight) return;
+    const driveTo = state.driveTo;
+    if (!driveTo) {
+      const previous = driveState.current;
+      if (previous && Math.abs(previous.value) > 1e-10) {
+        graph.drive(previous.node, -previous.value);
+      }
+      driveState.current = null;
+      displayState.current = null;
+      return;
+    }
+    const previous = driveState.current;
+    if (previous && previous.node !== driveTo.node) {
+      if (Math.abs(previous.value) > 1e-10) {
+        graph.drive(previous.node, -previous.value);
+      }
+      driveState.current = null;
+    }
+    const delta =
+      previous?.node === driveTo.node
+        ? driveTo.value - previous.value
+        : driveTo.value;
+    if (Math.abs(delta) > 1e-10) graph.drive(driveTo.node, delta);
+    driveState.current = { node: driveTo.node, value: driveTo.value };
+    displayState.current = graph.state();
+  }, [graph, state.driveTo, state.spotlight]);
+
+  useEffect(() => {
+    if (spotlightFrame.current !== null) {
+      cancelAnimationFrame(spotlightFrame.current);
+      spotlightFrame.current = null;
+    }
+    if (!state.spotlight || spotlightRunId === 0) {
+      setSpotlightActive(false);
+      setSpotlightParts([]);
+      return;
+    }
+
+    const trigger = module.mechanism?.triggers.find(
+      (candidate) => candidate.id === "spotlight",
+    );
+    if (!trigger) return;
+
+    const initialState = graph.state();
+    const captured: CapturedEvent[] = [];
+    trigger.run(graph, (type, part) => {
+      if (type !== "spotlight:done") {
+        captured.push({
+          type,
+          part,
+          state: captureSpotlightState(activeSpec, graph.state(), type, part),
+        });
+      }
+    });
+    displayState.current = initialState;
+    setSpotlightActive(true);
+    setSpotlightParts([activeSpec.primaryDrive]);
+    setSpotlightRuns((current) => current + 1);
+
+    let index = 0;
+    let previousState = initialState;
+    const playNext = () => {
+      const event = captured[index];
+      if (!event) {
+        displayState.current = null;
+        setSpotlightActive(false);
+        spotlightFrame.current = null;
+        return;
+      }
+      if (event.type === "highlight:off") {
+        setSpotlightParts((current) =>
+          current.filter((partId) => partId !== event.part),
+        );
+      } else if (
+        event.type.includes("drive") ||
+        event.type.includes("highlight") ||
+        event.type === "mallet:raise"
+      ) {
+        setSpotlightParts((current) =>
+          current.includes(event.part) ? current : [...current, event.part],
+        );
+      }
+
+      const changed = statesDiffer(previousState, event.state);
+      const duration = changed
+        ? event.type.includes("drive")
+          ? 420
+          : 240
+        : 90;
+      const startedAt = performance.now();
+      const animate = (now: number) => {
+        const progress = Math.min(1, (now - startedAt) / duration);
+        displayState.current = interpolateState(
+          previousState,
+          event.state,
+          1 - (1 - progress) ** 3,
+        );
+        if (progress < 1) {
+          spotlightFrame.current = requestAnimationFrame(animate);
+          return;
+        }
+        previousState = event.state;
+        index += 1;
+        playNext();
+      };
+      spotlightFrame.current = requestAnimationFrame(animate);
+    };
+    playNext();
+
+    return () => {
+      if (spotlightFrame.current !== null) {
+        cancelAnimationFrame(spotlightFrame.current);
+        spotlightFrame.current = null;
+      }
+    };
+  }, [
+    activeSpec,
+    graph,
+    module.mechanism?.triggers,
+    spotlightRunId,
+    state.spotlight,
+  ]);
+
+  const highlightedParts = spotlightActive ? spotlightParts : state.highlight;
+  const activeAppearance = schemeTransition
+    ? {
+        opacity: showingFromScheme
+          ? 1 - state.segmentProgress
+          : state.segmentProgress,
+      }
+    : cutawayAppearance;
+  const transitionLayer = schemeTransition
+    ? {
+        appearance: {
+          opacity: showingFromScheme
+            ? state.segmentProgress
+            : 1 - state.segmentProgress,
+        },
+        spec: showingFromScheme ? toSpec : fromSpec,
+      }
+    : undefined;
+
+  return (
+    <div
+      className="story-machine-stage"
+      data-active-step={state.activeStep.id}
+      data-cutaway={state.activeStep.cutaway ? "true" : "false"}
+      data-scheme-transition={schemeTransition ? "true" : "false"}
+      data-spotlight-active={spotlightActive ? "true" : "false"}
+      data-spotlight-runs={spotlightRuns}
+      data-testid="story-machine-stage"
+    >
+      <Canvas camera={{ fov: 36, position: state.camera.position }} dpr={1}>
+        <MachineScene
+          activeSpec={activeSpec}
+          appearance={activeAppearance}
+          assemblyProgress={1}
+          displayState={displayState}
+          explode={state.explode}
+          graph={graph}
+          interactionDisabled
+          module={module}
+          onDrivePart={(partId, delta) => {
+            graph.drive(partId, delta);
+          }}
+          paused
+          schemeId={schemeId}
+          spotlightActive={false}
+          spotlightPartIds={[]}
+          spotlightRunId={0}
+          storyCamera={state.camera}
+          storyHighlightPartIds={highlightedParts}
+          transitionLayer={transitionLayer}
+        />
+      </Canvas>
+    </div>
+  );
+}
+
 export default function MachineViewer({
   module,
   schemeId,
 }: MachineViewerProps) {
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
+  const storyAvailable =
+    module.data.slug === "astroclock" ||
+    module.data.slug === "chariot" ||
+    module.data.slug === "seismoscope";
   const graph = useMemo(() => new KinematicGraph(module.spec), [module.spec]);
   const [activeSchemeId, setActiveSchemeId] = useState(schemeId);
   const activeSpec = useMemo(
@@ -1500,6 +1772,15 @@ export default function MachineViewer({
             {module.data.oneLiner[language]} · {t("viewer.rotateHint")}
           </p>
         </div>
+        {storyAvailable ? (
+          <a
+            className="story-launch-button"
+            data-testid="story-launch"
+            href={`#/story/${module.data.slug}`}
+          >
+            {language === "zh" ? "进入叙事" : "Enter story"}
+          </a>
+        ) : null}
         <div
           className="viewer-canvas"
           data-assembly-complete={assembly.state.complete ? "true" : "false"}

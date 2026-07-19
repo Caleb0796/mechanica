@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { ACESFilmicToneMapping } from "three";
 
 import { KinematicGraph } from "../../sim/graph";
 import type {
@@ -26,6 +27,9 @@ import {
   type CompareSide,
 } from "./model";
 import { useCompareStore } from "./store";
+import SceneEnvironment, {
+  prepareSceneEnvironment,
+} from "../viewer/SceneEnvironment";
 
 export interface CompareSceneContext {
   cameraTarget: [number, number, number];
@@ -105,8 +109,35 @@ function LinkedCamera({ side }: { side: CompareSide }) {
   return null;
 }
 
-function CompareFrameCounter({ onFrame }: { onFrame: () => void }) {
-  useFrame(onFrame);
+function CompareFrameCounter({
+  onFrame,
+  onReady,
+  readyEnabled,
+}: {
+  onFrame: () => void;
+  onReady: () => void;
+  readyEnabled: boolean;
+}) {
+  const readyFrame = useRef<number | undefined>(undefined);
+  const stableFrames = useRef(0);
+
+  useEffect(
+    () => () => {
+      if (readyFrame.current !== undefined) {
+        cancelAnimationFrame(readyFrame.current);
+      }
+    },
+    [],
+  );
+
+  useFrame((_, deltaSeconds) => {
+    onFrame();
+    if (!readyEnabled || readyFrame.current !== undefined) return;
+    stableFrames.current =
+      deltaSeconds <= 1 / 35 ? stableFrames.current + 1 : 0;
+    if (stableFrames.current < 12) return;
+    readyFrame.current = requestAnimationFrame(onReady);
+  });
   return null;
 }
 
@@ -141,6 +172,12 @@ export default function CompareView({
   const setHoveredPartId = useCompareStore((state) => state.setHoveredPartId);
   const setCameraTarget = useCompareStore((state) => state.setCameraTarget);
   const [driveRevision, setDriveRevision] = useState(0);
+  const [compiledSchemes, setCompiledSchemes] = useState<
+    Partial<Record<CompareSide, string>>
+  >({});
+  const [readySchemes, setReadySchemes] = useState<
+    Partial<Record<CompareSide, string>>
+  >({});
   const frameCounts = useRef<[number, number]>([0, 0]);
   const leftSpec = useMemo(
     () => specForScheme(module, leftSchemeId),
@@ -177,6 +214,22 @@ export default function CompareView({
       setDriveRevision((revision) => revision + 1);
     },
     [driveNodes, leftGraph, module, rightGraph],
+  );
+  const markViewportReady = useCallback(
+    (side: CompareSide, schemeId: string) => {
+      setReadySchemes((current) =>
+        current[side] === schemeId ? current : { ...current, [side]: schemeId },
+      );
+    },
+    [],
+  );
+  const markViewportCompiled = useCallback(
+    (side: CompareSide, schemeId: string) => {
+      setCompiledSchemes((current) =>
+        current[side] === schemeId ? current : { ...current, [side]: schemeId },
+      );
+    },
+    [],
   );
 
   useEffect(() => {
@@ -223,10 +276,13 @@ export default function CompareView({
       tintForPart: (partId) =>
         tintForDifference(side, partId, differences, hoveredPartId),
     };
+    const compiled = compiledSchemes[side] === schemeId;
+    const ready = readySchemes[side] === schemeId;
     return (
       <section
-        className={`compare-viewport compare-viewport-${side}`}
+        className={`compare-viewport-shell ${ready ? "compare-viewport" : ""} compare-viewport-${side}`}
         data-camera-revision={cameraRevision}
+        data-ready={ready}
         data-scheme-id={schemeId}
         onPointerDown={() => setCameraOwner(side)}
         onPointerEnter={() => setCameraOwner(side)}
@@ -237,15 +293,27 @@ export default function CompareView({
         <Canvas
           dpr={module.spec.slug === "astroclock" ? 0.5 : undefined}
           frameloop="always"
-          gl={{ antialias: false, powerPreference: "high-performance" }}
+          gl={{
+            antialias: false,
+            powerPreference: "high-performance",
+            toneMapping: ACESFilmicToneMapping,
+            toneMappingExposure: 1.05,
+          }}
+          onCreated={prepareSceneEnvironment}
         >
           <CompareFrameCounter
+            key={`${schemeId}:${compiled ? "compiled" : "warming"}`}
             onFrame={() => {
               frameCounts.current[side === "left" ? 0 : 1] += 1;
             }}
+            onReady={() => markViewportReady(side, schemeId)}
+            readyEnabled={compiled}
           />
           <LinkedCamera side={side} />
           {renderScene(context)}
+          <SceneEnvironment
+            onReady={() => markViewportCompiled(side, schemeId)}
+          />
         </Canvas>
       </section>
     );

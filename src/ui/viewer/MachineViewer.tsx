@@ -11,9 +11,18 @@ import {
   useFrame,
   useThree,
 } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import {
+  ACESFilmicToneMapping,
   Box3,
   type BufferGeometry,
   type Group,
@@ -58,6 +67,9 @@ import { useUiStore } from "../store";
 import type { StoryStageState } from "../story/types";
 import DriveHandle from "./DriveHandle";
 import ExplodedControl from "./ExplodedControl";
+import SceneEnvironment, {
+  prepareSceneEnvironment,
+} from "./SceneEnvironment";
 import {
   type AssemblyController,
   isPartVisibleInAssemblyStep,
@@ -106,6 +118,8 @@ export interface MachineViewerProps {
   module: MachineModule;
   schemeId?: string;
 }
+
+const EMPTY_PART_IDS: string[] = [];
 
 interface PartNodeProps {
   appearance?: PartAppearance;
@@ -317,7 +331,7 @@ function radialExplodeVector(part: PartDef) {
   return radial.normalize().multiplyScalar(0.25);
 }
 
-function PartNode({
+const PartNode = memo(function PartNode({
   appearance,
   assembly,
   assemblyProgress,
@@ -369,6 +383,9 @@ function PartNode({
     [module.data.slug, part],
   );
   const comparePresentation = compareContext?.tintForPart(part.id);
+  const compareColor = comparePresentation?.color;
+  const compareEmissive = comparePresentation?.emissive;
+  const compareOpacity = comparePresentation?.opacity;
   const layerPresentation =
     appearance && (!appearance.partIds || appearance.partIds.has(part.id))
       ? appearance
@@ -452,15 +469,15 @@ function PartNode({
       nextMaterial.emissiveIntensity = 1.8;
     }
     if (nextMaterial instanceof MeshStandardMaterial) {
-      if (comparePresentation?.color) {
-        nextMaterial.color.set(comparePresentation.color);
+      if (compareColor) {
+        nextMaterial.color.set(compareColor);
       }
-      if (comparePresentation?.emissive) {
-        nextMaterial.emissive.set(comparePresentation.emissive);
+      if (compareEmissive) {
+        nextMaterial.emissive.set(compareEmissive);
         nextMaterial.emissiveIntensity = 1;
       }
-      if (comparePresentation && comparePresentation.opacity < 1) {
-        nextMaterial.opacity = comparePresentation.opacity;
+      if (compareOpacity !== undefined && compareOpacity < 1) {
+        nextMaterial.opacity = compareOpacity;
         nextMaterial.transparent = true;
       }
       if (layerPresentation?.color) {
@@ -485,7 +502,9 @@ function PartNode({
   }, [
     assemblyError,
     assemblyHighlighted,
-    comparePresentation,
+    compareColor,
+    compareEmissive,
+    compareOpacity,
     layerPresentation,
     part.id,
     part.material,
@@ -759,7 +778,7 @@ function PartNode({
       )}
     </group>
   );
-}
+});
 
 interface MachineSceneProps {
   activeSpec: MachineSpec;
@@ -844,7 +863,7 @@ function GhostPartLayer({
   spec: MachineSpec;
 }) {
   const graph = useMemo(() => new KinematicGraph(spec), [spec]);
-  const displayState = useRef<Record<string, number> | null>(null);
+  const displayState = useRef<Record<string, number>>(graph.state());
   const partIds = useMemo(
     () => new Set(spec.parts.map((part) => part.id)),
     [spec.parts],
@@ -884,6 +903,10 @@ function GhostPartLayer({
     [spec.parts],
   );
 
+  useLayoutEffect(() => {
+    displayState.current = graph.state();
+  }, [graph]);
+
   return rootParts.map((part) => (
     <PartNode
       appearance={appearance}
@@ -902,7 +925,7 @@ function GhostPartLayer({
       part={part}
       partsById={partsById}
       spotlightActive={false}
-      spotlightPartIds={[]}
+      spotlightPartIds={EMPTY_PART_IDS}
       visiblePartIds={appearance.partIds}
     />
   ));
@@ -979,39 +1002,54 @@ function MachineScene({
   );
   const highlightedPartIds = storyHighlightPartIds ?? spotlightPartIds;
   const highlightActive = spotlightActive || highlightedPartIds.length > 0;
+  const frameState = useRef<Record<string, number>>(graph.state());
+  const setDragging = useCallback((nextDragging: boolean) => {
+    dragging.current = nextDragging;
+  }, []);
+
+  useLayoutEffect(() => {
+    frameState.current = displayState.current ?? graph.state();
+  }, [displayState, graph]);
 
   useFrame((_, delta) => {
-    if (paused || dragging.current) return;
-    if (module.spec.slug === "seismoscope") return;
-    if (activeSpec.escapement) {
-      escapementElapsed.current += delta;
-      if (escapementElapsed.current < activeSpec.escapement.fillSecondsPerScoop)
-        return;
-      escapementElapsed.current = 0;
-      onDrivePart(activeSpec.primaryDrive, activeSpec.escapement.stepRad);
-      return;
+    if (
+      !paused &&
+      !dragging.current &&
+      module.spec.slug !== "seismoscope"
+    ) {
+      if (activeSpec.escapement) {
+        escapementElapsed.current += delta;
+        if (
+          escapementElapsed.current >=
+          activeSpec.escapement.fillSecondsPerScoop
+        ) {
+          escapementElapsed.current = 0;
+          onDrivePart(activeSpec.primaryDrive, activeSpec.escapement.stepRad);
+        }
+      } else {
+        onDrivePart(activeSpec.primaryDrive, delta * 0.12);
+      }
     }
-    onDrivePart(activeSpec.primaryDrive, delta * 0.12);
+    frameState.current = displayState.current ?? graph.state();
   });
 
   return (
     <>
       <color args={["#090a0a"]} attach="background" />
-      <ambientLight intensity={0.8} />
       <hemisphereLight
-        args={["#ead9b6", "#13201c", 0.9]}
+        args={["#d7e3ef", "#2d2118", 0.35]}
         position={[0, 2, 0]}
       />
-      <directionalLight castShadow intensity={3.2} position={[1.5, 2.5, 3]} />
       <directionalLight
-        color="#b88a42"
-        intensity={1.2}
-        position={[-2, -1, 2]}
+        castShadow
+        color="#ffe1b6"
+        intensity={2.2}
+        position={[3, 5, 4]}
       />
       <directionalLight
-        color="#91b6a5"
-        intensity={1.5}
-        position={[-3, 1.5, -2]}
+        color="#9fc7da"
+        intensity={0.75}
+        position={[-4, 2, -3]}
       />
       <OrbitControls
         autoRotate={false}
@@ -1062,16 +1100,14 @@ function MachineScene({
             childrenByParent={childrenByParent}
             compareContext={compareContext}
             crankByRod={crankByRod}
-            displayState={displayState}
+            displayState={frameState}
             explode={explode}
             graph={graph}
             interactionDisabled={interactionDisabled}
             key={part.id}
             maxAssemblyStep={maxAssemblyStep}
             module={module}
-            onDraggingChange={(nextDragging) => {
-              dragging.current = nextDragging;
-            }}
+            onDraggingChange={setDragging}
             onDrivePart={onDrivePart}
             part={part}
             partsById={partsById}
@@ -1111,6 +1147,10 @@ function CompareSceneAdapter({
   module: MachineModule;
 }) {
   const displayState = useRef<Record<string, number> | null>(null);
+  const drivePart = useCallback(
+    (_partId: string, delta: number) => context.driveDelta(delta),
+    [context.driveDelta],
+  );
 
   return (
     <MachineScene
@@ -1121,11 +1161,11 @@ function CompareSceneAdapter({
       explode={0}
       graph={context.graph}
       module={module}
-      onDrivePart={(_partId, delta) => context.driveDelta(delta)}
+      onDrivePart={drivePart}
       paused
       schemeId={context.schemeId}
       spotlightActive={false}
-      spotlightPartIds={[]}
+      spotlightPartIds={EMPTY_PART_IDS}
       spotlightRunId={0}
     />
   );
@@ -1225,6 +1265,12 @@ export function MachineStoryStage({
   const [spotlightActive, setSpotlightActive] = useState(false);
   const [spotlightParts, setSpotlightParts] = useState<string[]>([]);
   const [spotlightRuns, setSpotlightRuns] = useState(0);
+  const drivePart = useCallback(
+    (partId: string, delta: number) => {
+      graph.drive(partId, delta);
+    },
+    [graph],
+  );
 
   useLayoutEffect(() => {
     driveState.current = null;
@@ -1384,7 +1430,19 @@ export function MachineStoryStage({
       data-spotlight-runs={spotlightRuns}
       data-testid="story-machine-stage"
     >
-      <Canvas camera={{ fov: 36, position: state.camera.position }} dpr={1}>
+      <Canvas
+        camera={{ fov: 36, position: state.camera.position }}
+        dpr={1}
+        gl={{
+          alpha: false,
+          antialias: false,
+          powerPreference: "high-performance",
+          toneMapping: ACESFilmicToneMapping,
+          toneMappingExposure: 1.05,
+        }}
+        onCreated={prepareSceneEnvironment}
+      >
+        <SceneEnvironment />
         <MachineScene
           activeSpec={activeSpec}
           appearance={activeAppearance}
@@ -1394,13 +1452,11 @@ export function MachineStoryStage({
           graph={graph}
           interactionDisabled
           module={module}
-          onDrivePart={(partId, delta) => {
-            graph.drive(partId, delta);
-          }}
+          onDrivePart={drivePart}
           paused
           schemeId={schemeId}
           spotlightActive={false}
-          spotlightPartIds={[]}
+          spotlightPartIds={EMPTY_PART_IDS}
           spotlightRunId={0}
           storyCamera={state.camera}
           storyHighlightPartIds={highlightedParts}
@@ -2196,8 +2252,14 @@ export default function MachineViewer({
             <Canvas
               camera={{ fov: 36, position: [0.9, 1.1, 1.6] }}
               dpr={[1, 2]}
+              gl={{
+                toneMapping: ACESFilmicToneMapping,
+                toneMappingExposure: 1.05,
+              }}
+              onCreated={prepareSceneEnvironment}
               shadows
             >
+              <SceneEnvironment />
               {hooksEnabled ? (
                 <SceneComplexityProbe count={sceneTriangles} />
               ) : null}

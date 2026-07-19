@@ -116,14 +116,14 @@ const LIGHT_WOOD: VisualMaterialPresentation = {
 const FIGURE_ACCENT: VisualMaterialPresentation = {
   color: "#c57d3d",
   emissive: "#2a1003",
-  emissiveIntensity: 0.08,
+  emissiveIntensity: 0.02,
   metalness: 0.14,
   roughness: 0.46,
 };
 const WARM_BRONZE: VisualMaterialPresentation = {
   color: "#b96f35",
   emissive: "#2a1003",
-  emissiveIntensity: 0.12,
+  emissiveIntensity: 0,
   metalness: 0.72,
   roughness: 0.35,
 };
@@ -184,7 +184,7 @@ export function visualMaterialFor(
         return {
           color: "#e7b84d",
           emissive: "#3b2504",
-          emissiveIntensity: 0.16,
+          emissiveIntensity: 0.04,
           metalness: 0.82,
           roughness: 0.24,
         };
@@ -244,7 +244,7 @@ export function visualMaterialFor(
         return {
           color: "#39bfd3",
           emissive: "#063943",
-          emissiveIntensity: 0.12,
+          emissiveIntensity: 0.03,
           metalness: 0.08,
           opacity: 0.58,
           roughness: 0.2,
@@ -295,7 +295,7 @@ export function visualMaterialFor(
         return {
           color: "#d9c17a",
           emissive: "#2a2108",
-          emissiveIntensity: 0.08,
+          emissiveIntensity: 0,
           metalness: 0.82,
           roughness: 0.25,
         };

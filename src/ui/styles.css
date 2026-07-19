@@ -701,14 +701,14 @@ a {
   min-height: 0;
 }
 
-.compare-viewport {
+.compare-viewport-shell {
   position: relative;
   min-width: 0;
   min-height: 0;
   border: 1px solid #25241f;
 }
 
-.compare-viewport canvas {
+.compare-viewport-shell canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;

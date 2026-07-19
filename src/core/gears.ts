@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 
 import type { GeometryDef } from '../sim/types'
+import { ensureBoxProjectedUvs } from './geometryUvs'
 
 type GearDef = Extract<GeometryDef, { type: 'gear' }>
 
@@ -210,9 +211,20 @@ function mergeGeometries(geometries: THREE.BufferGeometry[]): THREE.BufferGeomet
   const positions: number[] = []
   const normals: number[] = []
   const uvs: number[] = []
+  const prepared = geometries.map((source) =>
+    source.index ? source.toNonIndexed() : source.clone(),
+  )
+  const projectionBounds = new THREE.Box3()
+  for (const geometry of prepared) {
+    geometry.computeBoundingBox()
+    if (geometry.boundingBox) projectionBounds.union(geometry.boundingBox)
+  }
 
-  for (const source of geometries) {
-    const geometry = source.index ? source.toNonIndexed() : source.clone()
+  for (const preparedGeometry of prepared) {
+    const geometry = ensureBoxProjectedUvs(
+      preparedGeometry,
+      projectionBounds,
+    )
     const position = geometry.getAttribute('position')
     const normal = geometry.getAttribute('normal')
     const uv = geometry.getAttribute('uv')
@@ -226,8 +238,8 @@ function mergeGeometries(geometries: THREE.BufferGeometry[]): THREE.BufferGeomet
         uvs.push(uv.getX(i), uv.getY(i))
       }
     }
-    geometry.dispose()
   }
+  for (const geometry of prepared) geometry.dispose()
 
   const merged = new THREE.BufferGeometry()
   merged.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))

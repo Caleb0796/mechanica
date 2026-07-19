@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
+import type { StandardMaterialPresentation } from "../../core/materials";
 import type { MachineSlug, PartDef } from "../../sim/types";
 
 export interface ViewerProfile {
@@ -93,25 +94,19 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
   },
 };
 
-export interface VisualMaterialPresentation {
-  color?: string;
-  emissive?: string;
-  emissiveIntensity?: number;
-  metalness?: number;
-  opacity?: number;
-  roughness?: number;
-  transparent?: boolean;
-}
+export type VisualMaterialPresentation = StandardMaterialPresentation;
 
 const DARK_WOOD: VisualMaterialPresentation = {
   color: "#3a271d",
   metalness: 0.08,
   roughness: 0.72,
+  textureVariant: "wood:dark",
 };
 const LIGHT_WOOD: VisualMaterialPresentation = {
   color: "#a86a38",
   metalness: 0.08,
   roughness: 0.52,
+  textureVariant: "wood:light",
 };
 const FIGURE_ACCENT: VisualMaterialPresentation = {
   color: "#c57d3d",
@@ -119,6 +114,7 @@ const FIGURE_ACCENT: VisualMaterialPresentation = {
   emissiveIntensity: 0.02,
   metalness: 0.14,
   roughness: 0.46,
+  textureVariant: "lacquer:red",
 };
 const WARM_BRONZE: VisualMaterialPresentation = {
   color: "#b96f35",
@@ -126,6 +122,7 @@ const WARM_BRONZE: VisualMaterialPresentation = {
   emissiveIntensity: 0,
   metalness: 0.72,
   roughness: 0.35,
+  textureVariant: "bronze:fresh",
 };
 
 function matches(id: string, pattern: RegExp): boolean {
@@ -141,6 +138,7 @@ function movingMaterialFor(part: PartDef): VisualMaterialPresentation {
         color: "#737d82",
         metalness: 0.72,
         roughness: 0.4,
+        textureVariant: "iron:cast",
       };
     case "silver":
       return {
@@ -156,6 +154,7 @@ function movingMaterialFor(part: PartDef): VisualMaterialPresentation {
         metalness: 0,
         opacity: 0.84,
         roughness: 0.72,
+        textureVariant: "silk:natural",
         transparent: true,
       };
     case "wood":
@@ -187,10 +186,16 @@ export function visualMaterialFor(
           emissiveIntensity: 0.04,
           metalness: 0.82,
           roughness: 0.24,
+          textureVariant: "bronze:gilded",
         };
       }
       if (matches(id, /vessel|body|shell|bowl/)) {
-        return { color: "#477c70", metalness: 0.76, roughness: 0.43 };
+        return {
+          color: "#477c70",
+          metalness: 0.76,
+          roughness: 0.43,
+          textureVariant: "bronze:excavated",
+        };
       }
       return matches(id, /pendulum|lever|chute|trigger|column/)
         ? movingMaterialFor(part)
@@ -219,7 +224,12 @@ export function visualMaterialFor(
         : undefined;
     case "wooden-ox":
       if (id === "curved-head" || matches(id, /ear|horn|muzzle/)) {
-        return { color: "#a96835", metalness: 0.08, roughness: 0.58 };
+        return {
+          color: "#a96835",
+          metalness: 0.08,
+          roughness: 0.58,
+          textureVariant: "wood:light",
+        };
       }
       if (matches(id, /wheel|shaft|axle|lever|link|ratchet|pawl/)) {
         return movingMaterialFor(part);
@@ -248,6 +258,7 @@ export function visualMaterialFor(
           metalness: 0.08,
           opacity: 0.58,
           roughness: 0.2,
+          textureVariant: "none",
           transparent: true,
         };
       }
@@ -259,7 +270,12 @@ export function visualMaterialFor(
         : undefined;
     case "bellows":
       if (matches(id, /bellows|lid|nozzle/)) {
-        return { color: "#985637", metalness: 0.12, roughness: 0.57 };
+        return {
+          color: "#985637",
+          metalness: 0.12,
+          roughness: 0.57,
+          textureVariant: "lacquer:red",
+        };
       }
       if (matches(id, /wheel|shaft|cam|rod|link|crank|axle/)) {
         return movingMaterialFor(part);
@@ -277,11 +293,13 @@ export function visualMaterialFor(
       }
       if (matches(id, /shell/)) {
         return {
+          alphaTest: 0.42,
           color: "#78998a",
           metalness: 0.72,
-          opacity: 0.3,
+          opacity: 1,
           roughness: 0.38,
-          transparent: true,
+          textureVariant: "bronze:openwork",
+          transparent: false,
         };
       }
       if (id === "outer-ring") {
@@ -298,6 +316,7 @@ export function visualMaterialFor(
           emissiveIntensity: 0,
           metalness: 0.82,
           roughness: 0.25,
+          textureVariant: "bronze:gilded",
         };
       }
       if (matches(id, /bowl|lamp|cup/)) return WARM_BRONZE;
@@ -308,6 +327,7 @@ export function visualMaterialFor(
           emissiveIntensity: 1.4,
           metalness: 0,
           roughness: 0.24,
+          textureVariant: "none",
         };
       }
       return undefined;

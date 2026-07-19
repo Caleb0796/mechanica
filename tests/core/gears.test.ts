@@ -24,6 +24,16 @@ function expectFinitePositions(geometry: ReturnType<typeof buildGearGeometry>): 
   }
 }
 
+function expectFiniteUvs(geometry: ReturnType<typeof buildGearGeometry>): void {
+  const positions = geometry.getAttribute('position')
+  const uvs = geometry.getAttribute('uv')
+  expect(uvs.count).toBe(positions.count)
+  for (let vertex = 0; vertex < uvs.count; vertex += 1) {
+    expect(Number.isFinite(uvs.getX(vertex))).toBe(true)
+    expect(Number.isFinite(uvs.getY(vertex))).toBe(true)
+  }
+}
+
 describe('buildGearGeometry', () => {
   it('creates a detailed finite involute profile for 48 teeth', () => {
     const geometry = buildGearGeometry(involuteGear(48, 0.1))
@@ -31,6 +41,7 @@ describe('buildGearGeometry', () => {
 
     expect(positions.count).toBeGreaterThan(48 * 4)
     expectFinitePositions(geometry)
+    expectFiniteUvs(geometry)
   })
 
   it('keeps the 24-tooth bounds between pitch and addendum tolerance', () => {
@@ -64,5 +75,18 @@ describe('buildGearGeometry', () => {
       toothStyle: 'pin',
       innerRadius: 0.58,
     })).toThrow(/clearance behind the pins/)
+  })
+
+  it('keeps finite UVs on a composite pin gear', () => {
+    const geometry = buildGearGeometry({
+      type: 'gear',
+      module: 0.1,
+      teeth: 12,
+      thickness: 0.08,
+      toothStyle: 'pin',
+      innerRadius: 0.08,
+    })
+
+    expectFiniteUvs(geometry)
   })
 })

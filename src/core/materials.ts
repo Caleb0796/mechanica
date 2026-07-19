@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 import type { PartDef } from "../sim/types";
+import { defaultTextureVariant, getMaterialTextureSet } from "./textures";
 
 export interface StandardMaterialPresentation {
   alphaTest?: number;
@@ -19,9 +20,10 @@ export interface StandardMaterialPresentation {
 export function applyStandardMaterialPresentation(
   material: THREE.MeshStandardMaterial,
   presentation?: StandardMaterialPresentation,
+  applySurface = true,
 ): void {
   if (!presentation) return;
-  if (presentation.color !== undefined) {
+  if (applySurface && presentation.color !== undefined) {
     material.color.set(presentation.color);
   }
   if (presentation.emissive !== undefined) {
@@ -30,13 +32,13 @@ export function applyStandardMaterialPresentation(
   if (Number.isFinite(presentation.emissiveIntensity)) {
     material.emissiveIntensity = presentation.emissiveIntensity!;
   }
-  if (Number.isFinite(presentation.metalness)) {
+  if (applySurface && Number.isFinite(presentation.metalness)) {
     material.metalness = presentation.metalness!;
   }
   if (Number.isFinite(presentation.opacity)) {
     material.opacity = presentation.opacity!;
   }
-  if (Number.isFinite(presentation.roughness)) {
+  if (applySurface && Number.isFinite(presentation.roughness)) {
     material.roughness = presentation.roughness!;
   }
   if (Number.isFinite(presentation.alphaTest)) {
@@ -64,16 +66,16 @@ export function standardMaterial(
       break;
     case "bronze":
       material = new THREE.MeshStandardMaterial({
-        color: 0x708b72,
+        color: 0xb08d57,
         metalness: 0.9,
         roughness: 0.35,
       });
       break;
     case "iron":
       material = new THREE.MeshStandardMaterial({
-        color: 0x292d30,
+        color: 0x3b3f42,
         metalness: 0.8,
-        roughness: 0.5,
+        roughness: 0.55,
       });
       break;
     case "silver":
@@ -104,8 +106,28 @@ export function standardMaterial(
     }
   }
 
+  let textureVariant: string = defaultTextureVariant(kind);
   for (const presentation of presentations) {
-    applyStandardMaterialPresentation(material, presentation);
+    if (presentation?.textureVariant !== undefined) {
+      textureVariant = presentation.textureVariant;
+    }
+  }
+  const textures = getMaterialTextureSet(textureVariant);
+  material.userData.mechanicaTextureVariant = textureVariant;
+  if (textures) {
+    material.alphaMap = textures.alphaMap ?? null;
+    material.alphaTest = Math.max(material.alphaTest, textures.alphaTest ?? 0);
+    material.color.set(0xffffff);
+    material.map = textures.map;
+    material.metalness = textures.metalness;
+    material.normalMap = textures.normalMap;
+    material.normalScale.setScalar(textures.normalScale);
+    material.roughness = 1;
+    material.roughnessMap = textures.roughnessMap;
+    material.needsUpdate = true;
+  }
+  for (const presentation of presentations) {
+    applyStandardMaterialPresentation(material, presentation, !textures);
   }
   return material;
 }

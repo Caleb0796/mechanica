@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 import type { GeometryDef } from "../sim/types";
 import { buildGearGeometry } from "./gears";
+import { ensureBoxProjectedUvs } from "./geometryUvs";
 
 export type CustomBuilderRegistry = Record<
   string,
@@ -72,9 +73,17 @@ function mergeGeometries(
   const positions: number[] = [];
   const normals: number[] = [];
   const uvs: number[] = [];
+  const prepared = geometries.map((source) =>
+    source.index ? source.toNonIndexed() : source.clone(),
+  );
+  const projectionBounds = new THREE.Box3();
+  for (const geometry of prepared) {
+    geometry.computeBoundingBox();
+    if (geometry.boundingBox) projectionBounds.union(geometry.boundingBox);
+  }
 
-  for (const source of geometries) {
-    const geometry = source.index ? source.toNonIndexed() : source.clone();
+  for (const preparedGeometry of prepared) {
+    const geometry = ensureBoxProjectedUvs(preparedGeometry, projectionBounds);
     const position = geometry.getAttribute("position");
     const normal = geometry.getAttribute("normal");
     const uv = geometry.getAttribute("uv");
@@ -87,8 +96,8 @@ function mergeGeometries(
         uvs.push(uv.getX(i), uv.getY(i));
       }
     }
-    geometry.dispose();
   }
+  for (const geometry of prepared) geometry.dispose();
 
   const merged = new THREE.BufferGeometry();
   merged.setAttribute(
@@ -227,7 +236,10 @@ export function buildPartGeometry(
           `Custom geometry builder "${def.builder}" did not return a THREE.BufferGeometry`,
         );
       }
-      return geometry as THREE.BufferGeometry;
+      const bufferGeometry = geometry as THREE.BufferGeometry;
+      const projected = ensureBoxProjectedUvs(bufferGeometry);
+      if (projected !== bufferGeometry) bufferGeometry.dispose();
+      return projected;
     }
     default: {
       const exhaustive: never = def;

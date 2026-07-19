@@ -71,4 +71,44 @@ Concerns:
 - Vite reports a non-blocking three-vendor chunk-size warning.
 - Protected Phase 4 work remains unstaged.
 
-Next: F0-T3 offline/local PBR texture system.
+## F0-T3 — PASS
+
+Files:
+- `src/core/textures.ts`
+- `src/core/geometryUvs.ts`
+- `src/core/materials.ts`
+- `src/core/materialCache.ts`
+- `src/core/primitives.ts`
+- `src/core/gears.ts`
+- `src/ui/viewer/MachineViewer.tsx` (texture selection, compare opt-out, cache identity, and E2E diagnostics only)
+- `src/ui/viewer/visualRecovery.ts` (texture variants and gimbal alpha-test presentation only)
+- `tests/core/textures.test.ts`
+- `tests/core/primitives.test.ts`
+- `tests/core/gears.test.ts`
+- `tests/core/materialCache.test.ts`
+- `e2e/smoke.spec.ts`
+
+Verification:
+- `pnpm test` — isolated staged snapshot: 24 files, 197/197 tests passed; integrated protected workspace: 24 files, 208/208 tests passed.
+- `pnpm validate` — isolated and integrated runs exit 0; all ten strict validation reports regenerated without failure.
+- `pnpm e2e` — isolated and integrated runs: 32/32 tests passed, including all-route console checks, the procedural texture gate, interactions, stories, and frame-rate gates.
+- `pnpm i18n:check` — 0 issues in isolated and integrated workspaces.
+- `pnpm exec tsc --noEmit` — exit 0 in isolated and integrated workspaces.
+- Production build — exit 0 in both full E2E runs; `dist/` emitted.
+- Browser texture gate proves all ten sets generate in ≤200 ms, cache at 10 sets/31 texture objects, and stay at ≤40 renderer textures per context.
+- Unit coverage proves deterministic shared CanvasTexture triplets, one-time disposal, corrected PBR palette ownership, flat compare isolation, transparent silk, alpha-tested openwork, InstancedMesh texture sharing, native UV preservation, and box-projected custom geometry.
+
+Evidence:
+- `output/playwright/f0-t3-typecase.png`
+- `output/playwright/f0-t3-seismoscope.png`
+- `output/playwright/f0-t3-gimbal.png`
+- Root review at 1600×900 confirmed distinct wood/bronze/silk surfaces and a visible pierced gimbal shell.
+- Independent read-only skeptic verdict: GREEN after the double-tint/PBR-scalar and eager-warm performance findings were fixed.
+
+Concerns:
+- The private mixed-source merge branch lacks a direct unit fixture; the projection helper/custom-builder and composite gear paths are covered separately.
+- Gimbal framing remains too small and the current shell remains one cutaway hemisphere; F0-T4 and F1-10 own those blocking visual remediations.
+- Vite reports a non-blocking three-vendor chunk-size warning.
+- Protected Phase 4 work remains unstaged.
+
+Next: F0-T4 authored camera choreography and bounds hardening.

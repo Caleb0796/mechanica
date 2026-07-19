@@ -24,13 +24,17 @@ describe("material cache", () => {
       color: "#b96f35",
       metalness: 0.72,
       roughness: 0.35,
+      textureVariant: "none",
     };
     const variant = materialVariantKey(presentation);
     const first = getMaterial("bronze", variant, () =>
       standardMaterial("bronze", presentation),
     );
     const second = getMaterial("bronze", variant, () =>
-      standardMaterial("bronze", { color: "#ffffff" }),
+      standardMaterial("bronze", {
+        color: "#ffffff",
+        textureVariant: "none",
+      }),
     );
 
     expect(second).toBe(first);

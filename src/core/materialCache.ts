@@ -5,6 +5,7 @@ import {
   standardMaterial,
   type StandardMaterialPresentation,
 } from "./materials";
+import { textureShaderFeatureHash } from "./textures";
 
 type MaterialKind = PartDef["material"];
 type MaterialFactory = () => MeshStandardMaterial;
@@ -50,6 +51,14 @@ function normalizedPresentation(
     ) {
       normalized[key] = value;
     }
+  }
+  if (
+    typeof normalized.textureVariant === "string" &&
+    normalized.shaderFeatureHash === undefined
+  ) {
+    normalized.shaderFeatureHash = textureShaderFeatureHash(
+      normalized.textureVariant,
+    );
   }
   return normalized;
 }

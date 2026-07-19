@@ -601,6 +601,32 @@ test("F0-T2: twenty spotlight toggles keep renderer memory flat", async ({
   expect(await page.evaluate(() => window.__mech?.memory())).toEqual(before);
 });
 
+test("F0-T3: procedural textures stay bounded on instanced and openwork paths", async ({
+  page,
+}) => {
+  await page.goto("/#/m/typecase");
+  await waitForMechanica(page, "typecase");
+  const typecase = await page.evaluate(() => ({
+    renderer: window.__mech?.memory(),
+    textures: window.__mech?.warmTextures(),
+  }));
+
+  expect(typecase.textures?.entries).toBe(10);
+  expect(typecase.textures?.generationMs).toBeGreaterThan(0);
+  expect(typecase.textures?.generationMs).toBeLessThanOrEqual(200);
+  expect(typecase.textures?.textures).toBe(31);
+  expect(typecase.renderer?.textures).toBeLessThanOrEqual(40);
+
+  await page.goto("/#/m/gimbal");
+  await waitForMechanica(page, "gimbal");
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.memory().textures ?? 0))
+    .toBeGreaterThan(0);
+  expect(
+    await page.evaluate(() => window.__mech?.memory().textures ?? 0),
+  ).toBeLessThanOrEqual(40);
+});
+
 test("U6: all ten machine spotlights complete within ten seconds", async ({
   page,
 }) => {

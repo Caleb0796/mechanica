@@ -43,6 +43,12 @@ import {
   type StandardMaterialPresentation,
 } from "../../core/materials";
 import {
+  defaultTextureVariant,
+  materialTextureStats,
+  textureShaderFeatureHash,
+  warmMaterialTextures,
+} from "../../core/textures";
+import {
   applyMechanicaInstanceMatrices,
   buildPartGeometry,
   getMechanicaInstanceMatrices,
@@ -96,7 +102,17 @@ declare global {
       module: MachineModule;
       memory: () => { geometries: number; textures: number };
       spec: MachineModule["spec"];
+      textureStats: () => {
+        entries: number;
+        generationMs: number;
+        textures: number;
+      };
       triangles: () => number;
+      warmTextures: () => {
+        entries: number;
+        generationMs: number;
+        textures: number;
+      };
     };
     __mechExplodeSpread?: () => number;
     __mechSelect?: (partId: string) => void;
@@ -460,13 +476,35 @@ const PartNode = memo(function PartNode({
         StandardMaterialPresentation | undefined,
     [geometry],
   );
+  const textureVariant = compareContext
+    ? "none"
+    : (materialOverride?.textureVariant ??
+      visualPresentation?.textureVariant ??
+      defaultTextureVariant(part.material));
+  const texturePresentation = useMemo<StandardMaterialPresentation>(
+    () => ({
+      shaderFeatureHash: textureShaderFeatureHash(textureVariant),
+      textureVariant,
+    }),
+    [textureVariant],
+  );
   const baseMaterialVariant = useMemo(
-    () => materialVariantKey(materialOverride, visualPresentation),
-    [materialOverride, visualPresentation],
+    () =>
+      materialVariantKey(
+        materialOverride,
+        visualPresentation,
+        texturePresentation,
+      ),
+    [materialOverride, texturePresentation, visualPresentation],
   );
   const baseMaterialKey = `base:${baseMaterialVariant}`;
   const baseMaterial = getMaterial(part.material, baseMaterialKey, () =>
-    standardMaterial(part.material, materialOverride, visualPresentation),
+    standardMaterial(
+      part.material,
+      materialOverride,
+      visualPresentation,
+      texturePresentation,
+    ),
   );
   const comparePresentation = compareContext?.tintForPart(part.id);
   const compareColor = comparePresentation?.color;
@@ -1994,7 +2032,9 @@ export default function MachineViewer({
       memory: () => ({ ...sceneMemory.current }),
       module: activeModule,
       spec: activeSpec,
+      textureStats: materialTextureStats,
       triangles: () => sceneTriangles.current,
+      warmTextures: warmMaterialTextures,
     };
     window.__mechSelect = (partId) => setSelectedPartId(partId);
     window.__mechAssembly = {

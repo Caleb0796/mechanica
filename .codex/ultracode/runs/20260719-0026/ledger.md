@@ -41,4 +41,34 @@ Concerns:
 - Vite reports a non-blocking three-vendor chunk-size warning.
 - Protected Phase 4 work remains unstaged.
 
-Next: F0-T2 cached shared material system and transient-state material stabilization.
+## F0-T2 — PASS
+
+Files:
+- `src/core/materialCache.ts`
+- `src/core/materials.ts`
+- `src/ui/viewer/MachineViewer.tsx` (material-cache, transient-state, renderer-memory, and stable appearance-family hunks only)
+- `tests/core/materialCache.test.ts`
+- `e2e/smoke.spec.ts`
+
+Verification:
+- `pnpm test` — isolated staged snapshot: 22 files, 188/188 tests passed; integrated protected workspace: 22 files, 199/199 tests passed.
+- `pnpm validate` — isolated and integrated runs exit 0; all ten strict machine validations regenerated without failure.
+- `pnpm e2e` — isolated and integrated runs: 31/31 tests passed, including all routes, console checks, interactions, stories, and performance checks.
+- `pnpm i18n:check` — 0 issues in both isolated and integrated workspaces.
+- `pnpm exec tsc --noEmit` — exit 0.
+- Production build — exit 0 in both E2E runs; `dist/` emitted.
+- StrictMode cache test proves setup-cleanup-setup identity, idempotent release, cancelable deferred sweep, and one final disposal.
+- Twenty spotlight toggles keep WebGL renderer geometry and texture counts exactly flat; the bounded unit pool also remains at two variants.
+
+Evidence:
+- Root browser review at 1600×900 covered astroclock default, active spotlight material, and compare tint states with no browser warning or error.
+- Full E2E covered assembly highlight/error, scheme ghost handoff, linked compare, spotlight, and every machine route without console errors.
+- Independent read-only skeptic verdict: GREEN after deferred-sweep, collision-safe key, and concurrent ghost-family fixes.
+
+Concerns:
+- Astroclock compare remains intentionally half-resolution under the pre-existing performance safeguard; F0-T10 removes that mode.
+- An unrelated acquisition can postpone the global deferred LRU timer until a later release; synchronous over-limit sweeping and final-unmount disposal still bound the cache.
+- Vite reports a non-blocking three-vendor chunk-size warning.
+- Protected Phase 4 work remains unstaged.
+
+Next: F0-T3 offline/local PBR texture system.

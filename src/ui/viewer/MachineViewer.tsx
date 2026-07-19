@@ -27,14 +27,21 @@ import {
   type BufferGeometry,
   type Group,
   type InstancedMesh,
-  type Material,
   Matrix4,
   MeshStandardMaterial,
   Quaternion,
   Vector3,
 } from "three";
 
-import { standardMaterial } from "../../core/materials";
+import {
+  acquireMaterial,
+  getMaterial,
+  materialVariantKey,
+} from "../../core/materialCache";
+import {
+  standardMaterial,
+  type StandardMaterialPresentation,
+} from "../../core/materials";
 import {
   applyMechanicaInstanceMatrices,
   buildPartGeometry,
@@ -87,6 +94,7 @@ declare global {
     __mech?: {
       graph: IKinematicGraph;
       module: MachineModule;
+      memory: () => { geometries: number; textures: number };
       spec: MachineModule["spec"];
       triangles: () => number;
     };
@@ -148,6 +156,7 @@ interface PartAppearance {
   color?: string;
   opacity: number;
   partIds?: ReadonlySet<string>;
+  variant: string;
 }
 
 type CrankConstraint = Extract<
@@ -331,6 +340,69 @@ function radialExplodeVector(part: PartDef) {
   return radial.normalize().multiplyScalar(0.25);
 }
 
+interface TransientMaterialState {
+  assemblyError: boolean;
+  assemblyHighlighted: boolean;
+  compareColor?: string;
+  compareEmissive?: string;
+  compareOpacity?: number;
+  layerColor?: string;
+  layerOpacity?: number;
+  schemeHighlighted: boolean;
+  seismoscopeDragonSpotlight: boolean;
+  spotlightCutaway: boolean;
+  spotlightHighlighted: boolean;
+}
+
+function applyTransientMaterialState(
+  material: MeshStandardMaterial,
+  baseMaterial: MeshStandardMaterial,
+  state: TransientMaterialState,
+): void {
+  const cacheKey = material.userData.mechanicaMaterialCacheKey;
+  material.copy(baseMaterial);
+  material.userData.mechanicaMaterialCacheKey = cacheKey;
+
+  if (state.spotlightCutaway) {
+    material.opacity = 0.22;
+    material.transparent = true;
+    material.depthWrite = false;
+  }
+  if (state.schemeHighlighted || state.spotlightHighlighted) {
+    material.emissive.set("#6e4e18");
+    material.emissiveIntensity = state.spotlightHighlighted ? 1.4 : 0.65;
+  }
+  if (state.seismoscopeDragonSpotlight) {
+    material.color.set("#b62f2f");
+    material.emissive.set("#7d1515");
+    material.emissiveIntensity = 1.8;
+  }
+  if (state.compareColor) material.color.set(state.compareColor);
+  if (state.compareEmissive) {
+    material.emissive.set(state.compareEmissive);
+    material.emissiveIntensity = 1;
+  }
+  if (state.compareOpacity !== undefined && state.compareOpacity < 1) {
+    material.opacity = state.compareOpacity;
+    material.transparent = true;
+  }
+  if (state.layerColor) material.color.set(state.layerColor);
+  if (state.layerOpacity !== undefined && state.layerOpacity < 1) {
+    material.opacity = state.layerOpacity;
+    material.transparent = true;
+    material.depthWrite = false;
+  }
+  if (state.assemblyHighlighted) {
+    material.emissive.set("#a77825");
+    material.emissiveIntensity = 1.1;
+  }
+  if (state.assemblyError) {
+    material.color.set("#b62f2f");
+    material.emissive.set("#7d1515");
+    material.emissiveIntensity = 1.6;
+  }
+}
+
 const PartNode = memo(function PartNode({
   appearance,
   assembly,
@@ -382,6 +454,20 @@ const PartNode = memo(function PartNode({
     () => visualMaterialFor(module.data.slug, part),
     [module.data.slug, part],
   );
+  const materialOverride = useMemo(
+    () =>
+      geometry.userData.mechanicaMaterial as
+        StandardMaterialPresentation | undefined,
+    [geometry],
+  );
+  const baseMaterialVariant = useMemo(
+    () => materialVariantKey(materialOverride, visualPresentation),
+    [materialOverride, visualPresentation],
+  );
+  const baseMaterialKey = `base:${baseMaterialVariant}`;
+  const baseMaterial = getMaterial(part.material, baseMaterialKey, () =>
+    standardMaterial(part.material, materialOverride, visualPresentation),
+  );
   const comparePresentation = compareContext?.tintForPart(part.id);
   const compareColor = comparePresentation?.color;
   const compareEmissive = comparePresentation?.emissive;
@@ -394,128 +480,60 @@ const PartNode = memo(function PartNode({
   const assemblyHighlighted = assembly?.currentPartId === part.id;
   const spotlightCutaway =
     module.data.slug === "chainpump" && part.id === "trough" && spotlightActive;
-  const material = useMemo<Material>(() => {
-    const nextMaterial = standardMaterial(part.material);
-    const materialOverride = geometry.userData.mechanicaMaterial as
-      | {
-          color?: string;
-          metalness?: number;
-          opacity?: number;
-          roughness?: number;
-          transparent?: boolean;
-        }
-      | undefined;
-    if (materialOverride && nextMaterial instanceof MeshStandardMaterial) {
-      if (materialOverride.color) {
-        nextMaterial.color.set(materialOverride.color);
-      }
-      if (Number.isFinite(materialOverride.metalness)) {
-        nextMaterial.metalness = materialOverride.metalness!;
-      }
-      if (Number.isFinite(materialOverride.roughness)) {
-        nextMaterial.roughness = materialOverride.roughness!;
-      }
-      if (Number.isFinite(materialOverride.opacity)) {
-        nextMaterial.opacity = materialOverride.opacity!;
-      }
-      if (typeof materialOverride.transparent === "boolean") {
-        nextMaterial.transparent = materialOverride.transparent;
-      }
-    }
-    if (visualPresentation && nextMaterial instanceof MeshStandardMaterial) {
-      if (visualPresentation.color) {
-        nextMaterial.color.set(visualPresentation.color);
-      }
-      if (visualPresentation.emissive) {
-        nextMaterial.emissive.set(visualPresentation.emissive);
-      }
-      if (Number.isFinite(visualPresentation.emissiveIntensity)) {
-        nextMaterial.emissiveIntensity = visualPresentation.emissiveIntensity!;
-      }
-      if (Number.isFinite(visualPresentation.metalness)) {
-        nextMaterial.metalness = visualPresentation.metalness!;
-      }
-      if (Number.isFinite(visualPresentation.opacity)) {
-        nextMaterial.opacity = visualPresentation.opacity!;
-      }
-      if (Number.isFinite(visualPresentation.roughness)) {
-        nextMaterial.roughness = visualPresentation.roughness!;
-      }
-      if (typeof visualPresentation.transparent === "boolean") {
-        nextMaterial.transparent = visualPresentation.transparent;
-      }
-    }
-    const schemeHighlighted = part.schemeTags?.includes(schemeId ?? "");
-    const spotlightHighlighted =
-      spotlightActive && spotlightPartIds.includes(part.id);
-    const highlighted = schemeHighlighted || spotlightHighlighted;
-    if (spotlightCutaway && nextMaterial instanceof MeshStandardMaterial) {
-      nextMaterial.opacity = 0.22;
-      nextMaterial.transparent = true;
-      nextMaterial.depthWrite = false;
-    }
-    if (highlighted && nextMaterial instanceof MeshStandardMaterial) {
-      nextMaterial.emissive.set("#6e4e18");
-      nextMaterial.emissiveIntensity = spotlightHighlighted ? 1.4 : 0.65;
-    }
-    if (
-      module.data.slug === "seismoscope" &&
-      spotlightHighlighted &&
-      part.id.startsWith("dragon-") &&
-      nextMaterial instanceof MeshStandardMaterial
-    ) {
-      nextMaterial.color.set("#b62f2f");
-      nextMaterial.emissive.set("#7d1515");
-      nextMaterial.emissiveIntensity = 1.8;
-    }
-    if (nextMaterial instanceof MeshStandardMaterial) {
-      if (compareColor) {
-        nextMaterial.color.set(compareColor);
-      }
-      if (compareEmissive) {
-        nextMaterial.emissive.set(compareEmissive);
-        nextMaterial.emissiveIntensity = 1;
-      }
-      if (compareOpacity !== undefined && compareOpacity < 1) {
-        nextMaterial.opacity = compareOpacity;
-        nextMaterial.transparent = true;
-      }
-      if (layerPresentation?.color) {
-        nextMaterial.color.set(layerPresentation.color);
-      }
-      if (layerPresentation && layerPresentation.opacity < 1) {
-        nextMaterial.opacity = layerPresentation.opacity;
-        nextMaterial.transparent = true;
-        nextMaterial.depthWrite = false;
-      }
-      if (assemblyHighlighted) {
-        nextMaterial.emissive.set("#a77825");
-        nextMaterial.emissiveIntensity = 1.1;
-      }
-      if (assemblyError) {
-        nextMaterial.color.set("#b62f2f");
-        nextMaterial.emissive.set("#7d1515");
-        nextMaterial.emissiveIntensity = 1.6;
-      }
-    }
-    return nextMaterial;
-  }, [
+  const schemeHighlighted = part.schemeTags?.includes(schemeId ?? "") ?? false;
+  const spotlightHighlighted =
+    spotlightActive && spotlightPartIds.includes(part.id);
+  const seismoscopeDragonSpotlight =
+    module.data.slug === "seismoscope" &&
+    spotlightHighlighted &&
+    part.id.startsWith("dragon-");
+  const layerColor = layerPresentation?.color;
+  const layerOpacity = layerPresentation?.opacity;
+  const transientStateKey = [
+    spotlightCutaway ? "cutaway" : "",
+    schemeHighlighted ? "scheme" : "",
+    spotlightHighlighted ? "spotlight" : "",
+    seismoscopeDragonSpotlight ? "dragon" : "",
+    compareColor ? `compare-color:${compareColor}` : "",
+    compareEmissive ? `compare-emissive:${compareEmissive}` : "",
+    compareOpacity !== undefined && compareOpacity < 1
+      ? `compare-opacity:${compareOpacity}`
+      : "",
+    layerPresentation
+      ? `layer:${layerPresentation.variant}:${layerColor ?? "base"}`
+      : "",
+    assemblyHighlighted ? "assembly-highlight" : "",
+    assemblyError ? "assembly-error" : "",
+  ]
+    .filter(Boolean)
+    .join("|");
+  const transientState: TransientMaterialState = {
     assemblyError,
     assemblyHighlighted,
     compareColor,
     compareEmissive,
     compareOpacity,
-    layerPresentation,
-    part.id,
-    part.material,
-    part.schemeTags,
-    geometry,
-    schemeId,
-    spotlightActive,
+    layerColor,
+    layerOpacity,
+    schemeHighlighted,
+    seismoscopeDragonSpotlight,
     spotlightCutaway,
-    spotlightPartIds,
-    visualPresentation,
-  ]);
+    spotlightHighlighted,
+  };
+  const activeMaterialKey = transientStateKey
+    ? `${baseMaterialKey}:state:${transientStateKey}`
+    : baseMaterialKey;
+  const material = transientStateKey
+    ? getMaterial(part.material, activeMaterialKey, () => {
+        const transientMaterial = baseMaterial.clone();
+        applyTransientMaterialState(
+          transientMaterial,
+          baseMaterial,
+          transientState,
+        );
+        return transientMaterial;
+      })
+    : baseMaterial;
   const instanceMatrices = useMemo(
     () => getMechanicaInstanceMatrices(geometry),
     [geometry],
@@ -551,15 +569,36 @@ const PartNode = memo(function PartNode({
       } else {
         geometry.dispose();
       }
-      material.dispose();
     };
+  }, [geometry, geometryCache, module, part.geometry, semanticGeometry]);
+
+  useEffect(() => {
+    const lease = acquireMaterial(
+      part.material,
+      activeMaterialKey,
+      () => material,
+    );
+    return lease.release;
+  }, [activeMaterialKey, material, part.material]);
+
+  useLayoutEffect(() => {
+    if (!transientStateKey) return;
+    applyTransientMaterialState(material, baseMaterial, transientState);
   }, [
-    geometry,
-    geometryCache,
+    assemblyError,
+    assemblyHighlighted,
+    baseMaterial,
+    compareColor,
+    compareEmissive,
+    compareOpacity,
+    layerColor,
+    layerOpacity,
     material,
-    module,
-    part.geometry,
-    semanticGeometry,
+    schemeHighlighted,
+    seismoscopeDragonSpotlight,
+    spotlightCutaway,
+    spotlightHighlighted,
+    transientStateKey,
   ]);
 
   useLayoutEffect(() => {
@@ -826,7 +865,14 @@ function StoryCameraRig({ pose }: { pose?: StoryStageState["camera"] }) {
   return null;
 }
 
-function SceneComplexityProbe({ count }: { count: { current: number } }) {
+function SceneComplexityProbe({
+  count,
+  memory,
+}: {
+  count: { current: number };
+  memory: { current: { geometries: number; textures: number } };
+}) {
+  const gl = useThree((state) => state.gl);
   const scene = useThree((state) => state.scene);
 
   useFrame(() => {
@@ -848,6 +894,10 @@ function SceneComplexityProbe({ count }: { count: { current: number } }) {
         (mesh.isInstancedMesh ? (mesh.count ?? 0) : 1);
     });
     count.current = triangles;
+    memory.current = {
+      geometries: gl.info.memory.geometries,
+      textures: gl.info.memory.textures,
+    };
   });
 
   return null;
@@ -1255,6 +1305,7 @@ export function MachineStoryStage({
         ? {
             opacity: state.activeStep.cutaway.opacity,
             partIds: new Set(state.activeStep.cutaway.partIds),
+            variant: "story-cutaway",
           }
         : undefined,
     [state.activeStep.cutaway],
@@ -1407,6 +1458,7 @@ export function MachineStoryStage({
         opacity: showingFromScheme
           ? 1 - state.segmentProgress
           : state.segmentProgress,
+        variant: "story-active",
       }
     : cutawayAppearance;
   const transitionLayer = schemeTransition
@@ -1415,6 +1467,7 @@ export function MachineStoryStage({
           opacity: showingFromScheme
             ? state.segmentProgress
             : 1 - state.segmentProgress,
+          variant: "story-transition",
         },
         spec: showingFromScheme ? toSpec : fromSpec,
       }
@@ -1756,6 +1809,7 @@ export default function MachineViewer({
   const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
   const sceneTriangles = useRef(0);
+  const sceneMemory = useRef({ geometries: 0, textures: 0 });
   const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
   const observedCompletionEffect = useRef(0);
   const displayState = useRef<Record<string, number> | null>(null);
@@ -1787,6 +1841,7 @@ export default function MachineViewer({
           color: oldSchemePresentation.color,
           opacity: oldSchemePresentation.opacity,
           partIds: new Set(schemeTransition.oldPartIds),
+          variant: "scheme-old",
         }
       : undefined;
   const newSchemeAppearance =
@@ -1795,6 +1850,7 @@ export default function MachineViewer({
           color: newSchemePresentation.color,
           opacity: newSchemePresentation.opacity,
           partIds: new Set(schemeTransition.newPartIds),
+          variant: "scheme-new",
         }
       : undefined;
 
@@ -1935,6 +1991,7 @@ export default function MachineViewer({
     if (!hooksEnabled) return;
     window.__mech = {
       graph,
+      memory: () => ({ ...sceneMemory.current }),
       module: activeModule,
       spec: activeSpec,
       triangles: () => sceneTriangles.current,
@@ -2261,7 +2318,10 @@ export default function MachineViewer({
             >
               <SceneEnvironment />
               {hooksEnabled ? (
-                <SceneComplexityProbe count={sceneTriangles} />
+                <SceneComplexityProbe
+                  count={sceneTriangles}
+                  memory={sceneMemory}
+                />
               ) : null}
               <MachineScene
                 activeSpec={activeSpec}

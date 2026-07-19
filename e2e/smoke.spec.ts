@@ -573,6 +573,34 @@ test("U6: spotlight completes after its ordered highlight sequence", async ({
   );
 });
 
+test("F0-T2: twenty spotlight toggles keep renderer memory flat", async ({
+  page,
+}) => {
+  await page.goto("/#/m/demo");
+  await waitForMechanica(page);
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.memory().geometries ?? 0))
+    .toBeGreaterThan(0);
+  await page.waitForTimeout(500);
+  const before = await page.evaluate(() => window.__mech?.memory());
+
+  await page.evaluate(async () => {
+    const spotlight = document.querySelector<HTMLButtonElement>(
+      '[data-testid="spotlight-play"]',
+    );
+    if (!spotlight) throw new Error("Spotlight control is unavailable");
+    for (let toggle = 0; toggle < 20; toggle += 1) {
+      spotlight.click();
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => resolve()),
+      );
+    }
+  });
+  await page.waitForTimeout(500);
+
+  expect(await page.evaluate(() => window.__mech?.memory())).toEqual(before);
+});
+
 test("U6: all ten machine spotlights complete within ten seconds", async ({
   page,
 }) => {

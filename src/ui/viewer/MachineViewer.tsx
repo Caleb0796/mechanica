@@ -1,10 +1,4 @@
-import {
-  Bounds,
-  ContactShadows,
-  Html,
-  OrbitControls,
-  useBounds,
-} from "@react-three/drei";
+import { ContactShadows, Html, OrbitControls } from "@react-three/drei";
 import {
   Canvas,
   type ThreeEvent,
@@ -19,17 +13,22 @@ import {
   useMemo,
   useRef,
   useState,
+  type MutableRefObject,
+  type RefObject,
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ACESFilmicToneMapping,
   Box3,
   type BufferGeometry,
+  type Camera,
   type Group,
   type InstancedMesh,
   Matrix4,
   MeshStandardMaterial,
+  PerspectiveCamera,
   Quaternion,
+  Sphere,
   Vector3,
 } from "three";
 
@@ -80,9 +79,7 @@ import { useUiStore } from "../store";
 import type { StoryStageState } from "../story/types";
 import DriveHandle from "./DriveHandle";
 import ExplodedControl from "./ExplodedControl";
-import SceneEnvironment, {
-  prepareSceneEnvironment,
-} from "./SceneEnvironment";
+import SceneEnvironment, { prepareSceneEnvironment } from "./SceneEnvironment";
 import {
   type AssemblyController,
   isPartVisibleInAssemblyStep,
@@ -95,10 +92,53 @@ import {
   visualMaterialFor,
 } from "./visualRecovery";
 
+type CameraPhase = "waiting-geometry" | "intro" | "idle" | "spotlight";
+
+interface OrbitControlsHandle {
+  enabled: boolean;
+  target: Vector3;
+  update: () => void;
+}
+
+interface CameraDiagnostics {
+  camera: Camera;
+  controlsEnabled: boolean;
+  focusFallback: boolean;
+  geometryReadyAt: number;
+  homeDistance: number;
+  introCompletedAt: number | null;
+  introStartedAt: number | null;
+  introStartDistance: number;
+  phase: CameraPhase;
+  refitCount: number;
+  sphere: Sphere;
+  target: Vector3;
+  viewportHeight: number;
+  viewportWidth: number;
+}
+
+interface CameraDiagnosticSnapshot {
+  cameraDistance: number;
+  controlsEnabled: boolean;
+  focusFallback: boolean;
+  geometryReadyAt: number;
+  homeDistance: number;
+  introCompletedAt: number | null;
+  introStartedAt: number | null;
+  introStartDistance: number;
+  phase: CameraPhase;
+  position: [number, number, number];
+  refitCount: number;
+  sphereRadius: number;
+  target: [number, number, number];
+}
+
 declare global {
   interface Window {
     __mech?: {
       graph: IKinematicGraph;
+      cameraState: () => CameraDiagnosticSnapshot | null;
+      frameFill: () => number;
       module: MachineModule;
       memory: () => { geometries: number; textures: number };
       spec: MachineModule["spec"];
@@ -210,11 +250,15 @@ const TYPECASE_PROCESS_STEPS = [
 
 function SpotlightRig({
   active,
+  controls,
+  diagnostics,
   machineSlug,
   runId,
   targetPartId,
 }: {
   active: boolean;
+  controls: RefObject<OrbitControlsHandle | null>;
+  diagnostics?: MutableRefObject<CameraDiagnostics | null>;
   machineSlug: MachineModule["data"]["slug"];
   runId: number;
   targetPartId?: string;
@@ -226,9 +270,21 @@ function SpotlightRig({
   const endPosition = useRef(new Vector3());
   const startQuaternion = useRef(new Quaternion());
   const endQuaternion = useRef(new Quaternion());
+  const startTarget = useRef(new Vector3());
+  const endTarget = useRef(new Vector3());
+  const hasTarget = useRef(false);
 
-  useEffect(() => {
-    if (!active) return;
+  useLayoutEffect(() => {
+    if (!active) {
+      if (hasTarget.current && controls.current) {
+        controls.current.target.copy(endTarget.current);
+        controls.current.update();
+      }
+      if (hasTarget.current && diagnostics?.current) {
+        diagnostics.current.target.copy(endTarget.current);
+      }
+      return;
+    }
     const targetObject = targetPartId
       ? scene.getObjectByName(targetPartId)
       : undefined;
@@ -242,6 +298,10 @@ function SpotlightRig({
     startedAt.current = performance.now();
     startPosition.current.copy(camera.position);
     startQuaternion.current.copy(camera.quaternion);
+    startTarget.current.copy(controls.current?.target ?? target);
+    endTarget.current.copy(target);
+    hasTarget.current = true;
+    if (diagnostics?.current) diagnostics.current.phase = "spotlight";
     if (machineSlug === "chainpump") {
       endPosition.current
         .copy(target)
@@ -261,7 +321,16 @@ function SpotlightRig({
     endQuaternion.current.setFromRotationMatrix(
       new Matrix4().lookAt(endPosition.current, target, camera.up),
     );
-  }, [active, camera, machineSlug, runId, scene, targetPartId]);
+  }, [
+    active,
+    camera,
+    controls,
+    diagnostics,
+    machineSlug,
+    runId,
+    scene,
+    targetPartId,
+  ]);
 
   useFrame(() => {
     if (!active || !targetPartId) return;
@@ -280,71 +349,348 @@ function SpotlightRig({
       endQuaternion.current,
       eased,
     );
+    if (controls.current) {
+      controls.current.target.lerpVectors(
+        startTarget.current,
+        endTarget.current,
+        eased,
+      );
+      diagnostics?.current?.target.copy(controls.current.target);
+      controls.current.update();
+    }
+    camera.updateMatrixWorld();
   });
 
   return null;
 }
 
-function BoundsRefit({
-  active,
-  explode,
+function boxVolume(bounds: Box3): number {
+  const size = bounds.getSize(new Vector3());
+  return size.x * size.y * size.z;
+}
+
+function fitDistanceForBounds(
+  bounds: Box3,
+  direction: Vector3,
+  target: Vector3,
+  fov: number,
+  aspect: number,
+): number {
+  const cameraPosition = target.clone().add(direction);
+  const quaternion = new Quaternion().setFromRotationMatrix(
+    new Matrix4().lookAt(cameraPosition, target, new Vector3(0, 1, 0)),
+  );
+  const inverseQuaternion = quaternion.invert();
+  const tanVertical = Math.tan((fov * Math.PI) / 360);
+  const tanHorizontal = tanVertical * aspect;
+  let distance = 0;
+
+  for (const x of [bounds.min.x, bounds.max.x]) {
+    for (const y of [bounds.min.y, bounds.max.y]) {
+      for (const z of [bounds.min.z, bounds.max.z]) {
+        const corner = new Vector3(x, y, z)
+          .sub(target)
+          .applyQuaternion(inverseQuaternion);
+        distance = Math.max(
+          distance,
+          corner.z + Math.abs(corner.x) / tanHorizontal,
+          corner.z + Math.abs(corner.y) / tanVertical,
+        );
+      }
+    }
+  }
+
+  return distance;
+}
+
+function projectedFrameFill(diagnostics: CameraDiagnostics | null): number {
+  if (!diagnostics || !(diagnostics.camera instanceof PerspectiveCamera)) {
+    return 0;
+  }
+  const distance = diagnostics.camera.position.distanceTo(
+    diagnostics.sphere.center,
+  );
+  if (distance <= 0 || diagnostics.viewportHeight <= 0) return 0;
+  const tanVertical = Math.tan((diagnostics.camera.fov * Math.PI) / 360);
+  const aspect = diagnostics.viewportWidth / diagnostics.viewportHeight;
+  const tanShortAxis =
+    diagnostics.viewportWidth <= diagnostics.viewportHeight
+      ? tanVertical * aspect
+      : tanVertical;
+  return diagnostics.sphere.radius / (distance * tanShortAxis);
+}
+
+function cameraSnapshot(
+  diagnostics: CameraDiagnostics | null,
+): CameraDiagnosticSnapshot | null {
+  if (!diagnostics) return null;
+  return {
+    cameraDistance: diagnostics.camera.position.distanceTo(diagnostics.target),
+    controlsEnabled: diagnostics.controlsEnabled,
+    focusFallback: diagnostics.focusFallback,
+    geometryReadyAt: diagnostics.geometryReadyAt,
+    homeDistance: diagnostics.homeDistance,
+    introCompletedAt: diagnostics.introCompletedAt,
+    introStartedAt: diagnostics.introStartedAt,
+    introStartDistance: diagnostics.introStartDistance,
+    phase: diagnostics.phase,
+    position: diagnostics.camera.position.toArray(),
+    refitCount: diagnostics.refitCount,
+    sphereRadius: diagnostics.sphere.radius,
+    target: diagnostics.target.toArray(),
+  };
+}
+
+interface CameraTransition {
+  endPosition: Vector3;
+  endQuaternion: Quaternion;
+  startPosition: Vector3;
+  startQuaternion: Quaternion;
+  startedAt: number;
+}
+
+function CameraDirector({
+  blocked,
+  blockedFitKeyToConsume,
+  controls,
+  diagnostics,
+  enabled,
+  fitKey,
+  machineRoot,
+  onIntroActiveChange,
+  onTargetChange,
+  playIntro,
   profile,
   spec,
 }: {
-  active: boolean;
-  explode: number;
+  blocked: boolean;
+  blockedFitKeyToConsume?: string;
+  controls: RefObject<OrbitControlsHandle | null>;
+  diagnostics?: MutableRefObject<CameraDiagnostics | null>;
+  enabled: boolean;
+  fitKey: string;
+  machineRoot: RefObject<Group | null>;
+  onIntroActiveChange: (active: boolean) => void;
+  onTargetChange?: (target: [number, number, number]) => void;
+  playIntro: boolean;
   profile: ViewerProfile;
   spec: MachineSpec;
 }) {
-  const bounds = useBounds();
-  const scene = useThree((state) => state.scene);
+  const camera = useThree((state) => state.camera);
+  const viewport = useThree((state) => state.size);
+  const fittedKey = useRef<string | null>(null);
+  const hasPlayedIntro = useRef(false);
+  const transition = useRef<CameraTransition | null>(null);
 
-  useLayoutEffect(() => {
-    if (active) return;
-    let cancelled = false;
-    let frame = 0;
-    const refit = () => {
-      if (cancelled) return;
-      frame += 1;
-      if (frame < 3) {
-        requestAnimationFrame(refit);
+  useFrame(() => {
+    const activeTransition = transition.current;
+    if (activeTransition) {
+      if (blocked) {
+        transition.current = null;
+        if (controls.current) controls.current.enabled = false;
+        onIntroActiveChange(false);
+        if (diagnostics?.current) {
+          diagnostics.current.controlsEnabled = false;
+          diagnostics.current.introCompletedAt = performance.now();
+          diagnostics.current.phase = "spotlight";
+        }
         return;
       }
-
-      let focusBounds: Box3 | undefined;
-      if (profile.focusPartIds) {
-        focusBounds = new Box3();
-        for (const partId of profile.focusPartIds) {
-          const object = scene.getObjectByName(partId);
-          if (object) focusBounds.expandByObject(object, true);
+      const progress = Math.min(
+        1,
+        (performance.now() - activeTransition.startedAt) / 1200,
+      );
+      const eased = 1 - (1 - progress) ** 3;
+      camera.position.lerpVectors(
+        activeTransition.startPosition,
+        activeTransition.endPosition,
+        eased,
+      );
+      camera.quaternion.slerpQuaternions(
+        activeTransition.startQuaternion,
+        activeTransition.endQuaternion,
+        eased,
+      );
+      camera.updateMatrixWorld();
+      if (progress === 1) {
+        transition.current = null;
+        if (controls.current) {
+          controls.current.enabled = true;
+          controls.current.update();
         }
-        if (focusBounds.isEmpty()) focusBounds = undefined;
+        onIntroActiveChange(false);
+        if (diagnostics?.current) {
+          diagnostics.current.controlsEnabled = true;
+          diagnostics.current.introCompletedAt = performance.now();
+          diagnostics.current.phase = "idle";
+        }
       }
+      return;
+    }
 
-      bounds.refresh(focusBounds);
-      const { center, distance, size } = bounds.getSize();
-      const target = center.clone();
-      if (profile.targetOffset) {
-        target.add(
-          new Vector3(...profile.targetOffset).multiply(
-            new Vector3(size.x, size.y, size.z),
-          ),
-        );
+    if (!enabled) return;
+    if (blocked) {
+      if (fittedKey.current && fitKey === blockedFitKeyToConsume) {
+        fittedKey.current = fitKey;
       }
-      const direction = new Vector3(...profile.direction).normalize();
-      const position = target.clone().addScaledVector(direction, distance);
-      bounds
-        .to({
-          position: [position.x, position.y, position.z],
-          target: [target.x, target.y, target.z],
-        })
-        .clip();
-    };
-    requestAnimationFrame(refit);
-    return () => {
-      cancelled = true;
-    };
-  }, [active, bounds, explode, profile, scene, spec]);
+      return;
+    }
+    if (fittedKey.current === fitKey) return;
+    const root = machineRoot.current;
+    if (!root) return;
+
+    let meshes = 0;
+    let geometryReady = true;
+    root.traverse((object) => {
+      const mesh = object as typeof object & {
+        geometry?: BufferGeometry;
+        isMesh?: boolean;
+      };
+      if (!mesh.isMesh) return;
+      meshes += 1;
+      if (!mesh.geometry?.getAttribute("position")?.count) {
+        geometryReady = false;
+      }
+    });
+    if (
+      meshes === 0 ||
+      !geometryReady ||
+      spec.parts.some((part) => !root.getObjectByName(part.id))
+    ) {
+      return;
+    }
+
+    root.updateWorldMatrix(true, true);
+    const wholeBounds = new Box3().setFromObject(root, true);
+    if (wholeBounds.isEmpty()) return;
+
+    let focusBounds: Box3 | null = null;
+    let focusFallback = false;
+    if (profile.focusPartIds?.length) {
+      const candidate = new Box3();
+      const allFocusPartsFound = profile.focusPartIds.every((partId) => {
+        const object = root.getObjectByName(partId);
+        if (object) candidate.expandByObject(object, true);
+        return Boolean(object);
+      });
+      const wholeVolume = boxVolume(wholeBounds);
+      const candidateVolume = boxVolume(candidate);
+      if (
+        allFocusPartsFound &&
+        !candidate.isEmpty() &&
+        wholeVolume > 0 &&
+        candidateVolume / wholeVolume >= 0.05
+      ) {
+        focusBounds = candidate;
+      } else {
+        focusFallback = true;
+      }
+    }
+
+    const fitBounds = focusBounds ?? wholeBounds;
+    const fitSize = fitBounds.getSize(new Vector3());
+    const target = profile.homePose
+      ? new Vector3(...profile.homePose.target)
+      : fitBounds.getCenter(new Vector3());
+    if (!profile.homePose && profile.targetOffset) {
+      target.add(
+        new Vector3(...profile.targetOffset).multiply(
+          new Vector3(fitSize.x, fitSize.y, fitSize.z),
+        ),
+      );
+    }
+    const authoredPosition = profile.homePose
+      ? new Vector3(...profile.homePose.position)
+      : target.clone().add(new Vector3(...profile.direction));
+    const direction = authoredPosition.sub(target).normalize();
+    const fov = profile.homePose?.fov ?? 36;
+    const fitDistance = fitDistanceForBounds(
+      fitBounds,
+      direction,
+      target,
+      fov,
+      Math.max(viewport.width / viewport.height, 0.001),
+    );
+    const wholeSphere = wholeBounds.getBoundingSphere(new Sphere());
+    const authoredDistance = profile.homePose
+      ? new Vector3(...profile.homePose.position).distanceTo(target)
+      : fitDistance * Math.max(profile.margin, 1);
+    const homeDistance = Math.max(
+      fitDistance,
+      wholeSphere.radius * (profile.minDistanceFactor ?? 1.6),
+      authoredDistance,
+    );
+    const endPosition = target.clone().addScaledVector(direction, homeDistance);
+    const endQuaternion = new Quaternion().setFromRotationMatrix(
+      new Matrix4().lookAt(endPosition, target, camera.up),
+    );
+    const now = performance.now();
+    const shouldPlayIntro = playIntro && !hasPlayedIntro.current;
+    const startPosition = target.clone().add(
+      endPosition
+        .clone()
+        .sub(target)
+        .multiplyScalar(1.35)
+        .applyAxisAngle(new Vector3(0, 1, 0), 0.08),
+    );
+    const startQuaternion = new Quaternion().setFromRotationMatrix(
+      new Matrix4().lookAt(startPosition, target, camera.up),
+    );
+
+    if (camera instanceof PerspectiveCamera) {
+      camera.fov = fov;
+      camera.near = Math.max(wholeSphere.radius * 0.01, 0.0001);
+      camera.far = Math.max(
+        homeDistance + wholeSphere.radius * 4,
+        camera.near + 1,
+      );
+      camera.updateProjectionMatrix();
+    }
+    controls.current?.target.copy(target);
+    controls.current?.update();
+    onTargetChange?.(target.toArray());
+    fittedKey.current = fitKey;
+    hasPlayedIntro.current ||= shouldPlayIntro;
+
+    if (diagnostics) {
+      diagnostics.current = {
+        camera,
+        controlsEnabled: !shouldPlayIntro,
+        focusFallback,
+        geometryReadyAt: now,
+        homeDistance,
+        introCompletedAt: shouldPlayIntro ? null : now,
+        introStartedAt: shouldPlayIntro ? now : null,
+        introStartDistance: startPosition.distanceTo(target),
+        phase: shouldPlayIntro ? "intro" : "idle",
+        refitCount: (diagnostics.current?.refitCount ?? 0) + 1,
+        sphere: wholeSphere,
+        target: target.clone(),
+        viewportHeight: viewport.height,
+        viewportWidth: viewport.width,
+      };
+    }
+
+    if (shouldPlayIntro) {
+      camera.position.copy(startPosition);
+      camera.quaternion.copy(startQuaternion);
+      camera.updateMatrixWorld();
+      if (controls.current) controls.current.enabled = false;
+      onIntroActiveChange(true);
+      transition.current = {
+        endPosition,
+        endQuaternion,
+        startPosition,
+        startQuaternion,
+        startedAt: now,
+      };
+    } else {
+      camera.position.copy(endPosition);
+      camera.quaternion.copy(endQuaternion);
+      camera.updateMatrixWorld();
+      onIntroActiveChange(false);
+    }
+  });
 
   return null;
 }
@@ -862,6 +1208,8 @@ interface MachineSceneProps {
   appearance?: PartAppearance;
   assembly?: AssemblyController;
   assemblyProgress: number;
+  blockedFitKeyToConsume?: string;
+  cameraDiagnostics?: MutableRefObject<CameraDiagnostics | null>;
   compareContext?: CompareSceneContext;
   displayState: { current: Record<string, number> | null };
   explode: number;
@@ -1024,6 +1372,8 @@ function MachineScene({
   appearance,
   assembly,
   assemblyProgress,
+  blockedFitKeyToConsume,
+  cameraDiagnostics,
   compareContext,
   displayState,
   explode,
@@ -1042,15 +1392,28 @@ function MachineScene({
 }: MachineSceneProps) {
   const dragging = useRef(false);
   const escapementElapsed = useRef(0);
-  const orbitControls = useRef<{ target: Vector3 } | null>(null);
+  const machineRoot = useRef<Group>(null);
+  const orbitControls = useRef<OrbitControlsHandle>(null);
+  const [cameraIntroActive, setCameraIntroActive] = useState(false);
+  const [spotlightHandoffActive, setSpotlightHandoffActive] = useState(false);
+  const spotlightWasActive = useRef(false);
   const partIds = useMemo(
     () => new Set(activeSpec.parts.map((part) => part.id)),
     [activeSpec],
   );
-  const viewerProfile = VIEWER_PROFILES[module.data.slug];
-  const viewMargin =
-    viewerProfile.margin +
-    (viewerProfile.explodedMargin - viewerProfile.margin) * explode;
+  const viewerProfile =
+    module.spec.slug === "demo"
+      ? {
+          ...VIEWER_PROFILES[module.data.slug],
+          focusPartIds: undefined,
+          homePose: undefined,
+        }
+      : VIEWER_PROFILES[module.data.slug];
+  const controlsEnabled =
+    !cameraIntroActive &&
+    !spotlightActive &&
+    !spotlightHandoffActive &&
+    !storyCamera;
   const rootParts = useMemo(
     () =>
       activeSpec.parts.filter(
@@ -1099,17 +1462,42 @@ function MachineScene({
     frameState.current = displayState.current ?? graph.state();
   }, [displayState, graph]);
 
+  useLayoutEffect(() => {
+    if (cameraDiagnostics?.current) {
+      cameraDiagnostics.current.controlsEnabled = Boolean(controlsEnabled);
+    }
+  }, [cameraDiagnostics, controlsEnabled]);
+
+  useLayoutEffect(() => {
+    if (spotlightActive) {
+      spotlightWasActive.current = true;
+      return;
+    }
+    if (!spotlightWasActive.current) return;
+    spotlightWasActive.current = false;
+    setSpotlightHandoffActive(true);
+    if (orbitControls.current) orbitControls.current.enabled = false;
+    if (cameraDiagnostics?.current) {
+      cameraDiagnostics.current.controlsEnabled = false;
+      cameraDiagnostics.current.phase = "spotlight";
+    }
+    const frame = requestAnimationFrame(() => {
+      setSpotlightHandoffActive(false);
+      if (orbitControls.current) orbitControls.current.enabled = true;
+      if (cameraDiagnostics?.current) {
+        cameraDiagnostics.current.controlsEnabled = true;
+        cameraDiagnostics.current.phase = "idle";
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [cameraDiagnostics, spotlightActive]);
+
   useFrame((_, delta) => {
-    if (
-      !paused &&
-      !dragging.current &&
-      module.spec.slug !== "seismoscope"
-    ) {
+    if (!paused && !dragging.current && module.spec.slug !== "seismoscope") {
       if (activeSpec.escapement) {
         escapementElapsed.current += delta;
         if (
-          escapementElapsed.current >=
-          activeSpec.escapement.fillSecondsPerScoop
+          escapementElapsed.current >= activeSpec.escapement.fillSecondsPerScoop
         ) {
           escapementElapsed.current = 0;
           onDrivePart(activeSpec.primaryDrive, activeSpec.escapement.stepRad);
@@ -1142,7 +1530,7 @@ function MachineScene({
       <OrbitControls
         autoRotate={false}
         enableDamping
-        enabled={!spotlightActive && !storyCamera}
+        enabled={controlsEnabled}
         makeDefault
         maxAzimuthAngle={viewerProfile.maxAzimuthAngle}
         maxPolarAngle={viewerProfile.maxPolarAngle}
@@ -1162,24 +1550,14 @@ function MachineScene({
         }}
         target={compareContext?.cameraTarget}
       />
-      <Bounds
-        clip
-        margin={viewMargin}
-        maxDuration={compareContext ? 0.2 : 0.45}
-      >
-        <BoundsRefit
-          active={spotlightActive || Boolean(storyCamera)}
-          explode={explode}
-          profile={viewerProfile}
-          spec={activeSpec}
+      {transitionLayer ? (
+        <GhostPartLayer
+          appearance={transitionLayer.appearance}
+          module={module}
+          spec={transitionLayer.spec}
         />
-        {transitionLayer ? (
-          <GhostPartLayer
-            appearance={transitionLayer.appearance}
-            module={module}
-            spec={transitionLayer.spec}
-          />
-        ) : null}
+      ) : null}
+      <group ref={machineRoot}>
         {rootParts.map((part) => (
           <PartNode
             appearance={appearance}
@@ -1204,7 +1582,21 @@ function MachineScene({
             spotlightPartIds={highlightedPartIds}
           />
         ))}
-      </Bounds>
+      </group>
+      <CameraDirector
+        blocked={spotlightActive}
+        blockedFitKeyToConsume={blockedFitKeyToConsume}
+        controls={orbitControls}
+        diagnostics={cameraDiagnostics}
+        enabled={!storyCamera}
+        fitKey={`${module.data.slug}:${schemeId ?? "default"}`}
+        machineRoot={machineRoot}
+        onIntroActiveChange={setCameraIntroActive}
+        onTargetChange={compareContext?.onCameraTargetChange}
+        playIntro={!compareContext && module.spec.slug !== "demo"}
+        profile={viewerProfile}
+        spec={activeSpec}
+      />
       {!compareContext && !storyCamera ? (
         <ContactShadows
           blur={2.5}
@@ -1218,6 +1610,8 @@ function MachineScene({
       {!storyCamera ? (
         <SpotlightRig
           active={spotlightActive}
+          controls={orbitControls}
+          diagnostics={cameraDiagnostics}
           machineSlug={module.data.slug}
           runId={spotlightRunId}
           targetPartId={spotlightPartIds.at(-1)}
@@ -1800,6 +2194,14 @@ export default function MachineViewer({
     module.data.slug === "astroclock" ||
     module.data.slug === "chariot" ||
     module.data.slug === "seismoscope";
+  const viewerProfile =
+    module.spec.slug === "demo"
+      ? {
+          ...VIEWER_PROFILES[module.data.slug],
+          focusPartIds: undefined,
+          homePose: undefined,
+        }
+      : VIEWER_PROFILES[module.data.slug];
   const graph = useMemo(() => new KinematicGraph(module.spec), [module.spec]);
   const [activeSchemeId, setActiveSchemeId] = useState(schemeId);
   const activeSpec = useMemo(
@@ -1833,6 +2235,9 @@ export default function MachineViewer({
   const [schemeTransitionNow, setSchemeTransitionNow] = useState(0);
   const [caption, setCaption] = useState("");
   const [spotlightActive, setSpotlightActive] = useState(false);
+  const [spotlightAutoFitKey, setSpotlightAutoFitKey] = useState<string | null>(
+    null,
+  );
   const [spotlightDone, setSpotlightDone] = useState(false);
   const [spotlightPartIds, setSpotlightPartIds] = useState<string[]>([]);
   const [spotlightRunId, setSpotlightRunId] = useState(0);
@@ -1846,6 +2251,7 @@ export default function MachineViewer({
   const animationFrame = useRef<number | null>(null);
   const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
+  const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
   const sceneTriangles = useRef(0);
   const sceneMemory = useRef({ geometries: 0, textures: 0 });
   const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
@@ -1902,7 +2308,9 @@ export default function MachineViewer({
       processFrame.current = null;
     }
     displayState.current = null;
+    cameraDiagnostics.current = null;
     setSpotlightActive(false);
+    setSpotlightAutoFitKey(null);
     setSpotlightDone(false);
     setSpotlightPartIds([]);
     setSpotlightTranscript([]);
@@ -2028,6 +2436,8 @@ export default function MachineViewer({
   useLayoutEffect(() => {
     if (!hooksEnabled) return;
     window.__mech = {
+      cameraState: () => cameraSnapshot(cameraDiagnostics.current),
+      frameFill: () => projectedFrameFill(cameraDiagnostics.current),
       graph,
       memory: () => ({ ...sceneMemory.current }),
       module: activeModule,
@@ -2091,6 +2501,7 @@ export default function MachineViewer({
       if (Number.isFinite(value)) setOdometerReadout(value.toFixed(2));
     }
     if (type === "scheme:switch" && module.schemes?.[part]) {
+      setSpotlightAutoFitKey(`${module.data.slug}:${part}`);
       setActiveSchemeId(part);
     }
     if (type === "spotlight:done") setSpotlightDone(true);
@@ -2110,6 +2521,7 @@ export default function MachineViewer({
       return;
     }
 
+    setSpotlightAutoFitKey(null);
     let spotlightSpec = activeSpec;
     if (
       module.spec.slug === "seismoscope" &&
@@ -2118,6 +2530,7 @@ export default function MachineViewer({
     ) {
       graph.setScheme(module.schemes.fengrui);
       setActiveSchemeId("fengrui");
+      setSpotlightAutoFitKey("seismoscope:fengrui");
       spotlightSpec = applySchemePatch(module.spec, module.schemes.fengrui);
     }
 
@@ -2347,7 +2760,12 @@ export default function MachineViewer({
             />
           ) : (
             <Canvas
-              camera={{ fov: 36, position: [0.9, 1.1, 1.6] }}
+              camera={{
+                fov: viewerProfile.homePose?.fov ?? 36,
+                position: viewerProfile.homePose
+                  ? [...viewerProfile.homePose.position]
+                  : [0.9, 1.1, 1.6],
+              }}
               dpr={[1, 2]}
               gl={{
                 toneMapping: ACESFilmicToneMapping,
@@ -2368,6 +2786,8 @@ export default function MachineViewer({
                 appearance={newSchemeAppearance}
                 assembly={assembly}
                 assemblyProgress={assemblyProgress}
+                blockedFitKeyToConsume={spotlightAutoFitKey ?? undefined}
+                cameraDiagnostics={cameraDiagnostics}
                 displayState={displayState}
                 explode={explode}
                 graph={graph}
@@ -2535,6 +2955,7 @@ export default function MachineViewer({
           module={module}
           onChange={(nextSchemeId) => {
             assembly.exitAssembly();
+            setSpotlightAutoFitKey(null);
             setActiveSchemeId(nextSchemeId);
           }}
           onCompareChange={(active) => {

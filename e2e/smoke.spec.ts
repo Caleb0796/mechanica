@@ -33,6 +33,12 @@ async function waitForMechanica(page: Page, slug?: string) {
     .toBe(true);
 }
 
+async function waitForCamera(page: Page) {
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.cameraState()?.phase))
+    .toBe("idle");
+}
+
 async function sampleFrameRate(page: Page, seconds: number) {
   return page.evaluate(
     (sampleSeconds) =>
@@ -625,6 +631,155 @@ test("F0-T3: procedural textures stay bounded on instanced and openwork paths", 
   expect(
     await page.evaluate(() => window.__mech?.memory().textures ?? 0),
   ).toBeLessThanOrEqual(40);
+});
+
+test("F0-T4: all authored home cameras pass the framing gate", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  for (const slug of machineSlugs) {
+    await page.goto(`/#/m/${slug}`);
+    await waitForMechanica(page, slug);
+    await waitForCamera(page);
+    const result = await page.evaluate(() => ({
+      fill: window.__mech?.frameFill() ?? 0,
+      state: window.__mech?.cameraState() ?? null,
+    }));
+
+    expect(result.state, `${slug} camera diagnostics`).not.toBeNull();
+    expect(result.fill, `${slug} frame fill`).toBeGreaterThanOrEqual(0.45);
+    expect(result.fill, `${slug} frame fill`).toBeLessThanOrEqual(0.8);
+    expect(
+      result.state?.geometryReadyAt ?? Number.POSITIVE_INFINITY,
+      `${slug} geometry readiness`,
+    ).toBeLessThanOrEqual(
+      result.state?.introStartedAt ?? Number.NEGATIVE_INFINITY,
+    );
+    expect(result.state?.introCompletedAt).toBeGreaterThan(
+      result.state?.introStartedAt ?? Number.POSITIVE_INFINITY,
+    );
+    expect(result.state?.introStartDistance).toBeCloseTo(
+      (result.state?.homeDistance ?? 0) * 1.35,
+      4,
+    );
+    expect(result.state?.controlsEnabled).toBe(true);
+  }
+});
+
+test("F0-T4: chariot starts outside its bounds and explode never refits", async ({
+  page,
+}) => {
+  await page.goto("/#/m/chariot");
+  await waitForMechanica(page, "chariot");
+  await waitForCamera(page);
+  const before = await page.evaluate(() => window.__mech?.cameraState());
+  expect(before?.introStartDistance).toBeGreaterThan(
+    before?.sphereRadius ?? Number.POSITIVE_INFINITY,
+  );
+
+  for (const value of ["0.25", "0.65", "1"]) {
+    await page.getByTestId("explode-slider").fill(value);
+  }
+  await page.waitForTimeout(100);
+  const after = await page.evaluate(() => window.__mech?.cameraState());
+
+  expect(after?.refitCount).toBe(before?.refitCount);
+  expect(after?.position).toEqual(before?.position);
+  expect(after?.target).toEqual(before?.target);
+});
+
+test("F0-T4: spotlight hands its target back before the first orbit", async ({
+  page,
+}) => {
+  await page.goto("/#/m/gimbal");
+  await waitForMechanica(page, "gimbal");
+  await waitForCamera(page);
+  await page.getByTestId("spotlight-play").click();
+  await expect(page.locator(".spotlight-done")).toBeVisible({
+    timeout: 10_000,
+  });
+  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+    "data-spotlight-active",
+    "false",
+  );
+  await waitForCamera(page);
+  const before = await page.evaluate(() => window.__mech?.cameraState());
+  const canvas = page.locator(".viewer-canvas canvas").first();
+  const box = await canvas.boundingBox();
+  if (!box) throw new Error("Viewer canvas is unavailable");
+  const startX = box.x + box.width * 0.82;
+  const startY = box.y + box.height * 0.28;
+  await page.mouse.move(startX, startY);
+  await page.mouse.down();
+  await page.mouse.move(startX + 2, startY + 2);
+  await page.mouse.up();
+  await page.waitForTimeout(100);
+  const after = await page.evaluate(() => window.__mech?.cameraState());
+  const distance = before?.cameraDistance ?? 0;
+  const targetDrift = Math.hypot(
+    ...((after?.target ?? [0, 0, 0]).map(
+      (value, axis) => value - (before?.target[axis] ?? 0),
+    ) as [number, number, number]),
+  );
+  const distanceDrift = Math.abs(
+    (after?.cameraDistance ?? 0) - (before?.cameraDistance ?? 0),
+  );
+  const cameraDisplacement = Math.hypot(
+    ...((after?.position ?? [0, 0, 0]).map(
+      (value, axis) => value - (before?.position[axis] ?? 0),
+    ) as [number, number, number]),
+  );
+
+  expect(targetDrift).toBeLessThan((before?.sphereRadius ?? 1) * 1e-5);
+  expect(distanceDrift).toBeLessThan(distance * 0.001);
+  expect(cameraDisplacement).toBeLessThan(distance * 0.02);
+
+  await page.goto("/#/m/seismoscope");
+  await waitForMechanica(page, "seismoscope");
+  await waitForCamera(page);
+  const seismoscopeBefore = await page.evaluate(() =>
+    window.__mech?.cameraState(),
+  );
+  await page.getByTestId("spotlight-play").click();
+  await expect(page.locator(".spotlight-done")).toBeVisible({
+    timeout: 10_000,
+  });
+  await waitForCamera(page);
+  const seismoscopeAfter = await page.evaluate(() =>
+    window.__mech?.cameraState(),
+  );
+  expect(seismoscopeAfter?.refitCount).toBe(seismoscopeBefore?.refitCount);
+
+  await page.goto("/#/m/seismoscope");
+  await waitForMechanica(page, "seismoscope");
+  await waitForCamera(page);
+  const manualBefore = await page.evaluate(() => window.__mech?.cameraState());
+  await page.getByTestId("spotlight-play").click();
+  const schemeSelect = page.getByRole("combobox", {
+    name: "Reconstruction",
+  });
+  await expect(schemeSelect).toHaveValue("fengrui");
+  await schemeSelect.selectOption("wangzhenduo");
+  await expect(page.locator(".spotlight-done")).toBeVisible({
+    timeout: 10_000,
+  });
+  await waitForCamera(page);
+  const manualAfter = await page.evaluate(() => window.__mech?.cameraState());
+  expect(manualAfter?.refitCount).toBe((manualBefore?.refitCount ?? 0) + 1);
+
+  await page.goto("/#/m/wooden-ox");
+  await waitForMechanica(page, "wooden-ox");
+  await waitForCamera(page);
+  const woodenOxBefore = await page.evaluate(() =>
+    window.__mech?.cameraState(),
+  );
+  await page.getByTestId("spotlight-play").click();
+  await expect(page.locator(".spotlight-done")).toBeVisible({
+    timeout: 10_000,
+  });
+  await waitForCamera(page);
+  const woodenOxAfter = await page.evaluate(() => window.__mech?.cameraState());
+  expect(woodenOxAfter?.refitCount).toBe(woodenOxBefore?.refitCount);
 });
 
 test("U6: all ten machine spotlights complete within ten seconds", async ({

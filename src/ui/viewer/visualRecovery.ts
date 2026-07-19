@@ -4,15 +4,23 @@ import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js
 import type { StandardMaterialPresentation } from "../../core/materials";
 import type { MachineSlug, PartDef } from "../../sim/types";
 
+type V3 = readonly [number, number, number];
+
 export interface ViewerProfile {
-  direction: readonly [number, number, number];
+  direction: V3;
   margin: number;
   explodedMargin: number;
+  homePose?: {
+    position: V3;
+    target: V3;
+    fov?: number;
+  };
+  minDistanceFactor?: number;
   minAzimuthAngle?: number;
   maxAzimuthAngle?: number;
   minPolarAngle?: number;
   maxPolarAngle?: number;
-  targetOffset?: readonly [number, number, number];
+  targetOffset?: V3;
   focusPartIds?: readonly string[];
 }
 
@@ -21,6 +29,12 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     direction: [1, 0.72, 1.4],
     margin: 1.5,
     explodedMargin: 1.5,
+    homePose: {
+      position: [23.59, 20.844, 30.007],
+      target: [2.8, 5.875, 0.9],
+      fov: 36,
+    },
+    minDistanceFactor: 2,
     minAzimuthAngle: 0.27,
     maxAzimuthAngle: 0.97,
     minPolarAngle: 1.1,
@@ -31,18 +45,36 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     direction: [1, 0.5, 1.35],
     margin: 1.45,
     explodedMargin: 1.5,
+    homePose: {
+      position: [5.806, 3.152, 7.837],
+      target: [0, 0.25, 0],
+      fov: 36,
+    },
+    minDistanceFactor: 1.7,
     targetOffset: [0, -0.08, 0],
   },
   chariot: {
     direction: [1.35, 0.55, 1],
     margin: 1.4,
     explodedMargin: 1.5,
+    homePose: {
+      position: [10.913, 6.251, 7.71],
+      target: [0.505, 2.011, 0],
+      fov: 36,
+    },
+    minDistanceFactor: 2,
     targetOffset: [0, -0.1, 0],
   },
   odometer: {
     direction: [1.25, 0.65, 1.1],
     margin: 1.55,
     explodedMargin: 1.65,
+    homePose: {
+      position: [12.119, 8.283, 9.586],
+      target: [1.225, 2.618, 0],
+      fov: 36,
+    },
+    minDistanceFactor: 1.7,
     minPolarAngle: 0.9,
     maxPolarAngle: 1.45,
     targetOffset: [0, -0.08, 0],
@@ -51,12 +83,24 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     direction: [1.45, 0.55, 0.9],
     margin: 1.05,
     explodedMargin: 1.4,
+    homePose: {
+      position: [5.127, 2.672, 2.912],
+      target: [0.435, 0.891, 0],
+      fov: 36,
+    },
+    minDistanceFactor: 1.6,
     targetOffset: [0, -0.04, 0],
   },
   loom: {
     direction: [1.2, 0.52, 1.3],
     margin: 1.25,
     explodedMargin: 1.35,
+    homePose: {
+      position: [1.33, 0.809, 1.441],
+      target: [0, 0.233, 0],
+      fov: 36,
+    },
+    minDistanceFactor: 1.7,
     minPolarAngle: 0.9,
     maxPolarAngle: 1.45,
     targetOffset: [0, -0.08, 0],
@@ -65,6 +109,12 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     direction: [1.25, 0.6, 1.1],
     margin: 1,
     explodedMargin: 1.15,
+    homePose: {
+      position: [7.786, 4.263, 7.163],
+      target: [0, 0.526, 0.311],
+      fov: 36,
+    },
+    minDistanceFactor: 1.7,
     minPolarAngle: 0.9,
     maxPolarAngle: 1.45,
     targetOffset: [0, -0.06, 0],
@@ -73,6 +123,12 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     direction: [1.3, 0.65, 1],
     margin: 0.9,
     explodedMargin: 1,
+    homePose: {
+      position: [9.926, 5.851, 7.58],
+      target: [0.072, 0.924, 0],
+      fov: 36,
+    },
+    minDistanceFactor: 1.7,
     minAzimuthAngle: 0.56,
     maxAzimuthAngle: 1.26,
     minPolarAngle: 1.05,
@@ -83,12 +139,24 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     direction: [1.35, 0.62, 1],
     margin: 1.1,
     explodedMargin: 1.2,
+    homePose: {
+      position: [19.953, 10.002, 15.151],
+      target: [-0.5, 0.609, 0],
+      fov: 36,
+    },
+    minDistanceFactor: 1.7,
     targetOffset: [0, -0.1, 0],
   },
   gimbal: {
     direction: [1, 0.42, 1.35],
     margin: 1.25,
     explodedMargin: 1.45,
+    homePose: {
+      position: [0.229, 0.096, 0.308],
+      target: [0, 0, -0.0014],
+      fov: 36,
+    },
+    minDistanceFactor: 2,
     targetOffset: [0, -0.08, 0],
     focusPartIds: ["outer-shell"],
   },

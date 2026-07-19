@@ -111,4 +111,33 @@ Concerns:
 - Vite reports a non-blocking three-vendor chunk-size warning.
 - Protected Phase 4 work remains unstaged.
 
-Next: F0-T4 authored camera choreography and bounds hardening.
+## F0-T4 — PASS
+
+Files:
+- `src/ui/viewer/visualRecovery.ts` (camera-profile schema and ten authored home poses only)
+- `src/ui/viewer/MachineViewer.tsx` (manual camera fitting, intro choreography, control lock, spotlight handoff, frame-fill diagnostics, and demo performance preservation only)
+- `e2e/smoke.spec.ts`
+- `e2e/shoot.spec.ts`
+
+Verification:
+- Unit tests — isolated staged snapshot: 24 files, 197/197 tests passed; integrated protected workspace: 24 files, 208/208 tests passed.
+- Strict validation — isolated and integrated reports list all ten machines with Fail=0.
+- Full E2E — isolated and integrated runs each passed 35 tests with the future aid-state capture explicitly skipped; all ten routes, console checks, frame-fill gates, camera transitions, and performance checks passed.
+- i18n check — 0 issues in isolated and integrated workspaces.
+- TypeScript project build — exit 0 in isolated and integrated workspaces.
+- Production build — exit 0 in isolated and integrated E2E runs; `dist/` emitted.
+- Controlled demo comparison measured the detached F0-T3 baseline at 60.8 FPS and the inherited gimbal camera at 49.7 FPS; a demo-only bounds-derived camera with no intro restored the gate without changing the ten museum routes.
+
+Evidence:
+- `output/playwright/f0-t4/{astroclock,bellows,chainpump,chariot,gimbal,loom,odometer,seismoscope,typecase,wooden-ox}-plain.png`
+- `output/playwright/f0-t4/seismoscope-hover.png`
+- Review confirmed all ten machines complete, centered, and unclipped; the gimbal evidence includes its full suspension chain, stand, and base.
+- Independent read-only skeptic verdict: GREEN after the manual-switch fit-key, automatic scheme-switch, spotlight-handoff, focus-volume, and demo-performance findings were fixed.
+
+Concerns:
+- `aid` capture deliberately requires the future declarative `window.__mechAid` hook owned by F0-T11; the runner fails honestly until that hook exists.
+- The unusually tall gimbal suspension and stand make its mechanism smaller than the other machines, but the complete machine is centered, unclipped, and within the whole-machine frame-fill gate; F1-T10 owns semantic model remediation.
+- Vite reports a non-blocking chunk-size warning.
+- Protected Phase 4 work remains unstaged.
+
+Next: F0-T5 material and texture recovery.

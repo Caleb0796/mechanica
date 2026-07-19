@@ -75,6 +75,9 @@ import GalleryPanel from "../panels/GalleryPanel";
 import DocentChat from "../panels/DocentChat";
 import PartInspector from "../panels/PartInspector";
 import SchemeSwitcher from "../panels/SchemeSwitcher";
+import MachineEnvironment, {
+  SCENERY_RAYCAST_DISABLED,
+} from "../scene/MachineEnvironment";
 import { useUiStore } from "../store";
 import type { StoryStageState } from "../story/types";
 import DriveHandle from "./DriveHandle";
@@ -147,6 +150,8 @@ declare global {
       machineReady: number | null;
       memory: () => { geometries: number; textures: number };
       spec: MachineModule["spec"];
+      sceneryRaycastViolations: () => number;
+      sceneryTriangles: () => number;
       textureStats: () => {
         entries: number;
         generationMs: number;
@@ -1222,6 +1227,7 @@ interface MachineSceneProps {
   onGeometryCommitted: (committedAt: number) => void;
   paused: boolean;
   schemeId?: string;
+  showScene?: boolean;
   spotlightActive: boolean;
   spotlightPartIds: string[];
   spotlightRunId: number;
@@ -1257,15 +1263,21 @@ function StoryCameraRig({ pose }: { pose?: StoryStageState["camera"] }) {
 function SceneComplexityProbe({
   count,
   memory,
+  sceneryCount,
+  sceneryRaycastViolations,
 }: {
   count: { current: number };
   memory: { current: { geometries: number; textures: number } };
+  sceneryCount: { current: number };
+  sceneryRaycastViolations: { current: number };
 }) {
   const gl = useThree((state) => state.gl);
   const scene = useThree((state) => state.scene);
 
   useFrame(() => {
     let triangles = 0;
+    let sceneryTriangles = 0;
+    let raycastViolations = 0;
     scene.traverse((object) => {
       const mesh = object as typeof object & {
         count?: number;
@@ -1278,11 +1290,19 @@ function SceneComplexityProbe({
         mesh.geometry.index?.count ??
         mesh.geometry.getAttribute("position")?.count ??
         0;
-      triangles +=
+      const meshTriangles =
         Math.floor(vertices / 3) *
         (mesh.isInstancedMesh ? (mesh.count ?? 0) : 1);
+      if (mesh.userData.mechanicaScenery) {
+        sceneryTriangles += meshTriangles;
+        if (mesh.raycast !== SCENERY_RAYCAST_DISABLED) raycastViolations += 1;
+      } else {
+        triangles += meshTriangles;
+      }
     });
     count.current = triangles;
+    sceneryCount.current = sceneryTriangles;
+    sceneryRaycastViolations.current = raycastViolations;
     memory.current = {
       geometries: gl.info.memory.geometries,
       textures: gl.info.memory.textures,
@@ -1392,6 +1412,7 @@ function MachineScene({
   onGeometryCommitted,
   paused,
   schemeId,
+  showScene,
   spotlightActive,
   spotlightPartIds,
   spotlightRunId,
@@ -1401,10 +1422,15 @@ function MachineScene({
 }: MachineSceneProps) {
   const dragging = useRef(false);
   const escapementElapsed = useRef(0);
+  const floorMeasurement = useRef({
+    readyAt: null as number | null,
+    settleFrames: 0,
+  });
   const machineRoot = useRef<Group>(null);
   const orbitControls = useRef<OrbitControlsHandle>(null);
   const [cameraIntroActive, setCameraIntroActive] = useState(false);
   const [spotlightHandoffActive, setSpotlightHandoffActive] = useState(false);
+  const [machineFloorY, setMachineFloorY] = useState(-0.45);
   const spotlightWasActive = useRef(false);
   const partIds = useMemo(
     () => new Set(activeSpec.parts.map((part) => part.id)),
@@ -1423,6 +1449,9 @@ function MachineScene({
     !spotlightActive &&
     !spotlightHandoffActive &&
     !storyCamera;
+  const sceneVisible = Boolean(
+    showScene && module.scene && !compareContext && !storyCamera,
+  );
   const rootParts = useMemo(
     () =>
       activeSpec.parts.filter(
@@ -1511,6 +1540,26 @@ function MachineScene({
   }, [cameraDiagnostics, spotlightActive]);
 
   useFrame((_, delta) => {
+    const measurement = floorMeasurement.current;
+    if (geometryReadyAt === null) {
+      measurement.readyAt = null;
+      measurement.settleFrames = 0;
+    } else if (measurement.readyAt !== geometryReadyAt) {
+      if (measurement.settleFrames < 2) {
+        measurement.settleFrames += 1;
+      } else if (machineRoot.current) {
+        machineRoot.current.updateWorldMatrix(true, true);
+        const bounds = new Box3().setFromObject(machineRoot.current, true);
+        if (!bounds.isEmpty()) {
+          const nextFloorY = module.scene?.ground?.y ?? bounds.min.y;
+          setMachineFloorY((current) =>
+            Math.abs(current - nextFloorY) < 1e-6 ? current : nextFloorY,
+          );
+          measurement.readyAt = geometryReadyAt;
+          measurement.settleFrames = 0;
+        }
+      }
+    }
     if (!paused && !dragging.current && module.spec.slug !== "seismoscope") {
       if (activeSpec.escapement) {
         escapementElapsed.current += delta;
@@ -1529,22 +1578,32 @@ function MachineScene({
 
   return (
     <>
-      <color args={["#090a0a"]} attach="background" />
-      <hemisphereLight
-        args={["#d7e3ef", "#2d2118", 0.35]}
-        position={[0, 2, 0]}
-      />
-      <directionalLight
-        castShadow
-        color="#ffe1b6"
-        intensity={2.2}
-        position={[3, 5, 4]}
-      />
-      <directionalLight
-        color="#9fc7da"
-        intensity={0.75}
-        position={[-4, 2, -3]}
-      />
+      {sceneVisible && module.scene ? (
+        <MachineEnvironment
+          floorY={machineFloorY}
+          module={module}
+          scene={module.scene}
+        />
+      ) : (
+        <>
+          <color args={["#090a0a"]} attach="background" />
+          <hemisphereLight
+            args={["#d7e3ef", "#2d2118", 0.35]}
+            position={[0, 2, 0]}
+          />
+          <directionalLight
+            castShadow
+            color="#ffe1b6"
+            intensity={2.2}
+            position={[3, 5, 4]}
+          />
+          <directionalLight
+            color="#9fc7da"
+            intensity={0.75}
+            position={[-4, 2, -3]}
+          />
+        </>
+      )}
       <OrbitControls
         autoRotate={false}
         enableDamping
@@ -1619,13 +1678,13 @@ function MachineScene({
         readyAt={geometryReadyAt}
         spec={activeSpec}
       />
-      {!compareContext && !storyCamera ? (
+      {!compareContext && !storyCamera && !sceneVisible ? (
         <ContactShadows
           blur={2.5}
           far={3}
           frames={module.spec.slug === "demo" ? 1 : Infinity}
           opacity={0.38}
-          position={[0, -0.45, 0]}
+          position={[0, machineFloorY + 0.002, 0]}
           scale={2}
         />
       ) : null}
@@ -2433,6 +2492,8 @@ export default function MachineViewer({
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
   const viewerIntroPlayed = useRef(false);
   const sceneTriangles = useRef(0);
+  const sceneryTriangles = useRef(0);
+  const sceneryRaycastViolations = useRef(0);
   const sceneMemory = useRef({ geometries: 0, textures: 0 });
   const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
   const observedCompletionEffect = useRef(0);
@@ -2440,9 +2501,11 @@ export default function MachineViewer({
   const assemblyProgress = useUiStore((state) => state.assemblyProgress);
   const explode = useUiStore((state) => state.explode);
   const paused = useUiStore((state) => state.paused);
+  const showScene = useUiStore((state) => state.showScene);
   const setAssemblyProgress = useUiStore((state) => state.setAssemblyProgress);
   const setExplode = useUiStore((state) => state.setExplode);
   const setPaused = useUiStore((state) => state.setPaused);
+  const setShowScene = useUiStore((state) => state.setShowScene);
   const selectedPartId = useUiStore((state) => state.selectedPartId);
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
 
@@ -2666,6 +2729,8 @@ export default function MachineViewer({
       machineReady: viewerGeometryReadyAt,
       memory: () => ({ ...sceneMemory.current }),
       module: activeModule,
+      sceneryRaycastViolations: () => sceneryRaycastViolations.current,
+      sceneryTriangles: () => sceneryTriangles.current,
       spec: activeSpec,
       textureStats: materialTextureStats,
       triangles: () => sceneTriangles.current,
@@ -2982,6 +3047,7 @@ export default function MachineViewer({
           data-geometry-state={viewerGeometryStatus}
           data-geometry-total={viewerGeometryTotal}
           data-machine-ready={viewerGeometryReadyAt !== null ? "true" : "false"}
+          data-scene-enabled={showScene && module.scene ? "true" : "false"}
           data-scheme-transition={schemeTransition ? "true" : "false"}
           data-spotlight-active={spotlightActive ? "true" : "false"}
         >
@@ -3015,6 +3081,8 @@ export default function MachineViewer({
                 <SceneComplexityProbe
                   count={sceneTriangles}
                   memory={sceneMemory}
+                  sceneryCount={sceneryTriangles}
+                  sceneryRaycastViolations={sceneryRaycastViolations}
                 />
               ) : null}
               {viewerGeometryPrepared ? (
@@ -3035,6 +3103,7 @@ export default function MachineViewer({
                   onGeometryCommitted={commitViewerGeometry}
                   paused={paused || !assembly.state.transmissionEnabled}
                   schemeId={activeSchemeId}
+                  showScene={showScene}
                   spotlightActive={spotlightActive}
                   spotlightPartIds={spotlightPartIds}
                   spotlightRunId={spotlightRunId}
@@ -3072,6 +3141,22 @@ export default function MachineViewer({
           >
             {paused ? t("viewer.resume") : t("viewer.pause")}
           </button>
+          {module.scene ? (
+            <button
+              className="ghost-button"
+              data-testid="scene-toggle"
+              onClick={() => setShowScene(!showScene)}
+              type="button"
+            >
+              {showScene
+                ? language === "zh"
+                  ? "素色背景"
+                  : "Plain background"
+                : language === "zh"
+                  ? "显示场景"
+                  : "Show scene"}
+            </button>
+          ) : null}
           <label className="range-control">
             <span>{t("viewer.assembly")}</span>
             <input

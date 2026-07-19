@@ -1,4 +1,6 @@
 // src/sim/types.ts — project-wide data contracts (FROZEN file)
+import type { SceneSpec } from "../ui/scene/types";
+
 export type ProvenanceKind = "wenxian" | "wenwu" | "tuice";
 export interface Provenance {
   kind: ProvenanceKind;
@@ -251,4 +253,9 @@ export interface MachineModule {
   schemes?: Record<string, SchemePatch>;
   defaultSchemeId?: string;
   customBuilders?: Record<string, (params: Record<string, number>) => unknown>;
+  customSceneBuilders?: Record<
+    string,
+    (params: Record<string, number>) => unknown
+  >;
+  scene?: SceneSpec;
 }

@@ -1208,6 +1208,46 @@ test("G6.3: every machine reconstruction stays under 150k triangles", async ({
   }
 });
 
+test("F0-T6: all machine scenes stay noninteractive, bounded, and optional", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  for (const slug of machineSlugs) {
+    await page.goto(`/#/m/${slug}`);
+    await waitForMechanica(page, slug);
+    await waitForCamera(page);
+    const canvas = page.locator(".viewer-canvas");
+    await expect(canvas).toHaveAttribute("data-scene-enabled", "true");
+    await expect(page.getByTestId("scene-toggle")).toBeVisible();
+    await expect
+      .poll(() => page.evaluate(() => window.__mech?.sceneryTriangles() ?? 0))
+      .toBeGreaterThan(0);
+    const withScene = await page.evaluate(() => ({
+      machine: window.__mech?.triangles() ?? 0,
+      raycastViolations:
+        window.__mech?.sceneryRaycastViolations() ?? Number.POSITIVE_INFINITY,
+      scenery: window.__mech?.sceneryTriangles() ?? Number.POSITIVE_INFINITY,
+    }));
+    expect(withScene.raycastViolations, slug).toBe(0);
+    expect(withScene.scenery, slug).toBeLessThanOrEqual(30_000);
+
+    await page.getByTestId("scene-toggle").click();
+    await expect(canvas).toHaveAttribute("data-scene-enabled", "false");
+    await expect
+      .poll(() => page.evaluate(() => window.__mech?.sceneryTriangles() ?? -1))
+      .toBe(0);
+
+    await page.getByTestId("scene-toggle").click();
+    await expect(canvas).toHaveAttribute("data-scene-enabled", "true");
+    await expect
+      .poll(() => page.evaluate(() => window.__mech?.sceneryTriangles() ?? 0))
+      .toBeGreaterThan(0);
+    expect(await page.evaluate(() => window.__mech?.triangles() ?? 0)).toBe(
+      withScene.machine,
+    );
+  }
+});
+
 test("chariot comparison sustains forty frames per second", async ({
   page,
 }) => {

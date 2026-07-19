@@ -105,6 +105,11 @@ async function enterCaptureState(
 ) {
   switch (state) {
     case "plain":
+      await page.getByTestId("scene-toggle").click();
+      await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+        "data-scene-enabled",
+        "false",
+      );
       return;
     case "assembly-mid":
       await page.getByRole("slider", { name: "Assembly progress" }).fill("0.5");

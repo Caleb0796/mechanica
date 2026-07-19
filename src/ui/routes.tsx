@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { MachineModule, MachineSlug } from "../sim/types";
+import type { SceneSpec } from "./scene/types";
 import type { StoryStep } from "./story";
 
 const MachineViewer = lazy(() => import("./viewer/MachineViewer"));
@@ -125,6 +126,17 @@ const machineModules = import.meta.glob<{ default: MachineModule }>(
 const storyModules = import.meta.glob<{ default: StoryStep[] }>(
   "../machines/*/story.ts",
 );
+const sceneModules = import.meta.glob<{ default: SceneSpec }>(
+  "../machines/*/scene.ts",
+);
+
+function withMachineScene(
+  module: MachineModule,
+  loadedScene?: { default: SceneSpec },
+): MachineModule {
+  if (module.scene || !loadedScene) return module;
+  return { ...module, scene: loadedScene.default };
+}
 
 function currentPath() {
   return window.location.hash.replace(/^#/, "") || "/";
@@ -193,6 +205,7 @@ function MachineRoute({ slug }: { slug: string }) {
       slug === "demo"
         ? () => import("./demo")
         : machineModules[`../machines/${slug}/build.ts`];
+    const sceneLoader = sceneModules[`../machines/${slug}/scene.ts`];
     if (!loader) {
       setError(true);
       return () => {
@@ -200,9 +213,11 @@ function MachineRoute({ slug }: { slug: string }) {
       };
     }
 
-    void loader()
-      .then((loaded) => {
-        if (!cancelled) setModule(loaded.default);
+    void Promise.all([loader(), sceneLoader?.()])
+      .then(([loaded, loadedScene]) => {
+        if (!cancelled) {
+          setModule(withMachineScene(loaded.default, loadedScene));
+        }
       })
       .catch(() => {
         if (!cancelled) setError(true);
@@ -263,6 +278,7 @@ function StoryRoute({ slug }: { slug: string }) {
     setSpotlightRunId(0);
     const machineLoader = machineModules[`../machines/${slug}/build.ts`];
     const storyLoader = storyModules[`../machines/${slug}/story.ts`];
+    const sceneLoader = sceneModules[`../machines/${slug}/scene.ts`];
     if (!machineLoader || !storyLoader) {
       setError(true);
       return () => {
@@ -270,11 +286,11 @@ function StoryRoute({ slug }: { slug: string }) {
       };
     }
 
-    void Promise.all([machineLoader(), storyLoader()])
-      .then(([loadedMachine, loadedStory]) => {
+    void Promise.all([machineLoader(), storyLoader(), sceneLoader?.()])
+      .then(([loadedMachine, loadedStory, loadedScene]) => {
         if (!cancelled) {
           setBundle({
-            module: loadedMachine.default,
+            module: withMachineScene(loadedMachine.default, loadedScene),
             steps: loadedStory.default,
           });
         }

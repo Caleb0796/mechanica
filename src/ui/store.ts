@@ -10,11 +10,13 @@ interface UiState {
   language: UiLanguage;
   paused: boolean;
   selectedPartId: string | null;
+  showScene: boolean;
   setAssemblyProgress: (progress: number) => void;
   setExplode: (explode: number) => void;
   setLanguage: (language: UiLanguage) => void;
   setPaused: (paused: boolean) => void;
   setSelectedPartId: (partId: string | null) => void;
+  setShowScene: (showScene: boolean) => void;
 }
 
 export const useUiStore = create<UiState>((set) => ({
@@ -23,9 +25,11 @@ export const useUiStore = create<UiState>((set) => ({
   language: initialLanguage,
   paused: false,
   selectedPartId: null,
+  showScene: true,
   setAssemblyProgress: (assemblyProgress) => set({ assemblyProgress }),
   setExplode: (explode) => set({ explode }),
   setLanguage: (language) => set({ language }),
   setPaused: (paused) => set({ paused }),
   setSelectedPartId: (selectedPartId) => set({ selectedPartId }),
+  setShowScene: (showScene) => set({ showScene }),
 }));

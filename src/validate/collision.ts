@@ -1,18 +1,20 @@
 import {
   Box3,
+  BufferGeometry,
   Euler,
+  Float32BufferAttribute,
   Matrix4,
   Mesh,
   Quaternion,
   Vector3,
-  type BufferGeometry,
 } from "three";
 import { OBB } from "three/examples/jsm/math/OBB.js";
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { MeshBVH } from "three-mesh-bvh";
 import {
   buildPartGeometry,
+  disposePartGeometry,
   getMechanicaInstanceMatrices,
+  partGeometryEntries,
 } from "../core/primitives";
 import { planarCrankRodPose } from "../sim/edges";
 import { attitudeQuaternion } from "../sim/graph";
@@ -367,22 +369,58 @@ function analyticGearFailure(
   return null;
 }
 
+function appendCollisionTriangles(
+  source: BufferGeometry,
+  positions: number[],
+  transform?: Matrix4,
+): void {
+  const position = source.getAttribute("position");
+  const index = source.getIndex();
+  const vertexCount = index?.count ?? position?.count ?? 0;
+  if (!position || vertexCount === 0 || vertexCount % 3 !== 0) {
+    throw new Error("Collision geometry must contain complete triangles");
+  }
+  const vertex = new Vector3();
+  for (let offset = 0; offset < vertexCount; offset += 1) {
+    const vertexIndex = index ? index.getX(offset) : offset;
+    vertex.fromBufferAttribute(position, vertexIndex);
+    if (transform) vertex.applyMatrix4(transform);
+    positions.push(vertex.x, vertex.y, vertex.z);
+  }
+}
+
+export function buildPartCollisionGeometry(
+  module: MachineModule,
+  part: PartDef,
+): BufferGeometry {
+  const built = buildPartGeometry(part.geometry, module.customBuilders);
+  const positions: number[] = [];
+  try {
+    for (const entry of partGeometryEntries(built)) {
+      const instanceMatrices = getMechanicaInstanceMatrices(entry);
+      if (instanceMatrices) {
+        for (const values of instanceMatrices) {
+          appendCollisionTriangles(
+            entry,
+            positions,
+            new Matrix4().fromArray(values),
+          );
+        }
+      } else {
+        appendCollisionTriangles(entry, positions);
+      }
+    }
+  } finally {
+    disposePartGeometry(built);
+  }
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
+  return geometry;
+}
+
 function buildCollisionParts(module: MachineModule): CollisionPart[] {
   return module.spec.parts.map((part) => {
-    let geometry = buildPartGeometry(part.geometry, module.customBuilders);
-    const instanceMatrices = getMechanicaInstanceMatrices(geometry);
-    if (instanceMatrices) {
-      const instances = instanceMatrices.map((values) =>
-        geometry.clone().applyMatrix4(new Matrix4().fromArray(values)),
-      );
-      const merged = mergeGeometries(instances, false);
-      for (const instance of instances) instance.dispose();
-      geometry.dispose();
-      if (!merged) {
-        throw new Error(`Part ${part.id} instance collision geometry failed`);
-      }
-      geometry = merged;
-    }
+    const geometry = buildPartCollisionGeometry(module, part);
     geometry.computeBoundingSphere();
     geometry.computeBoundingBox();
     const boundingSphere = geometry.boundingSphere;

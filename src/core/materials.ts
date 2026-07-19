@@ -4,7 +4,9 @@ import type { PartDef } from "../sim/types";
 import { defaultTextureVariant, getMaterialTextureSet } from "./textures";
 
 export interface StandardMaterialPresentation {
+  alphaMap?: THREE.Texture | null;
   alphaTest?: number;
+  bumpMap?: THREE.Texture | null;
   color?: THREE.ColorRepresentation;
   depthWrite?: boolean;
   emissive?: THREE.ColorRepresentation;
@@ -13,8 +15,10 @@ export interface StandardMaterialPresentation {
   opacity?: number;
   roughness?: number;
   shaderFeatureHash?: string;
+  side?: THREE.Side;
   textureVariant?: string;
   transparent?: boolean;
+  normalMap?: THREE.Texture | null;
 }
 
 export function applyStandardMaterialPresentation(
@@ -44,11 +48,31 @@ export function applyStandardMaterialPresentation(
   if (Number.isFinite(presentation.alphaTest)) {
     material.alphaTest = presentation.alphaTest!;
   }
+  if (presentation.alphaMap !== undefined) {
+    material.alphaMap = presentation.alphaMap;
+  }
+  if (presentation.bumpMap !== undefined) {
+    material.bumpMap = presentation.bumpMap;
+  }
+  if (presentation.normalMap !== undefined) {
+    material.normalMap = presentation.normalMap;
+  }
+  if (presentation.side !== undefined) {
+    material.side = presentation.side;
+  }
   if (typeof presentation.depthWrite === "boolean") {
     material.depthWrite = presentation.depthWrite;
   }
   if (typeof presentation.transparent === "boolean") {
     material.transparent = presentation.transparent;
+  }
+  if (
+    presentation.alphaMap !== undefined ||
+    presentation.bumpMap !== undefined ||
+    presentation.normalMap !== undefined ||
+    presentation.side !== undefined
+  ) {
+    material.needsUpdate = true;
   }
 }
 

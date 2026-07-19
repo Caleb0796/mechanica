@@ -1,4 +1,4 @@
-import type { MeshStandardMaterial } from "three";
+import { Color, type MeshStandardMaterial } from "three";
 
 import type { PartDef } from "../sim/types";
 import {
@@ -40,6 +40,7 @@ function normalizedPresentation(
     "opacity",
     "roughness",
     "shaderFeatureHash",
+    "side",
     "textureVariant",
     "transparent",
   ] as const) {
@@ -51,6 +52,14 @@ function normalizedPresentation(
     ) {
       normalized[key] = value;
     }
+  }
+  for (const key of ["alphaMap", "bumpMap", "normalMap"] as const) {
+    const texture = presentation[key];
+    if (texture !== undefined) normalized[key] = texture?.uuid ?? "null";
+  }
+  for (const key of ["color", "emissive"] as const) {
+    const color = presentation[key];
+    if (color instanceof Color) normalized[key] = color.getHexString();
   }
   if (
     typeof normalized.textureVariant === "string" &&

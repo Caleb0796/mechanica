@@ -2,7 +2,10 @@ import * as THREE from "three";
 import { describe, expect, it } from "vitest";
 
 import { ensureBoxProjectedUvs } from "../../src/core/geometryUvs";
-import { buildPartGeometry } from "../../src/core/primitives";
+import {
+  buildPartGeometry,
+  singlePartGeometry,
+} from "../../src/core/primitives";
 
 function uvlessQuad(): THREE.BufferGeometry {
   const geometry = new THREE.BufferGeometry();
@@ -60,9 +63,11 @@ describe("geometry UV preparation", () => {
   });
 
   it("adds projected UVs to a custom builder result", () => {
-    const geometry = buildPartGeometry(
-      { builder: "uvless", params: {}, type: "custom" },
-      { uvless: () => uvlessQuad() },
+    const geometry = singlePartGeometry(
+      buildPartGeometry(
+        { builder: "uvless", params: {}, type: "custom" },
+        { uvless: () => uvlessQuad() },
+      ),
     );
 
     expectFiniteUnitUvs(geometry);

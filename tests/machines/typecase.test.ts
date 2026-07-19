@@ -5,6 +5,7 @@ import {
   applyMechanicaInstanceMatrices,
   buildPartGeometry,
   getMechanicaInstanceMatrices,
+  singlePartGeometry,
 } from "../../src/core/primitives";
 import machine from "../../src/machines/typecase/build";
 import { KinematicGraph } from "../../src/sim/graph";
@@ -123,7 +124,9 @@ describe("typecase machine module", () => {
     });
     if (grid.geometry.type !== "custom") throw new Error("Expected type grid");
     expect(grid.geometry.params.count).toBeGreaterThanOrEqual(300);
-    const geometry = buildPartGeometry(grid.geometry, machine.customBuilders);
+    const geometry = singlePartGeometry(
+      buildPartGeometry(grid.geometry, machine.customBuilders),
+    );
     const matrices = getMechanicaInstanceMatrices(geometry);
     expect(geometry.getAttribute("position").count).toBeLessThan(100);
     expect(matrices).toHaveLength(320);

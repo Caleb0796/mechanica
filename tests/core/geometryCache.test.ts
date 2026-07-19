@@ -1,9 +1,14 @@
+import { BoxGeometry } from "three";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   MachineGeometryCache,
   machineGeometryCache,
 } from "../../src/core/geometryCache";
+import {
+  partGeometryEntries,
+  singlePartGeometry,
+} from "../../src/core/primitives";
 import bellows from "../../src/machines/bellows/build";
 import {
   CompareGeometryCache,
@@ -28,7 +33,7 @@ describe("machine geometry cache", () => {
 
     const viewer = cache.prepare(bellows, part.geometry);
     const viewerRelease = viewer.retain();
-    const dispose = vi.spyOn(viewer.geometry, "dispose");
+    const dispose = vi.spyOn(singlePartGeometry(viewer.geometry), "dispose");
     viewerRelease();
 
     const story = cache.prepare(bellows, part.geometry);
@@ -60,7 +65,7 @@ describe("machine geometry cache", () => {
 
     const abandoned = cache.prepare(bellows, part.geometry);
     const committed = cache.prepare(bellows, part.geometry);
-    const dispose = vi.spyOn(abandoned.geometry, "dispose");
+    const dispose = vi.spyOn(singlePartGeometry(abandoned.geometry), "dispose");
     const release = committed.retain();
 
     expect(committed.geometry).toBe(abandoned.geometry);
@@ -90,12 +95,14 @@ describe("machine geometry cache", () => {
     const second = cache.prepare(bellows, part.geometry, {
       consumerKey: "compare",
     });
-    const firstDispose = vi.spyOn(first.geometry, "dispose");
-    const secondDispose = vi.spyOn(second.geometry, "dispose");
+    const firstGeometry = singlePartGeometry(first.geometry);
+    const secondGeometry = singlePartGeometry(second.geometry);
+    const firstDispose = vi.spyOn(firstGeometry, "dispose");
+    const secondDispose = vi.spyOn(secondGeometry, "dispose");
     const firstRelease = first.retain();
     const secondRelease = second.retain();
 
-    expect(first.geometry.userData.mechanicaUpdate).toBeTypeOf("function");
+    expect(firstGeometry.userData.mechanicaUpdate).toBeTypeOf("function");
     expect(second.geometry).not.toBe(first.geometry);
     expect(cache.stats()).toEqual({
       activeRefs: 2,
@@ -172,12 +179,13 @@ describe("machine geometry cache", () => {
     if (!part) throw new Error("Bellows shaft fixture is missing");
 
     const primitive = cache.prepare(bellows, part.geometry);
+    const primitiveGeometry = singlePartGeometry(primitive.geometry);
     const semantic = cache.prepare(bellows, part.geometry, {
-      factory: () => primitive.geometry.clone(),
+      factory: () => primitiveGeometry.clone(),
       variant: "semantic:fixture",
     });
     const repeated = cache.prepare(bellows, part.geometry, {
-      factory: () => primitive.geometry.clone(),
+      factory: () => primitiveGeometry.clone(),
       variant: "semantic:fixture",
     });
 
@@ -191,8 +199,11 @@ describe("machine geometry cache", () => {
     const cache = new MachineGeometryCache();
     const idle = cache.prepare(bellows, { type: "box", size: [1, 1, 1] });
     const active = cache.prepare(bellows, { type: "box", size: [2, 1, 1] });
-    const idleDispose = vi.spyOn(idle.geometry, "dispose");
-    const activeDispose = vi.spyOn(active.geometry, "dispose");
+    const idleDispose = vi.spyOn(singlePartGeometry(idle.geometry), "dispose");
+    const activeDispose = vi.spyOn(
+      singlePartGeometry(active.geometry),
+      "dispose",
+    );
     const release = active.retain();
 
     expect(cache.sweep(0)).toBe(1);
@@ -201,6 +212,34 @@ describe("machine geometry cache", () => {
     release();
     expect(cache.sweep(0)).toBe(1);
     expect(activeDispose).toHaveBeenCalledOnce();
+  });
+
+  it("retains and disposes a composite as one cache resource", () => {
+    const cache = new MachineGeometryCache();
+    const compositeModule = {
+      ...bellows,
+      customBuilders: {
+        ...bellows.customBuilders,
+        cacheComposite: () => [
+          new BoxGeometry(1, 1, 1),
+          new BoxGeometry(0.5, 0.5, 0.5),
+        ],
+      },
+    };
+    const resource = cache.prepare(compositeModule, {
+      type: "custom",
+      builder: "cacheComposite",
+      params: {},
+    });
+    const entries = partGeometryEntries(resource.geometry);
+    const disposals = entries.map((entry) => vi.spyOn(entry, "dispose"));
+    const release = resource.retain();
+
+    expect(entries).toHaveLength(2);
+    expect(cache.sweep(0)).toBe(0);
+    release();
+    expect(cache.sweep(0)).toBe(1);
+    for (const dispose of disposals) expect(dispose).toHaveBeenCalledOnce();
   });
 
   it("keeps the compare compatibility exports on the shared core cache", () => {

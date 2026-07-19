@@ -1,5 +1,3 @@
-import type { BufferGeometry } from "three";
-
 import type {
   GeometryDef,
   MachineModule,
@@ -10,6 +8,7 @@ import {
   type MachineGeometryCache,
   machineGeometryCache,
 } from "./geometryCache";
+import type { PartGeometry } from "./primitives";
 
 const SLICE_BUDGET_MS = 8;
 const defaultWarmupOwners = new WeakMap<
@@ -27,7 +26,7 @@ export interface GeometryWarmupResult extends GeometryWarmupProgress {
 }
 
 export interface GeometryWarmupPartOptions {
-  factory?: () => BufferGeometry;
+  factory?: () => PartGeometry;
   variant?: string;
 }
 

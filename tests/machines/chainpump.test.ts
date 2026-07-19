@@ -4,6 +4,7 @@ import { Matrix4, Vector3 } from "three";
 import {
   buildPartGeometry,
   getMechanicaInstanceMatrices,
+  singlePartGeometry,
 } from "../../src/core/primitives";
 import machine, {
   PALLET_COUNT,
@@ -108,7 +109,9 @@ describe("chain pump machine module", () => {
     expect(machine.customBuilders).toHaveProperty("chainpumpPalletLoop");
 
     if (!chain) throw new Error("Missing pallet chain");
-    const geometry = buildPartGeometry(chain.geometry, machine.customBuilders);
+    const geometry = singlePartGeometry(
+      buildPartGeometry(chain.geometry, machine.customBuilders),
+    );
     expect(geometry.getAttribute("position").count).toBeLessThan(100);
     expect(getMechanicaInstanceMatrices(geometry)).toHaveLength(PALLET_COUNT);
     geometry.dispose();
@@ -224,7 +227,9 @@ describe("chain pump machine module", () => {
     if (!chain) throw new Error("Missing pallet chain");
     expect(chain.joint?.kind).toBe("fixed");
 
-    const geometry = buildPartGeometry(chain.geometry, machine.customBuilders);
+    const geometry = singlePartGeometry(
+      buildPartGeometry(chain.geometry, machine.customBuilders),
+    );
     const metadata = palletLoopAnimationMetadata(geometry);
     expect(metadata).toMatchObject({
       kind: "chainpump-path-phase",

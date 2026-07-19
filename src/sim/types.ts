@@ -1,4 +1,6 @@
 // src/sim/types.ts — project-wide data contracts (FROZEN file)
+import type { BufferGeometry } from "three";
+
 import type { SceneSpec } from "../ui/scene/types";
 
 export type ProvenanceKind = "wenxian" | "wenwu" | "tuice";
@@ -252,7 +254,10 @@ export interface MachineModule {
   mechanism?: MechanismScript;
   schemes?: Record<string, SchemePatch>;
   defaultSchemeId?: string;
-  customBuilders?: Record<string, (params: Record<string, number>) => unknown>;
+  customBuilders?: Record<
+    string,
+    (params: Record<string, number>) => BufferGeometry | BufferGeometry[]
+  >;
   customSceneBuilders?: Record<
     string,
     (params: Record<string, number>) => unknown

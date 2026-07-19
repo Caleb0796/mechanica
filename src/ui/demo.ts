@@ -1,3 +1,5 @@
+import { BoxGeometry, DoubleSide, TorusGeometry } from 'three'
+
 import type { MachineModule } from '../sim/types'
 
 const source = {
@@ -100,6 +102,22 @@ const demoModule: MachineModule = {
         explodeVector: [0.18, 0, 0],
         assemblyStep: 0,
       },
+      {
+        id: 'composite-fixture-shell',
+        name: { zh: '复合材质标本', en: 'Composite material fixture' },
+        geometry: {
+          type: 'custom',
+          builder: 'compositeFixture',
+          params: { width: 0.18, height: 0.08, depth: 0.12 },
+        },
+        material: 'wood',
+        position: [0.48, 0, 0],
+        joint: { kind: 'fixed', axis: [0, 1, 0] },
+        provenance: source,
+        dimensionProvenance: { '@rest': source, position: source },
+        explodeVector: [0.18, 0, 0],
+        assemblyStep: 0,
+      },
     ],
     constraints: [{ type: 'mesh', a: 'small-gear', b: 'large-gear' }],
     driveNodes: ['small-gear', 'large-gear'],
@@ -113,6 +131,29 @@ const demoModule: MachineModule = {
         sourceRef: 'demo-geometry',
       },
     ],
+  },
+  customBuilders: {
+    compositeFixture: ({ width, height, depth }) => {
+      const body = new BoxGeometry(width, height, depth)
+      body.userData.mechanicaMaterial = {
+        alphaTest: 0.61,
+        color: '#8d4f2a',
+        roughness: 0.78,
+        textureVariant: 'none',
+      }
+      const rim = new TorusGeometry(width * 0.32, height * 0.2, 8, 24)
+      rim.rotateX(Math.PI / 2)
+      rim.translate(0, height * 0.58, 0)
+      rim.userData.mechanicaMaterial = {
+        alphaTest: 0.73,
+        color: '#d6b26e',
+        metalness: 0.82,
+        roughness: 0.24,
+        side: DoubleSide,
+        textureVariant: 'none',
+      }
+      return [body, rim]
+    },
   },
   data: {
     slug: 'gimbal',

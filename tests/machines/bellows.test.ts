@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { buildPartGeometry } from "../../src/core/primitives";
+import {
+  buildPartGeometry,
+  singlePartGeometry,
+} from "../../src/core/primitives";
 import machine, { bellowsRockerAngle } from "../../src/machines/bellows/build";
 import { KinematicGraph } from "../../src/sim/graph";
 import type { PartDef, Provenance } from "../../src/sim/types";
@@ -117,9 +120,8 @@ describe("water-powered blast bellows", () => {
       params: { waterSpread: 0.18, drumSpread: 0.1 },
     });
     if (!cord) throw new Error("Missing quarter-turn drive cord");
-    const cordGeometry = buildPartGeometry(
-      cord.geometry,
-      machine.customBuilders,
+    const cordGeometry = singlePartGeometry(
+      buildPartGeometry(cord.geometry, machine.customBuilders),
     );
     cordGeometry.computeBoundingBox();
     expect(cordGeometry.getAttribute("position").count).toBeGreaterThan(100);
@@ -225,9 +227,8 @@ describe("water-powered blast bellows", () => {
 
     const rocker = machine.spec.parts.find((part) => part.id === "rocker");
     if (!rocker) throw new Error("Missing rocker");
-    const rockerGeometry = buildPartGeometry(
-      rocker.geometry,
-      machine.customBuilders,
+    const rockerGeometry = singlePartGeometry(
+      buildPartGeometry(rocker.geometry, machine.customBuilders),
     );
     expect(rockerGeometry.userData.mechanicaUpdate).toBeTypeOf("function");
     for (let sample = 0; sample <= 360; sample += 1) {

@@ -4,10 +4,33 @@ import type { GeometryDef } from "../sim/types";
 import { buildGearGeometry } from "./gears";
 import { ensureBoxProjectedUvs } from "./geometryUvs";
 
+export type PartGeometry = THREE.BufferGeometry | THREE.BufferGeometry[];
+
 export type CustomBuilderRegistry = Record<
   string,
   (params: Record<string, number>) => unknown
 >;
+
+const MAX_COMPOSITE_GEOMETRIES = 4;
+
+export function partGeometryEntries(
+  geometry: PartGeometry,
+): readonly THREE.BufferGeometry[] {
+  return Array.isArray(geometry) ? geometry : [geometry];
+}
+
+export function singlePartGeometry(
+  geometry: PartGeometry,
+): THREE.BufferGeometry {
+  if (Array.isArray(geometry)) {
+    throw new Error("Expected one geometry but received a composite part");
+  }
+  return geometry;
+}
+
+export function disposePartGeometry(geometry: PartGeometry): void {
+  for (const entry of partGeometryEntries(geometry)) entry.dispose();
+}
 
 export function getMechanicaInstanceMatrices(
   geometry: THREE.BufferGeometry,
@@ -180,7 +203,7 @@ function buildScoop(
 export function buildPartGeometry(
   def: GeometryDef,
   registry: CustomBuilderRegistry = {},
-): THREE.BufferGeometry {
+): PartGeometry {
   switch (def.type) {
     case "gear":
       return buildGearGeometry(def);
@@ -225,21 +248,52 @@ export function buildPartGeometry(
       if (!builder) {
         throw new Error(`Unknown custom geometry builder "${def.builder}"`);
       }
-      const geometry = builder(def.params);
+      const built = builder(def.params);
+      const composite = Array.isArray(built);
+      const geometries = composite ? built : [built];
       if (
-        !geometry ||
-        typeof geometry !== "object" ||
-        !("isBufferGeometry" in geometry) ||
-        geometry.isBufferGeometry !== true
+        geometries.length === 0 ||
+        geometries.length > MAX_COMPOSITE_GEOMETRIES ||
+        geometries.some(
+          (geometry) =>
+            !geometry ||
+            typeof geometry !== "object" ||
+            !("isBufferGeometry" in geometry) ||
+            geometry.isBufferGeometry !== true,
+        )
       ) {
+        for (const geometry of geometries) {
+          if (
+            geometry &&
+            typeof geometry === "object" &&
+            "isBufferGeometry" in geometry &&
+            geometry.isBufferGeometry === true
+          ) {
+            (geometry as THREE.BufferGeometry).dispose();
+          }
+        }
         throw new Error(
-          `Custom geometry builder "${def.builder}" did not return a THREE.BufferGeometry`,
+          `Custom geometry builder "${def.builder}" must return one to ${MAX_COMPOSITE_GEOMETRIES} THREE.BufferGeometry entries`,
         );
       }
-      const bufferGeometry = geometry as THREE.BufferGeometry;
-      const projected = ensureBoxProjectedUvs(bufferGeometry);
-      if (projected !== bufferGeometry) bufferGeometry.dispose();
-      return projected;
+      const bufferGeometries = geometries as THREE.BufferGeometry[];
+      if (
+        composite &&
+        bufferGeometries.some(
+          (geometry) => geometry.userData.mechanicaInstances !== undefined,
+        )
+      ) {
+        for (const geometry of bufferGeometries) geometry.dispose();
+        throw new Error(
+          `Composite custom geometry builder "${def.builder}" cannot contain mechanicaInstances`,
+        );
+      }
+      bufferGeometries.forEach((geometry, index) => {
+        const entry = ensureBoxProjectedUvs(geometry);
+        if (entry !== geometry) geometry.dispose();
+        bufferGeometries[index] = entry;
+      });
+      return composite ? bufferGeometries : bufferGeometries[0];
     }
     default: {
       const exhaustive: never = def;

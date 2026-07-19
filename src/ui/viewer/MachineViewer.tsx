@@ -28,6 +28,7 @@ import {
   MeshStandardMaterial,
   PerspectiveCamera,
   Quaternion,
+  type Scene,
   Sphere,
   Vector3,
 } from "three";
@@ -51,6 +52,7 @@ import {
 import {
   applyMechanicaInstanceMatrices,
   getMechanicaInstanceMatrices,
+  partGeometryEntries,
 } from "../../core/primitives";
 import { planarCrankRodPose } from "../../sim/edges";
 import {
@@ -149,9 +151,15 @@ declare global {
       module: MachineModule;
       machineReady: number | null;
       memory: () => { geometries: number; textures: number };
+      partMaterials: (partId: string) => Array<{
+        alphaTest: number;
+        color: string;
+        side: number;
+      }>;
       spec: MachineModule["spec"];
       sceneryRaycastViolations: () => number;
       sceneryTriangles: () => number;
+      partMeshCount: (partId: string) => number;
       textureStats: () => {
         entries: number;
         generationMs: number;
@@ -781,6 +789,116 @@ function applyTransientMaterialState(
   }
 }
 
+function PartGeometryMesh({
+  compareContext,
+  geometry,
+  index,
+  instanceMatrices,
+  onInstancedMesh,
+  onPointerDown,
+  part,
+  transientState,
+  transientStateKey,
+  visualPresentation,
+}: {
+  compareContext?: CompareSceneContext;
+  geometry: BufferGeometry;
+  index: number;
+  instanceMatrices: readonly number[][] | null;
+  onInstancedMesh: (index: number, mesh: InstancedMesh | null) => void;
+  onPointerDown?: (event: ThreeEvent<PointerEvent>) => void;
+  part: PartDef;
+  transientState: TransientMaterialState;
+  transientStateKey: string;
+  visualPresentation?: StandardMaterialPresentation;
+}) {
+  const materialOverride = useMemo(
+    () =>
+      geometry.userData.mechanicaMaterial as
+        StandardMaterialPresentation | undefined,
+    [geometry],
+  );
+  const textureVariant = compareContext
+    ? "none"
+    : (materialOverride?.textureVariant ??
+      visualPresentation?.textureVariant ??
+      defaultTextureVariant(part.material));
+  const texturePresentation = useMemo<StandardMaterialPresentation>(
+    () => ({
+      shaderFeatureHash: textureShaderFeatureHash(textureVariant),
+      textureVariant,
+    }),
+    [textureVariant],
+  );
+  const baseMaterialVariant = useMemo(
+    () =>
+      materialVariantKey(
+        visualPresentation,
+        texturePresentation,
+        materialOverride,
+      ),
+    [materialOverride, texturePresentation, visualPresentation],
+  );
+  const baseMaterialKey = `base:${baseMaterialVariant}`;
+  const baseMaterial = getMaterial(part.material, baseMaterialKey, () =>
+    standardMaterial(
+      part.material,
+      visualPresentation,
+      texturePresentation,
+      materialOverride,
+    ),
+  );
+  const activeMaterialKey = transientStateKey
+    ? `${baseMaterialKey}:state:${transientStateKey}`
+    : baseMaterialKey;
+  const material = transientStateKey
+    ? getMaterial(part.material, activeMaterialKey, () => {
+        const transientMaterial = baseMaterial.clone();
+        applyTransientMaterialState(
+          transientMaterial,
+          baseMaterial,
+          transientState,
+        );
+        return transientMaterial;
+      })
+    : baseMaterial;
+
+  useEffect(() => {
+    const lease = acquireMaterial(
+      part.material,
+      activeMaterialKey,
+      () => material,
+    );
+    return lease.release;
+  }, [activeMaterialKey, material, part.material]);
+
+  useLayoutEffect(() => {
+    if (!transientStateKey) return;
+    applyTransientMaterialState(material, baseMaterial, transientState);
+  }, [baseMaterial, material, transientState, transientStateKey]);
+
+  return instanceMatrices ? (
+    <instancedMesh
+      args={[geometry, material, instanceMatrices.length]}
+      castShadow
+      onPointerDown={onPointerDown}
+      receiveShadow
+      ref={(mesh) => {
+        onInstancedMesh(index, mesh);
+        if (mesh) applyMechanicaInstanceMatrices(mesh, instanceMatrices);
+      }}
+    />
+  ) : (
+    <mesh
+      castShadow
+      geometry={geometry}
+      material={material}
+      onPointerDown={onPointerDown}
+      receiveShadow
+    />
+  );
+}
+
 const PartNode = memo(function PartNode({
   appearance,
   assembly,
@@ -805,7 +923,7 @@ const PartNode = memo(function PartNode({
   visiblePartIds,
 }: PartNodeProps) {
   const group = useRef<Group>(null);
-  const instancedMesh = useRef<InstancedMesh>(null);
+  const instancedMeshes = useRef<Array<InstancedMesh | null>>([]);
   const assemblyPointer = useRef<number | null>(null);
   const assemblyStartPoint = useRef(new Vector3());
   const assemblyOffset = useRef(new Vector3());
@@ -823,46 +941,17 @@ const PartNode = memo(function PartNode({
       }),
     [geometryOptions, geometryScope, module, part],
   );
-  const geometry = geometryResource.geometry;
+  const geometries = useMemo(
+    () => [...partGeometryEntries(geometryResource.geometry)],
+    [geometryResource.geometry],
+  );
+  const instanceMatrices = useMemo(
+    () => geometries.map((geometry) => getMechanicaInstanceMatrices(geometry)),
+    [geometries],
+  );
   const visualPresentation = useMemo(
     () => visualMaterialFor(module.data.slug, part),
     [module.data.slug, part],
-  );
-  const materialOverride = useMemo(
-    () =>
-      geometry.userData.mechanicaMaterial as
-        StandardMaterialPresentation | undefined,
-    [geometry],
-  );
-  const textureVariant = compareContext
-    ? "none"
-    : (materialOverride?.textureVariant ??
-      visualPresentation?.textureVariant ??
-      defaultTextureVariant(part.material));
-  const texturePresentation = useMemo<StandardMaterialPresentation>(
-    () => ({
-      shaderFeatureHash: textureShaderFeatureHash(textureVariant),
-      textureVariant,
-    }),
-    [textureVariant],
-  );
-  const baseMaterialVariant = useMemo(
-    () =>
-      materialVariantKey(
-        materialOverride,
-        visualPresentation,
-        texturePresentation,
-      ),
-    [materialOverride, texturePresentation, visualPresentation],
-  );
-  const baseMaterialKey = `base:${baseMaterialVariant}`;
-  const baseMaterial = getMaterial(part.material, baseMaterialKey, () =>
-    standardMaterial(
-      part.material,
-      materialOverride,
-      visualPresentation,
-      texturePresentation,
-    ),
   );
   const comparePresentation = compareContext?.tintForPart(part.id);
   const compareColor = comparePresentation?.color;
@@ -916,24 +1005,6 @@ const PartNode = memo(function PartNode({
     spotlightCutaway,
     spotlightHighlighted,
   };
-  const activeMaterialKey = transientStateKey
-    ? `${baseMaterialKey}:state:${transientStateKey}`
-    : baseMaterialKey;
-  const material = transientStateKey
-    ? getMaterial(part.material, activeMaterialKey, () => {
-        const transientMaterial = baseMaterial.clone();
-        applyTransientMaterialState(
-          transientMaterial,
-          baseMaterial,
-          transientState,
-        );
-        return transientMaterial;
-      })
-    : baseMaterial;
-  const instanceMatrices = useMemo(
-    () => getMechanicaInstanceMatrices(geometry),
-    [geometry],
-  );
   const explodeVector = useMemo(() => radialExplodeVector(part), [part]);
   const axis = useMemo(
     () => new Vector3(...(part.joint?.axis ?? [0, 0, 1])).normalize(),
@@ -960,39 +1031,12 @@ const PartNode = memo(function PartNode({
 
   useLayoutEffect(() => geometryResource.retain(), [geometryResource]);
 
-  useEffect(() => {
-    const lease = acquireMaterial(
-      part.material,
-      activeMaterialKey,
-      () => material,
-    );
-    return lease.release;
-  }, [activeMaterialKey, material, part.material]);
-
-  useLayoutEffect(() => {
-    if (!transientStateKey) return;
-    applyTransientMaterialState(material, baseMaterial, transientState);
-  }, [
-    assemblyError,
-    assemblyHighlighted,
-    baseMaterial,
-    compareColor,
-    compareEmissive,
-    compareOpacity,
-    layerColor,
-    layerOpacity,
-    material,
-    schemeHighlighted,
-    seismoscopeDragonSpotlight,
-    spotlightCutaway,
-    spotlightHighlighted,
-    transientStateKey,
-  ]);
-
-  useLayoutEffect(() => {
-    if (!instancedMesh.current || !instanceMatrices) return;
-    applyMechanicaInstanceMatrices(instancedMesh.current, instanceMatrices);
-  }, [instanceMatrices]);
+  const setInstancedMesh = useCallback(
+    (index: number, mesh: InstancedMesh | null) => {
+      instancedMeshes.current[index] = mesh;
+    },
+    [],
+  );
 
   useFrame(() => {
     if (!group.current) return;
@@ -1014,16 +1058,19 @@ const PartNode = memo(function PartNode({
       return;
     }
     const value = state[part.id] ?? 0;
-    const geometryUpdate = geometry.userData.mechanicaUpdate;
-    const geometryAnimation = geometry.userData.mechanicaAnimation as
-      { currentStateRad?: number } | undefined;
-    if (
-      typeof geometryUpdate === "function" &&
-      geometryAnimation?.currentStateRad !== value
-    ) {
-      geometryUpdate(value);
-      if (instancedMesh.current && instanceMatrices) {
-        applyMechanicaInstanceMatrices(instancedMesh.current, instanceMatrices);
+    for (let index = 0; index < geometries.length; index += 1) {
+      const geometry = geometries[index];
+      const geometryUpdate = geometry.userData.mechanicaUpdate;
+      const geometryAnimation = geometry.userData.mechanicaAnimation as
+        { currentStateRad?: number } | undefined;
+      if (
+        typeof geometryUpdate === "function" &&
+        geometryAnimation?.currentStateRad !== value
+      ) {
+        geometryUpdate(value);
+        const mesh = instancedMeshes.current[index];
+        const matrices = instanceMatrices[index];
+        if (mesh && matrices) applyMechanicaInstanceMatrices(mesh, matrices);
       }
     }
     const attitude = attitudeQuaternion(state, part.id);
@@ -1068,8 +1115,15 @@ const PartNode = memo(function PartNode({
     if ((event.target as Element).hasPointerCapture(event.pointerId)) {
       (event.target as Element).releasePointerCapture(event.pointerId);
     }
-    geometry.computeBoundingSphere();
-    const radius = Math.max(geometry.boundingSphere?.radius ?? 0.1, 0.001);
+    const bounds = new Box3();
+    for (const geometry of geometries) {
+      geometry.computeBoundingBox();
+      if (geometry.boundingBox) bounds.union(geometry.boundingBox);
+    }
+    const radius = Math.max(
+      bounds.isEmpty() ? 0.1 : bounds.getBoundingSphere(new Sphere()).radius,
+      0.001,
+    );
     const distance = explodeVector
       .clone()
       .multiplyScalar(partExplode)
@@ -1103,29 +1157,23 @@ const PartNode = memo(function PartNode({
     : null;
   const content = (
     <>
-      {renderOwnPart ? (
-        instanceMatrices ? (
-          <instancedMesh
-            args={[
-              geometry as BufferGeometry,
-              material,
-              instanceMatrices.length,
-            ]}
-            castShadow
-            onPointerDown={handlePointerDown}
-            receiveShadow
-            ref={instancedMesh}
-          />
-        ) : (
-          <mesh
-            castShadow
-            geometry={geometry}
-            material={material}
-            onPointerDown={handlePointerDown}
-            receiveShadow
-          />
-        )
-      ) : null}
+      {renderOwnPart
+        ? geometries.map((geometry, index) => (
+            <PartGeometryMesh
+              compareContext={compareContext}
+              geometry={geometry}
+              index={index}
+              instanceMatrices={instanceMatrices[index]}
+              key={geometry.uuid}
+              onInstancedMesh={setInstancedMesh}
+              onPointerDown={handlePointerDown}
+              part={part}
+              transientState={transientState}
+              transientStateKey={transientStateKey}
+              visualPresentation={visualPresentation}
+            />
+          ))
+        : null}
       {forceMarker ? (
         <Html center position={[0, 0.16, 0]}>
           <strong
@@ -1263,16 +1311,25 @@ function StoryCameraRig({ pose }: { pose?: StoryStageState["camera"] }) {
 function SceneComplexityProbe({
   count,
   memory,
+  sceneRef,
   sceneryCount,
   sceneryRaycastViolations,
 }: {
   count: { current: number };
   memory: { current: { geometries: number; textures: number } };
+  sceneRef: { current: Scene | null };
   sceneryCount: { current: number };
   sceneryRaycastViolations: { current: number };
 }) {
   const gl = useThree((state) => state.gl);
   const scene = useThree((state) => state.scene);
+
+  useLayoutEffect(() => {
+    sceneRef.current = scene;
+    return () => {
+      if (sceneRef.current === scene) sceneRef.current = null;
+    };
+  }, [scene, sceneRef]);
 
   useFrame(() => {
     let triangles = 0;
@@ -2495,6 +2552,7 @@ export default function MachineViewer({
   const sceneryTriangles = useRef(0);
   const sceneryRaycastViolations = useRef(0);
   const sceneMemory = useRef({ geometries: 0, textures: 0 });
+  const machineScene = useRef<Scene | null>(null);
   const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
   const observedCompletionEffect = useRef(0);
   const displayState = useRef<Record<string, number> | null>(null);
@@ -2729,6 +2787,45 @@ export default function MachineViewer({
       machineReady: viewerGeometryReadyAt,
       memory: () => ({ ...sceneMemory.current }),
       module: activeModule,
+      partMaterials: (partId) => {
+        const part = machineScene.current?.getObjectByName(partId);
+        if (!part) return [];
+        const presentations: Array<{
+          alphaTest: number;
+          color: string;
+          side: number;
+        }> = [];
+        part.traverse((object) => {
+          const mesh = object as typeof object & {
+            isMesh?: boolean;
+            material?: MeshStandardMaterial | MeshStandardMaterial[];
+          };
+          if (!mesh.isMesh || !mesh.material) return;
+          const materials = Array.isArray(mesh.material)
+            ? mesh.material
+            : [mesh.material];
+          for (const material of materials) {
+            if (!material.isMeshStandardMaterial) continue;
+            presentations.push({
+              alphaTest: material.alphaTest,
+              color: `#${material.color.getHexString()}`,
+              side: material.side,
+            });
+          }
+        });
+        return presentations;
+      },
+      partMeshCount: (partId) => {
+        const part = machineScene.current?.getObjectByName(partId);
+        if (!part) return 0;
+        let count = 0;
+        part.traverse((object) => {
+          if ((object as typeof object & { isMesh?: boolean }).isMesh) {
+            count += 1;
+          }
+        });
+        return count;
+      },
       sceneryRaycastViolations: () => sceneryRaycastViolations.current,
       sceneryTriangles: () => sceneryTriangles.current,
       spec: activeSpec,
@@ -3081,6 +3178,7 @@ export default function MachineViewer({
                 <SceneComplexityProbe
                   count={sceneTriangles}
                   memory={sceneMemory}
+                  sceneRef={machineScene}
                   sceneryCount={sceneryTriangles}
                   sceneryRaycastViolations={sceneryRaycastViolations}
                 />

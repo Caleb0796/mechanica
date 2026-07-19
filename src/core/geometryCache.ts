@@ -1,22 +1,27 @@
 import type * as THREE from "three";
 
 import type { GeometryDef, MachineModule } from "../sim/types";
-import { buildPartGeometry } from "./primitives";
+import {
+  buildPartGeometry,
+  disposePartGeometry,
+  partGeometryEntries,
+  type PartGeometry,
+} from "./primitives";
 
 interface CacheEntry {
-  geometry: THREE.BufferGeometry;
+  geometry: PartGeometry;
   lastUsed: number;
   users: number;
 }
 
 interface PrepareGeometryOptions {
   consumerKey?: string;
-  factory?: () => THREE.BufferGeometry;
+  factory?: () => PartGeometry;
   variant?: string;
 }
 
 export interface PreparedGeometry {
-  geometry: THREE.BufferGeometry;
+  geometry: PartGeometry;
   retain: () => () => void;
 }
 
@@ -48,9 +53,11 @@ export class MachineGeometryCache {
     const geometry = options.factory
       ? options.factory()
       : buildPartGeometry(definition, module.customBuilders);
-    const stateful = typeof geometry.userData.mechanicaUpdate === "function";
+    const stateful = partGeometryEntries(geometry).some(
+      (entry) => typeof entry.userData.mechanicaUpdate === "function",
+    );
     if (stateful && !consumerKey) {
-      geometry.dispose();
+      disposePartGeometry(geometry);
       throw new Error("Stateful geometry requires a stable consumer key");
     }
     const key = stateful ? consumerKey : baseKey;
@@ -82,7 +89,7 @@ export class MachineGeometryCache {
     for (const [key, entry] of candidates) {
       if (this.entries.size <= Math.max(0, maxEntries)) break;
       this.entries.delete(key);
-      entry.geometry.dispose();
+      disposePartGeometry(entry.geometry);
       disposed += 1;
     }
     return disposed;

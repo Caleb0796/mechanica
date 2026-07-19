@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { singlePartGeometry } from "../../src/core/primitives";
 import astroclock from "../../src/machines/astroclock/build";
 import bellows from "../../src/machines/bellows/build";
 import odometer from "../../src/machines/odometer/build";
@@ -24,7 +25,8 @@ describe("viewer geometry warmup recipe", () => {
       const options = geometryOptionsForPart(module as MachineModule, part);
 
       expect(options?.variant).toBe(variant);
-      const geometry = options?.factory?.();
+      const built = options?.factory?.();
+      const geometry = built ? singlePartGeometry(built) : undefined;
       expect(geometry?.getAttribute("position").count).toBeGreaterThan(0);
       geometry?.dispose();
     },

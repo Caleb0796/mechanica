@@ -1,4 +1,4 @@
-import { assertMachineData } from '../src/data/schema'
+import { assertMachineData, assertMachineModuleAids } from '../src/data/schema'
 import { MACHINE_SLUGS, type MachineData, type MachineModule, type MachineSlug } from '../src/sim/types'
 import { importErrorMessage, isMissingMachineBuild } from '../src/validate/imports'
 import { normalizeQuoteReceipt } from '../src/validate/quotes'
@@ -55,6 +55,7 @@ async function loadMachine(slug: MachineSlug): Promise<MachineModule> {
   const url = new URL(`../src/machines/${slug}/build.ts`, import.meta.url)
   const imported = await import(url.href) as { default?: MachineModule }
   if (!imported.default) throw new Error(`${slug} build has no default export`)
+  assertMachineModuleAids(imported.default)
   return imported.default
 }
 

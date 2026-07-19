@@ -82,6 +82,7 @@ import MachineEnvironment, {
 } from "../scene/MachineEnvironment";
 import { useUiStore } from "../store";
 import type { StoryStageState } from "../story/types";
+import AidLayer from "./AidLayer";
 import DriveHandle from "./DriveHandle";
 import ExplodedControl from "./ExplodedControl";
 import {
@@ -154,6 +155,7 @@ declare global {
       partMaterials: (partId: string) => Array<{
         alphaTest: number;
         color: string;
+        opacity: number;
         side: number;
       }>;
       spec: MachineModule["spec"];
@@ -204,6 +206,8 @@ export interface MachineViewerProps {
 const EMPTY_PART_IDS: string[] = [];
 
 interface PartNodeProps {
+  aidCutawayPartIds?: readonly string[];
+  aidHighlightPartIds?: readonly string[];
   appearance?: PartAppearance;
   assembly?: AssemblyController;
   assemblyProgress: number;
@@ -727,6 +731,8 @@ function radialExplodeVector(part: PartDef) {
 }
 
 interface TransientMaterialState {
+  aidCutaway: boolean;
+  aidHighlighted: boolean;
   assemblyError: boolean;
   assemblyHighlighted: boolean;
   compareColor?: string;
@@ -749,14 +755,22 @@ function applyTransientMaterialState(
   material.copy(baseMaterial);
   material.userData.mechanicaMaterialCacheKey = cacheKey;
 
-  if (state.spotlightCutaway) {
+  if (state.aidCutaway || state.spotlightCutaway) {
     material.opacity = 0.22;
     material.transparent = true;
     material.depthWrite = false;
   }
-  if (state.schemeHighlighted || state.spotlightHighlighted) {
+  if (
+    state.aidHighlighted ||
+    state.schemeHighlighted ||
+    state.spotlightHighlighted
+  ) {
     material.emissive.set("#6e4e18");
-    material.emissiveIntensity = state.spotlightHighlighted ? 1.4 : 0.65;
+    material.emissiveIntensity = state.spotlightHighlighted
+      ? 1.4
+      : state.aidHighlighted
+        ? 1.1
+        : 0.65;
   }
   if (state.seismoscopeDragonSpotlight) {
     material.color.set("#b62f2f");
@@ -900,6 +914,8 @@ function PartGeometryMesh({
 }
 
 const PartNode = memo(function PartNode({
+  aidCutawayPartIds = EMPTY_PART_IDS,
+  aidHighlightPartIds = EMPTY_PART_IDS,
   appearance,
   assembly,
   assemblyProgress,
@@ -963,6 +979,8 @@ const PartNode = memo(function PartNode({
       : undefined;
   const assemblyError = assembly?.state.errorPartId === part.id;
   const assemblyHighlighted = assembly?.currentPartId === part.id;
+  const aidCutaway = aidCutawayPartIds.includes(part.id);
+  const aidHighlighted = aidHighlightPartIds.includes(part.id);
   const spotlightCutaway =
     module.data.slug === "chainpump" && part.id === "trough" && spotlightActive;
   const schemeHighlighted = part.schemeTags?.includes(schemeId ?? "") ?? false;
@@ -975,6 +993,8 @@ const PartNode = memo(function PartNode({
   const layerColor = layerPresentation?.color;
   const layerOpacity = layerPresentation?.opacity;
   const transientStateKey = [
+    aidCutaway ? "aid-cutaway" : "",
+    aidHighlighted ? "aid-highlight" : "",
     spotlightCutaway ? "cutaway" : "",
     schemeHighlighted ? "scheme" : "",
     spotlightHighlighted ? "spotlight" : "",
@@ -993,6 +1013,8 @@ const PartNode = memo(function PartNode({
     .filter(Boolean)
     .join("|");
   const transientState: TransientMaterialState = {
+    aidCutaway,
+    aidHighlighted,
     assemblyError,
     assemblyHighlighted,
     compareColor,
@@ -1191,6 +1213,8 @@ const PartNode = memo(function PartNode({
       ) : null}
       {childParts.map((child) => (
         <PartNode
+          aidCutawayPartIds={aidCutawayPartIds}
+          aidHighlightPartIds={aidHighlightPartIds}
           appearance={appearance}
           assembly={assembly}
           assemblyProgress={assemblyProgress}
@@ -1258,6 +1282,8 @@ const PartNode = memo(function PartNode({
 
 interface MachineSceneProps {
   activeSpec: MachineSpec;
+  aidCutawayPartIds?: readonly string[];
+  aidHighlightPartIds?: readonly string[];
   appearance?: PartAppearance;
   assembly?: AssemblyController;
   assemblyProgress: number;
@@ -1452,6 +1478,8 @@ function GhostPartLayer({
 
 function MachineScene({
   activeSpec,
+  aidCutawayPartIds = EMPTY_PART_IDS,
+  aidHighlightPartIds = EMPTY_PART_IDS,
   appearance,
   assembly,
   assemblyProgress,
@@ -1695,6 +1723,8 @@ function MachineScene({
       <group ref={machineRoot}>
         {rootParts.map((part) => (
           <PartNode
+            aidCutawayPartIds={aidCutawayPartIds}
+            aidHighlightPartIds={aidHighlightPartIds}
             appearance={appearance}
             assembly={assembly}
             assemblyProgress={assemblyProgress}
@@ -2529,6 +2559,8 @@ export default function MachineViewer({
     useState<SchemeTransitionMetadata | null>(null);
   const [schemeTransitionNow, setSchemeTransitionNow] = useState(0);
   const [caption, setCaption] = useState("");
+  const [aidCutawayPartIds, setAidCutawayPartIds] = useState<string[]>([]);
+  const [aidHighlightPartIds, setAidHighlightPartIds] = useState<string[]>([]);
   const [spotlightActive, setSpotlightActive] = useState(false);
   const [spotlightAutoFitKey, setSpotlightAutoFitKey] = useState<string | null>(
     null,
@@ -2654,6 +2686,8 @@ export default function MachineViewer({
     }
     displayState.current = null;
     cameraDiagnostics.current = null;
+    setAidCutawayPartIds([]);
+    setAidHighlightPartIds([]);
     setSpotlightActive(false);
     setSpotlightAutoFitKey(null);
     setSpotlightDone(false);
@@ -2793,6 +2827,7 @@ export default function MachineViewer({
         const presentations: Array<{
           alphaTest: number;
           color: string;
+          opacity: number;
           side: number;
         }> = [];
         part.traverse((object) => {
@@ -2809,6 +2844,7 @@ export default function MachineViewer({
             presentations.push({
               alphaTest: material.alphaTest,
               color: `#${material.color.getHexString()}`,
+              opacity: material.opacity,
               side: material.side,
             });
           }
@@ -3184,36 +3220,48 @@ export default function MachineViewer({
                 />
               ) : null}
               {viewerGeometryPrepared ? (
-                <MachineScene
-                  activeSpec={activeSpec}
-                  appearance={newSchemeAppearance}
-                  assembly={assembly}
-                  assemblyProgress={assemblyProgress}
-                  blockedFitKeyToConsume={spotlightAutoFitKey ?? undefined}
-                  cameraDiagnostics={cameraDiagnostics}
-                  displayState={displayState}
-                  explode={explode}
-                  geometryReadyAt={viewerGeometryReadyAt}
-                  graph={graph}
-                  introPlayed={viewerIntroPlayed}
-                  module={module}
-                  onDrivePart={drivePart}
-                  onGeometryCommitted={commitViewerGeometry}
-                  paused={paused || !assembly.state.transmissionEnabled}
-                  schemeId={activeSchemeId}
-                  showScene={showScene}
-                  spotlightActive={spotlightActive}
-                  spotlightPartIds={spotlightPartIds}
-                  spotlightRunId={spotlightRunId}
-                  transitionLayer={
-                    oldSchemeSpec && oldSchemeAppearance
-                      ? {
-                          appearance: oldSchemeAppearance,
-                          spec: oldSchemeSpec,
-                        }
-                      : undefined
-                  }
-                />
+                <>
+                  <MachineScene
+                    activeSpec={activeSpec}
+                    aidCutawayPartIds={aidCutawayPartIds}
+                    aidHighlightPartIds={aidHighlightPartIds}
+                    appearance={newSchemeAppearance}
+                    assembly={assembly}
+                    assemblyProgress={assemblyProgress}
+                    blockedFitKeyToConsume={spotlightAutoFitKey ?? undefined}
+                    cameraDiagnostics={cameraDiagnostics}
+                    displayState={displayState}
+                    explode={explode}
+                    geometryReadyAt={viewerGeometryReadyAt}
+                    graph={graph}
+                    introPlayed={viewerIntroPlayed}
+                    module={module}
+                    onDrivePart={drivePart}
+                    onGeometryCommitted={commitViewerGeometry}
+                    paused={paused || !assembly.state.transmissionEnabled}
+                    schemeId={activeSchemeId}
+                    showScene={showScene}
+                    spotlightActive={spotlightActive}
+                    spotlightPartIds={spotlightPartIds}
+                    spotlightRunId={spotlightRunId}
+                    transitionLayer={
+                      oldSchemeSpec && oldSchemeAppearance
+                        ? {
+                            appearance: oldSchemeAppearance,
+                            spec: oldSchemeSpec,
+                          }
+                        : undefined
+                    }
+                  />
+                  <AidLayer
+                    aids={module.aids ?? []}
+                    language={language}
+                    module={module}
+                    onCutawayChange={setAidCutawayPartIds}
+                    onHighlightChange={setAidHighlightPartIds}
+                    onRunTrigger={runTrigger}
+                  />
+                </>
               ) : null}
             </Canvas>
           )}

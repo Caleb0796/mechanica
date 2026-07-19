@@ -91,6 +91,48 @@ function buildFlame(params: Record<string, number>): THREE.BufferGeometry {
   return geometry;
 }
 
+function buildAidPulseEmitter(params: Record<string, number>): THREE.Points {
+  const count = Math.min(64, Math.max(8, Math.round(params.rate ?? 24)));
+  const positions = new Float32Array(count * 3);
+  for (let index = 0; index < count; index += 1) {
+    const angle = index * 2.3999632297;
+    const radius = 0.0014 * Math.sqrt((index + 0.5) / count);
+    positions[index * 3] = Math.cos(angle) * radius;
+    positions[index * 3 + 1] = ((index % 7) - 3) * 0.00035;
+    positions[index * 3 + 2] = Math.sin(angle) * radius;
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(positions, 3),
+  );
+  const sprite = new THREE.DataTexture(
+    new Uint8Array([240, 201, 120, 255]),
+    1,
+    1,
+  );
+  sprite.needsUpdate = true;
+  const material = new THREE.ShaderMaterial({
+    depthWrite: false,
+    fragmentShader: `
+      uniform sampler2D sprite;
+      void main() {
+        gl_FragColor = texture2D(sprite, gl_PointCoord);
+      }
+    `,
+    transparent: true,
+    uniforms: { sprite: { value: sprite } },
+    vertexShader: `
+      void main() {
+        vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
+        gl_PointSize = 4.0;
+        gl_Position = projectionMatrix * viewPosition;
+      }
+    `,
+  });
+  return new THREE.Points(geometry, material);
+}
+
 function multiplyQuaternions(
   left: [number, number, number, number],
   right: [number, number, number, number],
@@ -108,6 +150,64 @@ function multiplyQuaternions(
 const machine: MachineModule = {
   spec,
   data: dataJson as unknown as MachineData,
+  aids: [
+    {
+      kind: "callouts",
+      anchors: [
+        {
+          partId: "outer-ring",
+          label: { zh: "外环", en: "Outer ring" },
+        },
+        {
+          partId: "inner-ring",
+          label: { zh: "内环", en: "Inner ring" },
+        },
+        {
+          partId: "incense-bowl",
+          label: { zh: "香盂", en: "Incense bowl" },
+        },
+      ],
+    },
+    {
+      kind: "powerPath",
+      sequence: ["outer-shell", "outer-ring", "inner-ring", "incense-bowl"],
+      dwellMs: 650,
+    },
+    {
+      kind: "flowParticles",
+      flavor: "smoke",
+      pathPartIds: ["incense-bowl", "flame"],
+      rate: 28,
+    },
+    {
+      kind: "cutaway",
+      partIds: ["outer-shell"],
+      label: {
+        zh: "隐去外壳以观察三环",
+        en: "Fade the shell to inspect the three rings",
+      },
+    },
+    {
+      kind: "flowParticles",
+      flavor: "custom",
+      emitter: "gimbalAidPulse",
+      pathPartIds: [
+        "hanger-arm",
+        "suspension-chain",
+        "outer-shell",
+        "incense-bowl",
+      ],
+      rate: 20,
+    },
+    {
+      kind: "subDemo",
+      triggerId: "spotlight",
+      caption: {
+        zh: "演示三环无源自稳",
+        en: "Demonstrate passive three-ring stabilization",
+      },
+    },
+  ],
   mechanism: {
     triggers: [
       {
@@ -166,6 +266,9 @@ const machine: MachineModule = {
     gimbalInnerRing: buildInnerRing,
     gimbalBowl: buildBowl,
     gimbalFlame: buildFlame,
+  },
+  customSceneBuilders: {
+    gimbalAidPulse: buildAidPulseEmitter,
   },
 };
 

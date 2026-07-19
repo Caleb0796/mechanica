@@ -187,6 +187,41 @@ export interface MechanismScript {
   }>;
 }
 
+export type PrincipleAid =
+  | {
+      kind: "powerPath";
+      sequence: string[];
+      dwellMs?: number;
+    }
+  | {
+      kind: "callouts";
+      anchors: Array<{
+        partId: string;
+        label: { zh: string; en: string };
+      }>;
+    }
+  | ({
+      kind: "flowParticles";
+      pathPartIds: string[];
+      rate?: number;
+    } & (
+      | {
+          flavor: "water" | "grain" | "thread" | "smoke" | "sparks";
+          emitter?: never;
+        }
+      | { flavor: "custom"; emitter: string }
+    ))
+  | {
+      kind: "cutaway";
+      partIds: string[];
+      label: { zh: string; en: string };
+    }
+  | {
+      kind: "subDemo";
+      triggerId: string;
+      caption: { zh: string; en: string };
+    };
+
 export interface MachineData {
   slug: MachineSlug;
   names: { zh: string; en: string };
@@ -251,6 +286,7 @@ export interface MachineData {
 export interface MachineModule {
   spec: MachineSpec;
   data: MachineData;
+  aids?: PrincipleAid[];
   mechanism?: MechanismScript;
   schemes?: Record<string, SchemePatch>;
   defaultSchemeId?: string;

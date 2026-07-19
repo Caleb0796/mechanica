@@ -1,0 +1,627 @@
+import { Html } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import {
+  BufferGeometry,
+  Float32BufferAttribute,
+  type Group,
+  type Material,
+  type Object3D,
+  type Points,
+  type Texture,
+  Vector3,
+} from "three";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import type { MachineModule, PrincipleAid } from "../../sim/types";
+
+type Language = "zh" | "en";
+
+interface AidState {
+  active: boolean;
+  averageFrameMs: number;
+  highlightedPartIds: string[];
+  index: number | null;
+  kind: PrincipleAid["kind"] | null;
+  flowMode: "custom" | "points" | null;
+  flowParticleCount: number;
+  sampledFrames: number;
+}
+
+interface AidWindow extends Window {
+  __mechAid?: {
+    activate: (index?: number) => void;
+    deactivate: () => void;
+    projectPart: (partId: string) => { x: number; y: number } | null;
+    state: () => AidState;
+  };
+}
+
+interface AidLayerProps {
+  aids: PrincipleAid[];
+  language: Language;
+  module: MachineModule;
+  onCutawayChange: (partIds: string[]) => void;
+  onHighlightChange: (partIds: string[]) => void;
+  onRunTrigger: (triggerId: string) => void;
+}
+
+interface FramePerformance {
+  samples: number[];
+  totalMs: number;
+}
+
+interface FlowRuntime {
+  count: number;
+  mode: "custom" | "points" | null;
+}
+
+const aidNames: Record<PrincipleAid["kind"], Record<Language, string>> = {
+  callouts: { zh: "部件标注", en: "Part callouts" },
+  cutaway: { zh: "剖切视图", en: "Cutaway" },
+  flowParticles: { zh: "流动路径", en: "Flow path" },
+  powerPath: { zh: "动力路径", en: "Power path" },
+  subDemo: { zh: "原理演示", en: "Principle demo" },
+};
+
+const particleColors: Record<
+  Extract<PrincipleAid, { kind: "flowParticles" }>["flavor"],
+  string
+> = {
+  custom: "#e9ddc4",
+  grain: "#d8b35b",
+  smoke: "#c8c5bd",
+  sparks: "#ffae42",
+  thread: "#e9ddc4",
+  water: "#6fc7d9",
+};
+
+function isObject3D(value: unknown): value is Object3D {
+  return Boolean(
+    value &&
+    typeof value === "object" &&
+    (value as { isObject3D?: boolean }).isObject3D,
+  );
+}
+
+function collectTextures(
+  value: unknown,
+  textures: Set<Texture>,
+  visited: WeakSet<object>,
+): void {
+  if (!value || typeof value !== "object") return;
+  if ((value as Texture).isTexture) {
+    textures.add(value as Texture);
+    return;
+  }
+  if (ArrayBuffer.isView(value)) return;
+  if (visited.has(value)) return;
+  visited.add(value);
+  for (const child of Object.values(value)) {
+    collectTextures(child, textures, visited);
+  }
+}
+
+function disposeObject3D(root: Object3D): void {
+  const geometries = new Set<BufferGeometry>();
+  const materials = new Set<Material>();
+  const textures = new Set<Texture>();
+  root.traverse((object) => {
+    const renderable = object as typeof object & {
+      geometry?: BufferGeometry;
+      material?: Material | Material[];
+    };
+    if (renderable.geometry) geometries.add(renderable.geometry);
+    const objectMaterials = Array.isArray(renderable.material)
+      ? renderable.material
+      : renderable.material
+        ? [renderable.material]
+        : [];
+    for (const material of objectMaterials) {
+      materials.add(material);
+      collectTextures(material, textures, new WeakSet());
+    }
+  });
+  for (const texture of textures) texture.dispose();
+  for (const material of materials) material.dispose();
+  for (const geometry of geometries) geometry.dispose();
+}
+
+function Callouts({
+  aid,
+  language,
+  recordFrame,
+}: {
+  aid: Extract<PrincipleAid, { kind: "callouts" }>;
+  language: Language;
+  recordFrame: (durationMs: number) => void;
+}) {
+  const scene = useThree((state) => state.scene);
+  const anchors = useRef(new Map<string, Group>());
+  const worldPosition = useMemo(() => new Vector3(), []);
+
+  useFrame(() => {
+    const startedAt = performance.now();
+    for (const anchor of aid.anchors) {
+      const part = scene.getObjectByName(anchor.partId);
+      const marker = anchors.current.get(anchor.partId);
+      if (!marker) continue;
+      marker.visible = Boolean(part);
+      if (!part) continue;
+      part.getWorldPosition(worldPosition);
+      marker.position.copy(worldPosition);
+    }
+    recordFrame(performance.now() - startedAt);
+  });
+
+  return aid.anchors.map((anchor, index) => {
+    const angle = -Math.PI / 2 + (index * Math.PI * 2) / aid.anchors.length;
+    const offsetX = Math.cos(angle) * 76;
+    const offsetY = Math.sin(angle) * 34;
+    return (
+      <group
+        key={anchor.partId}
+        ref={(group) => {
+          if (group) anchors.current.set(anchor.partId, group);
+          else anchors.current.delete(anchor.partId);
+        }}
+      >
+        <Html center style={{ pointerEvents: "none" }} zIndexRange={[30, 20]}>
+          <span
+            data-part-id={anchor.partId}
+            data-testid="aid-callout-anchor"
+            style={{
+              display: "block",
+              height: 0,
+              pointerEvents: "none",
+              position: "relative",
+              width: 0,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                background: "#d9b566",
+                borderRadius: "50%",
+                height: "4px",
+                left: "-2px",
+                position: "absolute",
+                top: "-2px",
+                width: "4px",
+              }}
+            />
+            <span
+              data-part-id={anchor.partId}
+              data-testid="aid-callout"
+              style={{
+                background: "rgba(10, 12, 12, 0.9)",
+                border: "1px solid rgba(219, 181, 102, 0.72)",
+                borderRadius: "999px",
+                color: "#f7e8c7",
+                fontSize: "12px",
+                left: `${offsetX}px`,
+                padding: "4px 8px",
+                position: "absolute",
+                top: `${offsetY}px`,
+                transform: "translate(-50%, -50%)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {anchor.label[language]}
+            </span>
+          </span>
+        </Html>
+      </group>
+    );
+  });
+}
+
+function FlowParticles({
+  aid,
+  module,
+  onRuntimeChange,
+  recordFrame,
+}: {
+  aid: Extract<PrincipleAid, { kind: "flowParticles" }>;
+  module: MachineModule;
+  onRuntimeChange: (runtime: FlowRuntime) => void;
+  recordFrame: (durationMs: number) => void;
+}) {
+  const scene = useThree((state) => state.scene);
+  const customRoot = useRef<Group>(null);
+  const points = useRef<Points>(null);
+  const runtimeKey = useRef("");
+  const count = Math.min(160, Math.max(8, Math.round(aid.rate ?? 40)));
+  const geometry = useMemo(() => {
+    const next = new BufferGeometry();
+    next.setAttribute("position", new Float32BufferAttribute(count * 3, 3));
+    return next;
+  }, [count]);
+  const pathPositions = useMemo(
+    () => aid.pathPartIds.map(() => new Vector3()),
+    [aid.pathPartIds],
+  );
+  const [customEmitter, setCustomEmitter] = useState<Object3D | null>(null);
+
+  useEffect(() => () => geometry.dispose(), [geometry]);
+  useEffect(() => {
+    if (aid.flavor !== "custom") {
+      setCustomEmitter(null);
+      return;
+    }
+    const built = module.customSceneBuilders?.[aid.emitter]?.({
+      pathCount: aid.pathPartIds.length,
+      rate: aid.rate ?? 40,
+    });
+    const object = isObject3D(built) ? built : null;
+    setCustomEmitter(object);
+    return () => {
+      if (object) disposeObject3D(object);
+    };
+  }, [
+    aid.emitter,
+    aid.flavor,
+    aid.pathPartIds.length,
+    aid.rate,
+    module.customSceneBuilders,
+  ]);
+  useEffect(
+    () => () => onRuntimeChange({ count: 0, mode: null }),
+    [onRuntimeChange],
+  );
+
+  useFrame((state) => {
+    const startedAt = performance.now();
+    let resolved = 0;
+    for (let index = 0; index < aid.pathPartIds.length; index += 1) {
+      const part = scene.getObjectByName(aid.pathPartIds[index]);
+      if (!part) continue;
+      part.getWorldPosition(pathPositions[resolved]);
+      resolved += 1;
+    }
+    const mode =
+      resolved === 0
+        ? null
+        : customEmitter
+          ? "custom"
+          : aid.flavor === "custom"
+            ? null
+            : "points";
+    const nextRuntimeKey = `${resolved}:${mode ?? "none"}`;
+    if (runtimeKey.current !== nextRuntimeKey) {
+      runtimeKey.current = nextRuntimeKey;
+      onRuntimeChange({ count: mode ? count : 0, mode });
+    }
+    if (customRoot.current) customRoot.current.visible = resolved > 0;
+    if (points.current) points.current.visible = resolved > 0;
+    if (customEmitter && customRoot.current && resolved > 0) {
+      if (resolved === 1) {
+        customRoot.current.position.copy(pathPositions[0]);
+      } else {
+        const scaled = ((state.clock.elapsedTime * 0.12) % 1) * (resolved - 1);
+        const segment = Math.min(resolved - 2, Math.floor(scaled));
+        customRoot.current.position
+          .copy(pathPositions[segment])
+          .lerp(pathPositions[segment + 1], scaled - segment);
+      }
+    } else if (points.current) {
+      const positions = geometry.getAttribute(
+        "position",
+      ) as Float32BufferAttribute;
+      if (resolved === 1) {
+        for (let index = 0; index < count; index += 1) {
+          positions.setXYZ(index, ...pathPositions[0].toArray());
+        }
+      } else if (resolved > 1) {
+        for (let index = 0; index < count; index += 1) {
+          const progress = (index / count + state.clock.elapsedTime * 0.12) % 1;
+          const scaled = progress * (resolved - 1);
+          const segment = Math.min(resolved - 2, Math.floor(scaled));
+          const local = scaled - segment;
+          const start = pathPositions[segment];
+          const end = pathPositions[segment + 1];
+          positions.setXYZ(
+            index,
+            start.x + (end.x - start.x) * local,
+            start.y + (end.y - start.y) * local,
+            start.z + (end.z - start.z) * local,
+          );
+        }
+      }
+      positions.needsUpdate = true;
+    }
+    recordFrame(performance.now() - startedAt);
+  });
+
+  if (aid.flavor === "custom") {
+    return customEmitter ? (
+      <group
+        name="mechanica-aid-custom-emitter"
+        ref={customRoot}
+        visible={false}
+      >
+        <primitive dispose={null} object={customEmitter} />
+      </group>
+    ) : null;
+  }
+
+  return (
+    <points
+      geometry={geometry}
+      name="mechanica-aid-flow-particles"
+      ref={points}
+      visible={false}
+    >
+      <pointsMaterial
+        color={particleColors[aid.flavor]}
+        depthWrite={false}
+        opacity={0.82}
+        size={aid.flavor === "sparks" ? 0.024 : 0.018}
+        sizeAttenuation
+        transparent
+      />
+    </points>
+  );
+}
+
+export default function AidLayer({
+  aids,
+  language,
+  module,
+  onCutawayChange,
+  onHighlightChange,
+  onRunTrigger,
+}: AidLayerProps) {
+  const camera = useThree((state) => state.camera);
+  const gl = useThree((state) => state.gl);
+  const scene = useThree((state) => state.scene);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const highlightedPartIds = useRef<string[]>([]);
+  const framePerformance = useRef<FramePerformance>({
+    samples: [],
+    totalMs: 0,
+  });
+  const flowRuntime = useRef<FlowRuntime>({ count: 0, mode: null });
+  const projection = useMemo(() => new Vector3(), []);
+  const aidWindow = window as AidWindow;
+  const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
+  const activeAid = activeIndex === null ? null : (aids[activeIndex] ?? null);
+
+  const resetPerformance = useCallback(() => {
+    framePerformance.current = { samples: [], totalMs: 0 };
+  }, []);
+  const recordFrame = useCallback((durationMs: number) => {
+    const measurement = framePerformance.current;
+    measurement.samples.push(durationMs);
+    measurement.totalMs += durationMs;
+    if (measurement.samples.length > 60) {
+      measurement.totalMs -= measurement.samples.shift() ?? 0;
+    }
+  }, []);
+  const setFlowRuntime = useCallback((runtime: FlowRuntime) => {
+    flowRuntime.current = runtime;
+  }, []);
+
+  useFrame(() => {
+    if (
+      activeAid &&
+      activeAid.kind !== "callouts" &&
+      activeAid.kind !== "flowParticles"
+    ) {
+      recordFrame(0);
+    }
+  });
+
+  useEffect(() => {
+    if (!activeAid || activeAid.kind !== "powerPath") {
+      highlightedPartIds.current = [];
+      onHighlightChange([]);
+      return;
+    }
+    let index = 0;
+    const showPart = () => {
+      highlightedPartIds.current = [activeAid.sequence[index]];
+      onHighlightChange(highlightedPartIds.current);
+      index = (index + 1) % activeAid.sequence.length;
+    };
+    showPart();
+    const interval = window.setInterval(showPart, activeAid.dwellMs ?? 700);
+    return () => {
+      window.clearInterval(interval);
+      highlightedPartIds.current = [];
+      onHighlightChange([]);
+    };
+  }, [activeAid, onHighlightChange]);
+
+  useEffect(() => {
+    const nextPartIds = activeAid?.kind === "cutaway" ? activeAid.partIds : [];
+    onCutawayChange(nextPartIds);
+    return () => onCutawayChange([]);
+  }, [activeAid, onCutawayChange]);
+
+  useLayoutEffect(() => {
+    if (!hooksEnabled) return;
+    aidWindow.__mechAid = {
+      activate: (index = 0) => {
+        if (!aids[index]) return;
+        resetPerformance();
+        setActiveIndex(index);
+      },
+      deactivate: () => {
+        resetPerformance();
+        setActiveIndex(null);
+      },
+      projectPart: (partId) => {
+        const part = scene.getObjectByName(partId);
+        if (!part) return null;
+        part.getWorldPosition(projection);
+        projection.project(camera);
+        const bounds = gl.domElement.getBoundingClientRect();
+        return {
+          x: bounds.left + ((projection.x + 1) * bounds.width) / 2,
+          y: bounds.top + ((1 - projection.y) * bounds.height) / 2,
+        };
+      },
+      state: () => {
+        const measurement = framePerformance.current;
+        return {
+          active: activeAid !== null,
+          averageFrameMs:
+            measurement.samples.length > 0
+              ? measurement.totalMs / measurement.samples.length
+              : 0,
+          highlightedPartIds: [...highlightedPartIds.current],
+          index: activeIndex,
+          kind: activeAid?.kind ?? null,
+          flowMode: flowRuntime.current.mode,
+          flowParticleCount: flowRuntime.current.count,
+          sampledFrames: measurement.samples.length,
+        };
+      },
+    };
+    return () => {
+      delete aidWindow.__mechAid;
+    };
+  }, [
+    activeAid,
+    activeIndex,
+    aidWindow,
+    aids,
+    camera,
+    gl.domElement,
+    hooksEnabled,
+    projection,
+    resetPerformance,
+    scene,
+  ]);
+
+  useEffect(
+    () => () => {
+      highlightedPartIds.current = [];
+      onHighlightChange([]);
+      onCutawayChange([]);
+    },
+    [onCutawayChange, onHighlightChange],
+  );
+
+  if (aids.length === 0) return null;
+
+  return (
+    <>
+      {activeAid?.kind === "callouts" ? (
+        <Callouts
+          aid={activeAid}
+          language={language}
+          recordFrame={recordFrame}
+        />
+      ) : null}
+      {activeAid?.kind === "flowParticles" ? (
+        <FlowParticles
+          aid={activeAid}
+          module={module}
+          onRuntimeChange={setFlowRuntime}
+          recordFrame={recordFrame}
+        />
+      ) : null}
+      <Html fullscreen style={{ pointerEvents: "none" }} zIndexRange={[40, 31]}>
+        <div
+          data-active-aid-kind={activeAid?.kind ?? "none"}
+          data-testid="aid-layer"
+          style={{
+            inset: 0,
+            pointerEvents: "none",
+            position: "absolute",
+          }}
+        >
+          <div
+            aria-label={language === "zh" ? "原理辅助" : "Principle aids"}
+            role="toolbar"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flexWrap: "wrap",
+              gap: "6px",
+              maxHeight: "calc(100% - 24px)",
+              maxWidth: "min(260px, calc(100% - 24px))",
+              pointerEvents: "auto",
+              position: "absolute",
+              right: "12px",
+              top: "12px",
+            }}
+          >
+            {aids.map((aid, index) => (
+              <button
+                aria-pressed={activeIndex === index}
+                data-aid-kind={aid.kind}
+                data-testid="aid-select"
+                key={`${aid.kind}:${index}`}
+                onClick={() => {
+                  resetPerformance();
+                  setActiveIndex((current) =>
+                    current === index ? null : index,
+                  );
+                }}
+                style={{
+                  background:
+                    activeIndex === index
+                      ? "rgba(178, 125, 44, 0.94)"
+                      : "rgba(12, 14, 14, 0.88)",
+                  border: "1px solid rgba(219, 181, 102, 0.7)",
+                  borderRadius: "999px",
+                  color: "#fff3d5",
+                  cursor: "pointer",
+                  font: "inherit",
+                  fontSize: "12px",
+                  padding: "6px 10px",
+                }}
+                type="button"
+              >
+                {aidNames[aid.kind][language]}
+              </button>
+            ))}
+            {activeAid?.kind === "subDemo" ? (
+              <button
+                data-testid="aid-sub-demo"
+                onClick={() => onRunTrigger(activeAid.triggerId)}
+                style={{
+                  background: "#ead19c",
+                  border: 0,
+                  borderRadius: "999px",
+                  color: "#21170d",
+                  cursor: "pointer",
+                  font: "inherit",
+                  fontSize: "12px",
+                  padding: "6px 10px",
+                }}
+                type="button"
+              >
+                {activeAid.caption[language]}
+              </button>
+            ) : null}
+            {activeAid?.kind === "cutaway" ? (
+              <output
+                style={{
+                  alignItems: "center",
+                  background: "rgba(12, 14, 14, 0.88)",
+                  borderRadius: "999px",
+                  color: "#fff3d5",
+                  display: "flex",
+                  fontSize: "12px",
+                  padding: "6px 10px",
+                }}
+              >
+                {activeAid.label[language]}
+              </output>
+            ) : null}
+          </div>
+        </div>
+      </Html>
+    </>
+  );
+}

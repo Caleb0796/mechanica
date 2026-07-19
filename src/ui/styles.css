@@ -358,6 +358,51 @@ a {
   inset: 0;
 }
 
+.story-machine-stage {
+  position: relative;
+}
+
+.geometry-loading {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) auto;
+  align-content: center;
+  justify-content: center;
+  gap: 0.45rem 0.7rem;
+  color: #cbb98f;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(136, 110, 58, 0.14),
+    transparent 18rem
+  );
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.geometry-loading span,
+.geometry-loading progress {
+  grid-column: 1 / -1;
+}
+
+.geometry-loading progress {
+  width: 14rem;
+  height: 0.3rem;
+  accent-color: #d9b86d;
+}
+
+.geometry-loading small {
+  grid-column: 2;
+  grid-row: 1;
+  color: #7f796d;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.62rem;
+  text-align: right;
+}
+
 .viewer-title {
   position: absolute;
   z-index: 2;

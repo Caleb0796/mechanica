@@ -84,6 +84,11 @@ for (const story of stories) {
     await page.goto(`/#/story/${story.slug}`);
     await expect(page.getByTestId("scroll-story")).toBeVisible();
     await expect(page.getByTestId("story-machine-stage")).toBeVisible();
+    await expect(page.getByTestId("story-machine-stage")).toHaveAttribute(
+      "data-machine-ready",
+      "true",
+      { timeout: 5_000 },
+    );
     await expect(page.locator("[data-story-step]")).toHaveCount(
       story.expectedSteps,
     );
@@ -116,6 +121,11 @@ for (const story of stories) {
       story.ingenuityStep,
       { timeout: 5_000 },
     );
+    await expect(page.getByTestId("story-machine-stage")).toHaveAttribute(
+      "data-machine-ready",
+      "true",
+      { timeout: 5_000 },
+    );
     await expect
       .poll(() =>
         page
@@ -133,6 +143,132 @@ for (const story of stories) {
     expect(errors).toEqual([]);
   });
 }
+
+test("F0-T5c story scheme handoff latches prepared scenes across jumps", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  page.on("pageerror", (error) => errors.push(error.message));
+  const setProgress = (progress: number) =>
+    page.evaluate((targetProgress) => {
+      const steps = [
+        ...document.querySelectorAll<HTMLElement>("[data-story-step]"),
+      ];
+      const first = steps.at(0);
+      const last = steps.at(-1);
+      if (!first || !last) throw new Error("Story steps are unavailable");
+      const firstCenter =
+        first.getBoundingClientRect().top +
+        window.scrollY +
+        first.offsetHeight / 2;
+      const lastCenter =
+        last.getBoundingClientRect().top +
+        window.scrollY +
+        last.offsetHeight / 2;
+      window.scrollTo({
+        behavior: "auto",
+        top:
+          firstCenter +
+          targetProgress * (lastCenter - firstCenter) -
+          window.innerHeight / 2,
+      });
+    }, progress);
+
+  await page.goto("/#/story/chariot");
+  const stage = page.getByTestId("story-machine-stage");
+  await expect(stage).toHaveAttribute("data-machine-ready", "true", {
+    timeout: 5_000,
+  });
+  await stage.evaluate((element) => {
+    element.dataset.transitionReadyDrop = "false";
+    element.dataset.unpreparedRender = "false";
+    const recordInvariant = () => {
+      if (element.dataset.machineReady !== "true") {
+        element.dataset.transitionReadyDrop = "true";
+      }
+      if (
+        element.dataset.renderedGeometryKey ===
+          element.dataset.requestedGeometryKey &&
+        element.dataset.requestedGeometryPrepared !== "true"
+      ) {
+        element.dataset.unpreparedRender = "true";
+      }
+    };
+    recordInvariant();
+    new MutationObserver(recordInvariant).observe(element, {
+      attributeFilter: [
+        "data-machine-ready",
+        "data-rendered-geometry-key",
+        "data-requested-geometry-key",
+        "data-requested-geometry-prepared",
+      ],
+      attributes: true,
+    });
+  });
+  const expectPreparedRequestRendered = () =>
+    expect
+      .poll(async () => {
+        const [prepared, renderedKey, requestedKey] = await Promise.all([
+          stage.getAttribute("data-requested-geometry-prepared"),
+          stage.getAttribute("data-rendered-geometry-key"),
+          stage.getAttribute("data-requested-geometry-key"),
+        ]);
+        return prepared === "true" && renderedKey === requestedKey;
+      })
+      .toBe(true);
+
+  await setProgress(5.25 / 6);
+  await expect(stage).toHaveAttribute("data-scheme-transition", "true");
+  await expect(stage).toHaveAttribute(
+    "data-requested-geometry-key",
+    "chariot:yansu-clutch:from-active",
+  );
+  await expect(stage).toHaveAttribute("data-machine-ready", "true");
+  await setProgress(5.75 / 6);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__mechStory?.state().segmentProgress),
+    )
+    .toBeGreaterThan(0.5);
+  await expect(stage).toHaveAttribute(
+    "data-requested-geometry-key",
+    "chariot:lanchester-diff:to-active",
+  );
+  await page.evaluate(() => {
+    document.body.style.paddingBottom = `${window.innerHeight}px`;
+  });
+  await setProgress(1);
+  await expect(stage).toHaveAttribute("data-scheme-transition", "false");
+  await expectPreparedRequestRendered();
+
+  await setProgress(5.75 / 6);
+  await expect(stage).toHaveAttribute("data-scheme-transition", "true");
+  await expect(stage).toHaveAttribute(
+    "data-requested-geometry-key",
+    "chariot:lanchester-diff:to-active",
+  );
+  await expectPreparedRequestRendered();
+
+  await setProgress(1);
+  await expect(stage).toHaveAttribute("data-scheme-transition", "false");
+  await expectPreparedRequestRendered();
+  await setProgress(0);
+  await expect.poll(() => storyProgress(page)).toBeLessThan(0.01);
+  await expect(stage).toHaveAttribute("data-scheme-transition", "false");
+  await expect(stage).toHaveAttribute(
+    "data-requested-geometry-key",
+    "chariot:yansu-clutch:from-active",
+  );
+  await expectPreparedRequestRendered();
+
+  await expect(stage).toHaveAttribute("data-machine-ready", "true");
+  await expect(stage).toHaveAttribute("data-transition-ready-drop", "false");
+  await expect(stage).toHaveAttribute("data-unprepared-render", "false");
+  expect(errors).toEqual([]);
+});
 
 test("story copy follows the language switch", async ({ page }) => {
   await page.goto("/#/story/chariot");

@@ -29,6 +29,10 @@ import { useCompareStore } from "./store";
 import SceneEnvironment, {
   prepareSceneEnvironment,
 } from "../viewer/SceneEnvironment";
+import {
+  GeometryLoading,
+  useMachineGeometryWarmup,
+} from "../viewer/geometryWarmup";
 
 export interface CompareSceneContext {
   cameraTarget: [number, number, number];
@@ -36,11 +40,13 @@ export interface CompareSceneContext {
   driveDelta: (deltaRad: number) => void;
   driveNode: string;
   driveRevision: number;
+  geometryReadyAt: number | null;
   graph: IKinematicGraph;
   hoveredPartId?: string;
   idleAutoRotationPaused: true;
   onHoverPart: (partId?: string) => void;
   onCameraTargetChange: (target: [number, number, number]) => void;
+  onGeometryCommitted: (committedAt: number) => void;
   schemeId: string;
   side: CompareSide;
   spec: MachineSpec;
@@ -161,7 +167,7 @@ export default function CompareView({
   renderScene,
   rightSchemeId,
 }: CompareViewProps) {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const hoveredPartId = useCompareStore((state) => state.hoveredPartId);
   const cameraTarget = useCompareStore((state) => state.camera.target);
@@ -185,6 +191,18 @@ export default function CompareView({
     () => specForScheme(module, rightSchemeId),
     [module, rightSchemeId],
   );
+  const leftWarmup = useMachineGeometryWarmup({
+    consumerScope: "compare:left",
+    module,
+    spec: leftSpec,
+    warmupKey: `${module.data.slug}:${leftSchemeId}`,
+  });
+  const rightWarmup = useMachineGeometryWarmup({
+    consumerScope: "compare:right",
+    module,
+    spec: rightSpec,
+    warmupKey: `${module.data.slug}:${rightSchemeId}`,
+  });
   const leftGraph = useMemo(
     () => compareGraph(module, leftSchemeId),
     [leftSchemeId, module],
@@ -256,17 +274,20 @@ export default function CompareView({
     spec: MachineSpec,
     graph: IKinematicGraph,
   ) => {
+    const geometryWarmup = side === "left" ? leftWarmup : rightWarmup;
     const context: CompareSceneContext = {
       cameraTarget,
       differencePartIds: differences,
       driveDelta: drive,
       driveNode: driveNodes[side === "left" ? 0 : 1],
       driveRevision,
+      geometryReadyAt: geometryWarmup.committedAt,
       graph,
       hoveredPartId,
       idleAutoRotationPaused: true,
       onHoverPart: setHoveredPartId,
       onCameraTargetChange: setCameraTarget,
+      onGeometryCommitted: geometryWarmup.commit,
       schemeId,
       side,
       spec,
@@ -279,6 +300,12 @@ export default function CompareView({
       <section
         className={`compare-viewport-shell ${ready ? "compare-viewport" : ""} compare-viewport-${side}`}
         data-camera-revision={cameraRevision}
+        data-geometry-built={geometryWarmup.built}
+        data-geometry-state={geometryWarmup.status}
+        data-geometry-total={geometryWarmup.total}
+        data-machine-ready={
+          geometryWarmup.committedAt !== null ? "true" : "false"
+        }
         data-ready={ready}
         data-scheme-id={schemeId}
         onPointerDown={() => setCameraOwner(side)}
@@ -304,14 +331,22 @@ export default function CompareView({
               frameCounts.current[side === "left" ? 0 : 1] += 1;
             }}
             onReady={() => markViewportReady(side, schemeId)}
-            readyEnabled={compiled}
+            readyEnabled={compiled && geometryWarmup.committedAt !== null}
           />
           <LinkedCamera side={side} />
-          {renderScene(context)}
+          {geometryWarmup.prepared ? renderScene(context) : null}
           <SceneEnvironment
             onReady={() => markViewportCompiled(side, schemeId)}
           />
         </Canvas>
+        {!geometryWarmup.prepared ? (
+          <GeometryLoading
+            built={geometryWarmup.built}
+            label={t("app.loading")}
+            scope={`compare:${side}`}
+            total={geometryWarmup.total}
+          />
+        ) : null}
       </section>
     );
   };

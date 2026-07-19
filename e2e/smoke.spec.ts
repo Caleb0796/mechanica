@@ -20,14 +20,20 @@ const machineSlugs = [
   "gimbal",
 ] as const;
 
-async function waitForMechanica(page: Page, slug?: string) {
+async function waitForMechanica(
+  page: Page,
+  slug?: string,
+  requireGeometry = true,
+) {
   await expect
     .poll(() =>
       page.evaluate(
-        (expectedSlug) =>
+        ({ expectedSlug, geometryRequired }) =>
           Boolean(window.__mech) &&
+          (!geometryRequired ||
+            typeof window.__mech?.machineReady === "number") &&
           (!expectedSlug || window.__mech?.spec.slug === expectedSlug),
-        slug,
+        { expectedSlug: slug, geometryRequired: requireGeometry },
       ),
     )
     .toBe(true);
@@ -147,6 +153,156 @@ test("smoke: all ten machine routes render without console errors", async ({
     }
     expect(errors, `${slug} emitted browser errors`).toEqual([]);
   }
+});
+
+test("F0-T5c: geometry loading commits before the cold and scheme-switch deadlines", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.addInitScript(() => {
+    const target = window as Window & {
+      __mechanicaFirstGeometryWarmAt?: number | null;
+    };
+    target.__mechanicaFirstGeometryWarmAt = null;
+    const recordWarmState = () => {
+      if (
+        target.__mechanicaFirstGeometryWarmAt === null &&
+        document.querySelector('[data-geometry-state="warming"]')
+      ) {
+        target.__mechanicaFirstGeometryWarmAt = performance.now();
+      }
+    };
+    new MutationObserver(recordWarmState).observe(document, {
+      attributeFilter: ["data-geometry-state"],
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+    recordWarmState();
+  });
+
+  await page.goto("/#/m/astroclock");
+  await waitForMechanica(page, "astroclock");
+  await waitForCamera(page);
+  const cold = await page.evaluate(() => ({
+    firstWarmAt:
+      (
+        window as Window & {
+          __mechanicaFirstGeometryWarmAt?: number | null;
+        }
+      ).__mechanicaFirstGeometryWarmAt ?? Number.POSITIVE_INFINITY,
+    readyAt: window.__mech?.machineReady ?? Number.POSITIVE_INFINITY,
+    state:
+      document.querySelector<HTMLElement>(".viewer-canvas")?.dataset
+        .geometryState,
+  }));
+  expect(cold.firstWarmAt).toBeLessThan(500);
+  expect(cold.readyAt).toBeGreaterThanOrEqual(cold.firstWarmAt);
+  expect(cold.readyAt).toBeLessThan(3_000);
+  expect(cold.state).toBe("committed");
+  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+    "data-machine-ready",
+    "true",
+  );
+
+  const select = page.locator(".viewer-sidebar .scheme-select").first();
+  const currentScheme = await select.inputValue();
+  const targetScheme = await select
+    .locator("option")
+    .evaluateAll(
+      (options, current) =>
+        options
+          .map((option) => (option as HTMLOptionElement).value)
+          .find((value) => value && value !== current) ?? null,
+      currentScheme,
+    );
+  if (!targetScheme) throw new Error("Astroclock alternate scheme is missing");
+  const previousReadyAt = cold.readyAt;
+  const switchStartedAt = await page.evaluate(() => performance.now());
+  await select.selectOption(targetScheme);
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.machineReady ?? 0))
+    .toBeGreaterThan(previousReadyAt);
+  const switchedReadyAt = await page.evaluate(
+    () => window.__mech?.machineReady ?? Number.POSITIVE_INFINITY,
+  );
+
+  expect(switchedReadyAt - switchStartedAt).toBeLessThan(500);
+  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+    "data-geometry-state",
+    "committed",
+  );
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const readyAt = window.__mech?.machineReady;
+        const camera = window.__mech?.cameraState();
+        return (
+          typeof readyAt === "number" &&
+          camera?.geometryReadyAt === readyAt &&
+          camera.phase === "idle"
+        );
+      }),
+    )
+    .toBe(true);
+  const switchedCamera = await page.evaluate(() =>
+    window.__mech?.cameraState(),
+  );
+  expect(switchedCamera?.phase).toBe("idle");
+  expect(switchedCamera?.controlsEnabled).toBe(true);
+  expect(switchedCamera?.introStartedAt).toBeNull();
+
+  await page.evaluate(() => {
+    const canvas = document.querySelector<HTMLElement>(".viewer-canvas");
+    if (!canvas) throw new Error("Viewer readiness surface is unavailable");
+    canvas.dataset.compareExitWarmObserved = "false";
+    new MutationObserver(() => {
+      if (canvas.dataset.geometryState === "warming") {
+        canvas.dataset.compareExitWarmObserved = "true";
+      }
+    }).observe(canvas, {
+      attributeFilter: ["data-geometry-state"],
+      attributes: true,
+    });
+  });
+  const compareToggle = page.getByTestId("compare-toggle");
+  await compareToggle.click();
+  await expect(page.getByTestId("compare-view")).toBeVisible();
+  await expect(
+    page.locator('.compare-viewport-shell[data-machine-ready="true"]'),
+  ).toHaveCount(2);
+  await compareToggle.click();
+  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+    "data-machine-ready",
+    "true",
+  );
+  const compareExit = await page.evaluate(() => ({
+    readyAt: window.__mech?.machineReady ?? 0,
+    warmObserved:
+      document.querySelector<HTMLElement>(".viewer-canvas")?.dataset
+        .compareExitWarmObserved,
+  }));
+  expect(compareExit.warmObserved).toBe("true");
+  expect(compareExit.readyAt).toBeGreaterThan(switchedReadyAt);
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const readyAt = window.__mech?.machineReady;
+        const camera = window.__mech?.cameraState();
+        return (
+          typeof readyAt === "number" &&
+          camera?.geometryReadyAt === readyAt &&
+          camera.phase === "idle" &&
+          camera.controlsEnabled
+        );
+      }),
+    )
+    .toBe(true);
+  expect(errors).toEqual([]);
 });
 
 test("U2: demo exposes the exact external-gear ratio", async ({ page }) => {
@@ -396,6 +552,9 @@ test("U3 compare: linked controls drive both reconstruction graphs", async ({
     await page.evaluate(() => delete window.__mechCompare);
     await page.getByTestId("compare-toggle").click();
     await expect(page.getByTestId("compare-view")).toBeVisible();
+    await expect(
+      page.locator('.compare-viewport-shell[data-machine-ready="true"]'),
+    ).toHaveCount(2);
     await expect
       .poll(() => page.evaluate(() => Boolean(window.__mechCompare)))
       .toBe(true);
@@ -888,9 +1047,10 @@ test("U6 semantics: astroclock stages sourced captions and wooden ox shows force
 test("gallery exposes four layers, attribution, lightbox, and offline fallback", async ({
   page,
 }) => {
+  test.setTimeout(90_000);
   for (const slug of machineSlugs) {
     await page.goto(`/#/m/${slug}`);
-    await waitForMechanica(page, slug);
+    await waitForMechanica(page, slug, false);
     const tabs = page.locator("[data-gallery-layer]");
     await expect(tabs).toHaveCount(4);
     const renderPanel = page.locator('[data-gallery-panel="reconstruction"]');
@@ -931,7 +1091,7 @@ test("gallery exposes four layers, attribution, lightbox, and offline fallback",
   }
 
   await page.goto("/#/m/astroclock");
-  await waitForMechanica(page, "astroclock");
+  await waitForMechanica(page, "astroclock", false);
   await page.getByTestId("tab-museum").click();
   const credit = page.getByTestId("image-credit").first();
   await expect(credit).toContainText(/CC|Public domain/);
@@ -1008,6 +1168,7 @@ test("G6.3: cold homepage largest-contentful paint stays under three seconds", a
 test("G6.3: every machine reconstruction stays under 150k triangles", async ({
   page,
 }) => {
+  test.setTimeout(90_000);
   for (const slug of machineSlugs) {
     await page.goto(`/#/m/${slug}`);
     await waitForMechanica(page, slug);

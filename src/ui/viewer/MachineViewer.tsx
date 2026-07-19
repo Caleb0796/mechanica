@@ -79,6 +79,11 @@ import { useUiStore } from "../store";
 import type { StoryStageState } from "../story/types";
 import DriveHandle from "./DriveHandle";
 import ExplodedControl from "./ExplodedControl";
+import {
+  GeometryLoading,
+  geometryOptionsForPart,
+  useMachineGeometryWarmup,
+} from "./geometryWarmup";
 import SceneEnvironment, { prepareSceneEnvironment } from "./SceneEnvironment";
 import {
   type AssemblyController,
@@ -86,7 +91,6 @@ import {
   useAssemblyController,
 } from "./assembly";
 import {
-  buildSemanticPartGeometry,
   type ViewerProfile,
   VIEWER_PROFILES,
   visualMaterialFor,
@@ -140,6 +144,7 @@ declare global {
       cameraState: () => CameraDiagnosticSnapshot | null;
       frameFill: () => number;
       module: MachineModule;
+      machineReady: number | null;
       memory: () => { geometries: number; textures: number };
       spec: MachineModule["spec"];
       textureStats: () => {
@@ -457,11 +462,13 @@ function CameraDirector({
   diagnostics,
   enabled,
   fitKey,
+  introPlayed,
   machineRoot,
   onIntroActiveChange,
   onTargetChange,
   playIntro,
   profile,
+  readyAt,
   spec,
 }: {
   blocked: boolean;
@@ -470,17 +477,20 @@ function CameraDirector({
   diagnostics?: MutableRefObject<CameraDiagnostics | null>;
   enabled: boolean;
   fitKey: string;
+  introPlayed?: MutableRefObject<boolean>;
   machineRoot: RefObject<Group | null>;
   onIntroActiveChange: (active: boolean) => void;
   onTargetChange?: (target: [number, number, number]) => void;
   playIntro: boolean;
   profile: ViewerProfile;
+  readyAt: number | null;
   spec: MachineSpec;
 }) {
   const camera = useThree((state) => state.camera);
   const viewport = useThree((state) => state.size);
   const fittedKey = useRef<string | null>(null);
-  const hasPlayedIntro = useRef(false);
+  const localIntroPlayed = useRef(false);
+  const hasPlayedIntro = introPlayed ?? localIntroPlayed;
   const transition = useRef<CameraTransition | null>(null);
 
   useFrame(() => {
@@ -529,9 +539,9 @@ function CameraDirector({
       return;
     }
 
-    if (!enabled) return;
+    if (!enabled || readyAt === null) return;
     if (blocked) {
-      if (fittedKey.current && fitKey === blockedFitKeyToConsume) {
+      if (hasPlayedIntro.current && fitKey === blockedFitKeyToConsume) {
         fittedKey.current = fitKey;
       }
       return;
@@ -658,7 +668,7 @@ function CameraDirector({
         camera,
         controlsEnabled: !shouldPlayIntro,
         focusFallback,
-        geometryReadyAt: now,
+        geometryReadyAt: readyAt,
         homeDistance,
         introCompletedAt: shouldPlayIntro ? null : now,
         introStartedAt: shouldPlayIntro ? now : null,
@@ -795,48 +805,18 @@ const PartNode = memo(function PartNode({
   const assemblyStartPoint = useRef(new Vector3());
   const assemblyOffset = useRef(new Vector3());
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
-  const semanticVariant = useMemo(() => {
-    if (part.geometry.type !== "box" && part.geometry.type !== "beam") {
-      return undefined;
-    }
-    if (module.data.slug === "astroclock" && part.id.startsWith("jack-")) {
-      return "semantic:jack";
-    }
-    if (
-      module.data.slug === "odometer" &&
-      (part.id === "lower-figure" || part.id === "upper-figure")
-    ) {
-      return "semantic:striking-figure";
-    }
-    if (module.data.slug === "wooden-ox" && part.id === "curved-head") {
-      return "semantic:ox-head";
-    }
-    if (module.data.slug === "bellows" && part.id === "bellows-chest") {
-      return "semantic:bellows-chest";
-    }
-    return undefined;
-  }, [module.data.slug, part.geometry.type, part.id]);
+  const geometryOptions = useMemo(
+    () => geometryOptionsForPart(module, part),
+    [module, part],
+  );
   const geometryResource = useMemo(
     () =>
       machineGeometryCache.prepare(module, part.geometry, {
         consumerKey: `${geometryScope}:${part.id}`,
-        factory: semanticVariant
-          ? () => {
-              const semanticGeometry = buildSemanticPartGeometry(
-                module.data.slug,
-                part,
-              );
-              if (!semanticGeometry) {
-                throw new Error(
-                  `Semantic geometry builder did not resolve ${module.data.slug}:${part.id}`,
-                );
-              }
-              return semanticGeometry;
-            }
-          : undefined,
-        variant: semanticVariant,
+        factory: geometryOptions?.factory,
+        variant: geometryOptions?.variant,
       }),
-    [geometryScope, module, part, semanticVariant],
+    [geometryOptions, geometryScope, module, part],
   );
   const geometry = geometryResource.geometry;
   const visualPresentation = useMemo(
@@ -1233,10 +1213,13 @@ interface MachineSceneProps {
   compareContext?: CompareSceneContext;
   displayState: { current: Record<string, number> | null };
   explode: number;
+  geometryReadyAt: number | null;
   graph: IKinematicGraph;
+  introPlayed?: MutableRefObject<boolean>;
   interactionDisabled?: boolean;
   module: MachineModule;
   onDrivePart: (partId: string, delta: number, secondaryDelta?: number) => void;
+  onGeometryCommitted: (committedAt: number) => void;
   paused: boolean;
   schemeId?: string;
   spotlightActive: boolean;
@@ -1400,10 +1383,13 @@ function MachineScene({
   compareContext,
   displayState,
   explode,
+  geometryReadyAt,
   graph,
+  introPlayed,
   interactionDisabled,
   module,
   onDrivePart,
+  onGeometryCommitted,
   paused,
   schemeId,
   spotlightActive,
@@ -1485,6 +1471,10 @@ function MachineScene({
   const setDragging = useCallback((nextDragging: boolean) => {
     dragging.current = nextDragging;
   }, []);
+
+  useLayoutEffect(() => {
+    onGeometryCommitted(performance.now());
+  }, [onGeometryCommitted]);
 
   useLayoutEffect(() => {
     frameState.current = displayState.current ?? graph.state();
@@ -1620,17 +1610,20 @@ function MachineScene({
         diagnostics={cameraDiagnostics}
         enabled={!storyCamera}
         fitKey={`${module.data.slug}:${schemeId ?? "default"}`}
+        introPlayed={introPlayed}
         machineRoot={machineRoot}
         onIntroActiveChange={setCameraIntroActive}
         onTargetChange={compareContext?.onCameraTargetChange}
         playIntro={!compareContext && module.spec.slug !== "demo"}
         profile={viewerProfile}
+        readyAt={geometryReadyAt}
         spec={activeSpec}
       />
       {!compareContext && !storyCamera ? (
         <ContactShadows
           blur={2.5}
           far={3}
+          frames={module.spec.slug === "demo" ? 1 : Infinity}
           opacity={0.38}
           position={[0, -0.45, 0]}
           scale={2}
@@ -1671,9 +1664,11 @@ function CompareSceneAdapter({
       compareContext={context}
       displayState={displayState}
       explode={0}
+      geometryReadyAt={context.geometryReadyAt}
       graph={context.graph}
       module={module}
       onDrivePart={drivePart}
+      onGeometryCommitted={context.onGeometryCommitted}
       paused
       schemeId={context.schemeId}
       spotlightActive={false}
@@ -1738,6 +1733,17 @@ export function MachineStoryStage({
   spotlightRunId: number;
   state: StoryStageState;
 }) {
+  const { t } = useTranslation();
+  const [storedStoryReady, setStoredStoryReady] = useState<{
+    at: number;
+    key: string;
+    module: MachineModule;
+    schemeId: string | undefined;
+    spec: MachineSpec;
+  } | null>(null);
+  const storedActiveSelection =
+    storedStoryReady?.module === module ? storedStoryReady : null;
+  const storyReadyAt = storedActiveSelection?.at ?? null;
   const fromSchemeId = state.fromStep.schemeId ?? module.defaultSchemeId;
   const toSchemeId = state.toStep.schemeId ?? module.defaultSchemeId;
   const fromSpec = useMemo(
@@ -1757,9 +1763,128 @@ export function MachineStoryStage({
     [module.schemes, module.spec, toSchemeId],
   );
   const schemeTransition = fromSchemeId !== toSchemeId;
-  const showingFromScheme = !schemeTransition || state.segmentProgress < 0.5;
-  const schemeId = showingFromScheme ? fromSchemeId : toSchemeId;
-  const activeSpec = showingFromScheme ? fromSpec : toSpec;
+  const requestedShowingFromScheme =
+    !schemeTransition || state.segmentProgress < 0.5;
+  const showingFromScheme = requestedShowingFromScheme;
+  const fromActiveWarmup = useMachineGeometryWarmup({
+    consumerScope: "story",
+    module,
+    spec: fromSpec,
+    warmupKey: `${module.data.slug}:${fromSchemeId ?? "default"}:from-active`,
+  });
+  const toGhostWarmup = useMachineGeometryWarmup({
+    consumerScope: "story:ghost",
+    module,
+    spec: schemeTransition ? toSpec : null,
+    warmupKey: `${module.data.slug}:${toSchemeId ?? "default"}:to-ghost`,
+  });
+  const toActiveEnabled = schemeTransition && toGhostWarmup.prepared;
+  const toActiveWarmup = useMachineGeometryWarmup({
+    consumerScope: "story",
+    module,
+    spec: toActiveEnabled ? toSpec : null,
+    warmupKey: `${module.data.slug}:${toSchemeId ?? "default"}:to-active`,
+  });
+  const fromGhostEnabled = toActiveEnabled && toActiveWarmup.prepared;
+  const fromGhostWarmup = useMachineGeometryWarmup({
+    consumerScope: "story:ghost",
+    module,
+    spec: fromGhostEnabled ? fromSpec : null,
+    warmupKey: `${module.data.slug}:${fromSchemeId ?? "default"}:from-ghost`,
+  });
+  const requestedSchemeId = showingFromScheme ? fromSchemeId : toSchemeId;
+  const requestedSpec = showingFromScheme ? fromSpec : toSpec;
+  const requestedGeometryKey = `${module.data.slug}:${requestedSchemeId ?? "default"}:${showingFromScheme ? "from-active" : "to-active"}`;
+  const ghostSpec = schemeTransition
+    ? showingFromScheme
+      ? toSpec
+      : fromSpec
+    : null;
+  const storyWarmups = schemeTransition
+    ? [fromActiveWarmup, toGhostWarmup, toActiveWarmup, fromGhostWarmup]
+    : [fromActiveWarmup];
+  const activeWarmup = showingFromScheme ? fromActiveWarmup : toActiveWarmup;
+  const ghostWarmup = schemeTransition
+    ? showingFromScheme
+      ? toGhostWarmup
+      : fromGhostWarmup
+    : null;
+  const activeGeometryPrepared = showingFromScheme
+    ? activeWarmup.prepared
+    : toActiveEnabled && activeWarmup.prepared;
+  const ghostGeometryPrepared = !schemeTransition
+    ? true
+    : showingFromScheme
+      ? ghostWarmup?.prepared === true
+      : fromGhostEnabled && ghostWarmup?.prepared === true;
+  const commitGhostGeometry = ghostWarmup?.commit;
+  const activeSelection = activeGeometryPrepared
+    ? {
+        key: requestedGeometryKey,
+        schemeId: requestedSchemeId,
+        spec: requestedSpec,
+      }
+    : storedActiveSelection;
+  const schemeId = activeSelection
+    ? activeSelection.schemeId
+    : requestedSchemeId;
+  const activeSpec = activeSelection?.spec ?? requestedSpec;
+  const geometryPrepared = activeSelection !== null;
+  const renderingRequestedGeometry =
+    activeGeometryPrepared && activeSelection?.key === requestedGeometryKey;
+  const renderingTransition =
+    schemeTransition && renderingRequestedGeometry && ghostGeometryPrepared;
+  const commitGeometry = useCallback(
+    (committedAt: number) => {
+      if (!renderingRequestedGeometry) return;
+      activeWarmup.commit(committedAt);
+      if (renderingTransition) commitGhostGeometry?.(committedAt);
+      setStoredStoryReady((current) => {
+        if (
+          current?.module === module &&
+          current.key === requestedGeometryKey &&
+          current.schemeId === requestedSchemeId &&
+          current.spec === requestedSpec
+        ) {
+          return current;
+        }
+        return {
+          at: committedAt,
+          key: requestedGeometryKey,
+          module,
+          schemeId: requestedSchemeId,
+          spec: requestedSpec,
+        };
+      });
+    },
+    [
+      activeWarmup.commit,
+      commitGhostGeometry,
+      module,
+      renderingRequestedGeometry,
+      renderingTransition,
+      requestedGeometryKey,
+      requestedSchemeId,
+      requestedSpec,
+    ],
+  );
+  const geometryStatus = storyWarmups.some(
+    (warmup) => warmup.status === "failed",
+  )
+    ? "failed"
+    : storyReadyAt !== null
+      ? "committed"
+      : activeGeometryPrepared
+        ? "prepared"
+        : "warming";
+  const geometryBuilt = storyWarmups.reduce(
+    (total, warmup) => total + warmup.built,
+    0,
+  );
+  const geometryTotal = storyWarmups.reduce(
+    (total, warmup) => total + warmup.total,
+    0,
+  );
   const graph = useMemo(() => new KinematicGraph(activeSpec), [activeSpec]);
   const cutawayAppearance = useMemo(
     () =>
@@ -1915,15 +2040,17 @@ export function MachineStoryStage({
   ]);
 
   const highlightedParts = spotlightActive ? spotlightParts : state.highlight;
-  const activeAppearance = schemeTransition
+  const activeAppearance = renderingTransition
     ? {
         opacity: showingFromScheme
           ? 1 - state.segmentProgress
           : state.segmentProgress,
         variant: "story-active",
       }
-    : cutawayAppearance;
-  const transitionLayer = schemeTransition
+    : schemeTransition
+      ? { opacity: 1, variant: "story-active" }
+      : cutawayAppearance;
+  const transitionLayer = renderingTransition
     ? {
         appearance: {
           opacity: showingFromScheme
@@ -1931,7 +2058,7 @@ export function MachineStoryStage({
             : 1 - state.segmentProgress,
           variant: "story-transition",
         },
-        spec: showingFromScheme ? toSpec : fromSpec,
+        spec: ghostSpec ?? activeSpec,
       }
     : undefined;
 
@@ -1941,6 +2068,15 @@ export function MachineStoryStage({
       data-active-step={state.activeStep.id}
       data-cutaway={state.activeStep.cutaway ? "true" : "false"}
       data-scheme-transition={schemeTransition ? "true" : "false"}
+      data-geometry-built={geometryBuilt}
+      data-geometry-state={geometryStatus}
+      data-geometry-total={geometryTotal}
+      data-machine-ready={storyReadyAt !== null ? "true" : "false"}
+      data-rendered-geometry-key={activeSelection?.key ?? "none"}
+      data-requested-geometry-key={requestedGeometryKey}
+      data-requested-geometry-prepared={
+        activeGeometryPrepared ? "true" : "false"
+      }
       data-spotlight-active={spotlightActive ? "true" : "false"}
       data-spotlight-runs={spotlightRuns}
       data-testid="story-machine-stage"
@@ -1948,6 +2084,7 @@ export function MachineStoryStage({
       <Canvas
         camera={{ fov: 36, position: state.camera.position }}
         dpr={1}
+        frameloop={spotlightActive ? "always" : "demand"}
         gl={{
           alpha: false,
           antialias: false,
@@ -1958,26 +2095,38 @@ export function MachineStoryStage({
         onCreated={prepareSceneEnvironment}
       >
         <SceneEnvironment />
-        <MachineScene
-          activeSpec={activeSpec}
-          appearance={activeAppearance}
-          assemblyProgress={1}
-          displayState={displayState}
-          explode={state.explode}
-          graph={graph}
-          interactionDisabled
-          module={module}
-          onDrivePart={drivePart}
-          paused
-          schemeId={schemeId}
-          spotlightActive={false}
-          spotlightPartIds={EMPTY_PART_IDS}
-          spotlightRunId={0}
-          storyCamera={state.camera}
-          storyHighlightPartIds={highlightedParts}
-          transitionLayer={transitionLayer}
-        />
+        {geometryPrepared ? (
+          <MachineScene
+            activeSpec={activeSpec}
+            appearance={activeAppearance}
+            assemblyProgress={1}
+            displayState={displayState}
+            explode={state.explode}
+            geometryReadyAt={storyReadyAt}
+            graph={graph}
+            interactionDisabled
+            module={module}
+            onDrivePart={drivePart}
+            onGeometryCommitted={commitGeometry}
+            paused
+            schemeId={schemeId}
+            spotlightActive={false}
+            spotlightPartIds={EMPTY_PART_IDS}
+            spotlightRunId={0}
+            storyCamera={state.camera}
+            storyHighlightPartIds={highlightedParts}
+            transitionLayer={transitionLayer}
+          />
+        ) : null}
       </Canvas>
+      {!geometryPrepared ? (
+        <GeometryLoading
+          built={geometryBuilt}
+          label={t("app.loading")}
+          scope="story"
+          total={geometryTotal}
+        />
+      ) : null}
     </div>
   );
 }
@@ -2282,6 +2431,7 @@ export default function MachineViewer({
   const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
+  const viewerIntroPlayed = useRef(false);
   const sceneTriangles = useRef(0);
   const sceneMemory = useRef({ geometries: 0, textures: 0 });
   const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
@@ -2327,6 +2477,50 @@ export default function MachineViewer({
           variant: "scheme-new",
         }
       : undefined;
+  const viewerWarmup = useMachineGeometryWarmup({
+    consumerScope: "viewer",
+    module,
+    spec: compareActive ? null : activeSpec,
+    warmupKey: `${module.data.slug}:${activeSchemeId ?? "default"}`,
+  });
+  const viewerGhostSpec =
+    !compareActive && oldSchemeSpec && oldSchemeAppearance
+      ? oldSchemeSpec
+      : null;
+  const viewerGhostWarmup = useMachineGeometryWarmup({
+    consumerScope: "viewer:ghost",
+    module,
+    spec: viewerGhostSpec,
+    warmupKey: `${module.data.slug}:${schemeTransition?.previousSchemeId ?? "default"}`,
+  });
+  const viewerGeometryPrepared =
+    viewerWarmup.prepared && viewerGhostWarmup.prepared;
+  const viewerGeometryReadyAt =
+    viewerWarmup.committedAt !== null &&
+    (viewerGhostSpec === null || viewerGhostWarmup.committedAt !== null)
+      ? Math.max(
+          viewerWarmup.committedAt,
+          viewerGhostWarmup.committedAt ?? viewerWarmup.committedAt,
+        )
+      : null;
+  const commitViewerGeometry = useCallback(
+    (committedAt: number) => {
+      viewerWarmup.commit(committedAt);
+      viewerGhostWarmup.commit(committedAt);
+    },
+    [viewerGhostWarmup.commit, viewerWarmup.commit],
+  );
+  const viewerGeometryStatus = compareActive
+    ? "idle"
+    : viewerWarmup.status === "failed" || viewerGhostWarmup.status === "failed"
+      ? "failed"
+      : viewerGeometryReadyAt !== null
+        ? "committed"
+        : viewerGeometryPrepared
+          ? "prepared"
+          : "warming";
+  const viewerGeometryBuilt = viewerWarmup.built + viewerGhostWarmup.built;
+  const viewerGeometryTotal = viewerWarmup.total + viewerGhostWarmup.total;
 
   useLayoutEffect(() => {
     if (spotlightFrame.current !== null) {
@@ -2469,6 +2663,7 @@ export default function MachineViewer({
       cameraState: () => cameraSnapshot(cameraDiagnostics.current),
       frameFill: () => projectedFrameFill(cameraDiagnostics.current),
       graph,
+      machineReady: viewerGeometryReadyAt,
       memory: () => ({ ...sceneMemory.current }),
       module: activeModule,
       spec: activeSpec,
@@ -2512,7 +2707,14 @@ export default function MachineViewer({
         delete window.__mechAssembly;
       }
     };
-  }, [activeModule, activeSpec, assembly, graph, setSelectedPartId]);
+  }, [
+    activeModule,
+    activeSpec,
+    assembly,
+    graph,
+    setSelectedPartId,
+    viewerGeometryReadyAt,
+  ]);
 
   const recordEvent = (type: string, part: string) => {
     const nextCaption = mechanismCaption(module, language, type, part);
@@ -2776,6 +2978,10 @@ export default function MachineViewer({
           className="viewer-canvas"
           data-assembly-complete={assembly.state.complete ? "true" : "false"}
           data-assembly-mode={assembly.state.mode}
+          data-geometry-built={viewerGeometryBuilt}
+          data-geometry-state={viewerGeometryStatus}
+          data-geometry-total={viewerGeometryTotal}
+          data-machine-ready={viewerGeometryReadyAt !== null ? "true" : "false"}
           data-scheme-transition={schemeTransition ? "true" : "false"}
           data-spotlight-active={spotlightActive ? "true" : "false"}
         >
@@ -2811,34 +3017,47 @@ export default function MachineViewer({
                   memory={sceneMemory}
                 />
               ) : null}
-              <MachineScene
-                activeSpec={activeSpec}
-                appearance={newSchemeAppearance}
-                assembly={assembly}
-                assemblyProgress={assemblyProgress}
-                blockedFitKeyToConsume={spotlightAutoFitKey ?? undefined}
-                cameraDiagnostics={cameraDiagnostics}
-                displayState={displayState}
-                explode={explode}
-                graph={graph}
-                module={module}
-                onDrivePart={drivePart}
-                paused={paused || !assembly.state.transmissionEnabled}
-                schemeId={activeSchemeId}
-                spotlightActive={spotlightActive}
-                spotlightPartIds={spotlightPartIds}
-                spotlightRunId={spotlightRunId}
-                transitionLayer={
-                  oldSchemeSpec && oldSchemeAppearance
-                    ? {
-                        appearance: oldSchemeAppearance,
-                        spec: oldSchemeSpec,
-                      }
-                    : undefined
-                }
-              />
+              {viewerGeometryPrepared ? (
+                <MachineScene
+                  activeSpec={activeSpec}
+                  appearance={newSchemeAppearance}
+                  assembly={assembly}
+                  assemblyProgress={assemblyProgress}
+                  blockedFitKeyToConsume={spotlightAutoFitKey ?? undefined}
+                  cameraDiagnostics={cameraDiagnostics}
+                  displayState={displayState}
+                  explode={explode}
+                  geometryReadyAt={viewerGeometryReadyAt}
+                  graph={graph}
+                  introPlayed={viewerIntroPlayed}
+                  module={module}
+                  onDrivePart={drivePart}
+                  onGeometryCommitted={commitViewerGeometry}
+                  paused={paused || !assembly.state.transmissionEnabled}
+                  schemeId={activeSchemeId}
+                  spotlightActive={spotlightActive}
+                  spotlightPartIds={spotlightPartIds}
+                  spotlightRunId={spotlightRunId}
+                  transitionLayer={
+                    oldSchemeSpec && oldSchemeAppearance
+                      ? {
+                          appearance: oldSchemeAppearance,
+                          spec: oldSchemeSpec,
+                        }
+                      : undefined
+                  }
+                />
+              ) : null}
             </Canvas>
           )}
+          {!compareActive && !viewerGeometryPrepared ? (
+            <GeometryLoading
+              built={viewerGeometryBuilt}
+              label={t("app.loading")}
+              scope="viewer"
+              total={viewerGeometryTotal}
+            />
+          ) : null}
         </div>
         <div
           className="viewer-toolbar"
@@ -3092,7 +3311,7 @@ export default function MachineViewer({
             <button
               className="gold-button"
               data-testid="spotlight-play"
-              disabled={!spotlight}
+              disabled={!spotlight || viewerGeometryReadyAt === null}
               onClick={() => spotlight && runTrigger(spotlight.id)}
               type="button"
             >

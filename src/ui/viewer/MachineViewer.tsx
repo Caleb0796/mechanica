@@ -37,6 +37,7 @@ import {
   getMaterial,
   materialVariantKey,
 } from "../../core/materialCache";
+import { machineGeometryCache } from "../../core/geometryCache";
 import {
   standardMaterial,
   type StandardMaterialPresentation,
@@ -49,7 +50,6 @@ import {
 } from "../../core/textures";
 import {
   applyMechanicaInstanceMatrices,
-  buildPartGeometry,
   getMechanicaInstanceMatrices,
 } from "../../core/primitives";
 import { planarCrankRodPose } from "../../sim/edges";
@@ -194,6 +194,7 @@ interface PartNodeProps {
   crankByRod: Map<string, CrankConstraint>;
   displayState: { current: Record<string, number> | null };
   explode: number;
+  geometryScope: string;
   graph: IKinematicGraph;
   interactionDisabled?: boolean;
   maxAssemblyStep: number;
@@ -774,6 +775,7 @@ const PartNode = memo(function PartNode({
   crankByRod,
   displayState,
   explode,
+  geometryScope,
   graph,
   interactionDisabled,
   maxAssemblyStep,
@@ -793,25 +795,50 @@ const PartNode = memo(function PartNode({
   const assemblyStartPoint = useRef(new Vector3());
   const assemblyOffset = useRef(new Vector3());
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
-  const geometryCache = compareContext?.geometryCache;
-  const semanticGeometry = useMemo(
-    () => buildSemanticPartGeometry(module.data.slug, part),
-    [module.data.slug, part],
-  );
-  const geometry = useMemo(
+  const semanticVariant = useMemo(() => {
+    if (part.geometry.type !== "box" && part.geometry.type !== "beam") {
+      return undefined;
+    }
+    if (module.data.slug === "astroclock" && part.id.startsWith("jack-")) {
+      return "semantic:jack";
+    }
+    if (
+      module.data.slug === "odometer" &&
+      (part.id === "lower-figure" || part.id === "upper-figure")
+    ) {
+      return "semantic:striking-figure";
+    }
+    if (module.data.slug === "wooden-ox" && part.id === "curved-head") {
+      return "semantic:ox-head";
+    }
+    if (module.data.slug === "bellows" && part.id === "bellows-chest") {
+      return "semantic:bellows-chest";
+    }
+    return undefined;
+  }, [module.data.slug, part.geometry.type, part.id]);
+  const geometryResource = useMemo(
     () =>
-      semanticGeometry ??
-      (geometryCache
-        ? geometryCache.acquire(module, part.geometry)
-        : buildPartGeometry(part.geometry, module.customBuilders)),
-    [
-      geometryCache,
-      module,
-      module.customBuilders,
-      part.geometry,
-      semanticGeometry,
-    ],
+      machineGeometryCache.prepare(module, part.geometry, {
+        consumerKey: `${geometryScope}:${part.id}`,
+        factory: semanticVariant
+          ? () => {
+              const semanticGeometry = buildSemanticPartGeometry(
+                module.data.slug,
+                part,
+              );
+              if (!semanticGeometry) {
+                throw new Error(
+                  `Semantic geometry builder did not resolve ${module.data.slug}:${part.id}`,
+                );
+              }
+              return semanticGeometry;
+            }
+          : undefined,
+        variant: semanticVariant,
+      }),
+    [geometryScope, module, part, semanticVariant],
   );
+  const geometry = geometryResource.geometry;
   const visualPresentation = useMemo(
     () => visualMaterialFor(module.data.slug, part),
     [module.data.slug, part],
@@ -946,15 +973,7 @@ const PartNode = memo(function PartNode({
   const seated = assembly?.state.seatedPartIds.has(part.id) ?? true;
   const partExplode = reassembling ? (seated ? 0 : 1) : explode;
 
-  useEffect(() => {
-    return () => {
-      if (geometryCache && !semanticGeometry) {
-        geometryCache.release(module, part.geometry, geometry);
-      } else {
-        geometry.dispose();
-      }
-    };
-  }, [geometry, geometryCache, module, part.geometry, semanticGeometry]);
+  useLayoutEffect(() => geometryResource.retain(), [geometryResource]);
 
   useEffect(() => {
     const lease = acquireMaterial(
@@ -1147,6 +1166,7 @@ const PartNode = memo(function PartNode({
           crankByRod={crankByRod}
           displayState={displayState}
           explode={explode}
+          geometryScope={geometryScope}
           graph={graph}
           interactionDisabled={interactionDisabled}
           key={child.id}
@@ -1291,10 +1311,12 @@ function SceneComplexityProbe({
 
 function GhostPartLayer({
   appearance,
+  geometryScope,
   module,
   spec,
 }: {
   appearance: PartAppearance;
+  geometryScope: string;
   module: MachineModule;
   spec: MachineSpec;
 }) {
@@ -1351,6 +1373,7 @@ function GhostPartLayer({
       crankByRod={crankByRod}
       displayState={displayState}
       explode={0}
+      geometryScope={geometryScope}
       graph={graph}
       interactionDisabled
       key={`ghost:${part.id}`}
@@ -1453,6 +1476,11 @@ function MachineScene({
   );
   const highlightedPartIds = storyHighlightPartIds ?? spotlightPartIds;
   const highlightActive = spotlightActive || highlightedPartIds.length > 0;
+  const geometryScope = compareContext
+    ? `compare:${compareContext.side}`
+    : storyCamera
+      ? "story"
+      : "viewer";
   const frameState = useRef<Record<string, number>>(graph.state());
   const setDragging = useCallback((nextDragging: boolean) => {
     dragging.current = nextDragging;
@@ -1553,6 +1581,7 @@ function MachineScene({
       {transitionLayer ? (
         <GhostPartLayer
           appearance={transitionLayer.appearance}
+          geometryScope={`${geometryScope}:ghost`}
           module={module}
           spec={transitionLayer.spec}
         />
@@ -1568,6 +1597,7 @@ function MachineScene({
             crankByRod={crankByRod}
             displayState={frameState}
             explode={explode}
+            geometryScope={geometryScope}
             graph={graph}
             interactionDisabled={interactionDisabled}
             key={part.id}

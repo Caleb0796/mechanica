@@ -17,7 +17,6 @@ import type {
   MachineSpec,
 } from "../../sim/types";
 import ComparisonTable from "./ComparisonTable";
-import { compareGeometryCache } from "./geometryCache";
 import {
   differencePartIds,
   driveComparedMachineGraphs,
@@ -37,7 +36,6 @@ export interface CompareSceneContext {
   driveDelta: (deltaRad: number) => void;
   driveNode: string;
   driveRevision: number;
-  geometryCache: typeof compareGeometryCache;
   graph: IKinematicGraph;
   hoveredPartId?: string;
   idleAutoRotationPaused: true;
@@ -264,7 +262,6 @@ export default function CompareView({
       driveDelta: drive,
       driveNode: driveNodes[side === "left" ? 0 : 1],
       driveRevision,
-      geometryCache: compareGeometryCache,
       graph,
       hoveredPartId,
       idleAutoRotationPaused: true,

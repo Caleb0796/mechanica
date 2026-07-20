@@ -1406,8 +1406,12 @@ const mechanism: MechanismScript = {
           emit("blocked", "tiansuo-r");
           return;
         }
+        emit("camera", "shulun");
+        emit("highlight", "shulun");
+        emit("caption:drag-coach", "shulun");
         graph.drive("shulun", stepRad);
         emit("advance", "shulun");
+        emit("camera", "tower-shell");
       },
     },
     {
@@ -1417,17 +1421,24 @@ const mechanism: MechanismScript = {
         en: "Five-tier reporting",
       },
       run: (graph, emit) => {
+        emit("camera", "chime-tier-1");
         const before = graph.state();
-        graph.drive("shulun", stepRad);
-        for (let tier = 1; tier <= 5; tier += 1) {
-          const part = `tier-placard-${tier}`;
-          if (
-            (before[part] ?? 0) <= 1e-9 &&
-            (graph.state()[part] ?? 0) > 1e-9
-          ) {
-            emit("placard", part);
+        let raised = 0;
+        for (let step = 0; step < 36 && raised === 0; step += 1) {
+          graph.drive("shulun", stepRad);
+          for (let tier = 1; tier <= 5; tier += 1) {
+            const part = `tier-placard-${tier}`;
+            if (
+              (before[part] ?? 0) <= 1e-9 &&
+              (graph.state()[part] ?? 0) > 1e-9
+            ) {
+              emit("placard", part);
+              raised += 1;
+            }
           }
         }
+        emit("caption:tier-report", "chime-tier-1");
+        emit("camera", "tower-shell");
       },
     },
   ],

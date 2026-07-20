@@ -2847,6 +2847,14 @@ function mechanismCaption(
         en: "The water-lift returns the spent water",
         zh: "提水机构将余水送回",
       },
+      "caption:tier-report": {
+        en: "The wheel crosses a mark — the jacks raise their placards",
+        zh: "枢轮转过整点，司辰木人举牌报时",
+      },
+      "caption:drag-coach": {
+        en: "Drag the gold ring along the rim to drive the scoop wheel",
+        zh: "沿轮缘方向拖动金色圆环即可驱动枢轮",
+      },
     };
     const phase = phases[type];
     if (phase) {

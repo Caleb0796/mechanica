@@ -1540,7 +1540,13 @@ describe("astroclock machine module", () => {
 
   it("advances forward by one cell and blocks reverse drag at the right lock", () => {
     const forward = runTrigger("drag-shulun", 1);
-    expect(forward.events).toEqual([{ type: "advance", part: "shulun" }]);
+    expect(forward.events).toEqual([
+      { type: "camera", part: "shulun" },
+      { type: "highlight", part: "shulun" },
+      { type: "caption:drag-coach", part: "shulun" },
+      { type: "advance", part: "shulun" },
+      { type: "camera", part: "tower-shell" },
+    ]);
     expect(forward.graph.state().shulun).toBeCloseTo((Math.PI * 2) / 36, 12);
 
     const reverse = runTrigger("drag-shulun", -1);
@@ -1548,20 +1554,44 @@ describe("astroclock machine module", () => {
     expect(reverse.graph.state().shulun).toBe(0);
   });
 
+  it("five-tier trigger always emits a visible performance", () => {
+    const trigger = machine.mechanism?.triggers.find(
+      (candidate) => candidate.id === "chime-placards",
+    );
+    expect(trigger).toBeDefined();
+    const graph = new KinematicGraph(machine.spec);
+    const events: string[] = [];
+    trigger!.run(graph, (type: string) => events.push(type));
+    expect(events.filter((type) => type === "placard").length).toBeGreaterThan(
+      0,
+    );
+    expect(events).toContain("caption:tier-report");
+    expect(events.filter((type) => type === "camera").length).toBeGreaterThan(
+      0,
+    );
+  });
+
   it("emits all five cam-driven placard events", () => {
     expect(runTrigger("chime-placards").events).toEqual([
+      { type: "camera", part: "chime-tier-1" },
       { type: "placard", part: "tier-placard-1" },
       { type: "placard", part: "tier-placard-2" },
       { type: "placard", part: "tier-placard-3" },
       { type: "placard", part: "tier-placard-4" },
       { type: "placard", part: "tier-placard-5" },
+      { type: "caption:tier-report", part: "chime-tier-1" },
+      { type: "camera", part: "tower-shell" },
     ]);
     const graph = new KinematicGraph(machine.spec);
     const events: Array<{ type: string; part: string }> = [];
     const chime = trigger("chime-placards");
     chime.run(graph, (type, part) => events.push({ type, part }));
     chime.run(graph, (type, part) => events.push({ type, part }));
-    expect(events).toHaveLength(5);
+    expect(events.filter((event) => event.type === "placard")).toHaveLength(5);
+    expect(events.filter((event) => event.type === "camera")).toHaveLength(4);
+    expect(
+      events.filter((event) => event.type === "caption:tier-report"),
+    ).toHaveLength(2);
     expect(machine.mechanism?.triggers.map((item) => item.id)).toEqual([
       "spotlight",
       "escapement-captions",

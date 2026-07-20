@@ -96,6 +96,7 @@ import DriveHandle, {
   isPointerTap,
   type PointerIntent,
 } from "./DriveHandle";
+import { buildDemoTimeline } from "./demoTimeline";
 import ExplodedControl from "./ExplodedControl";
 import {
   GeometryLoading,
@@ -2393,7 +2394,8 @@ export function MachineStoryStage({
   spotlightRunId: number;
   state: StoryStageState;
 }) {
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
+  const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const [storedStoryReady, setStoredStoryReady] = useState<{
     at: number;
     key: string;
@@ -2635,49 +2637,59 @@ export function MachineStoryStage({
     setSpotlightParts([activeSpec.primaryDrive]);
     setSpotlightRuns((current) => current + 1);
 
+    const speed = useUiStore.getState().demoSpeed || 1;
+    const timeline = buildDemoTimeline(
+      captured,
+      (type, part) => mechanismCaption(module, language, type, part),
+      statesDiffer,
+      initialState,
+    );
     let index = 0;
     let previousState = initialState;
     const playNext = () => {
-      const event = captured[index];
-      if (!event) {
+      const entry = timeline[index];
+      if (!entry) {
         displayState.current = null;
         setSpotlightActive(false);
         spotlightFrame.current = null;
         return;
       }
-      if (event.type === "highlight:off") {
-        setSpotlightParts((current) =>
-          current.filter((partId) => partId !== event.part),
-        );
-      } else if (
-        event.type.includes("drive") ||
-        event.type.includes("highlight") ||
-        event.type === "mallet:raise"
-      ) {
-        setSpotlightParts((current) =>
-          current.includes(event.part) ? current : [...current, event.part],
-        );
+      if (entry.kind !== "camera") {
+        if (entry.event.type === "highlight:off") {
+          setSpotlightParts((current) =>
+            current.filter((partId) => partId !== entry.event.part),
+          );
+        } else if (
+          entry.event.type.includes("drive") ||
+          entry.event.type.includes("highlight") ||
+          entry.event.type === "mallet:raise"
+        ) {
+          setSpotlightParts((current) =>
+            current.includes(entry.event.part)
+              ? current
+              : [...current, entry.event.part],
+          );
+        }
       }
 
-      const changed = statesDiffer(previousState, event.state);
-      const duration = changed
-        ? event.type.includes("drive")
-          ? 420
-          : 240
-        : 90;
+      const motion = entry.motionMs / speed;
+      const dwell = entry.dwellMs / speed;
       const startedAt = performance.now();
       const animate = (now: number) => {
-        const progress = Math.min(1, (now - startedAt) / duration);
+        const progress = Math.min(
+          1,
+          motion === 0 ? 1 : (now - startedAt) / motion,
+        );
         displayState.current = interpolateState(
           previousState,
-          event.state,
+          entry.event.state,
           1 - (1 - progress) ** 3,
         );
-        if (progress < 1) {
+        if (now - startedAt < motion + dwell) {
           spotlightFrame.current = requestAnimationFrame(animate);
           return;
         }
-        previousState = event.state;
+        previousState = entry.event.state;
         index += 1;
         playNext();
       };
@@ -2694,6 +2706,8 @@ export function MachineStoryStage({
   }, [
     activeSpec,
     graph,
+    language,
+    module,
     module.mechanism?.triggers,
     spotlightRunId,
     state.spotlight,
@@ -3583,6 +3597,11 @@ export default function MachineViewer({
   const recordEvent = (type: string, part: string) => {
     const nextCaption = mechanismCaption(module, language, type, part);
     setCaption(nextCaption);
+    if (type === "spotlight:done") {
+      window.setTimeout(() => {
+        setCaption((current) => (current === nextCaption ? "" : current));
+      }, 6000 / (useUiStore.getState().demoSpeed || 1));
+    }
     if (type === "reset") {
       setSpotlightDone(false);
       setSpotlightTranscript([]);
@@ -3614,6 +3633,8 @@ export default function MachineViewer({
     for (const event of result.events) recordEvent(event.type, event.part);
   };
 
+  const setDemoFocusPartId = (_: string | null) => {};
+
   const runTrigger = (triggerId: string) => {
     const trigger = module.mechanism?.triggers.find(
       (candidate) => candidate.id === triggerId,
@@ -3641,6 +3662,7 @@ export default function MachineViewer({
       cancelAnimationFrame(spotlightFrame.current);
       spotlightFrame.current = null;
     }
+    const pausedBefore = useUiStore.getState().paused;
     setPaused(true);
     setSpotlightActive(true);
     if (isSpotlight) setSpotlightDone(false);
@@ -3664,55 +3686,69 @@ export default function MachineViewer({
     });
     displayState.current = initialState;
 
+    const speed = useUiStore.getState().demoSpeed || 1;
+    const timeline = buildDemoTimeline(
+      captured,
+      (type, part) => mechanismCaption(module, language, type, part),
+      statesDiffer,
+      initialState,
+    );
     let index = 0;
     let previousState = initialState;
     const playNext = () => {
-      const event = captured[index];
-      if (!event) {
+      const entry = timeline[index];
+      if (!entry) {
         displayState.current = null;
         if (donePart) recordEvent("spotlight:done", donePart);
         setSpotlightActive(false);
+        setDemoFocusPartId(null);
+        setPaused(pausedBefore);
         spotlightFrame.current = null;
         return;
       }
 
-      recordEvent(event.type, event.part);
-      const changed = statesDiffer(previousState, event.state);
-      const realPart = spotlightSpec.parts.some(
-        (part) => part.id === event.part,
-      );
-      if (event.type === "highlight:off") {
-        setSpotlightPartIds((current) =>
-          current.filter((partId) => partId !== event.part),
+      if (entry.kind === "camera") {
+        setDemoFocusPartId(entry.event.part);
+      } else {
+        recordEvent(entry.event.type, entry.event.part);
+        const changed = statesDiffer(previousState, entry.event.state);
+        const realPart = spotlightSpec.parts.some(
+          (part) => part.id === entry.event.part,
         );
-      } else if (realPart && (changed || event.type.includes("highlight"))) {
-        setSpotlightPartIds((current) =>
-          current.includes(event.part) ? current : [...current, event.part],
-        );
+        if (entry.event.type === "highlight:off") {
+          setSpotlightPartIds((current) =>
+            current.filter((partId) => partId !== entry.event.part),
+          );
+        } else if (
+          realPart &&
+          (changed || entry.event.type.includes("highlight"))
+        ) {
+          setSpotlightPartIds((current) =>
+            current.includes(entry.event.part)
+              ? current
+              : [...current, entry.event.part],
+          );
+        }
       }
 
-      const priorType = captured[index - 1]?.type;
-      const duration =
-        changed && priorType === "drive:slow"
-          ? 500
-          : changed && event.type.includes("drive")
-            ? 320
-            : changed
-              ? 240
-              : 45;
+      const motion = entry.motionMs / speed;
+      const dwell = entry.dwellMs / speed;
       const startedAt = performance.now();
       const animate = (now: number) => {
-        const progress = Math.min(1, (now - startedAt) / duration);
+        const progress = Math.min(
+          1,
+          motion === 0 ? 1 : (now - startedAt) / motion,
+        );
         displayState.current = interpolateState(
           previousState,
-          event.state,
+          entry.event.state,
           1 - (1 - progress) ** 3,
         );
-        if (progress < 1) {
+        if (now - startedAt < motion + dwell) {
           spotlightFrame.current = requestAnimationFrame(animate);
           return;
         }
-        previousState = event.state;
+        previousState = entry.event.state;
         index += 1;
         playNext();
       };

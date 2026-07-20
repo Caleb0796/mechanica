@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
 import { initialLanguage } from "./i18n";
+import { demoSpeedFromEnv } from "./viewer/demoTimeline";
 
 export type UiLanguage = "zh" | "en";
 
 interface UiState {
   assemblyProgress: number;
+  demoSpeed: number;
   explode: number;
   hoveredPartId: string | null;
   language: UiLanguage;
@@ -23,6 +25,7 @@ interface UiState {
 
 export const useUiStore = create<UiState>((set) => ({
   assemblyProgress: 1,
+  demoSpeed: demoSpeedFromEnv(),
   explode: 0,
   hoveredPartId: null,
   language: initialLanguage,

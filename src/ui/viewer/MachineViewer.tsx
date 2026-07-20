@@ -81,6 +81,7 @@ import {
   type SchemeTransitionMetadata,
 } from "../compare/model";
 import GalleryPanel from "../panels/GalleryPanel";
+import PosterFallback from "../PosterFallback";
 import DocentChat from "../panels/DocentChat";
 import PartInspector from "../panels/PartInspector";
 import SchemeSwitcher from "../panels/SchemeSwitcher";
@@ -2833,6 +2834,12 @@ export function MachineStoryStage({
         ) : null}
         <AspectAwareStoryCamera pose={state.camera} />
       </Canvas>
+      <div
+        className="poster-overlay"
+        data-ready={storyReadyAt !== null ? "true" : "false"}
+      >
+        <PosterFallback slug={module.data.slug} />
+      </div>
       {!geometryPrepared ? (
         <GeometryLoading
           built={geometryBuilt}
@@ -4056,6 +4063,14 @@ export default function MachineViewer({
               ) : null}
             </Canvas>
           )}
+          {!compareActive ? (
+            <div
+              className="poster-overlay"
+              data-ready={viewerGeometryReadyAt !== null ? "true" : "false"}
+            >
+              <PosterFallback slug={module.data.slug} />
+            </div>
+          ) : null}
           {!compareActive && !viewerGeometryPrepared ? (
             <GeometryLoading
               built={viewerGeometryBuilt}

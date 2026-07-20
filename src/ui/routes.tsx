@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { MachineModule, MachineSlug } from "../sim/types";
+import PosterFallback from "./PosterFallback";
 import type { SceneSpec } from "./scene/types";
 import type { StoryStep } from "./story";
 
@@ -88,6 +89,9 @@ function currentPath() {
 function HomePage() {
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
+  const [failedThumbnails, setFailedThumbnails] = useState<
+    Partial<Record<MachineSlug, boolean>>
+  >({});
 
   return (
     <main className="home-page">
@@ -116,12 +120,24 @@ function HomePage() {
                 {String(index + 1).padStart(2, "0")}
               </span>
               <span className="machine-thumbnail">
-                <img
-                  alt=""
-                  data-testid="machine-thumbnail-image"
-                  loading={index < 2 ? "eager" : "lazy"}
-                  src={`${import.meta.env.BASE_URL}assets/renders/${slug}/overall.jpg`}
-                />
+                {failedThumbnails[slug] ? (
+                  <span className="machine-thumbnail-fallback">
+                    {t("home.thumbnail")}
+                  </span>
+                ) : (
+                  <img
+                    alt=""
+                    data-testid="machine-thumbnail-image"
+                    loading="lazy"
+                    onError={() =>
+                      setFailedThumbnails((current) => ({
+                        ...current,
+                        [slug]: true,
+                      }))
+                    }
+                    src={`${import.meta.env.BASE_URL}assets/renders/${slug}/overall.jpg`}
+                  />
+                )}
               </span>
               <h2>{card.name[language]}</h2>
               <p className="machine-era">{card.era[language]}</p>
@@ -186,7 +202,7 @@ function MachineRoute({ slug }: { slug: string }) {
   if (!module) {
     return (
       <main aria-live="polite" className="loading-page">
-        <p>{t("app.loading")}</p>
+        <PosterFallback slug={slug} />
       </main>
     );
   }
@@ -195,7 +211,7 @@ function MachineRoute({ slug }: { slug: string }) {
     <Suspense
       fallback={
         <main aria-live="polite" className="loading-page">
-          <p>{t("app.loading")}</p>
+          <PosterFallback slug={slug} />
         </main>
       }
     >
@@ -266,7 +282,7 @@ function StoryRoute({ slug }: { slug: string }) {
   if (!bundle) {
     return (
       <main aria-live="polite" className="loading-page">
-        <p>{t("app.loading")}</p>
+        <PosterFallback slug={slug} />
       </main>
     );
   }
@@ -275,7 +291,7 @@ function StoryRoute({ slug }: { slug: string }) {
     <Suspense
       fallback={
         <main aria-live="polite" className="loading-page">
-          <p>{t("app.loading")}</p>
+          <PosterFallback slug={slug} />
         </main>
       }
     >

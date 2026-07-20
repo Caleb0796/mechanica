@@ -26,6 +26,7 @@ import {
   type CompareSide,
 } from "./model";
 import { useCompareStore } from "./store";
+import PosterFallback from "../PosterFallback";
 import SceneEnvironment, {
   prepareSceneEnvironment,
 } from "../viewer/SceneEnvironment";
@@ -451,6 +452,12 @@ export default function CompareView({
             onReady={() => markViewportCompiled(side, schemeId)}
           />
         </Canvas>
+        <div
+          className="poster-overlay"
+          data-ready={geometryWarmup.committedAt !== null ? "true" : "false"}
+        >
+          <PosterFallback slug={module.data.slug} />
+        </div>
         {!geometryWarmup.prepared ? (
           <GeometryLoading
             built={geometryWarmup.built}

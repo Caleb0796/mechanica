@@ -282,10 +282,22 @@ a {
   width: 54%;
   height: 100%;
   overflow: hidden;
+  background: #14130f;
   opacity: 0.58;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to left, #000 45%, transparent 100%);
   mask-image: linear-gradient(to left, #000 45%, transparent 100%);
+}
+
+.machine-thumbnail-fallback {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  color: #9a968c;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  place-items: center;
+  text-transform: uppercase;
 }
 
 .machine-thumbnail img {
@@ -321,11 +333,49 @@ a {
 
 .loading-page,
 .error-page {
+  position: relative;
   display: grid;
   min-height: calc(100vh - 4.5rem);
   place-content: center;
   padding: 2rem;
   text-align: center;
+}
+
+.poster-overlay {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+
+.poster-overlay[data-ready="true"] {
+  opacity: 0;
+}
+
+.poster-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  background: #14130f;
+  place-items: center;
+}
+
+.poster-fallback img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+  filter: blur(6px) saturate(0.8);
+}
+
+.poster-fallback span {
+  position: relative;
+  color: var(--gold, #d5a44e);
 }
 
 .error-page p {
@@ -364,7 +414,7 @@ a {
 
 .geometry-loading {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   inset: 0;
   display: grid;
   grid-template-columns: minmax(8rem, 14rem) auto;

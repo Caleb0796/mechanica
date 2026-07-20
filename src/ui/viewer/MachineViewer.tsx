@@ -114,6 +114,7 @@ import {
 } from "./assembly";
 import {
   DEMO_VIEWER_PROFILE,
+  safeHomePose,
   type ViewerProfile,
   VIEWER_PROFILES,
   visualMaterialFor,
@@ -661,33 +662,40 @@ function CameraDirector({
     const fitBounds = focusBounds ?? wholeBounds;
     const fitSize = fitBounds.getSize(new Vector3());
     const fitSphere = fitBounds.getBoundingSphere(new Sphere());
+    const wholeSphere = wholeBounds.getBoundingSphere(new Sphere());
+    const homePose = profile.homePose
+      ? safeHomePose(profile.homePose, wholeSphere)
+      : null;
+    if (import.meta.env.DEV && profile.homePose && !homePose) {
+      console.warn("[camera] stale homePose rejected for", spec.slug);
+    }
     const target =
-      fitWholeMachine || explode > 0 || !profile.homePose
+      fitWholeMachine || explode > 0 || !homePose
         ? fitBounds.getCenter(new Vector3())
-        : new Vector3(...profile.homePose.target);
+        : new Vector3(...homePose.target);
     if (fitWholeMachine) {
       target.y -= fitSize.y * 0.12;
     }
-    if (!profile.homePose && profile.targetOffset) {
+    if (!homePose && profile.targetOffset) {
       target.add(
         new Vector3(...profile.targetOffset).multiply(
           new Vector3(fitSize.x, fitSize.y, fitSize.z),
         ),
       );
     }
-    const authoredPosition = profile.homePose
+    const authoredPosition = homePose
       ? fitWholeMachine
         ? target
             .clone()
             .add(
-              new Vector3(...profile.homePose.position).sub(
-                new Vector3(...profile.homePose.target),
+              new Vector3(...homePose.position).sub(
+                new Vector3(...homePose.target),
               ),
             )
-        : new Vector3(...profile.homePose.position)
+        : new Vector3(...homePose.position)
       : target.clone().add(new Vector3(...profile.direction));
     const direction = authoredPosition.sub(target).normalize();
-    const fov = profile.homePose?.fov ?? 36;
+    const fov = homePose?.fov ?? 36;
     const fitDistance = fitDistanceForBounds(
       fitBounds,
       direction,
@@ -703,10 +711,9 @@ function CameraDirector({
       ) -
         1) *
         Math.max(0, Math.min(1, explode));
-    const wholeSphere = wholeBounds.getBoundingSphere(new Sphere());
-    const authoredDistance = profile.homePose
-      ? new Vector3(...profile.homePose.position).distanceTo(
-          new Vector3(...profile.homePose.target),
+    const authoredDistance = homePose
+      ? new Vector3(...homePose.position).distanceTo(
+          new Vector3(...homePose.target),
         )
       : fitDistance * Math.max(profile.margin, 1);
     const fittedHomeDistance = Math.max(

@@ -1,3 +1,5 @@
+import { Sphere, Vector3 } from "three";
+
 import type { StandardMaterialPresentation } from "../../core/materials";
 import type { ExhibitData, MachineSlug, PartDef } from "../../sim/types";
 
@@ -19,6 +21,19 @@ export interface ViewerProfile {
   maxPolarAngle?: number;
   targetOffset?: V3;
   focusPartIds?: readonly string[];
+}
+
+export function safeHomePose<
+  T extends {
+    position: readonly [number, number, number];
+    target: readonly [number, number, number];
+  },
+>(pose: T, modelSphere: Sphere): T | null {
+  const camera = new Vector3(...pose.position);
+  if (camera.distanceTo(modelSphere.center) < modelSphere.radius * 1.15) {
+    return null;
+  }
+  return pose;
 }
 
 export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {

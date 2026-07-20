@@ -3340,12 +3340,43 @@ export default function MachineViewer({
   useEffect(() => {
     if (!assemblyPlaying) return;
     const startedAt = performance.now();
+    let heldDurationMs = 0;
+    let stageHoldStartedAt = 0;
+    let stageHoldUntil = 0;
+    let previousStage: number | null = null;
     const animate = (now: number) => {
+      if (now < stageHoldUntil) {
+        animationFrame.current = requestAnimationFrame(animate);
+        return;
+      }
+      if (stageHoldUntil > 0) {
+        heldDurationMs += stageHoldUntil - stageHoldStartedAt;
+        stageHoldStartedAt = 0;
+        stageHoldUntil = 0;
+      }
       const progress = Math.min(
         1,
-        (now - startedAt) / assembly.plan.durationMs,
+        (now - startedAt - heldDurationMs) / assembly.plan.durationMs,
       );
       setAssemblyProgress(progress);
+      const partIndex = Math.min(
+        Math.floor(progress * assembly.plan.orderedPartIds.length),
+        assembly.plan.orderedPartIds.length - 1,
+      );
+      const partId = assembly.plan.orderedPartIds[partIndex];
+      const stage = partId
+        ? (assembly.plan.partById.get(partId)?.assemblyStep ?? 0)
+        : null;
+      if (
+        previousStage !== null &&
+        stage !== null &&
+        stage !== previousStage &&
+        progress < 1
+      ) {
+        stageHoldStartedAt = now;
+        stageHoldUntil = now + 700;
+      }
+      previousStage = stage;
       if (progress < 1) {
         animationFrame.current = requestAnimationFrame(animate);
       } else {
@@ -3358,7 +3389,7 @@ export default function MachineViewer({
       if (animationFrame.current !== null)
         cancelAnimationFrame(animationFrame.current);
     };
-  }, [assembly.plan.durationMs, assemblyPlaying, setAssemblyProgress]);
+  }, [assembly.plan, assemblyPlaying, setAssemblyProgress]);
 
   useEffect(() => {
     if (assembly.state.mode !== "step") return;

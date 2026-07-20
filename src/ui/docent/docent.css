@@ -95,15 +95,10 @@
   background: rgba(255, 255, 255, 0.055);
 }
 
-.docent-citation {
-  display: inline-block;
-  margin: 0 0.1rem;
-  border: 1px solid rgba(213, 181, 111, 0.5);
-  border-radius: 999px;
-  color: #e9c77f;
-  padding: 0.05rem 0.38rem;
-  font-size: 0.82em;
-  text-decoration: none;
+.docent-cite {
+  margin-left: 2px;
+  color: var(--gold, #d5a44e);
+  cursor: help;
 }
 
 .docent-status {

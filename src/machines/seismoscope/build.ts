@@ -1138,7 +1138,9 @@ const mechanism: MechanismScript = {
         emit("drive", `gate-${WEST_BEARING}`);
         emit("pulse", "duzhu");
         if (respondToPulse(graph, WEST_BEARING, emit)) {
+          emit("caption:quake-report", `dragon-${WEST_BEARING}`);
           lockOtherDirections(graph, WEST_BEARING, emit);
+          emit("caption:quake-reset-hint", "linkage-crown");
         }
         emit("source", "houfeng-196");
         emit("spotlight:done", "seismoscope");
@@ -1154,7 +1156,7 @@ const mechanism: MechanismScript = {
           param >= 0 &&
           param < DIRECTION_COUNT
             ? param
-            : 0;
+            : WEST_BEARING;
         graph.setInput("vessel", (bearing * Math.PI) / 4);
         emit("pulse", "vessel");
         if (droppedBearing(graph) === undefined) {
@@ -1162,7 +1164,9 @@ const mechanism: MechanismScript = {
           emit("drive", `gate-${bearing}`);
         }
         if (respondToPulse(graph, bearing, emit)) {
+          emit("caption:quake-report", `dragon-${bearing}`);
           lockOtherDirections(graph, bearing, emit);
+          emit("caption:quake-reset-hint", "linkage-crown");
         }
       },
     },

@@ -35,6 +35,19 @@
     "spotlightDone": "演示完成",
     "noMechanisms": "暂无独立机构演示"
   },
+  "seismo": {
+    "bearingLabel": "选择震源方位",
+    "bearing": {
+      "N": "北 N",
+      "NE": "东北 NE",
+      "E": "东 E",
+      "SE": "东南 SE",
+      "S": "南 S",
+      "SW": "西南 SW",
+      "W": "西 W",
+      "NW": "西北 NW"
+    }
+  },
   "assembly": {
     "title": "装配流程",
     "progress": "装配进度",

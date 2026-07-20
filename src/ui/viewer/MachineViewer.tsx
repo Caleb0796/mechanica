@@ -87,6 +87,7 @@ import SchemeSwitcher from "../panels/SchemeSwitcher";
 import MachineEnvironment, {
   SCENERY_RAYCAST_DISABLED,
 } from "../scene/MachineEnvironment";
+import { QUAKE_PAYOFF_EVENT } from "../scene/types";
 import { useUiStore } from "../store";
 import type { StoryStageState } from "../story/types";
 import AidLayer from "./AidLayer";
@@ -2865,8 +2866,27 @@ function mechanismCaption(
   }
   if (
     module.data.slug === "seismoscope" &&
-    (type === "releaseBall" || type === "locked")
+    (type === "caption:quake-report" ||
+      type === "caption:quake-reset-hint" ||
+      type === "caption:scheme-switch" ||
+      type === "releaseBall" ||
+      type === "locked")
   ) {
+    if (type === "caption:quake-report") {
+      return language === "zh"
+        ? "西方龙口铜丸落入蟾口 — 记下方位"
+        : "The west dragon drops its ball into the toad — bearing recorded";
+    }
+    if (type === "caption:quake-reset-hint") {
+      return language === "zh"
+        ? "按「复位八方」可再试其他方向"
+        : "Press “Reset all eight directions” to try another bearing";
+    }
+    if (type === "caption:scheme-switch") {
+      return language === "zh"
+        ? "已切换到冯锐 2005 悬摆方案以演示"
+        : "Switched to the Feng Rui 2005 pendulum scheme for this demo";
+    }
     if (type === "releaseBall") {
       return language === "zh"
         ? "一龙吐丸，落向对应蟾蜍 ·《后汉书》"
@@ -3061,6 +3081,7 @@ export default function MachineViewer({
   const [spotlightPartIds, setSpotlightPartIds] = useState<string[]>([]);
   const [spotlightRunId, setSpotlightRunId] = useState(0);
   const [spotlightTranscript, setSpotlightTranscript] = useState<string[]>([]);
+  const [quakeBearing, setQuakeBearing] = useState(6);
   const [odometerReadout, setOdometerReadout] = useState<string | null>(
     module.spec.slug === "odometer" ? "0.00" : null,
   );
@@ -3628,11 +3649,21 @@ export default function MachineViewer({
       setSpotlightDone(false);
       setSpotlightTranscript([]);
     }
+    if (module.data.slug === "seismoscope" && type === "releaseBall") {
+      const bearing = Number.parseInt(part.replace("dragon-", ""), 10);
+      if (Number.isInteger(bearing)) {
+        window.dispatchEvent(
+          new CustomEvent(QUAKE_PAYOFF_EVENT, { detail: { bearing } }),
+        );
+      }
+    }
     if (
       (module.data.slug === "astroclock" &&
         (type.startsWith("caption:") || type.startsWith("phase:"))) ||
       (module.data.slug === "seismoscope" &&
-        (type === "releaseBall" || type === "locked"))
+        (type.startsWith("caption:") ||
+          type === "releaseBall" ||
+          type === "locked"))
     ) {
       setSpotlightTranscript((current) =>
         current.includes(nextCaption) ? current : [...current, nextCaption],
@@ -3655,7 +3686,7 @@ export default function MachineViewer({
     for (const event of result.events) recordEvent(event.type, event.part);
   };
 
-  const runTrigger = (triggerId: string) => {
+  const runTrigger = (triggerId: string, arg?: number) => {
     const trigger = module.mechanism?.triggers.find(
       (candidate) => candidate.id === triggerId,
     );
@@ -3664,9 +3695,10 @@ export default function MachineViewer({
 
     setSpotlightAutoFitKey(null);
     let spotlightSpec = activeSpec;
+    let switchedToFengrui = false;
     if (
-      isSpotlight &&
       module.spec.slug === "seismoscope" &&
+      (isSpotlight || triggerId === "quake" || triggerId === "quake:arm") &&
       activeSchemeId !== "fengrui" &&
       module.schemes?.fengrui
     ) {
@@ -3676,6 +3708,7 @@ export default function MachineViewer({
         cameraFitKey("seismoscope", "fengrui", "default", explode),
       );
       spotlightSpec = applySchemePatch(module.spec, module.schemes.fengrui);
+      switchedToFengrui = true;
     }
 
     if (spotlightFrame.current !== null) {
@@ -3692,6 +3725,13 @@ export default function MachineViewer({
 
     const initialState = graph.state();
     const captured: CapturedEvent[] = [];
+    if (switchedToFengrui) {
+      captured.push({
+        type: "caption:scheme-switch",
+        part: "fengrui",
+        state: initialState,
+      });
+    }
     let donePart: string | null = null;
     trigger.run(graph, (type, part) => {
       if (type === "spotlight:done") {
@@ -3703,7 +3743,7 @@ export default function MachineViewer({
         part,
         state: captureSpotlightState(spotlightSpec, graph.state(), type, part),
       });
-    });
+    }, arg);
     displayState.current = initialState;
 
     const speed = useUiStore.getState().demoSpeed || 1;
@@ -4254,6 +4294,28 @@ export default function MachineViewer({
         />
         <section className="panel">
           <h2>{t("viewer.mechanisms")}</h2>
+          {module.data.slug === "seismoscope" ? (
+            <div
+              aria-label={t("seismo.bearingLabel")}
+              className="bearing-picker"
+              data-testid="bearing-picker"
+              role="group"
+            >
+              {["N", "NE", "E", "SE", "S", "SW", "W", "NW"].map(
+                (bearing, index) => (
+                  <button
+                    aria-pressed={quakeBearing === index}
+                    className={quakeBearing === index ? "chip active" : "chip"}
+                    key={bearing}
+                    onClick={() => setQuakeBearing(index)}
+                    type="button"
+                  >
+                    {t(`seismo.bearing.${bearing}`)}
+                  </button>
+                ),
+              )}
+            </div>
+          ) : null}
           <div className="mechanism-list">
             {module.mechanism?.triggers.some(
               (trigger) => !trigger.id.startsWith("drive:"),
@@ -4266,7 +4328,14 @@ export default function MachineViewer({
                     data-testid={`mech-trigger-${trigger.id}`}
                     disabled={spotlightActive}
                     key={trigger.id}
-                    onClick={() => runTrigger(trigger.id)}
+                    onClick={() =>
+                      runTrigger(
+                        trigger.id,
+                        trigger.id === "quake" || trigger.id === "quake:arm"
+                          ? quakeBearing
+                          : undefined,
+                      )
+                    }
                     type="button"
                   >
                     {trigger.label[language]}

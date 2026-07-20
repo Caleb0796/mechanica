@@ -35,6 +35,19 @@
     "spotlightDone": "Demo complete",
     "noMechanisms": "No separate mechanism demo"
   },
+  "seismo": {
+    "bearingLabel": "Choose the quake bearing",
+    "bearing": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    }
+  },
   "assembly": {
     "title": "Assembly sequence",
     "progress": "Assembly progress",

@@ -38,7 +38,10 @@
     "noMechanisms": "暂无独立机构演示"
   },
   "assembly": {
-    "title": "装配流程",
+    "title": "拖拽复原：把零件拖到金色槽位",
+    "progressLabel": "已装 {{seated}} / {{total}}",
+    "exit": "退出并显示整机",
+    "hintPickFirst": "先点击或拖起一个零件",
     "progress": "装配进度",
     "step": "第 {{current}} 步，共 {{total}} 步",
     "previous": "上一步",

@@ -38,7 +38,10 @@
     "noMechanisms": "No separate mechanism demo"
   },
   "assembly": {
-    "title": "Assembly sequence",
+    "title": "Reassemble: drag parts onto the gold slots",
+    "progressLabel": "Seated {{seated}} / {{total}}",
+    "exit": "Exit and show the machine",
+    "hintPickFirst": "Pick up a part first",
     "progress": "Assembly progress",
     "step": "Step {{current}} of {{total}}",
     "previous": "Previous step",

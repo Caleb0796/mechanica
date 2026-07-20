@@ -1924,16 +1924,42 @@ function AssemblyStagingGround({
     return null;
   }
   return (
-    <gridHelper
-      args={[layout.size, layout.divisions, "#b98b42", "#554328"]}
-      position={[
-        layout.center[0],
-        assembly.plan.stagingGroundY + 0.0005,
-        layout.center[1],
-      ]}
-      raycast={() => undefined}
-      userData={{ mechanicaAffordance: true }}
-    />
+    <>
+      <gridHelper
+        args={[layout.size, layout.divisions, "#b98b42", "#554328"]}
+        position={[
+          layout.center[0],
+          assembly.plan.stagingGroundY + 0.0005,
+          layout.center[1],
+        ]}
+        raycast={() => undefined}
+        userData={{ mechanicaAffordance: true }}
+      />
+      {[...assembly.plan.stagingByPartId.entries()].map(([partId, slot]) => (
+        <mesh
+          key={`assembly-slot:${partId}`}
+          position={[
+            slot.position[0],
+            assembly.plan.stagingGroundY + 0.01,
+            slot.position[2],
+          ]}
+          raycast={() => undefined}
+          renderOrder={10}
+          rotation={[-Math.PI / 2, 0, 0]}
+          userData={{ mechanicaAffordance: true }}
+        >
+          <torusGeometry
+            args={[Math.max(0.12, Math.min(slot.radius * 0.35, 0.35)), 0.018, 8, 32]}
+          />
+          <meshBasicMaterial
+            color="#d9b86d"
+            depthTest={false}
+            depthWrite={false}
+            transparent
+          />
+        </mesh>
+      ))}
+    </>
   );
 }
 
@@ -3081,6 +3107,7 @@ export default function MachineViewer({
     module.spec.slug === "odometer" ? "0.00" : null,
   );
   const [assemblyPlaying, setAssemblyPlaying] = useState(false);
+  const [assemblyPickHintToken, setAssemblyPickHintToken] = useState(0);
   const [completionProgress, setCompletionProgress] = useState(1);
   const [driveCoachVisible, setDriveCoachVisible] = useState(false);
   const [idleDemand, setIdleDemand] = useState(false);
@@ -3478,6 +3505,15 @@ export default function MachineViewer({
 
   useEffect(() => {
     if (
+      assembly.state.mode !== "reassemble" ||
+      assembly.state.selectedPartId
+    ) {
+      setAssemblyPickHintToken(0);
+    }
+  }, [assembly.state.mode, assembly.state.selectedPartId]);
+
+  useEffect(() => {
+    if (
       assembly.state.completionEffectToken <= observedCompletionEffect.current
     ) {
       return;
@@ -3872,11 +3908,17 @@ export default function MachineViewer({
   const spotlight = module.mechanism?.triggers.find(
     (trigger) => trigger.id === "spotlight",
   );
+  const requiredAssemblyPartName =
+    assembly.state.hint?.kind === "parent-required"
+      ? (module.spec.parts.find(
+          (part) => part.id === assembly.state.hint?.requiredPartId,
+        )?.name[language] ?? assembly.state.hint.requiredPartId)
+      : null;
   const assemblyHint = assembly.state.hint
     ? assembly.state.hint.kind === "parent-required"
       ? language === "zh"
-        ? `请先安装 ${assembly.state.hint.requiredPartId}`
-        : `Seat ${assembly.state.hint.requiredPartId} first`
+        ? `请先安装 ${requiredAssemblyPartName}`
+        : `Seat ${requiredAssemblyPartName} first`
       : language === "zh"
         ? "请将部件移近目标槽位"
         : "Move the part closer to its target slot"
@@ -3890,7 +3932,7 @@ export default function MachineViewer({
       onWheelCapture={registerViewerInteraction}
     >
       <section className="viewer-stage">
-        {compareActive ? null : (
+        {compareActive || assembly.state.mode === "reassemble" ? null : (
           <div className="viewer-title-row">
             <div className="viewer-title">
               <h1>{module.data.names[language]}</h1>
@@ -4086,6 +4128,38 @@ export default function MachineViewer({
             </div>
           ) : null}
         </div>
+        {assembly.state.mode === "reassemble" ? (
+          <div
+            className="assembly-banner"
+            data-pulse={assemblyPickHintToken}
+            data-testid="assembly-banner"
+            key={assemblyPickHintToken}
+          >
+            <strong>{t("assembly.title")}</strong>
+            <span>
+              {t("assembly.progressLabel", {
+                seated: assembly.state.seatedPartIds.size,
+                total: assembly.plan.orderedPartIds.length,
+              })}
+            </span>
+            {assemblyPickHintToken > 0 ? (
+              <span className="assembly-banner-hint">
+                {t("assembly.hintPickFirst")}
+              </span>
+            ) : null}
+            <button
+              onClick={() => {
+                setAssemblyPickHintToken(0);
+                assembly.exitAssembly();
+                setAssemblyProgress(1);
+                setExplode(0);
+              }}
+              type="button"
+            >
+              {t("assembly.exit")}
+            </button>
+          </div>
+        ) : null}
         <div
           className="viewer-controls viewer-toolbar"
           data-completion-effect={assembly.state.completionEffectToken}
@@ -4241,9 +4315,11 @@ export default function MachineViewer({
                     data-testid="assembly-reassemble"
                     onClick={() => {
                       setAssemblyPlaying(false);
+                      setAssemblyPickHintToken(0);
                       setAssemblyProgress(1);
                       setExplode(0);
                       assembly.enterExplodedMode();
+                      setDemoFocusPartId("base-platform");
                     }}
                     type="button"
                   >
@@ -4290,12 +4366,17 @@ export default function MachineViewer({
                   </button>
                 </div>
               ) : null}
-              {assembly.state.mode === "reassemble" &&
-              assembly.state.selectedPartId ? (
+              {assembly.state.mode === "reassemble" ? (
                 <button
                   className="assembly-target-slot"
                   data-testid="assembly-seat-target"
-                  onClick={() => assembly.attemptSeatSelected(0, 1)}
+                  onClick={() => {
+                    if (!assembly.state.selectedPartId) {
+                      setAssemblyPickHintToken((token) => token + 1);
+                      return;
+                    }
+                    assembly.attemptSeatSelected(0, 1);
+                  }}
                   type="button"
                 >
                   {language === "zh" ? "点按目标槽位" : "Tap target slot"}
@@ -4327,6 +4408,7 @@ export default function MachineViewer({
                   data-testid="assembly-reset"
                   onClick={() => {
                     setAssemblyPlaying(false);
+                    setAssemblyPickHintToken(0);
                     assembly.exitAssembly();
                     setAssemblyProgress(1);
                     setExplode(0);

@@ -806,6 +806,57 @@ a {
   cursor: pointer;
 }
 
+.assembly-banner {
+  position: absolute;
+  z-index: 5;
+  top: 1rem;
+  left: 50%;
+  display: flex;
+  width: min(34rem, calc(100% - 2rem));
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(217, 184, 109, 0.7);
+  border-radius: 10px;
+  color: #eee5d3;
+  background: rgba(12, 12, 10, 0.92);
+  box-shadow: 0 0.65rem 2rem rgba(0, 0, 0, 0.4);
+  font-size: 0.8rem;
+  text-align: center;
+  transform: translateX(-50%);
+  backdrop-filter: blur(8px);
+}
+
+.assembly-banner strong {
+  flex-basis: 100%;
+  color: #e4c87f;
+}
+
+.assembly-banner button {
+  padding: 0.35rem 0.55rem;
+  border: 1px solid #b8944f;
+  color: #e4c87f;
+  background: transparent;
+  cursor: pointer;
+}
+
+.assembly-banner-hint {
+  color: #f0aaa4;
+}
+
+.assembly-banner[data-pulse]:not([data-pulse="0"]) {
+  animation: assembly-banner-pulse 450ms ease-out;
+}
+
+@keyframes assembly-banner-pulse {
+  45% {
+    border-color: #f0aaa4;
+    box-shadow: 0 0 1.5rem rgba(199, 73, 66, 0.55);
+  }
+}
+
 .viewer-toolbar[data-completion-effect]:not([data-completion-effect="0"]) {
   animation: assembly-complete 700ms ease-out;
 }

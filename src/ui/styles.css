@@ -27,11 +27,11 @@ body {
   min-height: 100vh;
   background:
     radial-gradient(
-      circle at 50% -10%,
-      rgba(174, 126, 44, 0.16),
-      transparent 36rem
+      120% 60% at 50% 0%,
+      rgba(213, 164, 78, 0.1),
+      transparent 70%
     ),
-    #090a0a;
+    linear-gradient(#0b0b09, #11100c);
 }
 
 button,
@@ -126,12 +126,12 @@ a {
 .home-page {
   width: min(1160px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: clamp(3rem, 8vw, 7rem) 0 6rem;
+  padding: clamp(2rem, 5vh, 4rem) 0 6rem;
 }
 
 .hero {
   max-width: 52rem;
-  margin-bottom: clamp(3rem, 7vw, 6rem);
+  margin-bottom: clamp(2rem, 5vh, 4rem);
 }
 
 .eyebrow {
@@ -164,7 +164,7 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin: 2.5rem 0 3rem;
+  margin: 2rem auto;
   padding: 1.3rem 1.5rem;
   border: 1px solid rgba(219, 182, 103, 0.3);
   background: linear-gradient(
@@ -236,9 +236,12 @@ a {
   min-height: 16rem;
   padding: 2rem;
   overflow: hidden;
-  background: #101111;
+  border: 1px solid rgba(213, 164, 78, 0.22);
+  background: linear-gradient(180deg, #171511, #100f0c);
   text-decoration: none;
-  transition: background 180ms ease;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
 }
 
 .machine-card > * {
@@ -262,7 +265,8 @@ a {
 }
 
 .machine-card:hover {
-  background: #151512;
+  border-color: rgba(213, 164, 78, 0.5);
+  transform: translateY(-3px);
 }
 
 .machine-card:hover::after {
@@ -329,6 +333,15 @@ a {
   color: #898780;
   font-size: 0.85rem;
   line-height: 1.55;
+}
+
+.machine-open {
+  display: inline-block;
+  margin-top: 1.25rem;
+  color: #d9b86d;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .loading-page,

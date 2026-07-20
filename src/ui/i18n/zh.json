@@ -15,7 +15,7 @@
     "eyebrow": "四件机械 · 四种巧思",
     "title": "让古代机械重新运转",
     "intro": "以可验证的数据、三维结构与交互仿真，重访中国机械史。",
-    "open": "查看展品",
+    "open": "进入展厅",
     "thumbnail": "复原图待生成"
   },
   "viewer": {
@@ -38,6 +38,19 @@
     "spotlightDone": "演示完成",
     "contextLost": "图形上下文已丢失，正在尝试恢复…",
     "noMechanisms": "暂无独立机构演示"
+  },
+  "seismo": {
+    "bearingLabel": "选择震源方位",
+    "bearing": {
+      "N": "北 N",
+      "NE": "东北 NE",
+      "E": "东 E",
+      "SE": "东南 SE",
+      "S": "南 S",
+      "SW": "西南 SW",
+      "W": "西 W",
+      "NW": "西北 NW"
+    }
   },
   "assembly": {
     "title": "拖拽复原：把零件拖到金色槽位",

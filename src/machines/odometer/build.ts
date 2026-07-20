@@ -1366,6 +1366,7 @@ const machine: MachineModule = {
     },
     {
       kind: "powerPath",
+      label: { zh: "动力路径：足轮减速链", en: "Power path: distance train" },
       sequence: [
         "zulun",
         "road-axle",
@@ -1385,6 +1386,7 @@ const machine: MachineModule = {
     },
     {
       kind: "powerPath",
+      label: { zh: "动力路径：报时锤系", en: "Power path: striker train" },
       sequence: [
         "zulun",
         "road-axle",
@@ -1448,6 +1450,10 @@ const machine: MachineModule = {
     {
       kind: "subDemo",
       triggerId: "spotlight",
+      label: {
+        zh: "原理演示：十进折算",
+        en: "Principle demo: decimal distance",
+      },
       caption: {
         zh: "观察 0.99 里至 1.00 里的下层击鼓路径",
         en: "Watch the lower drum path cross 0.99 to 1.00 li",
@@ -1456,6 +1462,10 @@ const machine: MachineModule = {
     {
       kind: "subDemo",
       triggerId: "ten-li-spotlight",
+      label: {
+        zh: "原理演示：十里鸣镯",
+        en: "Principle demo: ten-li chime",
+      },
       caption: {
         zh: "观察 9.99 里至 10.00 里的上层击镯路径",
         en: "Watch the upper chime path cross 9.99 to 10.00 li",
@@ -1481,11 +1491,14 @@ const machine: MachineModule = {
           const before = graph.state();
           emit("drive:slow", "zulun");
           graph.drive("zulun", TWO_PI / 4);
+          emit("odometer:update", "0.1");
           emit("transmission:advance", "xuanfenglun");
           graph.drive("zulun", TWO_PI / 4);
+          emit("odometer:update", "0.5");
           emit("mallet:raise", "trip-linkage-drum");
           emit("mallet:raise", "lower-figure");
           graph.drive("zulun", TWO_PI / 2);
+          emit("odometer:update", "1.0");
           emitCrossedStrikes(before, graph.state(), emit, (type) => {
             if (type !== "drum") return;
             graph.setInput("lower-figure-body", FIGURE_STRIKE_HOLD);
@@ -1518,11 +1531,14 @@ const machine: MachineModule = {
           const before = graph.state();
           emit("drive:slow", "zulun");
           graph.drive("zulun", TWO_PI / 4);
+          emit("odometer:update", "1.0");
           emit("transmission:advance", "xiaopinglun");
           graph.drive("zulun", TWO_PI / 4);
+          emit("odometer:update", "5.0");
           emit("mallet:raise", "trip-linkage-chime");
           emit("mallet:raise", "upper-figure");
           graph.drive("zulun", TWO_PI / 2);
+          emit("odometer:update", "10.0");
           emitCrossedStrikes(before, graph.state(), emit, (type) => {
             if (type === "drum") {
               graph.setInput("lower-figure-body", FIGURE_STRIKE_HOLD);

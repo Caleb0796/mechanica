@@ -15,7 +15,7 @@
     "eyebrow": "Four machines · Four ingenious ideas",
     "title": "Set ancient machines in motion",
     "intro": "Revisit Chinese mechanical history through sourced data, 3D structure, and interactive simulation.",
-    "open": "View exhibit",
+    "open": "Open exhibit",
     "thumbnail": "Render forthcoming"
   },
   "viewer": {
@@ -38,6 +38,19 @@
     "spotlightDone": "Demo complete",
     "contextLost": "The graphics context was lost — trying to recover…",
     "noMechanisms": "No separate mechanism demo"
+  },
+  "seismo": {
+    "bearingLabel": "Choose the quake bearing",
+    "bearing": {
+      "N": "N",
+      "NE": "NE",
+      "E": "E",
+      "SE": "SE",
+      "S": "S",
+      "SW": "SW",
+      "W": "W",
+      "NW": "NW"
+    }
   },
   "assembly": {
     "title": "Reassemble: drag parts onto the gold slots",

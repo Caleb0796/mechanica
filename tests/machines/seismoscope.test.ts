@@ -786,6 +786,7 @@ describe("seismoscope machine module", () => {
       { type: "highlight:on", part: "ball-3" },
       { type: "highlight:on", part: "toad-3" },
       { type: "releaseBall", part: "dragon-3" },
+      { type: "caption:quake-report", part: "dragon-3" },
       { type: "locked", part: "lock-0" },
       { type: "locked", part: "lock-1" },
       { type: "locked", part: "lock-2" },
@@ -793,6 +794,7 @@ describe("seismoscope machine module", () => {
       { type: "locked", part: "lock-5" },
       { type: "locked", part: "lock-6" },
       { type: "locked", part: "lock-7" },
+      { type: "caption:quake-reset-hint", part: "linkage-crown" },
     ]);
 
     const after = graph.state();
@@ -853,6 +855,32 @@ describe("seismoscope machine module", () => {
     expect(graph.state()["ball-5"]).toBe(0);
   });
 
+  it("arming then injecting the SAME bearing fires that dragon and drops the ball", () => {
+    const graph = new KinematicGraph(machine.spec);
+    const events: Array<{ type: string; part: string }> = [];
+    const emit = (type: string, part: string) => events.push({ type, part });
+    machine.mechanism!.triggers.find(
+      (trigger) => trigger.id === "quake:arm",
+    )!.run(graph, emit, 6);
+    machine.mechanism!.triggers.find(
+      (trigger) => trigger.id === "quake",
+    )!.run(graph, emit, 6);
+    expect(events.some((event) => event.type === "releaseBall")).toBe(true);
+  });
+
+  it("quake and quake:arm share the same default bearing", () => {
+    const graph = new KinematicGraph(machine.spec);
+    const events: Array<{ type: string; part: string }> = [];
+    const emit = (type: string, part: string) => events.push({ type, part });
+    machine.mechanism!.triggers.find(
+      (trigger) => trigger.id === "quake:arm",
+    )!.run(graph, emit);
+    machine.mechanism!.triggers.find(
+      (trigger) => trigger.id === "quake",
+    )!.run(graph, emit);
+    expect(events.some((event) => event.type === "releaseBall")).toBe(true);
+  });
+
   it("distinguishes the inert standing-column scheme from the suspended pendulum", () => {
     const quake = machine.mechanism?.triggers.find(
       (trigger) => trigger.id === "quake",
@@ -879,6 +907,7 @@ describe("seismoscope machine module", () => {
       { type: "highlight:on", part: "ball-6" },
       { type: "highlight:on", part: "toad-6" },
       { type: "releaseBall", part: "dragon-6" },
+      { type: "caption:quake-report", part: "dragon-6" },
       { type: "locked", part: "lock-0" },
       { type: "locked", part: "lock-1" },
       { type: "locked", part: "lock-2" },
@@ -886,6 +915,7 @@ describe("seismoscope machine module", () => {
       { type: "locked", part: "lock-4" },
       { type: "locked", part: "lock-5" },
       { type: "locked", part: "lock-7" },
+      { type: "caption:quake-reset-hint", part: "linkage-crown" },
     ]);
     expect(feng.state()["ball-6"]).toBe(0.61);
     expect(feng.state().duzhu).toBe(0.14);

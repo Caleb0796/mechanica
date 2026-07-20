@@ -216,6 +216,7 @@ export type PrincipleAid =
       kind: "subDemo";
       triggerId: string;
       caption: { zh: string; en: string };
+      label?: { zh: string; en: string };
     };
 
 export interface MachineData {

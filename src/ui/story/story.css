@@ -55,9 +55,16 @@
 }
 
 .scroll-story__card {
+  width: 100%;
+  max-width: 360px;
   padding: clamp(1.2rem, 3vw, 2rem);
   border: 1px solid rgba(217, 184, 109, 0.28);
-  background: rgba(9, 10, 10, 0.9);
+  background: linear-gradient(
+    90deg,
+    rgba(8, 8, 8, 0.92),
+    rgba(8, 8, 8, 0.55) 70%,
+    transparent
+  );
   box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.34);
   backdrop-filter: blur(16px);
   pointer-events: auto;
@@ -135,6 +142,34 @@
   color: #e8d7b1;
   background: #171714;
   cursor: pointer;
+}
+
+.story-progress {
+  position: fixed;
+  z-index: 30;
+  top: 50%;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.story-progress .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(213, 164, 78, 0.3);
+}
+
+.story-progress .dot.active {
+  background: #d5a44e;
+}
+
+@media (min-width: 900px) {
+  .story-machine-stage {
+    transform: translateX(8%);
+  }
 }
 
 @media (max-width: 820px) {

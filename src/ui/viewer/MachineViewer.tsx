@@ -2397,6 +2397,33 @@ export function captureSpotlightState(
   return captured;
 }
 
+function AspectAwareStoryCamera({
+  pose,
+}: {
+  pose: StoryStageState["camera"];
+}) {
+  const camera = useThree((threeState) => threeState.camera);
+  const size = useThree((threeState) => threeState.size);
+  const authoredPosition = useMemo(() => new Vector3(), []);
+  const target = useMemo(() => new Vector3(), []);
+  const targetQuaternion = useMemo(() => new Quaternion(), []);
+  const lookAtMatrix = useMemo(() => new Matrix4(), []);
+
+  useFrame(() => {
+    const aspect = size.width / size.height;
+    const compensation = aspect >= 1.6 ? 1 : Math.min(1.45, 1.6 / aspect);
+    authoredPosition.set(...pose.position);
+    target.set(...pose.target);
+    camera.position.copy(authoredPosition).multiplyScalar(compensation);
+    lookAtMatrix.lookAt(camera.position, target, camera.up);
+    targetQuaternion.setFromRotationMatrix(lookAtMatrix);
+    camera.quaternion.copy(targetQuaternion);
+    camera.updateMatrixWorld();
+  });
+
+  return null;
+}
+
 export function MachineStoryStage({
   module,
   spotlightRunId,
@@ -2784,6 +2811,7 @@ export function MachineStoryStage({
         {geometryPrepared ? (
           <MachineScene
             activeSpec={activeSpec}
+            aidHighlightPartIds={highlightedParts}
             appearance={activeAppearance}
             assemblyProgress={1}
             displayState={displayState}
@@ -2800,10 +2828,10 @@ export function MachineStoryStage({
             spotlightPartIds={EMPTY_PART_IDS}
             spotlightRunId={0}
             storyCamera={state.camera}
-            storyHighlightPartIds={highlightedParts}
             transitionLayer={transitionLayer}
           />
         ) : null}
+        <AspectAwareStoryCamera pose={state.camera} />
       </Canvas>
       {!geometryPrepared ? (
         <GeometryLoading

@@ -42,6 +42,22 @@ function LanguageSwitch() {
 
 export default function App() {
   const { t } = useTranslation()
+  const language = useUiStore((state) => state.language)
+
+  useEffect(() => {
+    document.title =
+      language === 'zh'
+        ? '格物机械志 — 中国古代机械数字博物馆'
+        : 'Mechanica — A digital museum of Chinese machines'
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute(
+        'content',
+        language === 'zh'
+          ? '以可验证的数据、三维结构与交互仿真，重访中国机械史。'
+          : 'Revisit Chinese mechanical history through sourced data, 3D structure, and interactive simulation.',
+      )
+  }, [language])
 
   return (
     <div className="app-shell">

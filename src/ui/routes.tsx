@@ -191,10 +191,19 @@ function MachineRoute({ slug }: { slug: string }) {
     return (
       <main className="error-page">
         <h1>{t("app.loadError")}</h1>
-        <p>{slug}</p>
-        <a className="gold-button" href="#/">
-          {t("app.home")}
-        </a>
+        <p>{t("app.notFoundMachine", { slug })}</p>
+        <div className="error-actions">
+          <button
+            className="gold-button"
+            onClick={() => window.location.reload()}
+            type="button"
+          >
+            {t("app.retry")}
+          </button>
+          <a className="ghost-button" href="#/">
+            {t("app.home")}
+          </a>
+        </div>
       </main>
     );
   }
@@ -271,10 +280,19 @@ function StoryRoute({ slug }: { slug: string }) {
     return (
       <main className="error-page">
         <h1>{t("app.loadError")}</h1>
-        <p>{slug}</p>
-        <a className="gold-button" href="#/">
-          {t("app.home")}
-        </a>
+        <p>{t("app.notFoundMachine", { slug })}</p>
+        <div className="error-actions">
+          <button
+            className="gold-button"
+            onClick={() => window.location.reload()}
+            type="button"
+          >
+            {t("app.retry")}
+          </button>
+          <a className="ghost-button" href="#/">
+            {t("app.home")}
+          </a>
+        </div>
       </main>
     );
   }

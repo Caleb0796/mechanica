@@ -42,7 +42,12 @@ export const useUiStore = create<UiState>((set) => ({
   setExplode: (explode) => set({ explode }),
   setHoveredPartId: (hoveredPartId) => set({ hoveredPartId }),
   setIdleAutoPaused: (idleAutoPaused) => set({ idleAutoPaused }),
-  setLanguage: (language) => set({ language }),
+  setLanguage: (language) => {
+    try {
+      localStorage.setItem("mechanica-lang", language);
+    } catch {}
+    set({ language });
+  },
   setPaused: (paused) => set({ paused }),
   setMachineScheme: (slug, schemeId) =>
     set((state) => ({

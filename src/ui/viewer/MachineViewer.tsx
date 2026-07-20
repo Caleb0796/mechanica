@@ -4139,7 +4139,7 @@ export default function MachineViewer({
               <button
                 aria-pressed={paused}
                 className="ghost-button"
-                disabled={compareActive || !assembly.state.transmissionEnabled}
+                disabled={!assembly.state.transmissionEnabled}
                 onClick={() => setPaused(!paused)}
                 type="button"
               >

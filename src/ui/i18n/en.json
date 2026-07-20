@@ -19,6 +19,7 @@
   },
   "viewer": {
     "pause": "Pause",
+    "idlePaused": "Auto-paused · move to resume",
     "resume": "Resume",
     "resetView": "Reset view",
     "rotateHint": "Drag a gold part to drive the machine",

@@ -442,6 +442,17 @@ a {
   display: none;
 }
 
+.idle-chip {
+  align-self: center;
+  justify-self: start;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #9b7a3e;
+  border-radius: 999px;
+  color: #d9b86d;
+  font-size: 0.72rem;
+}
+
 @media (min-width: 821px) {
   .viewer-toolbar {
     grid-template-columns: repeat(2, minmax(0, 1fr));

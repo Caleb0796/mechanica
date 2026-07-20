@@ -484,7 +484,7 @@ test("U2 pointer control: astroclock reverse lock cannot be bypassed", async ({
   );
   await page.evaluate(() => window.__mechSelect?.("shulun"));
   const reverse = page.getByRole("button", {
-    name: "Drive Scoop escapement wheel in reverse / Drive Scoop escapement wheel forward",
+    name: "Drive Scoop escapement wheel in reverse",
   });
   await expect(reverse).toHaveAttribute("data-drive-part-id", "shulun");
   expect(
@@ -494,7 +494,7 @@ test("U2 pointer control: astroclock reverse lock cannot be bypassed", async ({
   ).toBe(true);
   await expect(reverse).toHaveAttribute(
     "aria-keyshortcuts",
-    "ArrowLeft ArrowRight ArrowDown ArrowUp",
+    "ArrowLeft ArrowDown",
   );
   await reverse.focus();
   await page.keyboard.press("ArrowLeft");
@@ -543,32 +543,32 @@ test("F0-T7: selected drive exposes bilingual arrow-key control", async ({
   await waitForMechanica(page);
   await page.getByRole("button", { name: "Pause", exact: true }).click();
   await page.evaluate(() => window.__mechSelect?.("small-gear"));
-  const control = page.getByTestId("drive-keyboard-control");
-  await expect(control).toHaveCount(1);
-  await expect(control).toHaveAttribute(
-    "aria-label",
-    /Drive .+ in reverse \/ Drive .+ forward/,
-  );
-  await expect(control).toHaveAttribute("data-drive-part-id", "small-gear");
+  const reverse = page.getByTestId("drive-keyboard-reverse");
+  const forward = page.getByTestId("drive-keyboard-forward");
+  await expect(reverse).toHaveCount(1);
+  await expect(forward).toHaveCount(1);
+  await expect(reverse).toHaveAttribute("aria-label", /Drive .+ in reverse/);
+  await expect(forward).toHaveAttribute("aria-label", /Drive .+ forward/);
+  await expect(reverse).toHaveAttribute("data-drive-part-id", "small-gear");
+  await expect(forward).toHaveAttribute("data-drive-part-id", "small-gear");
   const before = await page.evaluate(
     () => window.__mech?.graph.state()["small-gear"] ?? 0,
   );
-  await control.focus();
+  await forward.focus();
   await page.keyboard.press("ArrowRight");
-  const forward = await page.evaluate(
+  const forwardState = await page.evaluate(
     () => window.__mech?.graph.state()["small-gear"] ?? 0,
   );
-  expect(forward).toBeGreaterThan(before);
+  expect(forwardState).toBeGreaterThan(before);
+  await reverse.focus();
   await page.keyboard.press("ArrowLeft");
   expect(
     await page.evaluate(() => window.__mech?.graph.state()["small-gear"] ?? 0),
   ).toBeCloseTo(before, 8);
 
   await page.getByRole("button", { name: "中文", exact: true }).click();
-  await expect(control).toHaveAttribute(
-    "aria-label",
-    /.+：反向驱动 \/ .+：正向驱动/,
-  );
+  await expect(reverse).toHaveAttribute("aria-label", /.+：反向驱动/);
+  await expect(forward).toHaveAttribute("aria-label", /.+：正向驱动/);
 });
 
 test("F0-T7: declared drive nodes expose the toolbar control", async ({
@@ -590,13 +590,14 @@ test("F0-T7: declared drive nodes expose the toolbar control", async ({
   ).toEqual({ declared: true, interactive: true });
 
   await page.evaluate(() => window.__mechSelect?.("shulun"));
-  const control = page.getByTestId("drive-keyboard-control");
-  await expect(control).toHaveCount(1);
-  await expect(control).toHaveAttribute("data-drive-part-id", "shulun");
-  await expect(control).toHaveAttribute(
-    "aria-label",
-    /Drive .+ in reverse \/ Drive .+ forward/,
-  );
+  const reverse = page.getByTestId("drive-keyboard-reverse");
+  const forward = page.getByTestId("drive-keyboard-forward");
+  await expect(reverse).toHaveCount(1);
+  await expect(forward).toHaveCount(1);
+  await expect(reverse).toHaveAttribute("data-drive-part-id", "shulun");
+  await expect(forward).toHaveAttribute("data-drive-part-id", "shulun");
+  await expect(reverse).toHaveAttribute("aria-label", /Drive .+ in reverse/);
+  await expect(forward).toHaveAttribute("aria-label", /Drive .+ forward/);
 });
 
 test("U4: inspection responds within 300 ms and exploded view spreads parts", async ({
@@ -1707,6 +1708,9 @@ test("F0-T10: the main viewer idles on demand, resumes, and budgets shadows", as
   await expect
     .poll(() => page.evaluate(() => window.__mech?.idleState()))
     .toMatchObject({ autoPaused: true, demand: true, paused: true });
+  await expect(page.getByTestId("idle-chip")).toHaveText(
+    "Auto-paused · move to resume",
+  );
   await expect(page.locator(".viewer-canvas")).toHaveAttribute(
     "data-frameloop",
     "demand",
@@ -1722,6 +1726,7 @@ test("F0-T10: the main viewer idles on demand, resumes, and budgets shadows", as
   await expect
     .poll(() => page.evaluate(() => window.__mech?.idleState()))
     .toMatchObject({ autoPaused: false, demand: false, paused: false });
+  await expect(page.getByTestId("idle-chip")).toHaveCount(0);
   await expect(page.locator(".viewer-canvas")).toHaveAttribute(
     "data-frameloop",
     "always",
@@ -1739,6 +1744,7 @@ test("F0-T10: the main viewer idles on demand, resumes, and budgets shadows", as
     demand: false,
     paused: false,
   });
+  await expect(page.getByTestId("idle-chip")).toHaveCount(0);
 });
 
 test("F0-T10: astroclock and loom render-rate samples stay live", async ({

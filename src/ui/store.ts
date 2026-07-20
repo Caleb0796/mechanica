@@ -10,6 +10,7 @@ interface UiState {
   demoSpeed: number;
   explode: number;
   hoveredPartId: string | null;
+  idleAutoPaused: boolean;
   language: UiLanguage;
   paused: boolean;
   selectedPartId: string | null;
@@ -17,6 +18,7 @@ interface UiState {
   setAssemblyProgress: (progress: number) => void;
   setExplode: (explode: number) => void;
   setHoveredPartId: (partId: string | null) => void;
+  setIdleAutoPaused: (idleAutoPaused: boolean) => void;
   setLanguage: (language: UiLanguage) => void;
   setPaused: (paused: boolean) => void;
   setSelectedPartId: (partId: string | null) => void;
@@ -28,6 +30,7 @@ export const useUiStore = create<UiState>((set) => ({
   demoSpeed: demoSpeedFromEnv(),
   explode: 0,
   hoveredPartId: null,
+  idleAutoPaused: false,
   language: initialLanguage,
   paused: false,
   selectedPartId: null,
@@ -35,6 +38,7 @@ export const useUiStore = create<UiState>((set) => ({
   setAssemblyProgress: (assemblyProgress) => set({ assemblyProgress }),
   setExplode: (explode) => set({ explode }),
   setHoveredPartId: (hoveredPartId) => set({ hoveredPartId }),
+  setIdleAutoPaused: (idleAutoPaused) => set({ idleAutoPaused }),
   setLanguage: (language) => set({ language }),
   setPaused: (paused) => set({ paused }),
   setSelectedPartId: (selectedPartId) => set({ selectedPartId }),

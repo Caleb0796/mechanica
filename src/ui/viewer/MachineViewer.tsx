@@ -3098,11 +3098,13 @@ export default function MachineViewer({
   const assemblyProgress = useUiStore((state) => state.assemblyProgress);
   const explode = useUiStore((state) => state.explode);
   const hoveredPartId = useUiStore((state) => state.hoveredPartId);
+  const idleAutoPaused = useUiStore((state) => state.idleAutoPaused);
   const paused = useUiStore((state) => state.paused);
   const showScene = useUiStore((state) => state.showScene);
   const setAssemblyProgress = useUiStore((state) => state.setAssemblyProgress);
   const setExplode = useUiStore((state) => state.setExplode);
   const setHoveredPartId = useUiStore((state) => state.setHoveredPartId);
+  const setIdleAutoPaused = useUiStore((state) => state.setIdleAutoPaused);
   const setPaused = useUiStore((state) => state.setPaused);
   const setShowScene = useUiStore((state) => state.setShowScene);
   const selectedPartId = useUiStore((state) => state.selectedPartId);
@@ -3152,10 +3154,13 @@ export default function MachineViewer({
   const enterViewerIdle = useCallback(() => {
     clearViewerIdleTimer();
     viewerIdleAutoPaused.current = !useUiStore.getState().paused;
-    if (viewerIdleAutoPaused.current) setPaused(true);
+    if (viewerIdleAutoPaused.current) {
+      setIdleAutoPaused(true);
+      setPaused(true);
+    }
     viewerIdleDemand.current = true;
     setIdleDemand(true);
-  }, [clearViewerIdleTimer, setPaused]);
+  }, [clearViewerIdleTimer, setIdleAutoPaused, setPaused]);
   const armViewerIdleTimer = useCallback(() => {
     clearViewerIdleTimer();
     viewerIdleTimer.current = window.setTimeout(
@@ -3168,10 +3173,11 @@ export default function MachineViewer({
     setIdleDemand(false);
     if (viewerIdleAutoPaused.current) {
       viewerIdleAutoPaused.current = false;
+      setIdleAutoPaused(false);
       setPaused(false);
     }
     armViewerIdleTimer();
-  }, [armViewerIdleTimer, setPaused]);
+  }, [armViewerIdleTimer, setIdleAutoPaused, setPaused]);
 
   const oldSchemeSpec = useMemo(
     () =>
@@ -3266,10 +3272,12 @@ export default function MachineViewer({
     if (compareActive) {
       if (viewerIdleAutoPaused.current) setPaused(false);
       viewerIdleAutoPaused.current = false;
+      setIdleAutoPaused(false);
       return;
     }
     if (viewerIdleAutoPaused.current) setPaused(false);
     viewerIdleAutoPaused.current = false;
+    setIdleAutoPaused(false);
     armViewerIdleTimer();
     return clearViewerIdleTimer;
   }, [
@@ -3278,6 +3286,7 @@ export default function MachineViewer({
     clearViewerIdleTimer,
     compareActive,
     module.spec.slug,
+    setIdleAutoPaused,
     setPaused,
   ]);
 
@@ -3286,9 +3295,10 @@ export default function MachineViewer({
       clearViewerIdleTimer();
       if (viewerIdleAutoPaused.current) setPaused(false);
       viewerIdleAutoPaused.current = false;
+      setIdleAutoPaused(false);
       viewerIdleDemand.current = false;
     },
-    [clearViewerIdleTimer, setPaused],
+    [clearViewerIdleTimer, setIdleAutoPaused, setPaused],
   );
 
   useLayoutEffect(() => {
@@ -4025,6 +4035,7 @@ export default function MachineViewer({
         >
           {assembly.state.mode !== "reassemble" ? (
             <button
+              aria-pressed={paused}
               className="ghost-button"
               disabled={compareActive || !assembly.state.transmissionEnabled}
               onClick={() => setPaused(!paused)}
@@ -4032,6 +4043,11 @@ export default function MachineViewer({
             >
               {paused ? t("viewer.resume") : t("viewer.pause")}
             </button>
+          ) : null}
+          {idleAutoPaused ? (
+            <span className="idle-chip" data-testid="idle-chip">
+              {t("viewer.idlePaused")}
+            </span>
           ) : null}
           <button
             className="ghost-button"
@@ -4042,46 +4058,74 @@ export default function MachineViewer({
             {t("viewer.resetView")}
           </button>
           {selectedDrivePart ? (
-            <button
-              aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown ArrowUp"
-              aria-label={`${t("viewer.driveReverse", {
-                part: selectedDrivePart.name[language],
-              })} / ${t("viewer.driveForward", {
-                part: selectedDrivePart.name[language],
-              })}`}
-              data-drive-part-id={selectedDrivePart.id}
-              data-testid="drive-keyboard-control"
-              onKeyDown={(event) =>
-                handleDriveKeyDown(
-                  event,
-                  (delta) => drivePart(selectedDrivePart.id, delta),
-                  dismissDriveCoach,
-                )
-              }
-              style={{
-                border: 0,
-                clip: "rect(0, 0, 0, 0)",
-                height: 1,
-                margin: -1,
-                overflow: "hidden",
-                padding: 0,
-                position: "absolute",
-                whiteSpace: "nowrap",
-                width: 1,
-              }}
-              type="button"
-            >
-              {t("viewer.driveReverse", {
-                part: selectedDrivePart.name[language],
-              })}{" "}
-              /{" "}
-              {t("viewer.driveForward", {
-                part: selectedDrivePart.name[language],
-              })}
-            </button>
+            <>
+              <button
+                aria-keyshortcuts="ArrowLeft ArrowDown"
+                aria-label={t("viewer.driveReverse", {
+                  part: selectedDrivePart.name[language],
+                })}
+                data-drive-part-id={selectedDrivePart.id}
+                data-testid="drive-keyboard-reverse"
+                onKeyDown={(event) =>
+                  handleDriveKeyDown(
+                    event,
+                    (delta) => drivePart(selectedDrivePart.id, delta),
+                    dismissDriveCoach,
+                  )
+                }
+                style={{
+                  border: 0,
+                  clip: "rect(0, 0, 0, 0)",
+                  height: 1,
+                  margin: -1,
+                  overflow: "hidden",
+                  padding: 0,
+                  position: "absolute",
+                  whiteSpace: "nowrap",
+                  width: 1,
+                }}
+                type="button"
+              >
+                {t("viewer.driveReverse", {
+                  part: selectedDrivePart.name[language],
+                })}
+              </button>
+              <button
+                aria-keyshortcuts="ArrowRight ArrowUp"
+                aria-label={t("viewer.driveForward", {
+                  part: selectedDrivePart.name[language],
+                })}
+                data-drive-part-id={selectedDrivePart.id}
+                data-testid="drive-keyboard-forward"
+                onKeyDown={(event) =>
+                  handleDriveKeyDown(
+                    event,
+                    (delta) => drivePart(selectedDrivePart.id, delta),
+                    dismissDriveCoach,
+                  )
+                }
+                style={{
+                  border: 0,
+                  clip: "rect(0, 0, 0, 0)",
+                  height: 1,
+                  margin: -1,
+                  overflow: "hidden",
+                  padding: 0,
+                  position: "absolute",
+                  whiteSpace: "nowrap",
+                  width: 1,
+                }}
+                type="button"
+              >
+                {t("viewer.driveForward", {
+                  part: selectedDrivePart.name[language],
+                })}
+              </button>
+            </>
           ) : null}
           {module.scene && assembly.state.mode !== "reassemble" ? (
             <button
+              aria-pressed={!showScene}
               className="ghost-button"
               data-testid="scene-toggle"
               disabled={assembly.state.mode !== "idle"}

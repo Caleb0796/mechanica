@@ -19,6 +19,7 @@
   },
   "viewer": {
     "pause": "暂停",
+    "idlePaused": "已自动暂停 · 移动鼠标继续",
     "resume": "继续",
     "resetView": "复位视角",
     "rotateHint": "拖动金色部件驱动机械",

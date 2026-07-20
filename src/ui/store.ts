@@ -7,12 +7,14 @@ export type UiLanguage = "zh" | "en";
 interface UiState {
   assemblyProgress: number;
   explode: number;
+  hoveredPartId: string | null;
   language: UiLanguage;
   paused: boolean;
   selectedPartId: string | null;
   showScene: boolean;
   setAssemblyProgress: (progress: number) => void;
   setExplode: (explode: number) => void;
+  setHoveredPartId: (partId: string | null) => void;
   setLanguage: (language: UiLanguage) => void;
   setPaused: (paused: boolean) => void;
   setSelectedPartId: (partId: string | null) => void;
@@ -22,12 +24,14 @@ interface UiState {
 export const useUiStore = create<UiState>((set) => ({
   assemblyProgress: 1,
   explode: 0,
+  hoveredPartId: null,
   language: initialLanguage,
   paused: false,
   selectedPartId: null,
   showScene: true,
   setAssemblyProgress: (assemblyProgress) => set({ assemblyProgress }),
   setExplode: (explode) => set({ explode }),
+  setHoveredPartId: (hoveredPartId) => set({ hoveredPartId }),
   setLanguage: (language) => set({ language }),
   setPaused: (paused) => set({ paused }),
   setSelectedPartId: (selectedPartId) => set({ selectedPartId }),

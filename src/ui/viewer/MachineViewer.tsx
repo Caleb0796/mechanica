@@ -26,6 +26,7 @@ import {
   type InstancedMesh,
   Matrix4,
   MeshStandardMaterial,
+  type Object3D,
   PerspectiveCamera,
   Quaternion,
   type Scene,
@@ -83,7 +84,7 @@ import MachineEnvironment, {
 import { useUiStore } from "../store";
 import type { StoryStageState } from "../story/types";
 import AidLayer from "./AidLayer";
-import DriveHandle from "./DriveHandle";
+import DriveHandle, { handleDriveKeyDown } from "./DriveHandle";
 import ExplodedControl from "./ExplodedControl";
 import {
   GeometryLoading,
@@ -215,6 +216,7 @@ interface PartNodeProps {
   compareContext?: CompareSceneContext;
   crankByRod: Map<string, CrankConstraint>;
   displayState: { current: Record<string, number> | null };
+  drivePartIds: ReadonlySet<string>;
   explode: number;
   geometryScope: string;
   graph: IKinematicGraph;
@@ -223,6 +225,7 @@ interface PartNodeProps {
   module: MachineModule;
   onDraggingChange: (dragging: boolean) => void;
   onDrivePart: (partId: string, delta: number, secondaryDelta?: number) => void;
+  onDriveSuccess?: () => void;
   part: PartDef;
   partsById: Map<string, PartDef>;
   schemeId?: string;
@@ -271,6 +274,17 @@ const TYPECASE_PROCESS_STEPS = [
   },
 ] as const;
 
+function mechanicaBounds(root: Object3D): Box3 {
+  const bounds = new Box3();
+  root.updateWorldMatrix(true, true);
+  root.traverse((object) => {
+    const mesh = object as typeof object & { isMesh?: boolean };
+    if (!mesh.isMesh || mesh.userData.mechanicaAffordance) return;
+    bounds.expandByObject(mesh, true);
+  });
+  return bounds;
+}
+
 function SpotlightRig({
   active,
   controls,
@@ -313,10 +327,7 @@ function SpotlightRig({
       : undefined;
     if (!targetObject) return;
     const target = targetObject.getWorldPosition(new Vector3());
-    const size = new Box3()
-      .setFromObject(targetObject)
-      .getSize(new Vector3())
-      .length();
+    const size = mechanicaBounds(targetObject).getSize(new Vector3()).length();
     const direction = camera.getWorldDirection(new Vector3()).normalize();
     startedAt.current = performance.now();
     startPosition.current.copy(camera.position);
@@ -574,7 +585,7 @@ function CameraDirector({
         geometry?: BufferGeometry;
         isMesh?: boolean;
       };
-      if (!mesh.isMesh) return;
+      if (!mesh.isMesh || mesh.userData.mechanicaAffordance) return;
       meshes += 1;
       if (!mesh.geometry?.getAttribute("position")?.count) {
         geometryReady = false;
@@ -588,8 +599,7 @@ function CameraDirector({
       return;
     }
 
-    root.updateWorldMatrix(true, true);
-    const wholeBounds = new Box3().setFromObject(root, true);
+    const wholeBounds = mechanicaBounds(root);
     if (wholeBounds.isEmpty()) return;
 
     let focusBounds: Box3 | null = null;
@@ -598,7 +608,7 @@ function CameraDirector({
       const candidate = new Box3();
       const allFocusPartsFound = profile.focusPartIds.every((partId) => {
         const object = root.getObjectByName(partId);
-        if (object) candidate.expandByObject(object, true);
+        if (object) candidate.union(mechanicaBounds(object));
         return Boolean(object);
       });
       const wholeVolume = boxVolume(wholeBounds);
@@ -923,6 +933,7 @@ const PartNode = memo(function PartNode({
   compareContext,
   crankByRod,
   displayState,
+  drivePartIds,
   explode,
   geometryScope,
   graph,
@@ -931,6 +942,7 @@ const PartNode = memo(function PartNode({
   module,
   onDraggingChange,
   onDrivePart,
+  onDriveSuccess,
   part,
   partsById,
   schemeId,
@@ -943,6 +955,9 @@ const PartNode = memo(function PartNode({
   const assemblyPointer = useRef<number | null>(null);
   const assemblyStartPoint = useRef(new Vector3());
   const assemblyOffset = useRef(new Vector3());
+  const hovered = useUiStore((state) => state.hoveredPartId === part.id);
+  const selected = useUiStore((state) => state.selectedPartId === part.id);
+  const setHoveredPartId = useUiStore((state) => state.setHoveredPartId);
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
   const geometryOptions = useMemo(
     () => geometryOptionsForPart(module, part),
@@ -1050,6 +1065,7 @@ const PartNode = memo(function PartNode({
   const reassembling = assembly?.state.mode === "reassemble";
   const seated = assembly?.state.seatedPartIds.has(part.id) ?? true;
   const partExplode = reassembling ? (seated ? 0 : 1) : explode;
+  const drivable = drivePartIds.has(part.id);
 
   useLayoutEffect(() => geometryResource.retain(), [geometryResource]);
 
@@ -1157,7 +1173,7 @@ const PartNode = memo(function PartNode({
   };
 
   const handlePointerDown =
-    interactionDisabled || reassembling || part.interactive
+    interactionDisabled || reassembling || drivable
       ? undefined
       : (event: { stopPropagation: () => void }) => {
           event.stopPropagation();
@@ -1222,6 +1238,7 @@ const PartNode = memo(function PartNode({
           compareContext={compareContext}
           crankByRod={crankByRod}
           displayState={displayState}
+          drivePartIds={drivePartIds}
           explode={explode}
           geometryScope={geometryScope}
           graph={graph}
@@ -1231,6 +1248,7 @@ const PartNode = memo(function PartNode({
           module={module}
           onDraggingChange={onDraggingChange}
           onDrivePart={onDrivePart}
+          onDriveSuccess={onDriveSuccess}
           part={child}
           partsById={partsById}
           schemeId={schemeId}
@@ -1248,26 +1266,36 @@ const PartNode = memo(function PartNode({
       onPointerDown={interactionDisabled ? undefined : beginAssemblyDrag}
       onPointerMove={moveAssemblyPart}
       onPointerOut={() => {
-        if (!interactionDisabled) compareContext?.onHoverPart(undefined);
+        if (!interactionDisabled) {
+          compareContext?.onHoverPart(undefined);
+          if (useUiStore.getState().hoveredPartId === part.id) {
+            setHoveredPartId(null);
+          }
+        }
       }}
       onPointerOver={(event) => {
         if (interactionDisabled) return;
         event.stopPropagation();
         compareContext?.onHoverPart(part.id);
+        setHoveredPartId(part.id);
       }}
       onPointerUp={endAssemblyDrag}
       ref={group}
       visible={visible}
     >
-      {part.interactive &&
+      {drivable &&
       !reassembling &&
       !interactionDisabled &&
       (!compareContext || compareContext.driveNode === part.id) ? (
         <DriveHandle
+          active={hovered || selected}
+          coachTarget={!compareContext && part.id === module.spec.primaryDrive}
           drive={(delta, secondaryDelta) =>
             onDrivePart(part.id, delta, secondaryDelta)
           }
+          gizmoTestId={`drive-gizmo-${compareContext ? `${compareContext.side}-` : ""}${part.id}`}
           onDraggingChange={onDraggingChange}
+          onDriveSuccess={() => onDriveSuccess?.()}
           onSelect={() => setSelectedPartId(part.id)}
           part={part}
         >
@@ -1298,6 +1326,7 @@ interface MachineSceneProps {
   interactionDisabled?: boolean;
   module: MachineModule;
   onDrivePart: (partId: string, delta: number, secondaryDelta?: number) => void;
+  onDriveSuccess?: () => void;
   onGeometryCommitted: (committedAt: number) => void;
   paused: boolean;
   schemeId?: string;
@@ -1368,7 +1397,9 @@ function SceneComplexityProbe({
         isInstancedMesh?: boolean;
         isMesh?: boolean;
       };
-      if (!mesh.isMesh || !mesh.geometry) return;
+      if (!mesh.isMesh || !mesh.geometry || mesh.userData.mechanicaAffordance) {
+        return;
+      }
       const vertices =
         mesh.geometry.index?.count ??
         mesh.geometry.getAttribute("position")?.count ??
@@ -1432,6 +1463,15 @@ function GhostPartLayer({
       ),
     [spec.constraints],
   );
+  const drivePartIds = useMemo(
+    () =>
+      new Set([
+        spec.primaryDrive,
+        ...spec.driveNodes,
+        ...spec.parts.filter((part) => part.interactive).map((part) => part.id),
+      ]),
+    [spec.driveNodes, spec.parts, spec.primaryDrive],
+  );
   const childrenByParent = useMemo(() => {
     const children = new Map<string, PartDef[]>();
     for (const part of spec.parts) {
@@ -1458,6 +1498,7 @@ function GhostPartLayer({
       childrenByParent={childrenByParent}
       crankByRod={crankByRod}
       displayState={displayState}
+      drivePartIds={drivePartIds}
       explode={0}
       geometryScope={geometryScope}
       graph={graph}
@@ -1494,6 +1535,7 @@ function MachineScene({
   interactionDisabled,
   module,
   onDrivePart,
+  onDriveSuccess,
   onGeometryCommitted,
   paused,
   schemeId,
@@ -1558,6 +1600,17 @@ function MachineScene({
         ),
       ),
     [activeSpec.constraints],
+  );
+  const drivePartIds = useMemo(
+    () =>
+      new Set([
+        activeSpec.primaryDrive,
+        ...activeSpec.driveNodes,
+        ...activeSpec.parts
+          .filter((part) => part.interactive)
+          .map((part) => part.id),
+      ]),
+    [activeSpec.driveNodes, activeSpec.parts, activeSpec.primaryDrive],
   );
   const childrenByParent = useMemo(() => {
     const children = new Map<string, PartDef[]>();
@@ -1633,8 +1686,7 @@ function MachineScene({
       if (measurement.settleFrames < 2) {
         measurement.settleFrames += 1;
       } else if (machineRoot.current) {
-        machineRoot.current.updateWorldMatrix(true, true);
-        const bounds = new Box3().setFromObject(machineRoot.current, true);
+        const bounds = mechanicaBounds(machineRoot.current);
         if (!bounds.isEmpty()) {
           const nextFloorY = module.scene?.ground?.y ?? bounds.min.y;
           setMachineFloorY((current) =>
@@ -1732,6 +1784,7 @@ function MachineScene({
             compareContext={compareContext}
             crankByRod={crankByRod}
             displayState={frameState}
+            drivePartIds={drivePartIds}
             explode={explode}
             geometryScope={geometryScope}
             graph={graph}
@@ -1741,6 +1794,7 @@ function MachineScene({
             module={module}
             onDraggingChange={setDragging}
             onDrivePart={onDrivePart}
+            onDriveSuccess={onDriveSuccess}
             part={part}
             partsById={partsById}
             schemeId={schemeId}
@@ -2509,6 +2563,8 @@ function SpotlightSemanticReadout({
   );
 }
 
+const DRIVE_COACH_KEY = "mechanica:drive-coach";
+
 export default function MachineViewer({
   module,
   schemeId,
@@ -2536,6 +2592,17 @@ export default function MachineViewer({
         activeSchemeId ? module.schemes?.[activeSchemeId] : undefined,
       ),
     [activeSchemeId, module.schemes, module.spec],
+  );
+  const activeDrivePartIds = useMemo(
+    () =>
+      new Set([
+        activeSpec.primaryDrive,
+        ...activeSpec.driveNodes,
+        ...activeSpec.parts
+          .filter((part) => part.interactive)
+          .map((part) => part.id),
+      ]),
+    [activeSpec.driveNodes, activeSpec.parts, activeSpec.primaryDrive],
   );
   const activeModule = useMemo(
     () => ({ ...module, spec: activeSpec }),
@@ -2575,6 +2642,7 @@ export default function MachineViewer({
     module.spec.slug === "odometer" ? "0.00" : null,
   );
   const [assemblyPlaying, setAssemblyPlaying] = useState(false);
+  const [driveCoachVisible, setDriveCoachVisible] = useState(false);
   const animationFrame = useRef<number | null>(null);
   const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
@@ -2590,14 +2658,35 @@ export default function MachineViewer({
   const displayState = useRef<Record<string, number> | null>(null);
   const assemblyProgress = useUiStore((state) => state.assemblyProgress);
   const explode = useUiStore((state) => state.explode);
+  const hoveredPartId = useUiStore((state) => state.hoveredPartId);
   const paused = useUiStore((state) => state.paused);
   const showScene = useUiStore((state) => state.showScene);
   const setAssemblyProgress = useUiStore((state) => state.setAssemblyProgress);
   const setExplode = useUiStore((state) => state.setExplode);
+  const setHoveredPartId = useUiStore((state) => state.setHoveredPartId);
   const setPaused = useUiStore((state) => state.setPaused);
   const setShowScene = useUiStore((state) => state.setShowScene);
   const selectedPartId = useUiStore((state) => state.selectedPartId);
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
+  const selectedDrivePart = useMemo(
+    () =>
+      activeSpec.parts.find(
+        (part) => part.id === selectedPartId && activeDrivePartIds.has(part.id),
+      ),
+    [activeDrivePartIds, activeSpec.parts, selectedPartId],
+  );
+  const activeDrivePartId =
+    hoveredPartId && activeDrivePartIds.has(hoveredPartId)
+      ? hoveredPartId
+      : selectedDrivePart?.id;
+  const dismissDriveCoach = useCallback(() => {
+    setDriveCoachVisible(false);
+    try {
+      window.localStorage.setItem(DRIVE_COACH_KEY, "dismissed");
+    } catch {
+      return;
+    }
+  }, []);
 
   const oldSchemeSpec = useMemo(
     () =>
@@ -2675,6 +2764,16 @@ export default function MachineViewer({
   const viewerGeometryBuilt = viewerWarmup.built + viewerGhostWarmup.built;
   const viewerGeometryTotal = viewerWarmup.total + viewerGhostWarmup.total;
 
+  useEffect(() => {
+    try {
+      setDriveCoachVisible(
+        window.localStorage.getItem(DRIVE_COACH_KEY) !== "dismissed",
+      );
+    } catch {
+      setDriveCoachVisible(true);
+    }
+  }, []);
+
   useLayoutEffect(() => {
     if (spotlightFrame.current !== null) {
       cancelAnimationFrame(spotlightFrame.current);
@@ -2695,6 +2794,7 @@ export default function MachineViewer({
     setSpotlightTranscript([]);
     setTypecaseProcessBusy(false);
     setTypecaseProcessStep(-1);
+    setHoveredPartId(null);
     setSelectedPartId(null);
     setActiveSchemeId(schemeId);
     setSchemeTransition(null);
@@ -2712,6 +2812,7 @@ export default function MachineViewer({
     schemeId,
     setAssemblyProgress,
     setExplode,
+    setHoveredPartId,
     setSelectedPartId,
   ]);
 
@@ -2856,7 +2957,10 @@ export default function MachineViewer({
         if (!part) return 0;
         let count = 0;
         part.traverse((object) => {
-          if ((object as typeof object & { isMesh?: boolean }).isMesh) {
+          if (
+            (object as typeof object & { isMesh?: boolean }).isMesh &&
+            !object.userData.mechanicaAffordance
+          ) {
             count += 1;
           }
         });
@@ -3179,6 +3283,9 @@ export default function MachineViewer({
           data-geometry-built={viewerGeometryBuilt}
           data-geometry-state={viewerGeometryStatus}
           data-geometry-total={viewerGeometryTotal}
+          data-drive-gizmo-testid={
+            activeDrivePartId ? `drive-gizmo-${activeDrivePartId}` : undefined
+          }
           data-machine-ready={viewerGeometryReadyAt !== null ? "true" : "false"}
           data-scene-enabled={showScene && module.scene ? "true" : "false"}
           data-scheme-transition={schemeTransition ? "true" : "false"}
@@ -3237,6 +3344,7 @@ export default function MachineViewer({
                     introPlayed={viewerIntroPlayed}
                     module={module}
                     onDrivePart={drivePart}
+                    onDriveSuccess={dismissDriveCoach}
                     onGeometryCommitted={commitViewerGeometry}
                     paused={paused || !assembly.state.transmissionEnabled}
                     schemeId={activeSchemeId}
@@ -3273,6 +3381,51 @@ export default function MachineViewer({
               total={viewerGeometryTotal}
             />
           ) : null}
+          {driveCoachVisible && !compareActive && viewerGeometryPrepared ? (
+            <div
+              data-testid="drive-coach"
+              style={{
+                alignItems: "center",
+                color: "#f0cf83",
+                display: "flex",
+                fontSize: "0.72rem",
+                gap: "0.35rem",
+                left: "var(--drive-coach-x, 50%)",
+                letterSpacing: "0.04em",
+                pointerEvents: "none",
+                position: "absolute",
+                textShadow: "0 1px 4px #090a0a",
+                top: "var(--drive-coach-y, 50%)",
+                transform: "translate(0.75rem, -100%)",
+                zIndex: 4,
+              }}
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                height="34"
+                viewBox="0 0 42 34"
+                width="42"
+              >
+                <path
+                  d="M38 4C21 4 8 13 8 27"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="m3 22 5 6 6-5"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                />
+              </svg>
+              <span>
+                {language === "zh" ? "拖动发光轮" : "drag the glowing wheel"}
+              </span>
+            </div>
+          ) : null}
         </div>
         <div
           className="viewer-toolbar"
@@ -3287,6 +3440,45 @@ export default function MachineViewer({
           >
             {paused ? t("viewer.resume") : t("viewer.pause")}
           </button>
+          {selectedDrivePart ? (
+            <button
+              aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown ArrowUp"
+              aria-label={`${t("viewer.driveReverse", {
+                part: selectedDrivePart.name[language],
+              })} / ${t("viewer.driveForward", {
+                part: selectedDrivePart.name[language],
+              })}`}
+              data-drive-part-id={selectedDrivePart.id}
+              data-testid="drive-keyboard-control"
+              onKeyDown={(event) =>
+                handleDriveKeyDown(
+                  event,
+                  (delta) => drivePart(selectedDrivePart.id, delta),
+                  dismissDriveCoach,
+                )
+              }
+              style={{
+                border: 0,
+                clip: "rect(0, 0, 0, 0)",
+                height: 1,
+                margin: -1,
+                overflow: "hidden",
+                padding: 0,
+                position: "absolute",
+                whiteSpace: "nowrap",
+                width: 1,
+              }}
+              type="button"
+            >
+              {t("viewer.driveReverse", {
+                part: selectedDrivePart.name[language],
+              })}{" "}
+              /{" "}
+              {t("viewer.driveForward", {
+                part: selectedDrivePart.name[language],
+              })}
+            </button>
+          ) : null}
           {module.scene ? (
             <button
               className="ghost-button"

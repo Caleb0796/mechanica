@@ -141,3 +141,60 @@ Concerns:
 - Protected Phase 4 work remains unstaged.
 
 Next: F0-T5 material and texture recovery.
+
+## Resume audit — F0 ordering recovery
+
+Files:
+- No application file changed by this audit.
+
+Verification:
+- Read `MECHANICA_FIDELITY_PLAN_EN.md` in full through line 1482, including the worker template, delivery standard, wave runbook, ten machine orders, UI wave, Visual Gate 2.0, defaults, and Definition of Done.
+- `git log --oneline` confirms committed F0 tasks T1-T6, T12, and T11 on top of wave-0 start `5825cb3db1d4a68c6ab727b811293904f05bb57e`.
+- `git tag --list 'fidelity-*'` returns no tags; `fidelity-w0` is correctly absent.
+- Source and E2E searches confirm F0-T7 through F0-T10 are not implemented: permanent `.drive-buttons` remain, assembly still enters reassembly with `setExplode(1)`, part selection lacks the specified shared click-vs-drag path, and compare retains the Astroclock half-resolution mode.
+
+Evidence:
+- Existing committed baselines and F0-T1/F0-T6 captures remain under `artifacts/visual-gate-2/`.
+- The later provisional recovery screenshots under `output/playwright/` are not accepted as substitutes for task evidence or Visual Gate 2.0.
+
+Concerns:
+- F0-T12 and F0-T11 landed before the still-open T7-T10 tasks. Published history will not be rewritten; the deviation is recorded here and wave 0 remains untagged until T7-T10 close in their required order and the full exit gate passes.
+- Protected uncommitted work still spans machine, validation, UI, report, audit, extraction, and prior-ledger paths. Task closure must stage only owned task hunks and preserve every unrelated edit.
+
+Next:
+- Resume serial F0 execution at F0-T7, then close T8-T10, backfill missing task ledger evidence for the already committed T5/T6/T11/T12 work, run the wave deletion audit, and tag `fidelity-w0` only after every exit criterion is green.
+
+## F0-T7 — PASS
+
+Files:
+- `src/ui/viewer/DriveHandle.tsx`
+- `src/ui/viewer/DriveGizmo.tsx`
+- `src/ui/viewer/MachineViewer.tsx` (drive-part union, hover/selection plumbing, coach, keyboard control, and measurement exclusions only)
+- `src/ui/store.ts`
+- `e2e/smoke.spec.ts`
+- `e2e/shoot.spec.ts`
+
+Verification:
+- `pnpm test` — 29 files, 245/245 tests passed.
+- `pnpm validate` — exit 0; all ten summary rows have Fail=0 and Warn=0.
+- `pnpm e2e` — 43 passed, one requested-only screenshot runner skipped, zero failed in 7.1 minutes.
+- `pnpm i18n:check` — 0 issues.
+- `pnpm build` — exit 0; TypeScript and the production Vite build passed.
+- Five consecutive focused compare-pointer runs passed after waiting for both compare viewports to commit; the final full suite also passed the real-pointer path.
+- The ring, arrow, and invisible touch collider are tagged as affordance geometry and excluded from camera, floor, spotlight, triangle, and part-mesh measurements; the ten-machine camera-framing gate passed after this correction.
+- No authoritative machine data, dimension, ratio, or provenance file changed.
+
+Evidence:
+- `artifacts/visual-gate-2/_baseline-w0/before-seismoscope.png`
+- `artifacts/visual-gate-2/F0-T7/after-seismoscope.png`
+- `artifacts/visual-gate-2/F0-T7/after-hover-seismoscope.png`
+- Root [EYE] sign-off: task-level Visual Gate item 4 is green; the default has no permanent +/- clusters or ring, and hover adds a transparent model-anchored ring without materially obscuring the mechanism.
+- Fresh independent read-only skeptic `/root/f0_t7_visual_skeptic` re-reviewed the final recaptures and returned `T7 CLAIM SURVIVES`.
+
+Concerns:
+- Static evidence cannot prove the coach's one-time lifecycle; the passing browser test proves dismissal, persisted localStorage state, and absence after reload.
+- The skeptic separately failed the current seismoscope on Visual Gate items 1 and 2: its historical silhouette is not yet recognizable and the vessel reads as mottled grey-green plastic/foam rather than aged bronze. These remain blocking F1/F3 machine-fidelity work and are not treated as ornamental polish.
+- Vite reports the existing non-blocking three-vendor chunk-size warning.
+- Protected Phase 4/F1 work and generated validation outputs remain parked in named stashes pending post-commit restoration.
+
+Next: F0-T8 assembly rework.

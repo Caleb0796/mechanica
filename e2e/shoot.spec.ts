@@ -6,6 +6,23 @@ declare global {
       activate: (index?: number) => Promise<void> | void;
       state: () => { active: boolean };
     };
+    __mechDriveGizmos?: Record<
+      string,
+      {
+        active: boolean;
+        dragX: number;
+        dragY: number;
+        dragging: boolean;
+        points: Array<{
+          dragX: number;
+          dragY: number;
+          x: number;
+          y: number;
+        }>;
+        x: number;
+        y: number;
+      }
+    >;
   }
 }
 
@@ -71,6 +88,37 @@ async function waitForCamera(page: Page) {
   await page.evaluate(() => document.fonts.ready);
 }
 
+async function hoverDriveGizmo(page: Page): Promise<string> {
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => Object.keys(window.__mechDriveGizmos ?? {})[0] ?? null,
+      ),
+    )
+    .not.toBeNull();
+  const candidates = await page.evaluate(() =>
+    Object.entries(window.__mechDriveGizmos ?? {}).flatMap(([id, state]) =>
+      state.points.map((point) => ({ id, ...point })),
+    ),
+  );
+  for (const candidate of candidates) {
+    await page.mouse.move(candidate.x, candidate.y);
+    const active = await page.evaluate(
+      (id) =>
+        new Promise<boolean>((resolve) =>
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() =>
+              resolve(window.__mechDriveGizmos?.[id]?.active ?? false),
+            ),
+          ),
+        ),
+      candidate.id,
+    );
+    if (active) return candidate.id;
+  }
+  throw new Error("No drive gizmo has a visible projected point");
+}
+
 async function enterCutaway(page: Page, slug: MachineSlug) {
   if (!(await page.getByTestId("story-launch").count())) {
     throw new Error(`${slug}:cutaway has no authored story cutaway`);
@@ -128,10 +176,11 @@ async function enterCaptureState(
       await enterCutaway(page, slug);
       return;
     case "hover": {
-      const driveControl = page.locator(".drive-buttons").first();
-      await expect(driveControl, `${slug}:hover drive control`).toBeVisible();
-      await driveControl.hover();
-      await expect(driveControl).toHaveCSS("opacity", "1");
+      const gizmoId = await hoverDriveGizmo(page);
+      await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+        "data-drive-gizmo-testid",
+        gizmoId,
+      );
       return;
     }
     case "aid": {

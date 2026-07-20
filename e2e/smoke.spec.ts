@@ -78,6 +78,80 @@ async function sampleCompareFrameRates(page: Page, seconds: number) {
   );
 }
 
+async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
+  await expect
+    .poll(() =>
+      page.evaluate(
+        (prefix) =>
+          Object.keys(window.__mechDriveGizmos ?? {}).find((testId) =>
+            testId.startsWith(prefix),
+          ) ?? null,
+        testIdPrefix,
+      ),
+    )
+    .not.toBeNull();
+  const candidates = await page.evaluate(
+    (prefix) =>
+      Object.entries(window.__mechDriveGizmos ?? {}).flatMap(([id, state]) =>
+        id.startsWith(prefix)
+          ? state.points.map((point) => ({ id, ...point }))
+          : [],
+      ),
+    testIdPrefix,
+  );
+  let target: (typeof candidates)[number] | undefined;
+  for (const candidate of candidates) {
+    await page.mouse.move(candidate.x, candidate.y);
+    const active = await page.evaluate(
+      (id) =>
+        new Promise<boolean>((resolve) =>
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() =>
+              resolve(window.__mechDriveGizmos?.[id]?.active ?? false),
+            ),
+          ),
+        ),
+      candidate.id,
+    );
+    if (!active) continue;
+    await page.mouse.down();
+    const dragging = await page.evaluate(
+      (id) =>
+        new Promise<boolean>((resolve) =>
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() =>
+              resolve(window.__mechDriveGizmos?.[id]?.dragging ?? false),
+            ),
+          ),
+        ),
+      candidate.id,
+    );
+    if (!dragging) {
+      await page.mouse.up();
+      continue;
+    }
+    target = candidate;
+    break;
+  }
+  if (!target) {
+    throw new Error(`Drive gizmo ${testIdPrefix} has no projected points`);
+  }
+  expect(
+    await page.evaluate(
+      (id) => window.__mechDriveGizmos?.[id]?.dragging ?? false,
+      target.id,
+    ),
+    `Drive gizmo ${target.id} did not capture a real pointer drag`,
+  ).toBe(true);
+  await page.mouse.move(
+    target.x + target.dragX * distance,
+    target.y + target.dragY * distance,
+    { steps: 10 },
+  );
+  await page.mouse.up();
+  return target.id;
+}
+
 test("smoke: homepage presents the ten-machine collection", async ({
   page,
 }) => {
@@ -351,18 +425,7 @@ test("U2 real pointer: dragging the demo gear changes graph state", async ({
   await waitForMechanica(page);
   await page.getByRole("button", { name: "Pause", exact: true }).click();
   const before = await page.evaluate(() => window.__mech?.graph.state());
-  const dragPad = page.locator(
-    '[data-drive-part-id="small-gear"] .drive-drag-pad',
-  );
-  await expect(dragPad).toBeInViewport();
-  await dragPad.hover();
-  const box = await dragPad.boundingBox();
-  if (!box) throw new Error("Demo gear drag handle is unavailable");
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width / 2 + 100, box.y + box.height / 2, {
-    steps: 10,
-  });
-  await page.mouse.up();
+  await dragDriveGizmo(page, "drive-gizmo-small-gear");
   const after = await page.evaluate(() => window.__mech?.graph.state());
   const smallDelta =
     (after?.["small-gear"] ?? 0) - (before?.["small-gear"] ?? 0);
@@ -381,9 +444,7 @@ test("U2 pointer control: gimbal drive changes shell attitude", async ({
   const before = await page.evaluate(
     () => window.__mech?.graph.state()["@attitude:outer-shell:y"] ?? 0,
   );
-  await page
-    .getByRole("button", { name: "Drive Openwork outer shell forward" })
-    .click();
+  await dragDriveGizmo(page, "drive-gizmo-outer-shell");
   const after = await page.evaluate(
     () => window.__mech?.graph.state()["@attitude:outer-shell:y"] ?? 0,
   );
@@ -394,16 +455,28 @@ test("U2 pointer control: astroclock reverse lock cannot be bypassed", async ({
   page,
 }) => {
   await page.goto("/#/m/astroclock");
+  await page.getByRole("button", { name: "EN", exact: true }).click();
   await waitForMechanica(page, "astroclock");
   await page.getByRole("button", { name: "Pause", exact: true }).click();
   const before = await page.evaluate(
     () => window.__mech?.graph.state().shulun ?? 0,
   );
+  await page.evaluate(() => window.__mechSelect?.("shulun"));
   const reverse = page.getByRole("button", {
-    name: "Drive Celestial column in reverse",
+    name: "Drive Scoop escapement wheel in reverse / Drive Scoop escapement wheel forward",
   });
-  await expect(reverse).toBeVisible();
-  await reverse.click();
+  await expect(reverse).toHaveAttribute("data-drive-part-id", "shulun");
+  expect(
+    await page.evaluate(() =>
+      window.__mech?.spec.driveNodes.includes("shulun"),
+    ),
+  ).toBe(true);
+  await expect(reverse).toHaveAttribute(
+    "aria-keyshortcuts",
+    "ArrowLeft ArrowRight ArrowDown ArrowUp",
+  );
+  await reverse.focus();
+  await page.keyboard.press("ArrowLeft");
 
   await expect(page.getByTestId("event-captions")).toContainText(
     "blocked · tiansuo-r",
@@ -411,6 +484,98 @@ test("U2 pointer control: astroclock reverse lock cannot be bypassed", async ({
   expect(
     await page.evaluate(() => window.__mech?.graph.state().shulun ?? 0),
   ).toBeCloseTo(before, 10);
+});
+
+test("F0-T7: coach dismisses after one drive and permanent controls stay absent", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.evaluate(() =>
+    window.localStorage.removeItem("mechanica:drive-coach"),
+  );
+  await page.goto("/#/m/demo");
+  await waitForMechanica(page);
+  await expect(page.locator(".drive-buttons")).toHaveCount(0);
+  await expect(page.getByTestId("drive-coach")).toContainText(
+    "drag the glowing wheel",
+  );
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+  await dragDriveGizmo(page, "drive-gizmo-small-gear");
+  await expect(page.getByTestId("drive-coach")).toHaveCount(0);
+  expect(
+    await page.evaluate(() =>
+      window.localStorage.getItem("mechanica:drive-coach"),
+    ),
+  ).toBe("dismissed");
+
+  await page.reload();
+  await waitForMechanica(page);
+  await expect(page.getByTestId("drive-coach")).toHaveCount(0);
+  await expect(page.locator(".drive-buttons")).toHaveCount(0);
+});
+
+test("F0-T7: selected drive exposes bilingual arrow-key control", async ({
+  page,
+}) => {
+  await page.goto("/#/m/demo");
+  await page.getByRole("button", { name: "EN", exact: true }).click();
+  await waitForMechanica(page);
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+  await page.evaluate(() => window.__mechSelect?.("small-gear"));
+  const control = page.getByTestId("drive-keyboard-control");
+  await expect(control).toHaveCount(1);
+  await expect(control).toHaveAttribute(
+    "aria-label",
+    /Drive .+ in reverse \/ Drive .+ forward/,
+  );
+  await expect(control).toHaveAttribute("data-drive-part-id", "small-gear");
+  const before = await page.evaluate(
+    () => window.__mech?.graph.state()["small-gear"] ?? 0,
+  );
+  await control.focus();
+  await page.keyboard.press("ArrowRight");
+  const forward = await page.evaluate(
+    () => window.__mech?.graph.state()["small-gear"] ?? 0,
+  );
+  expect(forward).toBeGreaterThan(before);
+  await page.keyboard.press("ArrowLeft");
+  expect(
+    await page.evaluate(() => window.__mech?.graph.state()["small-gear"] ?? 0),
+  ).toBeCloseTo(before, 8);
+
+  await page.getByRole("button", { name: "中文", exact: true }).click();
+  await expect(control).toHaveAttribute(
+    "aria-label",
+    /.+：反向驱动 \/ .+：正向驱动/,
+  );
+});
+
+test("F0-T7: declared drive nodes expose the toolbar control", async ({
+  page,
+}) => {
+  await page.goto("/#/m/chainpump");
+  await page.getByRole("button", { name: "EN", exact: true }).click();
+  await waitForMechanica(page, "chainpump");
+  expect(
+    await page.evaluate(() => {
+      const part = window.__mech?.spec.parts.find(
+        (candidate) => candidate.id === "head-sprocket",
+      );
+      return {
+        declared: window.__mech?.spec.driveNodes.includes("head-sprocket"),
+        interactive: part?.interactive ?? null,
+      };
+    }),
+  ).toEqual({ declared: true, interactive: null });
+
+  await page.evaluate(() => window.__mechSelect?.("head-sprocket"));
+  const control = page.getByTestId("drive-keyboard-control");
+  await expect(control).toHaveCount(1);
+  await expect(control).toHaveAttribute("data-drive-part-id", "head-sprocket");
+  await expect(control).toHaveAttribute(
+    "aria-label",
+    /Drive .+ in reverse \/ Drive .+ forward/,
+  );
 });
 
 test("U4: inspection responds within 300 ms and exploded view spreads parts", async ({
@@ -480,18 +645,7 @@ test("seismoscope quake is inert in Wang and releases a ball in Feng", async ({
     "false",
     { timeout: 2500 },
   );
-  const drive = await page
-    .locator('[data-drive-part-id="duzhu"] .drive-drag-pad')
-    .boundingBox();
-  if (!drive) throw new Error("Seismoscope duzhu drive handle is unavailable");
-  await page.mouse.move(drive.x + drive.width / 2, drive.y + drive.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(
-    drive.x + drive.width / 2 + 60,
-    drive.y + drive.height / 2,
-    { steps: 6 },
-  );
-  await page.mouse.up();
+  await dragDriveGizmo(page, "drive-gizmo-duzhu", 60);
   await expect(page.getByTestId("event-captions")).toContainText("locked");
   expect(
     await page.evaluate(() =>
@@ -596,25 +750,16 @@ test("U3 compare pointer: dragging either canvas broadcasts to both graphs", asy
   await page.goto("/#/m/chariot");
   await waitForMechanica(page, "chariot");
   await page.getByTestId("compare-toggle").click();
+  await expect(
+    page.locator('.compare-viewport-shell[data-machine-ready="true"]'),
+  ).toHaveCount(2);
   await expect
     .poll(() => page.evaluate(() => Boolean(window.__mechCompare)))
     .toBe(true);
   const before = await page.evaluate(() =>
     window.__mechCompare?.graphs.map((graph) => JSON.stringify(graph.state())),
   );
-  const box = await page
-    .locator(".compare-viewport-left .drive-buttons")
-    .first()
-    .boundingBox();
-  if (!box) throw new Error("Compare drive marker is unavailable");
-  const startX = box.x + box.width / 2;
-  const startY = box.y + box.height / 2;
-  await page.mouse.move(startX, startY);
-  await page.mouse.down();
-  await page.mouse.move(startX + 100, startY, {
-    steps: 10,
-  });
-  await page.mouse.up();
+  await dragDriveGizmo(page, "drive-gizmo-left-", 100);
   const after = await page.evaluate(() =>
     window.__mechCompare?.graphs.map((graph) => JSON.stringify(graph.state())),
   );

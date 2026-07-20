@@ -1522,6 +1522,10 @@ const machine: MachineModule = {
         "tier-placard-1",
       ],
       dwellMs: 520,
+      label: {
+        zh: "金色脉冲沿动力链流动：水 → 枢轮 → 天柱 → 浑仪 → 木阁",
+        en: "The gold pulse walks the power chain: water → wheel → column → armillary → pagoda",
+      },
     },
     {
       kind: "flowParticles",

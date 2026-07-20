@@ -99,9 +99,10 @@ export function assertPrincipleAids(value: unknown, path = '$.aids'): asserts va
     const aid = object(value, aidPath);
     const kind = string(aid.kind, `${aidPath}.kind`);
     if (kind === 'powerPath') {
-      exactKeys(aid, ['kind', 'sequence', 'dwellMs'], aidPath);
+      exactKeys(aid, ['kind', 'sequence', 'dwellMs', 'label'], aidPath);
       nonEmptyStringArray(aid.sequence, `${aidPath}.sequence`);
       if (aid.dwellMs !== undefined) positiveNumber(aid.dwellMs, `${aidPath}.dwellMs`);
+      if (aid.label !== undefined) aidBilingual(aid.label, `${aidPath}.label`);
       return;
     }
     if (kind === 'callouts') {

@@ -857,11 +857,11 @@ function applyTransientMaterialState(
     state.schemeHighlighted ||
     state.spotlightHighlighted
   ) {
-    material.emissive.set("#6e4e18");
+    material.emissive.set(state.aidHighlighted ? "#f2b23e" : "#6e4e18");
     material.emissiveIntensity = state.spotlightHighlighted
       ? 1.4
       : state.aidHighlighted
-        ? 1.1
+        ? 2.1
         : 0.65;
   }
   if (state.seismoscopeDragonSpotlight) {

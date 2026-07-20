@@ -187,6 +187,7 @@ export type PrincipleAid =
       kind: "powerPath";
       sequence: string[];
       dwellMs?: number;
+      label?: { zh: string; en: string };
     }
   | {
       kind: "callouts";

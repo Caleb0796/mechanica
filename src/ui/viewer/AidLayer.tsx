@@ -2,13 +2,16 @@ import { Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import {
   BufferGeometry,
+  CatmullRomCurve3,
   type Camera,
   Float32BufferAttribute,
   type Group,
   type Material,
+  type MeshBasicMaterial,
   type Object3D,
   type Points,
   type Texture,
+  TubeGeometry,
   Vector3,
 } from "three";
 import {
@@ -445,6 +448,103 @@ function FlowParticles({
   );
 }
 
+function PowerPathRoute({
+  aid,
+  currentPartId,
+  language,
+  module,
+}: {
+  aid: Extract<PrincipleAid, { kind: "powerPath" }>;
+  currentPartId: string | null;
+  language: Language;
+  module: MachineModule;
+}) {
+  const scene = useThree((state) => state.scene);
+  const [curveVersion, setCurveVersion] = useState(0);
+  const labelAnchor = useRef<Group>(null);
+  const material = useRef<MeshBasicMaterial>(null);
+  const worldPosition = useMemo(() => new Vector3(), []);
+  const tube = useMemo(() => {
+    const points: Vector3[] = [];
+    for (const partId of aid.sequence) {
+      const object = scene.getObjectByName(partId);
+      if (!object) continue;
+      const point = new Vector3();
+      object.getWorldPosition(point);
+      points.push(point);
+    }
+    if (points.length < 2) return null;
+    const curve = new CatmullRomCurve3(points, false, "catmullrom", 0.12);
+    return new TubeGeometry(curve, points.length * 8, 0.028, 6, false);
+  }, [aid.sequence, curveVersion, scene]);
+  const currentPartName = currentPartId
+    ? (module.spec.parts.find((part) => part.id === currentPartId)?.name[
+        language
+      ] ?? currentPartId)
+    : null;
+
+  useFrame((state) => {
+    if (material.current) {
+      material.current.opacity =
+        0.55 + 0.25 * Math.sin(state.clock.elapsedTime * 3);
+    }
+    if (!labelAnchor.current) return;
+    const part = currentPartId
+      ? scene.getObjectByName(currentPartId)
+      : undefined;
+    labelAnchor.current.visible = Boolean(part);
+    if (!part) return;
+    part.getWorldPosition(worldPosition);
+    labelAnchor.current.position.copy(worldPosition);
+  });
+  useEffect(() => {
+    const id = window.setInterval(
+      () => setCurveVersion((version) => version + 1),
+      1200,
+    );
+    return () => window.clearInterval(id);
+  }, []);
+  useEffect(() => () => tube?.dispose(), [tube]);
+
+  if (!tube) return null;
+  return (
+    <>
+      <mesh geometry={tube} name="mechanica-aid-power-route" renderOrder={5}>
+        <meshBasicMaterial
+          color="#f2b23e"
+          depthTest={false}
+          opacity={0.6}
+          ref={material}
+          transparent
+        />
+      </mesh>
+      {currentPartName ? (
+        <group ref={labelAnchor} visible={false}>
+          <Html center style={{ pointerEvents: "none" }} zIndexRange={[30, 20]}>
+            <span
+              data-part-id={currentPartId ?? undefined}
+              data-testid="aid-power-label"
+              style={{
+                background: "rgba(10, 12, 12, 0.9)",
+                border: "1px solid rgba(242, 178, 62, 0.85)",
+                borderRadius: "999px",
+                color: "#fff3d5",
+                display: "block",
+                fontSize: "12px",
+                padding: "4px 8px",
+                transform: "translateY(-22px)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {currentPartName}
+            </span>
+          </Html>
+        </group>
+      ) : null}
+    </>
+  );
+}
+
 export default function AidLayer({
   aids,
   language,
@@ -457,6 +557,7 @@ export default function AidLayer({
   const gl = useThree((state) => state.gl);
   const scene = useThree((state) => state.scene);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [currentPartId, setCurrentPartId] = useState<string | null>(null);
   const highlightedPartIds = useRef<string[]>([]);
   const framePerformance = useRef<FramePerformance>({
     samples: [],
@@ -496,12 +597,14 @@ export default function AidLayer({
   useEffect(() => {
     if (!activeAid || activeAid.kind !== "powerPath") {
       highlightedPartIds.current = [];
+      setCurrentPartId(null);
       onHighlightChange([]);
       return;
     }
     let index = 0;
     const showPart = () => {
       highlightedPartIds.current = [activeAid.sequence[index]];
+      setCurrentPartId(activeAid.sequence[index]);
       onHighlightChange(highlightedPartIds.current);
       index = (index + 1) % activeAid.sequence.length;
     };
@@ -510,6 +613,7 @@ export default function AidLayer({
     return () => {
       window.clearInterval(interval);
       highlightedPartIds.current = [];
+      setCurrentPartId(null);
       onHighlightChange([]);
     };
   }, [activeAid, onHighlightChange]);
@@ -604,6 +708,14 @@ export default function AidLayer({
           recordFrame={recordFrame}
         />
       ) : null}
+      {activeAid?.kind === "powerPath" ? (
+        <PowerPathRoute
+          aid={activeAid}
+          currentPartId={currentPartId}
+          language={language}
+          module={module}
+        />
+      ) : null}
       <Html
         calculatePosition={calculateFullscreenPosition}
         fullscreen
@@ -687,7 +799,7 @@ export default function AidLayer({
                 {activeAid.caption[language]}
               </button>
             ) : null}
-            {activeAid?.kind === "cutaway" ? (
+            {activeAid && "label" in activeAid && activeAid.label ? (
               <output
                 style={{
                   alignItems: "center",

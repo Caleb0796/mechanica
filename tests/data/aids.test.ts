@@ -11,7 +11,12 @@ describe("principle aid schema", () => {
   it("accepts all five declared aid shapes", () => {
     expect(() =>
       assertPrincipleAids([
-        { kind: "powerPath", sequence: ["drive"], dwellMs: 500 },
+        {
+          kind: "powerPath",
+          sequence: ["drive"],
+          dwellMs: 500,
+          label: { zh: "动力", en: "Power" },
+        },
         {
           kind: "callouts",
           anchors: [{ partId: "drive", label: { zh: "主动件", en: "Drive" } }],

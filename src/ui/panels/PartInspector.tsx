@@ -106,35 +106,6 @@ function referenceIds(reference: string): string[] {
     .filter(Boolean);
 }
 
-const RECORD_COPY = {
-  en: {
-    basis: "Basis",
-    controversies: "Machine-level controversies",
-    dimensions: "Authoritative dimensions",
-    engineering: "Engineering provenance",
-    inventors: "Attributed makers",
-    noAncient:
-      "No direct ancient measurement survives for this part; its metric geometry is a reconstruction parameter.",
-    noPartQuote:
-      "No direct part-level quotation survives; use the machine evidence register for the reconstruction context.",
-    schemes: "Reconstruction evidence",
-    sources: "Complete source register",
-    title: "Machine evidence register",
-  },
-  zh: {
-    basis: "换算依据",
-    controversies: "整机争议",
-    dimensions: "权威尺寸",
-    engineering: "工程证据",
-    inventors: "记载人物",
-    noAncient: "此部件没有传世古代尺寸；所示公制几何为复原参数。",
-    noPartQuote: "此部件没有直接传世引文；请查阅整机证据档案了解复原依据。",
-    schemes: "复原证据",
-    sources: "完整文献目录",
-    title: "整机证据档案",
-  },
-} as const;
-
 function MachineEvidenceRecord({
   module,
   spec,
@@ -144,7 +115,16 @@ function MachineEvidenceRecord({
 }) {
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
-  const copy = RECORD_COPY[language];
+  const copy = {
+    basis: t("inspector.basis"),
+    controversies: t("inspector.machineControversies"),
+    dimensions: t("inspector.authoritativeDimensions"),
+    engineering: t("inspector.engineeringProvenance"),
+    inventors: t("inspector.inventors"),
+    schemes: t("inspector.reconstructionEvidence"),
+    sources: t("inspector.completeSources"),
+    title: t("inspector.machineEvidenceTitle"),
+  };
 
   return (
     <details data-testid="machine-evidence-register">
@@ -448,7 +428,7 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
         </dl>
       ) : !hasDirectDimensionEvidence ? (
         <p className="panel-empty" data-evidence-gap="ancient-dimension">
-          {RECORD_COPY[language].noAncient}
+          {t("inspector.noAncient")}
         </p>
       ) : null}
 
@@ -476,13 +456,13 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
         </div>
       ) : (
         <p className="panel-empty" data-evidence-gap="part-source">
-          {RECORD_COPY[language].noPartQuote}
+          {t("inspector.noPartQuote")}
         </p>
       )}
 
       {partSchemes.length > 0 ? (
         <div>
-          <h2>{RECORD_COPY[language].schemes}</h2>
+          <h2>{t("inspector.reconstructionEvidence")}</h2>
           {partSchemes.map((scheme) => (
             <div
               className="panel-copy"

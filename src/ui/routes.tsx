@@ -319,7 +319,7 @@ function StoryRoute({ slug }: { slug: string }) {
         data-testid="story-back-link"
         href={`#/m/${slug}`}
       >
-        {language === "zh" ? "返回模型" : "Back to model"}
+        {t("story.backToModel")}
       </a>
       <ScrollStory
         module={bundle.module}

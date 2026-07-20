@@ -7,11 +7,14 @@ import {
   useRef,
   useState,
 } from "react";
+import type { TFunction } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import type { MachineModule } from "../../sim/types";
 import "../docent/docent.css";
 import { classifyDocentProbeResponse } from "../docent/runtime";
 import { consumeDocentSse } from "../docent/sse";
+import i18n from "../i18n";
 
 const DEV_MOCK = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
 
@@ -58,43 +61,17 @@ function pageLang(): Lang {
     : "en";
 }
 
-function copy(lang: Lang) {
-  return lang === "zh"
-    ? {
-        entry: "问馆员",
-        checking: "正在连接…",
-        title: "Mechanica 馆员",
-        close: "关闭",
-        placeholder: "询问这台机械…",
-        send: "发送",
-        unavailable: "馆员暂不可用。",
-        retry: "重试一次",
-        streaming: "馆员正在查阅馆藏…",
-      }
-    : {
-        entry: "Ask the docent",
-        checking: "Connecting…",
-        title: "Mechanica docent",
-        close: "Close",
-        placeholder: "Ask about this machine…",
-        send: "Send",
-        unavailable: "Docent unavailable.",
-        retry: "Retry once",
-        streaming: "The docent is consulting the collection…",
-      };
-}
-
-function suggestedQuestions(module: MachineModule, lang: Lang): string[] {
+function suggestedQuestions(
+  module: MachineModule,
+  lang: Lang,
+  t: TFunction,
+): string[] {
   const data = module.data as unknown as SuggestionData;
   const questions: string[] = [];
   for (const controversy of data.controversies ?? []) {
     const topic = controversy.topic?.[lang];
     if (topic) {
-      questions.push(
-        lang === "zh"
-          ? `馆藏如何说明“${topic}”这一争议？`
-          : `How does the collection frame the “${topic}” controversy?`,
-      );
+      questions.push(t("docent.controversyQuestion", { topic }));
     }
   }
   for (const scheme of data.schemes ?? []) {
@@ -104,26 +81,15 @@ function suggestedQuestions(module: MachineModule, lang: Lang): string[] {
       scheme.scholar?.[lang] ??
       scheme.id;
     if (label) {
-      questions.push(
-        lang === "zh"
-          ? `“${label}”方案的依据是什么？`
-          : `What evidence supports the “${label}” scheme?`,
-      );
+      questions.push(t("docent.schemeQuestion", { scheme: label }));
     }
   }
   const machineName = module.data.names[lang];
-  const fallbacks =
-    lang === "zh"
-      ? [
-          `${machineName}有哪些学术争议？`,
-          `${machineName}的复原方案如何比较？`,
-          `各争议或方案分别依据哪些馆藏来源？`,
-        ]
-      : [
-          `What scholarly controversies concern ${machineName}?`,
-          `How do the reconstruction schemes for ${machineName} compare?`,
-          `Which collection sources support each controversy or scheme?`,
-        ];
+  const fallbacks = [
+    t("docent.fallbackControversies", { machine: machineName }),
+    t("docent.fallbackSchemes", { machine: machineName }),
+    t("docent.fallbackSources"),
+  ];
   for (const fallback of fallbacks) {
     if (questions.length >= 3) break;
     questions.push(fallback);
@@ -153,9 +119,8 @@ export function mockDocentReply(
   }
   const principle = data.principle[lang];
   const cite = data.sources[0].id;
-  return lang === "zh"
-    ? `${principle} 想深入了解，可以点开整机证据档案查看原文与尺寸。[来源:${cite}]`
-    : `${principle} For depth, open the machine evidence register for quotes and dimensions. [来源:${cite}]`;
+  const t = i18n.getFixedT(lang);
+  return t("docent.mockDepth", { cite, principle });
 }
 
 export type DocentSegment =
@@ -228,11 +193,22 @@ export function DocentChat({
   partId,
   schemeId,
 }: DocentChatProps): ReactElement | null {
+  const { t } = useTranslation();
   const lang = pageLang();
-  const labels = copy(lang);
+  const labels = {
+    checking: t("docent.checking"),
+    close: t("docent.close"),
+    entry: t("docent.title"),
+    placeholder: t("docent.placeholder"),
+    retry: t("docent.retry"),
+    send: t("docent.send"),
+    streaming: t("docent.thinking"),
+    title: t("docent.title"),
+    unavailable: t("docent.unavailable"),
+  };
   const suggestions = useMemo(
-    () => suggestedQuestions(module, lang),
-    [lang, module],
+    () => suggestedQuestions(module, lang, t),
+    [lang, module, t],
   );
   const [availability, setAvailability] = useState<Availability>("unknown");
   const [open, setOpen] = useState(false);

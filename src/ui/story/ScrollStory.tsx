@@ -148,7 +148,7 @@ export default function ScrollStory({
     throw new Error("ScrollStory requires at least one step");
   }
 
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const stepRefs = useRef<Array<HTMLElement | null>>([]);
   const sourceCloseRef = useRef<HTMLButtonElement>(null);
@@ -307,7 +307,7 @@ export default function ScrollStory({
                     }}
                     type="button"
                   >
-                    {language === "zh" ? "查看原始文献" : "View primary source"}
+                    {t("story.viewSource")}
                   </button>
                 ) : null}
               </article>
@@ -316,7 +316,7 @@ export default function ScrollStory({
         })}
       </div>
 
-      <nav aria-label="story progress" className="story-progress">
+      <nav aria-label={t("story.progress")} className="story-progress">
         {steps.map((step, index) => (
           <span
             className={index === state.activeIndex ? "dot active" : "dot"}
@@ -335,7 +335,7 @@ export default function ScrollStory({
           role="dialog"
         >
           <button
-            aria-label={language === "zh" ? "关闭文献" : "Close source"}
+            aria-label={t("story.closeSource")}
             className="scroll-story__source-close"
             onClick={closeSource}
             ref={sourceCloseRef}
@@ -353,7 +353,7 @@ export default function ScrollStory({
               : (openSource.translation?.zh ?? openSource.quote)}
           </blockquote>
           <a href={openSource.url} rel="noreferrer" target="_blank">
-            {language === "zh" ? "打开来源" : "Open source"}
+            {t("story.openSource")}
           </a>
         </aside>
       ) : null}

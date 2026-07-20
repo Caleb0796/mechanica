@@ -1,3 +1,5 @@
+import i18n from "../i18n";
+
 export interface MockDocentOptions {
   unknownSourceId?: string;
 }
@@ -8,9 +10,10 @@ export function createMockDocentReply(
   options: MockDocentOptions = {},
 ): string {
   const citedSourceId = options.unknownSourceId ?? sourceId;
-  return lang === "zh"
-    ? `这是基于当前机械馆藏资料的开发环境讲解。[来源:${citedSourceId}]`
-    : `This development response is grounded in the current machine record. [来源:${citedSourceId}]`;
+  const t = i18n.getFixedT(lang);
+  return t("docent.mockDevelopment", {
+    cite: citedSourceId,
+  });
 }
 
 export async function* streamMockDocentReply(

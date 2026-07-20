@@ -1,4 +1,5 @@
 import { ContactShadows, OrbitControls } from "@react-three/drei";
+import type { TFunction } from "i18next";
 import {
   Canvas,
   type RootState,
@@ -2744,7 +2745,7 @@ export function MachineStoryStage({
     const speed = useUiStore.getState().demoSpeed || 1;
     const timeline = buildDemoTimeline(
       captured,
-      (type, part) => mechanismCaption(module, language, type, part),
+      (type, part) => mechanismCaption(module, language, type, part, t),
       statesDiffer,
       initialState,
     );
@@ -2941,56 +2942,27 @@ function mechanismCaption(
   language: "en" | "zh",
   type: string,
   part: string,
+  t: TFunction,
 ): string {
+  const eventKey = type.replaceAll(":", "_");
   if (module.data.slug === "astroclock") {
-    const phases: Record<string, { en: string; zh: string }> = {
-      "caption:reservoir": {
-        en: "The header reservoir feeds the water circuit",
-        zh: "天池为水路供水",
-      },
-      "caption:constant-head": {
-        en: "The constant-level tank steadies the flow",
-        zh: "平水壶稳定水流",
-      },
-      "caption:fill": {
-        en: "The scoop fills and overcomes the fork",
-        zh: "水实即格叉不能胜壶",
-      },
-      "caption:yield": {
-        en: "The fork yields",
-        zh: "故格叉落",
-      },
-      "caption:open": {
-        en: "The iron tooth opens the tongue",
-        zh: "壶侧铁拨击开关舌",
-      },
-      "caption:advance": {
-        en: "The wheel advances one cell",
-        zh: "一辐过",
-      },
-      "caption:relock": {
-        en: "The locks catch the next scoop",
-        zh: "关锁再拒次壶",
-      },
-      "caption:return": {
-        en: "The water-lift returns the spent water",
-        zh: "提水机构将余水送回",
-      },
-      "caption:tier-report": {
-        en: "The wheel crosses a mark — the jacks raise their placards",
-        zh: "枢轮转过整点，司辰木人举牌报时",
-      },
-      "caption:drag-coach": {
-        en: "Drag the gold ring along the rim to drive the scoop wheel",
-        zh: "沿轮缘方向拖动金色圆环即可驱动枢轮",
-      },
-    };
-    const phase = phases[type];
-    if (phase) {
+    const captionTypes = new Set([
+      "caption:reservoir",
+      "caption:constant-head",
+      "caption:fill",
+      "caption:yield",
+      "caption:open",
+      "caption:advance",
+      "caption:relock",
+      "caption:return",
+      "caption:tier-report",
+      "caption:drag-coach",
+    ]);
+    if (captionTypes.has(type)) {
       const source = module.data.sources.find(
         (candidate) => candidate.id === "xyxfy-action",
       );
-      return `${phase[language]} · ${source?.book ?? "xyxfy-action"}`;
+      return `${t(`events.astroclock.${eventKey}`)} · ${source?.book ?? "xyxfy-action"}`;
     }
   }
   if (
@@ -3001,116 +2973,43 @@ function mechanismCaption(
       type === "releaseBall" ||
       type === "locked")
   ) {
-    if (type === "caption:quake-report") {
-      return language === "zh"
-        ? "西方龙口铜丸落入蟾口 — 记下方位"
-        : "The west dragon drops its ball into the toad — bearing recorded";
-    }
-    if (type === "caption:quake-reset-hint") {
-      return language === "zh"
-        ? "按「复位八方」可再试其他方向"
-        : "Press “Reset all eight directions” to try another bearing";
-    }
-    if (type === "caption:scheme-switch") {
-      return language === "zh"
-        ? "已切换到冯锐 2005 悬摆方案以演示"
-        : "Switched to the Feng Rui 2005 pendulum scheme for this demo";
-    }
-    if (type === "releaseBall") {
-      return language === "zh"
-        ? "一龙吐丸，落向对应蟾蜍 ·《后汉书》"
-        : "One dragon releases its ball toward the matching toad · Book of Later Han";
-    }
-    return language === "zh"
-      ? "其余七路保持互锁 ·《后汉书》"
-      : "The other seven directional paths remain locked · Book of Later Han";
+    return t(`events.seismoscope.${eventKey}`);
   }
 
-  const labels: Record<string, { en: string; zh: string }> = {
-    advance: { en: "The transmission advances", zh: "传动向前推进" },
-    "beat-up:advance": { en: "The beater packs the new weft", zh: "筘框向前打纬" },
-    "beat-up:return": { en: "The beater returns", zh: "筘框复位" },
-    blocked: { en: "Reverse motion is locked", zh: "逆向运动被锁止" },
-    camera: { en: "The view centers on the mechanism", zh: "视角对准机构" },
-    "camera:focus": { en: "The view follows the active station", zh: "视角跟随工作站" },
-    chime: { en: "The upper figure strikes the chime", zh: "上层人物击铙" },
-    "cloth:update": { en: "The woven pattern advances", zh: "锦面织纹更新" },
-    "cycle:ready": { en: "The loom returns to its ready position", zh: "织机回到起始位" },
-    "cycle:start": { en: "A weaving cycle begins", zh: "一次织造循环开始" },
-    drive: { en: "The drive advances", zh: "动力输入推进" },
-    "drive:slow": { en: "The drive approaches the trip point", zh: "动力接近触发点" },
-    drum: { en: "The lower figure strikes the drum", zh: "下层人物击鼓" },
-    "heddle:lift": { en: "The selected heddles rise", zh: "选中的综片提起" },
-    highlight: { en: "The active handoff is shown", zh: "当前传动交接显出" },
-    "highlight:off": { en: "The handoff is complete", zh: "当前传动交接完成" },
-    "highlight:on": { en: "The active mechanism is shown", zh: "当前工作机构显出" },
-    inert: { en: "The latch remains set", zh: "锁闩保持待命" },
-    "mallet:raise": { en: "The mallet rises", zh: "槌臂抬起" },
-    "odometer:readout": { en: "The distance register settles", zh: "里程读数稳定" },
-    "odometer:update": { en: "The distance train advances", zh: "里程轮系推进" },
-    "pattern:contrast": { en: "The second program produces a different weave", zh: "第二程序织出不同纹样" },
-    "phase:celestial-output": { en: "The celestial display turns", zh: "天文显示转动" },
-    "phase:end": { en: "The water beat is complete", zh: "一次水力节拍完成" },
-    "phase:escapement-release": { en: "The escapement releases one step", zh: "擒纵释放一步" },
-    "phase:escapement-yield": { en: "The regulating fork yields", zh: "调速格叉让位" },
-    "phase:reporting-output": { en: "The reporting figures respond", zh: "报时人物动作" },
-    "phase:scoop-loaded": { en: "The receiving scoop is loaded", zh: "受水壶装满" },
-    "phase:start": { en: "The mechanism returns to its start state", zh: "机构回到起始状态" },
-    "phase:vertical-transmission": { en: "Motion climbs the celestial column", zh: "运动沿天柱上传" },
-    "phase:water-arrival": { en: "Water reaches the receiving scoop", zh: "水流抵达受水壶" },
-    placard: { en: "A reporting placard appears", zh: "报时牌显出" },
-    "program:active": { en: "The first stored program is active", zh: "第一套存储程序启用" },
-    "program:order": { en: "The heddle order is set", zh: "综片次序设定" },
-    "program:reorder": { en: "The stored program changes", zh: "存储程序切换" },
-    "program:scheme": { en: "The selector reconstruction remains engaged", zh: "选综复原方案保持啮合" },
-    pulse: { en: "A directional pulse reaches the detector", zh: "方向脉冲抵达探测机构" },
-    reset: { en: "The mechanism resets", zh: "机构复位" },
-    "shed:open": { en: "The warp shed opens", zh: "经纱开口形成" },
-    source: { en: "The historical source is identified", zh: "史料依据已标明" },
-    "spotlight:done": { en: "The demonstration is complete", zh: "机构演示完成" },
-    "transmission:advance": { en: "Motion passes to the next stage", zh: "运动传至下一轴段" },
-    "treadle:press": { en: "The treadle bank enters the program", zh: "踏板组输入程序" },
-    "weft:count": { en: "The woven cloth advances", zh: "织成锦面推进" },
-    "weft:insert": { en: "The shuttle crosses the open shed", zh: "梭子穿过经纱开口" },
-  };
-  const eventLabel =
-    labels[type]?.[language] ??
-    (language === "zh"
-      ? "机构进入下一工作状态"
-      : "The mechanism enters its next working state");
+  const eventLabel = t(`events.labels.${eventKey}`, {
+    defaultValue: t("events.fallback"),
+  });
   const namedPart = module.spec.parts.find((candidate) => candidate.id === part);
   const partLabel = namedPart?.name[language];
   return partLabel ? `${eventLabel} · ${partLabel}` : eventLabel;
 }
 
 function SpotlightSemanticReadout({
-  language,
   module,
   visible,
 }: {
-  language: "en" | "zh";
   module: MachineModule;
   visible: boolean;
 }) {
+  const { t } = useTranslation();
   if (!visible) return null;
-  const localized = (en: string, zh: string) => (language === "en" ? en : zh);
   const rows: Array<{ label: string; value: string }> = [];
 
   if (module.data.slug === "seismoscope") {
     rows.push(
       {
-        label: localized("West dragon", "西方龙首"),
-        value: localized("Ball released", "落丸已释放"),
+        label: t("viewer.semanticWestDragon"),
+        value: t("viewer.semanticBallReleased"),
       },
       {
-        label: localized("Other seven paths", "其余七路"),
-        value: localized("Locked", "已互锁"),
+        label: t("viewer.semanticOtherPaths"),
+        value: t("viewer.semanticLocked"),
       },
     );
   }
   if (module.data.slug === "loom") {
     rows.push({
-      label: localized("Program A / B cloth", "程序 A / B 织纹"),
+      label: t("viewer.semanticLoomPrograms"),
       value: "▦ ▦ ▦   →   ◆ ◇ ◆",
     });
   }
@@ -3828,7 +3727,7 @@ export default function MachineViewer({
   ]);
 
   const recordEvent = (type: string, part: string) => {
-    const nextCaption = mechanismCaption(module, language, type, part);
+    const nextCaption = mechanismCaption(module, language, type, part, t);
     setCaption(nextCaption);
     if (type === "spotlight:done") {
       window.setTimeout(() => {
@@ -3941,7 +3840,7 @@ export default function MachineViewer({
     const speed = useUiStore.getState().demoSpeed || 1;
     const timeline = buildDemoTimeline(
       captured,
-      (type, part) => mechanismCaption(module, language, type, part),
+      (type, part) => mechanismCaption(module, language, type, part, t),
       statesDiffer,
       initialState,
     );
@@ -4052,12 +3951,8 @@ export default function MachineViewer({
       : null;
   const assemblyHint = assemblyStateHint
     ? assemblyStateHint.kind === "parent-required"
-      ? language === "zh"
-        ? `请先安装 ${requiredAssemblyPartName}`
-        : `Seat ${requiredAssemblyPartName} first`
-      : language === "zh"
-        ? "请将部件移近目标槽位"
-        : "Move the part closer to its target slot"
+      ? t("assembly.hintParent", { part: requiredAssemblyPartName })
+      : t("assembly.hintMoveCloser")
     : null;
 
   return (
@@ -4082,7 +3977,7 @@ export default function MachineViewer({
                 data-testid="story-launch"
                 href={`#/story/${module.data.slug}`}
               >
-                {language === "zh" ? "进入叙事" : "Enter story"}
+                {t("viewer.enterStory")}
               </a>
             ) : null}
           </div>
@@ -4287,7 +4182,7 @@ export default function MachineViewer({
                 />
               </svg>
               <span>
-                {language === "zh" ? "拖动发光轮" : "drag the glowing wheel"}
+                {t("viewer.driveCoach")}
               </span>
             </div>
           ) : null}
@@ -4430,12 +4325,8 @@ export default function MachineViewer({
                 type="button"
               >
                 {showScene
-                  ? language === "zh"
-                    ? "素色背景"
-                    : "Plain background"
-                  : language === "zh"
-                    ? "显示场景"
-                    : "Show scene"}
+                  ? t("viewer.plainBackground")
+                  : t("viewer.showScene")}
               </button>
             ) : null}
           </div>
@@ -4487,7 +4378,7 @@ export default function MachineViewer({
                     }}
                     type="button"
                   >
-                    {language === "zh" ? "拖拽复原" : "Reassemble"}
+                    {t("assembly.reassemble")}
                   </button>
                 </>
               ) : null}
@@ -4543,7 +4434,7 @@ export default function MachineViewer({
                   }}
                   type="button"
                 >
-                  {language === "zh" ? "点按目标槽位" : "Tap target slot"}
+                  {t("assembly.targetSlot")}
                 </button>
               ) : null}
               {assembly.currentPartName ? (
@@ -4606,7 +4497,6 @@ export default function MachineViewer({
               {t("viewer.spotlightPlay")}
             </button>
             <SpotlightSemanticReadout
-              language={language}
               module={module}
               visible={spotlightActive || spotlightDone}
             />
@@ -4683,9 +4573,9 @@ export default function MachineViewer({
           </div>
           {odometerReadout !== null ? (
             <p aria-live="polite" className="event-caption">
-              <strong>{language === "zh" ? "里程" : "Distance"}</strong>{" "}
+              <strong>{t("viewer.odometerDistance")}</strong>{" "}
               <output data-testid="odometer-readout">
-                {odometerReadout} {language === "zh" ? "里" : "li"}
+                {odometerReadout} {t("viewer.odometerUnit")}
               </output>
             </p>
           ) : null}

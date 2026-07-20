@@ -311,13 +311,7 @@ export default function CompareView({
   const flashDriveCaption = useCallback(
     (deltaRad: number) => {
       setDriveCaption(
-        language === "zh"
-          ? deltaRad < 0
-            ? "两侧同步后退一格"
-            : "两侧同步前进一格"
-          : deltaRad < 0
-            ? "Both models move back one step"
-            : "Both models advance one step",
+        deltaRad < 0 ? t("compare.moveBack") : t("compare.moveForward"),
       );
       if (driveCaptionTimeout.current !== null) {
         window.clearTimeout(driveCaptionTimeout.current);
@@ -327,7 +321,7 @@ export default function CompareView({
         1200,
       );
     },
-    [language],
+    [t],
   );
   const fireDrive = useCallback(
     (deltaRad: number) => {

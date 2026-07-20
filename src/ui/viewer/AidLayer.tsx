@@ -23,6 +23,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { MachineModule, PrincipleAid } from "../../sim/types";
 
@@ -568,6 +569,7 @@ export default function AidLayer({
   onHighlightChange,
   onRunTrigger,
 }: AidLayerProps) {
+  const { t } = useTranslation();
   const camera = useThree((state) => state.camera);
   const gl = useThree((state) => state.gl);
   const scene = useThree((state) => state.scene);
@@ -747,7 +749,7 @@ export default function AidLayer({
           }}
         >
           <div
-            aria-label={language === "zh" ? "原理辅助" : "Principle aids"}
+            aria-label={t("viewer.principleAids")}
             className="aid-chip-toolbar"
             role="toolbar"
           >

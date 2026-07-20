@@ -27,52 +27,26 @@ const GALLERY_LAYERS: GalleryLayer[] = [
   "collection",
 ];
 
-const COPY = {
-  en: {
-    authorUnavailable: "Author not supplied in the exhibit data",
-    classical: "Classical plates",
-    classicalDescription: "Public-domain woodcuts and historical plates.",
-    close: "Close lightbox",
-    collection: "Collection links",
-    collectionDescription: "Museum collection records and related text links.",
-    deadLink:
-      "If this page is offline or has moved, search the museum collection for the exhibit title shown above.",
-    imageUnavailable:
-      "The local image is unavailable; use the source link below.",
-    lightbox: "Expanded gallery image",
-    linkUnavailable:
-      "No stable collection URL is available. Search the named museum for this exhibit.",
-    museum: "Museum photos",
-    museumDescription: "Downloaded museum and reconstruction photographs.",
-    original: "Original artifact",
-    reconstruction: "Reconstruction renders",
-    reconstructionDescription:
-      "Project screenshots and generated reconstruction renders.",
-    source: "Source",
-    viaWikimedia: "via Wikimedia Commons",
-    viewImage: "Open image in lightbox",
-  },
-  zh: {
-    authorUnavailable: "展品资料未提供作者",
-    classical: "古籍图版",
-    classicalDescription: "公版木刻与历史图版。",
-    close: "关闭大图",
-    collection: "馆藏链接",
-    collectionDescription: "博物馆馆藏记录与相关文本链接。",
-    deadLink: "如页面离线或已迁移，请在该博物馆馆藏中搜索上方展品名称。",
-    imageUnavailable: "本地图像不可用，请使用下方来源链接。",
-    lightbox: "画廊大图",
-    linkUnavailable: "暂无稳定馆藏网址，请按展品名称在该博物馆检索。",
-    museum: "博物馆照片",
-    museumDescription: "已下载的博物馆藏品与复原照片。",
-    original: "原始文物",
-    reconstruction: "复原渲染",
-    reconstructionDescription: "项目截图与生成的复原渲染图。",
-    source: "来源",
-    viaWikimedia: "经 Wikimedia Commons",
-    viewImage: "在大图中打开",
-  },
-} as const;
+interface GalleryCopy {
+  authorUnavailable: string;
+  classical: string;
+  classicalDescription: string;
+  close: string;
+  collection: string;
+  collectionDescription: string;
+  deadLink: string;
+  imageUnavailable: string;
+  lightbox: string;
+  linkUnavailable: string;
+  museum: string;
+  museumDescription: string;
+  original: string;
+  reconstruction: string;
+  reconstructionDescription: string;
+  source: string;
+  viaWikimedia: string;
+  viewImage: string;
+}
 
 function localImageUrl(image: GalleryImage): string | undefined {
   const value = image.file ?? image.hotlink;
@@ -135,7 +109,7 @@ function ImageCaption({
   licenseLabel,
   openLabel,
 }: {
-  copy: (typeof COPY)[keyof typeof COPY];
+  copy: GalleryCopy;
   image: GalleryImage;
   licenseLabel: string;
   openLabel: string;
@@ -182,7 +156,26 @@ function ImageCaption({
 export default function GalleryPanel({ data }: GalleryPanelProps) {
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage?.startsWith("zh") ? "zh" : "en";
-  const copy = COPY[language];
+  const copy: GalleryCopy = {
+    authorUnavailable: t("gallery.authorUnavailable"),
+    classical: t("gallery.classical"),
+    classicalDescription: t("gallery.classicalDescription"),
+    close: t("gallery.lightboxClose"),
+    collection: t("gallery.collection"),
+    collectionDescription: t("gallery.collectionDescription"),
+    deadLink: t("gallery.deadLink"),
+    imageUnavailable: t("gallery.imageUnavailable"),
+    lightbox: t("gallery.lightboxTitle"),
+    linkUnavailable: t("gallery.linkUnavailable"),
+    museum: t("gallery.museum"),
+    museumDescription: t("gallery.museumDescription"),
+    original: t("gallery.originalArtifact"),
+    reconstruction: t("gallery.reconstruction"),
+    reconstructionDescription: t("gallery.reconstructionDescription"),
+    source: t("gallery.source"),
+    viaWikimedia: t("gallery.viaWikimedia"),
+    viewImage: t("gallery.viewImage"),
+  };
   const [activeLayer, setActiveLayer] =
     useState<GalleryLayer>("reconstruction");
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);

@@ -1,0 +1,146 @@
+{
+  "slug": "seismoscope",
+  "model": "codex-gpt-5.6-sol",
+  "provisional": true,
+  "replacementCommand": "pnpm extract",
+  "generatedAt": null,
+  "prompt": "你是古代机械复原工程师。仅根据以下古籍原文（不得使用原文之外的数字），抽取零件清单与传动约束，输出 JSON：{ parts: [{id,name_zh,role,dims_ancient[]}], constraints: [{type,a,b,teeth_a?,teeth_b?,evidence_quote}], uncertainties: [...] }。每个数字必须附 evidence_quote（原文片段）。没有依据的字段留 null 并写入 uncertainties。原文：\n陽嘉元年，復造候風地動儀。以精銅鑄成，員徑八尺，合蓋隆起，形似酒尊，飾以篆文山龜鳥獸之形。中有都柱，傍行八道，施關發機。外有八龍，首銜銅丸，下有蟾蜍，張口承之。其牙機巧制，皆隱在尊中，覆蓋周密無際。如有地動，尊則振龍機發吐丸，而蟾蜍銜之。振聲激揚，伺者因此覺知。雖一龍發機，而七首不動，尋其方面，乃知震之所在。驗之以事，合契若神。自書典所記，未之有也。嘗一龍機發而地不覺動，京師學者咸怪其無征，後數日驛至，果地震隴西，於是皆服其妙。自此以後，乃令史官記地動所從方起。",
+  "response": "{\"parts\":[{\"id\":\"bronze-vessel\",\"name_zh\":\"精銅尊體\",\"role\":\"包覆內部牙機的酒尊形外壳\",\"dims_ancient\":[{\"label\":\"直徑\",\"value\":\"八尺\",\"evidence_quote\":\"以精銅鑄成，員徑八尺\"}]},{\"id\":\"raised-lid\",\"name_zh\":\"合蓋\",\"role\":\"周密覆蓋尊中机构\",\"dims_ancient\":[]},{\"id\":\"central-duzhu\",\"name_zh\":\"都柱\",\"role\":\"位于尊体中央的感动构件\",\"dims_ancient\":[]},{\"id\":\"eight-paths\",\"name_zh\":\"八道\",\"role\":\"从中央向八个方位分行的机关路径\",\"dims_ancient\":[]},{\"id\":\"trigger-mechanism\",\"name_zh\":\"關機\",\"role\":\"受地动触发并使龙机吐丸\",\"dims_ancient\":[]},{\"id\":\"hidden-toothed-mechanism\",\"name_zh\":\"牙機\",\"role\":\"隐藏在尊中的精巧传动机构\",\"dims_ancient\":[]},{\"id\":\"dragon-heads\",\"name_zh\":\"八龍\",\"role\":\"八个方位的吐丸指示器\",\"dims_ancient\":[]},{\"id\":\"bronze-balls\",\"name_zh\":\"銅丸\",\"role\":\"由龙首衔持并在触发时释放\",\"dims_ancient\":[]},{\"id\":\"toads\",\"name_zh\":\"蟾蜍\",\"role\":\"张口承接铜丸并以声音报警\",\"dims_ancient\":[]}],\"constraints\":[{\"type\":\"contains\",\"a\":\"bronze-vessel\",\"b\":\"central-duzhu\",\"evidence_quote\":\"中有都柱\"},{\"type\":\"radiates-eight-ways\",\"a\":\"central-duzhu\",\"b\":\"eight-paths\",\"evidence_quote\":\"中有都柱，傍行八道\"},{\"type\":\"actuates\",\"a\":\"eight-paths\",\"b\":\"trigger-mechanism\",\"evidence_quote\":\"傍行八道，施關發機\"},{\"type\":\"holds\",\"a\":\"dragon-heads\",\"b\":\"bronze-balls\",\"evidence_quote\":\"外有八龍，首銜銅丸\"},{\"type\":\"receives\",\"a\":\"toads\",\"b\":\"bronze-balls\",\"evidence_quote\":\"下有蟾蜍，張口承之\"},{\"type\":\"conceals\",\"a\":\"bronze-vessel\",\"b\":\"hidden-toothed-mechanism\",\"evidence_quote\":\"其牙機巧制，皆隱在尊中\"},{\"type\":\"releases\",\"a\":\"trigger-mechanism\",\"b\":\"bronze-balls\",\"evidence_quote\":\"如有地動，尊則振龍機發吐丸\"},{\"type\":\"first-event-lockout\",\"a\":\"trigger-mechanism\",\"b\":\"dragon-heads\",\"evidence_quote\":\"雖一龍發機，而七首不動\"}],\"uncertainties\":[{\"issue\":\"都柱的悬垂或竖立方式未载，不能从引文确定复原方案。\",\"evidence_quote\":\"中有都柱\",\"null_fields\":[\"central-duzhu.mounting\"]},{\"issue\":\"牙机和关机隐藏于尊中，引文未给出几何、传动比或具体连接。\",\"evidence_quote\":\"其牙機巧制，皆隱在尊中\",\"null_fields\":[\"hidden-toothed-mechanism.geometry\",\"trigger-mechanism.ratio\"]},{\"issue\":\"引文明载八龙，但蟾蜍数量只能由方位对应推测，不应作为原文直载数字。\",\"evidence_quote\":\"外有八龍，首銜銅丸，下有蟾蜍，張口承之\",\"null_fields\":[\"toads.count\"]},{\"issue\":\"除尊体直径外，引文未给出零件尺寸或可计算传动比。\",\"evidence_quote\":\"員徑八尺\",\"null_fields\":[\"other_parts.dims_ancient\",\"constraints.ratio\"]}]}",
+  "parts": [
+    {
+      "id": "bronze-vessel",
+      "name_zh": "精銅尊體",
+      "role": "包覆內部牙機的酒尊形外壳",
+      "dims_ancient": [
+        {
+          "label": "直徑",
+          "value": "八尺",
+          "evidence_quote": "以精銅鑄成，員徑八尺"
+        }
+      ]
+    },
+    {
+      "id": "raised-lid",
+      "name_zh": "合蓋",
+      "role": "周密覆蓋尊中机构",
+      "dims_ancient": []
+    },
+    {
+      "id": "central-duzhu",
+      "name_zh": "都柱",
+      "role": "位于尊体中央的感动构件",
+      "dims_ancient": []
+    },
+    {
+      "id": "eight-paths",
+      "name_zh": "八道",
+      "role": "从中央向八个方位分行的机关路径",
+      "dims_ancient": []
+    },
+    {
+      "id": "trigger-mechanism",
+      "name_zh": "關機",
+      "role": "受地动触发并使龙机吐丸",
+      "dims_ancient": []
+    },
+    {
+      "id": "hidden-toothed-mechanism",
+      "name_zh": "牙機",
+      "role": "隐藏在尊中的精巧传动机构",
+      "dims_ancient": []
+    },
+    {
+      "id": "dragon-heads",
+      "name_zh": "八龍",
+      "role": "八个方位的吐丸指示器",
+      "dims_ancient": []
+    },
+    {
+      "id": "bronze-balls",
+      "name_zh": "銅丸",
+      "role": "由龙首衔持并在触发时释放",
+      "dims_ancient": []
+    },
+    {
+      "id": "toads",
+      "name_zh": "蟾蜍",
+      "role": "张口承接铜丸并以声音报警",
+      "dims_ancient": []
+    }
+  ],
+  "constraints": [
+    {
+      "type": "contains",
+      "a": "bronze-vessel",
+      "b": "central-duzhu",
+      "evidence_quote": "中有都柱"
+    },
+    {
+      "type": "radiates-eight-ways",
+      "a": "central-duzhu",
+      "b": "eight-paths",
+      "evidence_quote": "中有都柱，傍行八道"
+    },
+    {
+      "type": "actuates",
+      "a": "eight-paths",
+      "b": "trigger-mechanism",
+      "evidence_quote": "傍行八道，施關發機"
+    },
+    {
+      "type": "holds",
+      "a": "dragon-heads",
+      "b": "bronze-balls",
+      "evidence_quote": "外有八龍，首銜銅丸"
+    },
+    {
+      "type": "receives",
+      "a": "toads",
+      "b": "bronze-balls",
+      "evidence_quote": "下有蟾蜍，張口承之"
+    },
+    {
+      "type": "conceals",
+      "a": "bronze-vessel",
+      "b": "hidden-toothed-mechanism",
+      "evidence_quote": "其牙機巧制，皆隱在尊中"
+    },
+    {
+      "type": "releases",
+      "a": "trigger-mechanism",
+      "b": "bronze-balls",
+      "evidence_quote": "如有地動，尊則振龍機發吐丸"
+    },
+    {
+      "type": "first-event-lockout",
+      "a": "trigger-mechanism",
+      "b": "dragon-heads",
+      "evidence_quote": "雖一龍發機，而七首不動"
+    }
+  ],
+  "uncertainties": [
+    {
+      "issue": "都柱的悬垂或竖立方式未载，不能从引文确定复原方案。",
+      "evidence_quote": "中有都柱",
+      "null_fields": ["central-duzhu.mounting"]
+    },
+    {
+      "issue": "牙机和关机隐藏于尊中，引文未给出几何、传动比或具体连接。",
+      "evidence_quote": "其牙機巧制，皆隱在尊中",
+      "null_fields": [
+        "hidden-toothed-mechanism.geometry",
+        "trigger-mechanism.ratio"
+      ]
+    },
+    {
+      "issue": "引文明载八龙，但蟾蜍数量只能由方位对应推测，不应作为原文直载数字。",
+      "evidence_quote": "外有八龍，首銜銅丸，下有蟾蜍，張口承之",
+      "null_fields": ["toads.count"]
+    },
+    {
+      "issue": "除尊体直径外，引文未给出零件尺寸或可计算传动比。",
+      "evidence_quote": "員徑八尺",
+      "null_fields": ["other_parts.dims_ancient", "constraints.ratio"]
+    }
+  ]
+}

@@ -11,3 +11,6 @@ coverage/
 .codex/ultracode/runs/*/results/
 *.log
 *.tsbuildinfo
+.gstack/
+output/
+.playwright-cli/

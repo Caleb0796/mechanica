@@ -4,7 +4,7 @@ import {
   assertMachineModuleAids,
   assertPrincipleAids,
 } from "../../src/data/schema";
-import gimbal from "../../src/machines/gimbal/build";
+import astroclock from "../../src/machines/astroclock/build";
 import loom from "../../src/machines/loom/build";
 
 describe("principle aid schema", () => {
@@ -104,13 +104,13 @@ describe("principle aid schema", () => {
     ).toThrow("$.aids[0].rate");
   });
 
-  it("validates gimbal aid references and its five-kind template", () => {
-    expect(() => assertMachineModuleAids(gimbal)).not.toThrow();
-    expect(new Set(gimbal.aids?.map((aid) => aid.kind) ?? []).size).toBe(5);
+  it("validates astroclock aid references and its five-kind template", () => {
+    expect(() => assertMachineModuleAids(astroclock)).not.toThrow();
+    expect(new Set(astroclock.aids?.map((aid) => aid.kind) ?? []).size).toBe(5);
   });
 
   it("rejects unresolved part, trigger, and custom-emitter references", () => {
-    const missingPart = structuredClone(gimbal.aids!);
+    const missingPart = structuredClone(astroclock.aids!);
     missingPart[0] = {
       kind: "callouts",
       anchors: [
@@ -118,28 +118,43 @@ describe("principle aid schema", () => {
       ],
     };
     expect(() =>
-      assertMachineModuleAids({ ...gimbal, aids: missingPart }),
+      assertMachineModuleAids({ ...astroclock, aids: missingPart }),
     ).toThrow("$.aids[0].anchors[0].partId");
 
-    const missingTrigger = structuredClone(gimbal.aids!);
-    missingTrigger[2] = {
+    const missingTrigger = structuredClone(astroclock.aids!);
+    missingTrigger[4] = {
       kind: "subDemo",
       triggerId: "missing-trigger",
       caption: { zh: "缺失", en: "Missing" },
     };
     expect(() =>
-      assertMachineModuleAids({ ...gimbal, aids: missingTrigger }),
-    ).toThrow("$.aids[2].triggerId");
+      assertMachineModuleAids({ ...astroclock, aids: missingTrigger }),
+    ).toThrow("$.aids[4].triggerId");
 
     expect(() =>
       assertMachineModuleAids({
-        ...gimbal,
+        ...astroclock,
+        customSceneBuilders: { testEmitter: () => ({}) },
+        aids: [
+          {
+            kind: "flowParticles",
+            flavor: "custom",
+            emitter: "testEmitter",
+            pathPartIds: ["shulun"],
+          },
+        ],
+      }),
+    ).not.toThrow();
+
+    expect(() =>
+      assertMachineModuleAids({
+        ...astroclock,
         aids: [
           {
             kind: "flowParticles",
             flavor: "custom",
             emitter: "missing-emitter",
-            pathPartIds: ["outer-ring"],
+            pathPartIds: ["shulun"],
           },
         ],
       }),
@@ -149,9 +164,9 @@ describe("principle aid schema", () => {
   it("rejects undeclared module fields and ambiguous emitter declarations", () => {
     expect(() =>
       assertMachineModuleAids({
-        ...gimbal,
+        ...astroclock,
         sectorLabels: ["甲"],
-      } as typeof gimbal),
+      } as typeof astroclock),
     ).toThrow("$.sectorLabels");
 
     expect(() =>
@@ -160,7 +175,7 @@ describe("principle aid schema", () => {
           kind: "flowParticles",
           flavor: "smoke",
           emitter: "unregistered-standard-emitter",
-          pathPartIds: ["incense-bowl"],
+          pathPartIds: ["shulun"],
         },
       ]),
     ).toThrow("$.aids[0].emitter");
@@ -170,7 +185,7 @@ describe("principle aid schema", () => {
         {
           kind: "flowParticles",
           flavor: "custom",
-          pathPartIds: ["incense-bowl"],
+          pathPartIds: ["shulun"],
         },
       ]),
     ).toThrow("$.aids[0].emitter");
@@ -198,16 +213,16 @@ describe("principle aid schema", () => {
   it("rejects undeclared display fields in machine data", () => {
     expect(() =>
       assertMachineData({
-        ...gimbal.data,
+        ...astroclock.data,
         sectorLabels: [{ zh: "甲", en: "A" }],
       }),
     ).toThrow("$.sectorLabels");
 
     expect(() =>
       assertMachineData({
-        ...gimbal.data,
+        ...astroclock.data,
         names: {
-          ...gimbal.data.names,
+          ...astroclock.data.names,
           sectorLabels: [{ zh: "甲", en: "A" }],
         },
       }),

@@ -15,8 +15,8 @@
       "joint": {
         "kind": "fixed",
         "axis": [
-          0,
           1,
+          0,
           0
         ],
         "limits": [

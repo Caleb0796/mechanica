@@ -8,13 +8,13 @@ import {
   warmMachine,
 } from "../../src/core/geometryWarmup";
 import { buildPartGeometry } from "../../src/core/primitives";
-import bellows from "../../src/machines/bellows/build";
 import type {
   GeometryDef,
   MachineModule,
   MachineSpec,
   PartDef,
 } from "../../src/sim/types";
+import demo from "../../src/ui/demo";
 
 const provenance = { kind: "tuice", ref: "geometry-warmup-test" } as const;
 
@@ -46,10 +46,33 @@ function fixture(
   return {
     module: {
       customBuilders: builders,
-      data: { slug: "bellows" } as MachineModule["data"],
+      data: demo.data,
       spec,
     },
     spec,
+  };
+}
+
+function statefulFixture(): ReturnType<typeof fixture> & {
+  builder: ReturnType<typeof vi.fn>;
+} {
+  const builder = vi.fn(() => {
+    const geometry = new BoxGeometry(1, 1, 1);
+    geometry.userData.mechanicaUpdate = () => undefined;
+    return geometry;
+  });
+  return {
+    ...fixture(
+      [
+        part("stateful", {
+          builder: "stateful",
+          params: { width: 1 },
+          type: "custom",
+        }),
+      ],
+      { stateful: builder },
+    ),
+    builder,
   };
 }
 
@@ -231,25 +254,29 @@ describe("geometry warmup", () => {
     cache.dispose();
   });
 
-  it("ranks the real Bellows drive cord by its declared path envelope", async () => {
-    const driveCord = bellows.spec.parts.find(
-      (candidate) => candidate.id === "drive-cord",
-    );
-    const upright = bellows.spec.parts.find(
-      (candidate) =>
-        candidate.id.includes("upright") &&
-        Math.abs(geometrySizeProxy(candidate.geometry) - 0.6) < 1e-9,
-    );
-    const wheel = bellows.spec.parts.find(
-      (candidate) =>
-        candidate.geometry.type === "wheel" &&
-        Math.abs(geometrySizeProxy(candidate.geometry) - 0.56) < 1e-9,
-    );
-    if (!driveCord || driveCord.geometry.type !== "custom") {
-      throw new Error("Bellows drive-cord fixture is missing");
-    }
-    if (!upright || !wheel) {
-      throw new Error("Bellows upright or wheel fixture is missing");
+  it("ranks a declared drive cord by its path envelope", async () => {
+    const driveCord = part("drive-cord", {
+      builder: "driveCord",
+      params: {
+        drumSpread: 0.4,
+        radius: 0.02,
+        rise: 0.8,
+        run: 1.2,
+        waterSpread: 0.6,
+      },
+      type: "custom",
+    });
+    const upright = part("upright", {
+      size: [0.1, 0.6, 0.1],
+      type: "beam",
+    });
+    const wheel = part("wheel", {
+      radius: 0.56,
+      type: "wheel",
+      width: 0.08,
+    });
+    if (driveCord.geometry.type !== "custom") {
+      throw new Error("Drive-cord fixture must use custom geometry");
     }
     const params = driveCord.geometry.params;
     const declaredSpan =
@@ -260,19 +287,18 @@ describe("geometry warmup", () => {
       ) +
       params.radius * 2;
     const order: string[] = [];
-    const spec = {
-      ...bellows.spec,
-      parts: [upright, wheel, driveCord],
-    };
+    const { module, spec } = fixture([upright, wheel, driveCord], {
+      driveCord: () => new BoxGeometry(1, 1, 1),
+    });
     const cache = new MachineGeometryCache();
     const scheduler = queuedScheduler();
-    const controller = warmMachine(bellows, spec, () => undefined, {
+    const controller = warmMachine(module, spec, () => undefined, {
       cache,
       consumerScope: "cord-ranking-test",
       geometryOptions: (candidate) => ({
         factory: () => {
           order.push(candidate.id);
-          return buildPartGeometry(candidate.geometry, bellows.customBuilders);
+          return buildPartGeometry(candidate.geometry, module.customBuilders);
         },
         variant: `cord-ranking-test:${candidate.id}`,
       }),
@@ -833,25 +859,7 @@ describe("geometry warmup", () => {
   });
 
   it("keeps sequential default stateful warmups bounded on one stable scope", async () => {
-    const rocker = bellows.spec.parts.find(
-      (candidate) => candidate.id === "rocker",
-    );
-    if (!rocker || rocker.geometry.type !== "custom") {
-      throw new Error("Bellows rocker fixture is missing");
-    }
-    const realBuilder = bellows.customBuilders?.[rocker.geometry.builder];
-    if (!realBuilder) throw new Error("Bellows rocker builder is missing");
-    const builder = vi.fn((params: Record<string, number>) =>
-      realBuilder(params),
-    );
-    const module: MachineModule = {
-      ...bellows,
-      customBuilders: {
-        ...bellows.customBuilders,
-        [rocker.geometry.builder]: builder,
-      },
-    };
-    const spec = { ...bellows.spec, parts: [rocker] };
+    const { builder, module, spec } = statefulFixture();
     const cache = new MachineGeometryCache();
 
     for (let mount = 0; mount < 100; mount += 1) {
@@ -875,20 +883,16 @@ describe("geometry warmup", () => {
   });
 
   it("rejects concurrent default ownership until the completed owner releases", async () => {
-    const rocker = bellows.spec.parts.find(
-      (candidate) => candidate.id === "rocker",
-    );
-    if (!rocker) throw new Error("Bellows rocker fixture is missing");
-    const spec = { ...bellows.spec, parts: [rocker] };
+    const { module, spec } = statefulFixture();
     const cache = new MachineGeometryCache();
     const firstScheduler = queuedScheduler();
-    const first = warmMachine(bellows, spec, () => undefined, {
+    const first = warmMachine(module, spec, () => undefined, {
       cache,
       scheduler: firstScheduler.scheduler,
     });
 
     expect(() =>
-      warmMachine(bellows, spec, () => undefined, {
+      warmMachine(module, spec, () => undefined, {
         cache,
         scheduler: queuedScheduler().scheduler,
       }),
@@ -897,7 +901,7 @@ describe("geometry warmup", () => {
     firstScheduler.runNext();
     await first.done;
     expect(() =>
-      warmMachine(bellows, spec, () => undefined, {
+      warmMachine(module, spec, () => undefined, {
         cache,
         scheduler: queuedScheduler().scheduler,
       }),
@@ -905,7 +909,7 @@ describe("geometry warmup", () => {
     first.release();
 
     const retryScheduler = queuedScheduler();
-    const retry = warmMachine(bellows, spec, () => undefined, {
+    const retry = warmMachine(module, spec, () => undefined, {
       cache,
       scheduler: retryScheduler.scheduler,
     });

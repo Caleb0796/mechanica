@@ -376,7 +376,9 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
             <div key={`${quantity.provenance.ref}-${index}`}>
               <dt>{t("inspector.dimensions")}</dt>
               <dd>
-                {quantity.ancient ? `${quantity.ancient} · ` : ""}
+                {language === "zh" && quantity.ancient
+                  ? `${quantity.ancient} · `
+                  : ""}
                 {metricLabel(quantity)}
                 <small>
                   {t(`inspector.${quantity.provenance.kind}`)} ·{" "}

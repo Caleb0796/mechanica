@@ -1,0 +1,361 @@
+{
+  "slug": "astroclock",
+  "model": "codex-gpt-5.6-sol",
+  "provisional": true,
+  "replacementCommand": "pnpm extract",
+  "generatedAt": null,
+  "prompt": "你是古代机械复原工程师。仅根据以下古籍原文（不得使用原文之外的数字），抽取零件清单与传动约束，输出 JSON：{ parts: [{id,name_zh,role,dims_ancient[]}], constraints: [{type,a,b,teeth_a?,teeth_b?,evidence_quote}], uncertainties: [...] }。每个数字必须附 evidence_quote（原文片段）。没有依据的字段留 null 并写入 uncertainties。原文：水運儀象臺其制為臺四方而再重，上狹下廣……渾儀置上隔……儀有三重，曰六合儀、曰三辰儀、曰四游儀\n樞輪直徑一丈一尺，以七十二輻（一本云九十六）雙植於一轂為三十六洪（一本云四十八），束以三輞，每洪夾持受水壺一，總三十六壺，每壺長一尺、闊五寸、深四寸，於壺側置鐵撥牙以撥天衡關舌\n天衡一置樞輪上，天關一置衡腦，天權一置衡尾，天條一在衡之前，天衡關舌一以天條綴之……樞衡一在天衡關舌上，衡腦為格叉以抵受水壺，以樞權掛其末，所以節受水壺之升降也。左右天鎖二，分置東西天柱間梁上，所以持正樞輪也\n（受水）壺虛即為格叉所格……水實即格叉不能勝壺，故格叉落，格叉落即壺側鐵撥擊（開關舌）……一輻過則左天鎖及天關開……一壺落則關鎖再拒次壺；激輪右回，故以右天鎖拒之使不能西也\n木閣五層……第一層時初木人左搖鈴，刻至中擊鼓，時正右扣鐘……第五層分布木人出報夜漏箭……晝夜機輪八重，第一重曰天輪以撥渾象之赤道牙……\n樞輪左設天池、平水壺。平水壺受天池水注入受水壺以激樞輪；受水壺水落入退水壺……以昇水下輪運水入昇水上壺……運水入天河，天河復流入天池，周而復始",
+  "response": "{\"parts\":[{\"id\":\"tower-platform\",\"name_zh\":\"水运仪象台\",\"role\":\"承载上层浑仪及内部机构的方形重台\",\"dims_ancient\":[]},{\"id\":\"armillary-instrument\",\"name_zh\":\"浑仪\",\"role\":\"置于台上隔的观测仪器\",\"dims_ancient\":[]},{\"id\":\"pivot-wheel\",\"name_zh\":\"枢轮\",\"role\":\"由受水壶受水后驱动的主轮\",\"dims_ancient\":[{\"label\":\"直径\",\"value\":\"一丈一尺\",\"evidence_quote\":\"樞輪直徑一丈一尺\"}]},{\"id\":\"water-scoop\",\"name_zh\":\"受水壶\",\"role\":\"承接平水壶来水并推动枢轮\",\"dims_ancient\":[{\"label\":\"长度\",\"value\":\"一尺\",\"evidence_quote\":\"每壺長一尺、闊五寸、深四寸\"},{\"label\":\"宽度\",\"value\":\"五寸\",\"evidence_quote\":\"每壺長一尺、闊五寸、深四寸\"},{\"label\":\"深度\",\"value\":\"四寸\",\"evidence_quote\":\"每壺長一尺、闊五寸、深四寸\"}]},{\"id\":\"iron-actuating-tooth\",\"name_zh\":\"铁拨牙\",\"role\":\"随受水壶运动并拨动天衡关舌\",\"dims_ancient\":[]},{\"id\":\"tianheng-beam\",\"name_zh\":\"天衡\",\"role\":\"枢轮上方控制机构的衡杆\",\"dims_ancient\":[]},{\"id\":\"tian-gate\",\"name_zh\":\"天关\",\"role\":\"设置于衡脑并参与放行与复锁\",\"dims_ancient\":[]},{\"id\":\"tian-counterweight\",\"name_zh\":\"天权\",\"role\":\"设置于衡尾的配重构件\",\"dims_ancient\":[]},{\"id\":\"tian-strip\",\"name_zh\":\"天条\",\"role\":\"连接天衡关舌的构件\",\"dims_ancient\":[]},{\"id\":\"tianheng-tongue\",\"name_zh\":\"天衡关舌\",\"role\":\"受铁拨牙开启的关舌\",\"dims_ancient\":[]},{\"id\":\"pivot-balance\",\"name_zh\":\"枢衡\",\"role\":\"位于天衡关舌上的构件\",\"dims_ancient\":[]},{\"id\":\"support-fork\",\"name_zh\":\"格叉\",\"role\":\"抵托受水壶并在水实后落下\",\"dims_ancient\":[]},{\"id\":\"pivot-weight\",\"name_zh\":\"枢权\",\"role\":\"悬挂于格叉末端以调节受水壶升降\",\"dims_ancient\":[]},{\"id\":\"tian-locks\",\"name_zh\":\"左右天锁\",\"role\":\"从两侧持正枢轮并阻止逆转\",\"dims_ancient\":[]},{\"id\":\"wooden-pagoda\",\"name_zh\":\"木阁\",\"role\":\"容纳报时木人的分层报时结构\",\"dims_ancient\":[]},{\"id\":\"timing-figures\",\"name_zh\":\"报时木人\",\"role\":\"摇铃、击鼓、扣钟并报夜漏箭\",\"dims_ancient\":[]},{\"id\":\"day-night-wheel-train\",\"name_zh\":\"昼夜机轮\",\"role\":\"带动报时和浑象相关机构的轮系\",\"dims_ancient\":[]},{\"id\":\"tian-wheel\",\"name_zh\":\"天轮\",\"role\":\"拨动浑象赤道牙\",\"dims_ancient\":[]},{\"id\":\"equatorial-teeth\",\"name_zh\":\"浑象赤道牙\",\"role\":\"受天轮拨动的浑象构件\",\"dims_ancient\":[]},{\"id\":\"reservoir\",\"name_zh\":\"天池\",\"role\":\"向平水壶供水并接收天河回水\",\"dims_ancient\":[]},{\"id\":\"constant-level-tank\",\"name_zh\":\"平水壶\",\"role\":\"承接天池来水并注入受水壶\",\"dims_ancient\":[]},{\"id\":\"drain-tank\",\"name_zh\":\"退水壶\",\"role\":\"承接受水壶落水\",\"dims_ancient\":[]},{\"id\":\"lower-water-lift-wheel\",\"name_zh\":\"升水下轮\",\"role\":\"驱动水返回上部水路\",\"dims_ancient\":[]},{\"id\":\"upper-lift-tank\",\"name_zh\":\"升水上壶\",\"role\":\"承接升水下轮所运之水\",\"dims_ancient\":[]},{\"id\":\"celestial-river\",\"name_zh\":\"天河\",\"role\":\"把提升后的水送回天池\",\"dims_ancient\":[]}],\"constraints\":[{\"type\":\"mounted-above\",\"a\":\"armillary-instrument\",\"b\":\"tower-platform\",\"evidence_quote\":\"渾儀置上隔\"},{\"type\":\"contains\",\"a\":\"pivot-wheel\",\"b\":\"water-scoop\",\"evidence_quote\":\"每洪夾持受水壺一，總三十六壺\"},{\"type\":\"actuates\",\"a\":\"iron-actuating-tooth\",\"b\":\"tianheng-tongue\",\"evidence_quote\":\"於壺側置鐵撥牙以撥天衡關舌\"},{\"type\":\"connects\",\"a\":\"tian-strip\",\"b\":\"tianheng-tongue\",\"evidence_quote\":\"天衡關舌一以天條綴之\"},{\"type\":\"supports\",\"a\":\"support-fork\",\"b\":\"water-scoop\",\"evidence_quote\":\"衡腦為格叉以抵受水壺\"},{\"type\":\"regulates-rise-fall\",\"a\":\"pivot-weight\",\"b\":\"water-scoop\",\"evidence_quote\":\"以樞權掛其末，所以節受水壺之升降也\"},{\"type\":\"holds-aligned\",\"a\":\"tian-locks\",\"b\":\"pivot-wheel\",\"evidence_quote\":\"左右天鎖二，分置東西天柱間梁上，所以持正樞輪也\"},{\"type\":\"load-triggers-release\",\"a\":\"water-scoop\",\"b\":\"support-fork\",\"evidence_quote\":\"水實即格叉不能勝壺，故格叉落\"},{\"type\":\"opens\",\"a\":\"iron-actuating-tooth\",\"b\":\"tianheng-tongue\",\"evidence_quote\":\"格叉落即壺側鐵撥擊（開關舌）\"},{\"type\":\"catches-next\",\"a\":\"tian-locks\",\"b\":\"water-scoop\",\"evidence_quote\":\"一壺落則關鎖再拒次壺\"},{\"type\":\"prevents-reverse\",\"a\":\"tian-locks\",\"b\":\"pivot-wheel\",\"evidence_quote\":\"激輪右回，故以右天鎖拒之使不能西也\"},{\"type\":\"drives\",\"a\":\"tian-wheel\",\"b\":\"equatorial-teeth\",\"evidence_quote\":\"第一重曰天輪以撥渾象之赤道牙\"},{\"type\":\"flows-to\",\"a\":\"reservoir\",\"b\":\"constant-level-tank\",\"evidence_quote\":\"平水壺受天池水\"},{\"type\":\"flows-to\",\"a\":\"constant-level-tank\",\"b\":\"water-scoop\",\"evidence_quote\":\"平水壺受天池水注入受水壺以激樞輪\"},{\"type\":\"drives\",\"a\":\"water-scoop\",\"b\":\"pivot-wheel\",\"evidence_quote\":\"平水壺受天池水注入受水壺以激樞輪\"},{\"type\":\"flows-to\",\"a\":\"water-scoop\",\"b\":\"drain-tank\",\"evidence_quote\":\"受水壺水落入退水壺\"},{\"type\":\"lifts-to\",\"a\":\"lower-water-lift-wheel\",\"b\":\"upper-lift-tank\",\"evidence_quote\":\"以昇水下輪運水入昇水上壺\"},{\"type\":\"flows-to\",\"a\":\"upper-lift-tank\",\"b\":\"celestial-river\",\"evidence_quote\":\"運水入天河\"},{\"type\":\"returns-to\",\"a\":\"celestial-river\",\"b\":\"reservoir\",\"evidence_quote\":\"天河復流入天池，周而復始\"}],\"uncertainties\":[{\"issue\":\"枢轮辐数存在七十二与九十六两种异文，无法据此择定。\",\"evidence_quote\":\"以七十二輻（一本云九十六）\",\"null_fields\":[\"pivot-wheel.spoke_count\"]},{\"issue\":\"枢轮分格及受水壶数量存在三十六与四十八两种异文，无法据此择定。\",\"evidence_quote\":\"為三十六洪（一本云四十八）\",\"null_fields\":[\"pivot-wheel.cell_count\",\"water-scoop.count\"]},{\"issue\":\"浑仪虽明载为三重并列出各仪名称，但各重尺寸和传动连接没有给出。\",\"evidence_quote\":\"儀有三重，曰六合儀、曰三辰儀、曰四游儀\",\"null_fields\":[\"armillary-instrument.dimensions\",\"armillary-instrument.transmission\"]},{\"issue\":\"木阁虽明载五层及部分报时动作，但木人与轮系之间的具体连接和传动比没有给出。\",\"evidence_quote\":\"木閣五層……第一層時初木人左搖鈴，刻至中擊鼓，時正右扣鐘……第五層分布木人出報夜漏箭\",\"null_fields\":[\"timing-figures.transmission_ratio\"]},{\"issue\":\"昼夜机轮虽明载八重，仅明载天轮拨浑象赤道牙，其他连接关系没有给出。\",\"evidence_quote\":\"晝夜機輪八重，第一重曰天輪以撥渾象之赤道牙\",\"null_fields\":[\"day-night-wheel-train.remaining_connections\"]},{\"issue\":\"引文没有给出任何齿轮齿数或可计算的传动比。\",\"evidence_quote\":\"第一重曰天輪以撥渾象之赤道牙\",\"null_fields\":[\"constraints.teeth_a\",\"constraints.teeth_b\",\"constraints.ratio\"]},{\"issue\":\"除枢轮与受水壶外，其余零件的尺寸没有在所给引文中出现。\",\"evidence_quote\":\"樞輪直徑一丈一尺，以七十二輻（一本云九十六）雙植於一轂為三十六洪（一本云四十八），束以三輞，每洪夾持受水壺一，總三十六壺，每壺長一尺、闊五寸、深四寸，於壺側置鐵撥牙以撥天衡關舌\",\"null_fields\":[\"other_parts.dims_ancient\"]},{\"issue\":\"台体引文有省略号，只能确定方形、重台、上狭下广与浑仪位置，不能恢复完整几何。\",\"evidence_quote\":\"水運儀象臺其制為臺四方而再重，上狹下廣……渾儀置上隔\",\"null_fields\":[\"tower-platform.complete_geometry\"]}]}",
+  "parts": [
+    {
+      "id": "tower-platform",
+      "name_zh": "水运仪象台",
+      "role": "承载上层浑仪及内部机构的方形重台",
+      "dims_ancient": []
+    },
+    {
+      "id": "armillary-instrument",
+      "name_zh": "浑仪",
+      "role": "置于台上隔的观测仪器",
+      "dims_ancient": []
+    },
+    {
+      "id": "pivot-wheel",
+      "name_zh": "枢轮",
+      "role": "由受水壶受水后驱动的主轮",
+      "dims_ancient": [
+        {
+          "label": "直径",
+          "value": "一丈一尺",
+          "evidence_quote": "樞輪直徑一丈一尺"
+        }
+      ]
+    },
+    {
+      "id": "water-scoop",
+      "name_zh": "受水壶",
+      "role": "承接平水壶来水并推动枢轮",
+      "dims_ancient": [
+        {
+          "label": "长度",
+          "value": "一尺",
+          "evidence_quote": "每壺長一尺、闊五寸、深四寸"
+        },
+        {
+          "label": "宽度",
+          "value": "五寸",
+          "evidence_quote": "每壺長一尺、闊五寸、深四寸"
+        },
+        {
+          "label": "深度",
+          "value": "四寸",
+          "evidence_quote": "每壺長一尺、闊五寸、深四寸"
+        }
+      ]
+    },
+    {
+      "id": "iron-actuating-tooth",
+      "name_zh": "铁拨牙",
+      "role": "随受水壶运动并拨动天衡关舌",
+      "dims_ancient": []
+    },
+    {
+      "id": "tianheng-beam",
+      "name_zh": "天衡",
+      "role": "枢轮上方控制机构的衡杆",
+      "dims_ancient": []
+    },
+    {
+      "id": "tian-gate",
+      "name_zh": "天关",
+      "role": "设置于衡脑并参与放行与复锁",
+      "dims_ancient": []
+    },
+    {
+      "id": "tian-counterweight",
+      "name_zh": "天权",
+      "role": "设置于衡尾的配重构件",
+      "dims_ancient": []
+    },
+    {
+      "id": "tian-strip",
+      "name_zh": "天条",
+      "role": "连接天衡关舌的构件",
+      "dims_ancient": []
+    },
+    {
+      "id": "tianheng-tongue",
+      "name_zh": "天衡关舌",
+      "role": "受铁拨牙开启的关舌",
+      "dims_ancient": []
+    },
+    {
+      "id": "pivot-balance",
+      "name_zh": "枢衡",
+      "role": "位于天衡关舌上的构件",
+      "dims_ancient": []
+    },
+    {
+      "id": "support-fork",
+      "name_zh": "格叉",
+      "role": "抵托受水壶并在水实后落下",
+      "dims_ancient": []
+    },
+    {
+      "id": "pivot-weight",
+      "name_zh": "枢权",
+      "role": "悬挂于格叉末端以调节受水壶升降",
+      "dims_ancient": []
+    },
+    {
+      "id": "tian-locks",
+      "name_zh": "左右天锁",
+      "role": "从两侧持正枢轮并阻止逆转",
+      "dims_ancient": []
+    },
+    {
+      "id": "wooden-pagoda",
+      "name_zh": "木阁",
+      "role": "容纳报时木人的分层报时结构",
+      "dims_ancient": []
+    },
+    {
+      "id": "timing-figures",
+      "name_zh": "报时木人",
+      "role": "摇铃、击鼓、扣钟并报夜漏箭",
+      "dims_ancient": []
+    },
+    {
+      "id": "day-night-wheel-train",
+      "name_zh": "昼夜机轮",
+      "role": "带动报时和浑象相关机构的轮系",
+      "dims_ancient": []
+    },
+    {
+      "id": "tian-wheel",
+      "name_zh": "天轮",
+      "role": "拨动浑象赤道牙",
+      "dims_ancient": []
+    },
+    {
+      "id": "equatorial-teeth",
+      "name_zh": "浑象赤道牙",
+      "role": "受天轮拨动的浑象构件",
+      "dims_ancient": []
+    },
+    {
+      "id": "reservoir",
+      "name_zh": "天池",
+      "role": "向平水壶供水并接收天河回水",
+      "dims_ancient": []
+    },
+    {
+      "id": "constant-level-tank",
+      "name_zh": "平水壶",
+      "role": "承接天池来水并注入受水壶",
+      "dims_ancient": []
+    },
+    {
+      "id": "drain-tank",
+      "name_zh": "退水壶",
+      "role": "承接受水壶落水",
+      "dims_ancient": []
+    },
+    {
+      "id": "lower-water-lift-wheel",
+      "name_zh": "升水下轮",
+      "role": "驱动水返回上部水路",
+      "dims_ancient": []
+    },
+    {
+      "id": "upper-lift-tank",
+      "name_zh": "升水上壶",
+      "role": "承接升水下轮所运之水",
+      "dims_ancient": []
+    },
+    {
+      "id": "celestial-river",
+      "name_zh": "天河",
+      "role": "把提升后的水送回天池",
+      "dims_ancient": []
+    }
+  ],
+  "constraints": [
+    {
+      "type": "mounted-above",
+      "a": "armillary-instrument",
+      "b": "tower-platform",
+      "evidence_quote": "渾儀置上隔"
+    },
+    {
+      "type": "contains",
+      "a": "pivot-wheel",
+      "b": "water-scoop",
+      "evidence_quote": "每洪夾持受水壺一，總三十六壺"
+    },
+    {
+      "type": "actuates",
+      "a": "iron-actuating-tooth",
+      "b": "tianheng-tongue",
+      "evidence_quote": "於壺側置鐵撥牙以撥天衡關舌"
+    },
+    {
+      "type": "connects",
+      "a": "tian-strip",
+      "b": "tianheng-tongue",
+      "evidence_quote": "天衡關舌一以天條綴之"
+    },
+    {
+      "type": "supports",
+      "a": "support-fork",
+      "b": "water-scoop",
+      "evidence_quote": "衡腦為格叉以抵受水壺"
+    },
+    {
+      "type": "regulates-rise-fall",
+      "a": "pivot-weight",
+      "b": "water-scoop",
+      "evidence_quote": "以樞權掛其末，所以節受水壺之升降也"
+    },
+    {
+      "type": "holds-aligned",
+      "a": "tian-locks",
+      "b": "pivot-wheel",
+      "evidence_quote": "左右天鎖二，分置東西天柱間梁上，所以持正樞輪也"
+    },
+    {
+      "type": "load-triggers-release",
+      "a": "water-scoop",
+      "b": "support-fork",
+      "evidence_quote": "水實即格叉不能勝壺，故格叉落"
+    },
+    {
+      "type": "opens",
+      "a": "iron-actuating-tooth",
+      "b": "tianheng-tongue",
+      "evidence_quote": "格叉落即壺側鐵撥擊（開關舌）"
+    },
+    {
+      "type": "catches-next",
+      "a": "tian-locks",
+      "b": "water-scoop",
+      "evidence_quote": "一壺落則關鎖再拒次壺"
+    },
+    {
+      "type": "prevents-reverse",
+      "a": "tian-locks",
+      "b": "pivot-wheel",
+      "evidence_quote": "激輪右回，故以右天鎖拒之使不能西也"
+    },
+    {
+      "type": "drives",
+      "a": "tian-wheel",
+      "b": "equatorial-teeth",
+      "evidence_quote": "第一重曰天輪以撥渾象之赤道牙"
+    },
+    {
+      "type": "flows-to",
+      "a": "reservoir",
+      "b": "constant-level-tank",
+      "evidence_quote": "平水壺受天池水"
+    },
+    {
+      "type": "flows-to",
+      "a": "constant-level-tank",
+      "b": "water-scoop",
+      "evidence_quote": "平水壺受天池水注入受水壺以激樞輪"
+    },
+    {
+      "type": "drives",
+      "a": "water-scoop",
+      "b": "pivot-wheel",
+      "evidence_quote": "平水壺受天池水注入受水壺以激樞輪"
+    },
+    {
+      "type": "flows-to",
+      "a": "water-scoop",
+      "b": "drain-tank",
+      "evidence_quote": "受水壺水落入退水壺"
+    },
+    {
+      "type": "lifts-to",
+      "a": "lower-water-lift-wheel",
+      "b": "upper-lift-tank",
+      "evidence_quote": "以昇水下輪運水入昇水上壺"
+    },
+    {
+      "type": "flows-to",
+      "a": "upper-lift-tank",
+      "b": "celestial-river",
+      "evidence_quote": "運水入天河"
+    },
+    {
+      "type": "returns-to",
+      "a": "celestial-river",
+      "b": "reservoir",
+      "evidence_quote": "天河復流入天池，周而復始"
+    }
+  ],
+  "uncertainties": [
+    {
+      "issue": "枢轮辐数存在七十二与九十六两种异文，无法据此择定。",
+      "evidence_quote": "以七十二輻（一本云九十六）",
+      "null_fields": [
+        "pivot-wheel.spoke_count"
+      ]
+    },
+    {
+      "issue": "枢轮分格及受水壶数量存在三十六与四十八两种异文，无法据此择定。",
+      "evidence_quote": "為三十六洪（一本云四十八）",
+      "null_fields": [
+        "pivot-wheel.cell_count",
+        "water-scoop.count"
+      ]
+    },
+    {
+      "issue": "浑仪虽明载为三重并列出各仪名称，但各重尺寸和传动连接没有给出。",
+      "evidence_quote": "儀有三重，曰六合儀、曰三辰儀、曰四游儀",
+      "null_fields": [
+        "armillary-instrument.dimensions",
+        "armillary-instrument.transmission"
+      ]
+    },
+    {
+      "issue": "木阁虽明载五层及部分报时动作，但木人与轮系之间的具体连接和传动比没有给出。",
+      "evidence_quote": "木閣五層……第一層時初木人左搖鈴，刻至中擊鼓，時正右扣鐘……第五層分布木人出報夜漏箭",
+      "null_fields": [
+        "timing-figures.transmission_ratio"
+      ]
+    },
+    {
+      "issue": "昼夜机轮虽明载八重，仅明载天轮拨浑象赤道牙，其他连接关系没有给出。",
+      "evidence_quote": "晝夜機輪八重，第一重曰天輪以撥渾象之赤道牙",
+      "null_fields": [
+        "day-night-wheel-train.remaining_connections"
+      ]
+    },
+    {
+      "issue": "引文没有给出任何齿轮齿数或可计算的传动比。",
+      "evidence_quote": "第一重曰天輪以撥渾象之赤道牙",
+      "null_fields": [
+        "constraints.teeth_a",
+        "constraints.teeth_b",
+        "constraints.ratio"
+      ]
+    },
+    {
+      "issue": "除枢轮与受水壶外，其余零件的尺寸没有在所给引文中出现。",
+      "evidence_quote": "樞輪直徑一丈一尺，以七十二輻（一本云九十六）雙植於一轂為三十六洪（一本云四十八），束以三輞，每洪夾持受水壺一，總三十六壺，每壺長一尺、闊五寸、深四寸，於壺側置鐵撥牙以撥天衡關舌",
+      "null_fields": [
+        "other_parts.dims_ancient"
+      ]
+    },
+    {
+      "issue": "台体引文有省略号，只能确定方形、重台、上狭下广与浑仪位置，不能恢复完整几何。",
+      "evidence_quote": "水運儀象臺其制為臺四方而再重，上狹下廣……渾儀置上隔",
+      "null_fields": [
+        "tower-platform.complete_geometry"
+      ]
+    }
+  ]
+}

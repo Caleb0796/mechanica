@@ -153,14 +153,8 @@ export interface SolveResult {
 export const MACHINE_SLUGS = [
   "astroclock",
   "seismoscope",
-  "chariot",
   "odometer",
-  "wooden-ox",
   "loom",
-  "typecase",
-  "chainpump",
-  "bellows",
-  "gimbal",
 ] as const;
 export type MachineSlug = (typeof MACHINE_SLUGS)[number];
 
@@ -284,9 +278,15 @@ export interface MachineData {
   };
 }
 
+export interface DemoMachineData extends Omit<MachineData, "slug"> {
+  slug: "demo";
+}
+
+export type ExhibitData = MachineData | DemoMachineData;
+
 export interface MachineModule {
   spec: MachineSpec;
-  data: MachineData;
+  data: ExhibitData;
   aids?: PrincipleAid[];
   mechanism?: MechanismScript;
   schemes?: Record<string, SchemePatch>;

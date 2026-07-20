@@ -534,3 +534,40 @@ The release-readiness skeptic correctly rejected the temporary 47-tooth worktree
 ### Next action
 
 Provide `OPENAI_API_KEY` in the execution environment, run `pnpm extract` and `pnpm run audit`, resolve every load-bearing conflict, then rerun the completeness critic and the exact five-command chain before committing and tagging `wave-6`.
+
+## Visual Gate Reopened — Codex-Only Provisional Checkpoint
+
+### Route
+
+Blocking recovery inserted before any further render generation. Root captured real-browser evidence for all ten machines, repaired the failures, and used independent read-only visual and pixel-level reviewers. Earlier statements that the project or its render set was final are superseded.
+
+### Scope
+
+Semantic fidelity and ornamental fidelity are separate acceptance classes. Semantic fidelity is mandatory: named animals, people, and key structures must be recognizable from normal-view silhouettes. Ornamental fidelity—scales, carving, surface decoration, and similar fine detail—is optional. Existing behavior and the authoritative §7 data, dimensions, ratios, and provenance remain unchanged.
+
+### Findings and changes
+
+- Astroclock was over-enlarged; its complete tower now fits the default view.
+- Seismoscope dragons and toads were generic ellipsoids. Composite heads, open jaws, horns, eyes, broad toad bodies, and splayed limbs now produce recognizable silhouettes; inferred toad yaws face every mouth toward its dragon. The vessel is translucent enough to expose the mechanism.
+- Chariot, Loom, and Odometer alternate views crossed the control overlay. Machine-specific margins and vertical targets now retain their complete drawbars and lower frames.
+- Gimbal was too small and omitted its measured chain from focused bounds. The chain and shell are now the fitted artifact, and additional exploded clearance contains both chain endpoints. Inferred display furniture is not treated as artifact geometry.
+- Wooden Ox, Typecase, Chainpump, and Bellows passed after independent inspection, with aspect-ratio exceptions documented for their long or shallow forms.
+
+### Browser evidence and adversarial gate
+
+Forty 1440×1000 headed-browser screenshots cover default, alternate OrbitControls, exploded states, and default canvases for all ten routes. Recaptured routes reported zero console errors. The first reviewer returned nine green machines and disputed Gimbal exploded framing; a second independent pixel reviewer read the current PNG and found the complete chain at `x=413..419`, `y=258..465`, with background immediately beyond both rendered caps. Combined verdict: all ten machines green for this provisional Codex-only checkpoint.
+
+### Verification
+
+- `pnpm test` → 20 files, 192/192 tests passed.
+- Strict `pnpm validate` → exit 0; all ten reports regenerated.
+- `pnpm poison` → exit 0 with four expected validator catches.
+- `pnpm e2e` → 30/30 passed in 2.8 minutes, including all ten routes without console errors and real pointer controls.
+- `pnpm i18n:check` → zero issues.
+- `pnpm build` → exit 0; 686 modules transformed; known non-blocking chunk warning remains.
+- `node scripts/check-artifacts.mjs --allow-provisional` → 10 extractions, 10 audits, 20 provisional artifacts, 10 open-conflict audits, exit 0.
+- Release `pnpm artifacts:check` → expected exit 1 because the artifacts are provisional and conflicts remain open.
+
+### Remaining limitations and next action
+
+Existing render JPEGs predate this reopened gate and were not regenerated or accepted as final evidence. Replace the Codex artifacts with API-keyed extractions/audits later, close all load-bearing conflicts, complete any remaining functionality, then repeat this full all-ten-machine Visual Gate before generating final renders or declaring release completion.

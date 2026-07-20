@@ -150,16 +150,6 @@ function driveComparedMachineGraph(
   driveNode: string,
   deltaRad: number,
 ): void {
-  if (module.spec.slug === "chariot") {
-    const trigger = module.mechanism?.triggers.find(
-      (candidate) => candidate.id === `drive:${driveNode}`,
-    );
-    if (trigger) {
-      trigger.run(graph, () => undefined, deltaRad);
-      return;
-    }
-  }
-
   if (module.spec.slug === "seismoscope") {
     const trigger = module.mechanism?.triggers.find(
       (candidate) => candidate.id === "quake",

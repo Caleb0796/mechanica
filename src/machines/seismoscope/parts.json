@@ -3,16 +3,21 @@
   "parts": [
     {
       "id": "vessel",
-      "name": { "zh": "尊体剖壳", "en": "Cutaway vessel shell" },
-      "geometry": { "type": "shell", "radius": 0.924, "cutaway": true },
+      "name": { "zh": "酒尊形铜尊", "en": "Zun-form bronze vessel" },
+      "geometry": { "type": "custom", "builder": "seismoscopeVessel", "params": { "radius": 0.924, "wallThickness": 0.035 } },
       "material": "bronze",
       "position": [0, 0.25, 0],
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "radius": {
+        "params.radius": {
           "kind": "wenxian",
           "ref": "houfeng-196",
           "note": "Half of the recorded eight-Han-chi diameter (1.848 m)."
+        },
+        "@rest": {
+          "kind": "tuice",
+          "ref": "Zun silhouette reconstruction",
+          "note": "Wall thickness and the ring-foot, belly, shoulder, neck, and rim profile are display reconstruction choices; only the vessel diameter is recorded."
         }
       },
       "dimensionNotes": [
@@ -23,9 +28,270 @@
           "provenance": { "kind": "wenxian", "ref": "houfeng-196" }
         }
       ],
-      "explodeVector": [0, 0.5, 0],
+      "explodeVector": [0, 1.25, 0],
       "assemblyStep": 0,
       "interactive": true
+    },
+    {
+      "id": "lid",
+      "name": { "zh": "隆起合盖", "en": "Domed lid and finial" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLid", "params": { "radius": 0.7, "height": 0.3, "knobRadius": 0.06, "apertureRadius": 0.055 } },
+      "material": "bronze",
+      "position": [0, 0.86, 0],
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records a raised fitted cover." },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Domed-lid display reconstruction", "note": "Lid radius, rise, central bearing aperture, and annular finial dimensions are unrecorded display choices." }
+      },
+      "explodeVector": [0, 2.1, 0],
+      "assemblyStep": 25
+    },
+    {
+      "id": "plinth",
+      "name": { "zh": "阶座与方位环", "en": "Stepped plinth and bearing ring" },
+      "geometry": { "type": "custom", "builder": "seismoscopePlinth", "params": { "radius": 1.82, "height": 0.18, "boreRadius": 0.14 } },
+      "material": "bronze",
+      "position": [0, -0.75, 0],
+      "provenance": { "kind": "tuice", "ref": "Museum-reconstruction support convention", "note": "A common stepped support is added to ground the vessel and seat the eight toads." },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Compact display reconstruction", "note": "Both tier radii, height, central duzhu well, and bearing-ring proportions are unrecorded display choices sized for the existing camera." }
+      },
+      "explodeVector": [0, -0.75, 0],
+      "assemblyStep": 26
+    },
+    {
+      "id": "floor-plate",
+      "name": { "zh": "尊内机枢底盘", "en": "Internal mechanism floor" },
+      "geometry": { "type": "custom", "builder": "seismoscopeFloor", "params": { "radius": 0.55, "thickness": 0.04, "bossRadius": 0.14, "boreRadius": 0.105 } },
+      "material": "bronze",
+      "position": [0, -0.48, 0],
+      "provenance": { "kind": "tuice", "ref": "Internal support reconstruction", "note": "A floor plate is inferred to support the central sensor and eight paths." },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Internal support reconstruction", "note": "Plate radius, thickness, pivot-boss size, and central bearing bore are explicit display inferences, not recorded dimensions." }
+      },
+      "explodeVector": [0, -1.25, 0],
+      "assemblyStep": 27
+    },
+    {
+      "id": "linkage-crown",
+      "name": { "zh": "八向择向冠环", "en": "Eight-direction selector collar" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLinkage", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [0, 0, 0],
+      "joint": { "kind": "revolute", "axis": [0, 1, 0], "limits": [0, 0.08] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight paths, gates, and a hidden trigger mechanism; this sparse selector collar is inferred." },
+      "dimensionProvenance": {
+        "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Collar, witness-stub dimensions, placement, and display rotation are explicit visual inferences connecting the duzhu to eight separate gates." }
+      },
+      "explodeVector": [0, 0.9, 0],
+      "assemblyStep": 28
+    },
+    {
+      "id": "gate-0",
+      "name": { "zh": "北向关机推杆", "en": "North directional gate pushrod" },
+      "geometry": { "type": "custom", "builder": "seismoscopeGateLink", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [0, 0, 0.16],
+      "rotationEuler": [0, 0, 0],
+      "joint": { "kind": "prismatic", "axis": [0, 0, 1], "limits": [-0.1, 0.18] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight directional gates; this separately moving pushrod is a visual reconstruction." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Gate profile, radial placement, and display travel are inferred." } },
+      "explodeVector": [0, 0.45, 1],
+      "assemblyStep": 29
+    },
+    {
+      "id": "gate-1",
+      "name": { "zh": "东北向关机推杆", "en": "Northeast directional gate pushrod" },
+      "geometry": { "type": "custom", "builder": "seismoscopeGateLink", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [0.1131370849898476, 0, 0.1131370849898476],
+      "rotationEuler": [0, 0.7853981633974483, 0],
+      "joint": { "kind": "prismatic", "axis": [0.7071067811865476, 0, 0.7071067811865476], "limits": [-0.1, 0.18] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight directional gates; this separately moving pushrod is a visual reconstruction." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Gate profile, radial placement, and display travel are inferred." } },
+      "explodeVector": [0.7071067811865475, 0.45, 0.7071067811865475],
+      "assemblyStep": 30
+    },
+    {
+      "id": "gate-2",
+      "name": { "zh": "东向关机推杆", "en": "East directional gate pushrod" },
+      "geometry": { "type": "custom", "builder": "seismoscopeGateLink", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [0.16, 0, 0],
+      "rotationEuler": [0, 1.5707963267948966, 0],
+      "joint": { "kind": "prismatic", "axis": [1, 0, 0], "limits": [-0.1, 0.18] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight directional gates; this separately moving pushrod is a visual reconstruction." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Gate profile, radial placement, and display travel are inferred." } },
+      "explodeVector": [1, 0.45, 0],
+      "assemblyStep": 31
+    },
+    {
+      "id": "gate-3",
+      "name": { "zh": "东南向关机推杆", "en": "Southeast directional gate pushrod" },
+      "geometry": { "type": "custom", "builder": "seismoscopeGateLink", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [0.1131370849898476, 0, -0.1131370849898476],
+      "rotationEuler": [0, 2.356194490192345, 0],
+      "joint": { "kind": "prismatic", "axis": [0.7071067811865476, 0, -0.7071067811865476], "limits": [-0.1, 0.18] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight directional gates; this separately moving pushrod is a visual reconstruction." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Gate profile, radial placement, and display travel are inferred." } },
+      "explodeVector": [0.7071067811865475, 0.45, -0.7071067811865475],
+      "assemblyStep": 32
+    },
+    {
+      "id": "gate-4",
+      "name": { "zh": "南向关机推杆", "en": "South directional gate pushrod" },
+      "geometry": { "type": "custom", "builder": "seismoscopeGateLink", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [0, 0, -0.16],
+      "rotationEuler": [0, 3.141592653589793, 0],
+      "joint": { "kind": "prismatic", "axis": [0, 0, -1], "limits": [-0.1, 0.18] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight directional gates; this separately moving pushrod is a visual reconstruction." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Gate profile, radial placement, and display travel are inferred." } },
+      "explodeVector": [0, 0.45, -1],
+      "assemblyStep": 33
+    },
+    {
+      "id": "gate-5",
+      "name": { "zh": "西南向关机推杆", "en": "Southwest directional gate pushrod" },
+      "geometry": { "type": "custom", "builder": "seismoscopeGateLink", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [-0.1131370849898476, 0, -0.1131370849898476],
+      "rotationEuler": [0, -2.356194490192345, 0],
+      "joint": { "kind": "prismatic", "axis": [-0.7071067811865476, 0, -0.7071067811865476], "limits": [-0.1, 0.18] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight directional gates; this separately moving pushrod is a visual reconstruction." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Gate profile, radial placement, and display travel are inferred." } },
+      "explodeVector": [-0.7071067811865475, 0.45, -0.7071067811865475],
+      "assemblyStep": 34
+    },
+    {
+      "id": "gate-6",
+      "name": { "zh": "西向关机推杆", "en": "West directional gate pushrod" },
+      "geometry": { "type": "custom", "builder": "seismoscopeGateLink", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [-0.16, 0, 0],
+      "rotationEuler": [0, -1.5707963267948966, 0],
+      "joint": { "kind": "prismatic", "axis": [-1, 0, 0], "limits": [-0.1, 0.18] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight directional gates; this separately moving pushrod is a visual reconstruction." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Gate profile, radial placement, and display travel are inferred." } },
+      "explodeVector": [-1, 0.45, 0],
+      "assemblyStep": 35
+    },
+    {
+      "id": "gate-7",
+      "name": { "zh": "西北向关机推杆", "en": "Northwest directional gate pushrod" },
+      "geometry": { "type": "custom", "builder": "seismoscopeGateLink", "params": { "innerRadius": 0.16, "gateRadius": 0.44, "wallRadius": 0.68, "baseHeight": -0.38, "gateRise": 0.08, "pushrodTop": 0.24, "rodRadius": 0.02 } },
+      "material": "bronze",
+      "position": [-0.1131370849898476, 0, 0.1131370849898476],
+      "rotationEuler": [0, -0.7853981633974483, 0],
+      "joint": { "kind": "prismatic", "axis": [-0.7071067811865476, 0, 0.7071067811865476], "limits": [-0.1, 0.18] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The text records eight directional gates; this separately moving pushrod is a visual reconstruction." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Gate profile, radial placement, and display travel are inferred." } },
+      "explodeVector": [-0.7071067811865475, 0.45, 0.7071067811865475],
+      "assemblyStep": 36
+    },
+    {
+      "id": "lock-0",
+      "name": { "zh": "北向锁爪", "en": "North gate lock pawl" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLockPawl", "params": { "width": 0.12, "height": 0.18, "depth": 0.08, "pinRadius": 0.018 } },
+      "material": "iron",
+      "position": [0, 0.52, 0.61],
+      "rotationEuler": [0, 0, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [-0.18, 0.32] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The recorded eight gates require a retained first-event state; this visible pawl is inferred." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Pawl size, guide position, and vertical display travel are inferred." } },
+      "explodeVector": [0, 0.85, 1.3],
+      "assemblyStep": 37
+    },
+    {
+      "id": "lock-1",
+      "name": { "zh": "东北向锁爪", "en": "Northeast gate lock pawl" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLockPawl", "params": { "width": 0.12, "height": 0.18, "depth": 0.08, "pinRadius": 0.018 } },
+      "material": "iron",
+      "position": [0.43133513652379396, 0.52, 0.43133513652379396],
+      "rotationEuler": [0, 0.7853981633974483, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [-0.18, 0.32] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The recorded eight gates require a retained first-event state; this visible pawl is inferred." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Pawl size, guide position, and vertical display travel are inferred." } },
+      "explodeVector": [0.9192388155425117, 0.85, 0.9192388155425117],
+      "assemblyStep": 38
+    },
+    {
+      "id": "lock-2",
+      "name": { "zh": "东向锁爪", "en": "East gate lock pawl" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLockPawl", "params": { "width": 0.12, "height": 0.18, "depth": 0.08, "pinRadius": 0.018 } },
+      "material": "iron",
+      "position": [0.61, 0.52, 0],
+      "rotationEuler": [0, 1.5707963267948966, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [-0.18, 0.32] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The recorded eight gates require a retained first-event state; this visible pawl is inferred." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Pawl size, guide position, and vertical display travel are inferred." } },
+      "explodeVector": [1.3, 0.85, 0],
+      "assemblyStep": 39
+    },
+    {
+      "id": "lock-3",
+      "name": { "zh": "东南向锁爪", "en": "Southeast gate lock pawl" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLockPawl", "params": { "width": 0.12, "height": 0.18, "depth": 0.08, "pinRadius": 0.018 } },
+      "material": "iron",
+      "position": [0.43133513652379396, 0.52, -0.43133513652379396],
+      "rotationEuler": [0, 2.356194490192345, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [-0.18, 0.32] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The recorded eight gates require a retained first-event state; this visible pawl is inferred." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Pawl size, guide position, and vertical display travel are inferred." } },
+      "explodeVector": [0.9192388155425117, 0.85, -0.9192388155425117],
+      "assemblyStep": 40
+    },
+    {
+      "id": "lock-4",
+      "name": { "zh": "南向锁爪", "en": "South gate lock pawl" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLockPawl", "params": { "width": 0.12, "height": 0.18, "depth": 0.08, "pinRadius": 0.018 } },
+      "material": "iron",
+      "position": [0, 0.52, -0.61],
+      "rotationEuler": [0, 3.141592653589793, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [-0.18, 0.32] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The recorded eight gates require a retained first-event state; this visible pawl is inferred." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Pawl size, guide position, and vertical display travel are inferred." } },
+      "explodeVector": [0, 0.85, -1.3],
+      "assemblyStep": 41
+    },
+    {
+      "id": "lock-5",
+      "name": { "zh": "西南向锁爪", "en": "Southwest gate lock pawl" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLockPawl", "params": { "width": 0.12, "height": 0.18, "depth": 0.08, "pinRadius": 0.018 } },
+      "material": "iron",
+      "position": [-0.43133513652379396, 0.52, -0.43133513652379396],
+      "rotationEuler": [0, -2.356194490192345, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [-0.18, 0.32] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The recorded eight gates require a retained first-event state; this visible pawl is inferred." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Pawl size, guide position, and vertical display travel are inferred." } },
+      "explodeVector": [-0.9192388155425117, 0.85, -0.9192388155425117],
+      "assemblyStep": 42
+    },
+    {
+      "id": "lock-6",
+      "name": { "zh": "西向锁爪", "en": "West gate lock pawl" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLockPawl", "params": { "width": 0.12, "height": 0.18, "depth": 0.08, "pinRadius": 0.018 } },
+      "material": "iron",
+      "position": [-0.61, 0.52, 0],
+      "rotationEuler": [0, -1.5707963267948966, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [-0.18, 0.32] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The recorded eight gates require a retained first-event state; this visible pawl is inferred." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Pawl size, guide position, and vertical display travel are inferred." } },
+      "explodeVector": [-1.3, 0.85, 0],
+      "assemblyStep": 43
+    },
+    {
+      "id": "lock-7",
+      "name": { "zh": "西北向锁爪", "en": "Northwest gate lock pawl" },
+      "geometry": { "type": "custom", "builder": "seismoscopeLockPawl", "params": { "width": 0.12, "height": 0.18, "depth": 0.08, "pinRadius": 0.018 } },
+      "material": "iron",
+      "position": [-0.43133513652379396, 0.52, 0.43133513652379396],
+      "rotationEuler": [0, -0.7853981633974483, 0],
+      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [-0.18, 0.32] },
+      "provenance": { "kind": "wenxian", "ref": "houfeng-196", "note": "The recorded eight gates require a retained first-event state; this visible pawl is inferred." },
+      "dimensionProvenance": { "@rest": { "kind": "tuice", "ref": "Eight-path causal-link reconstruction", "note": "Pawl size, guide position, and vertical display travel are inferred." } },
+      "explodeVector": [-0.9192388155425117, 0.85, 0.9192388155425117],
+      "assemblyStep": 44
     },
     {
       "id": "dragon-0",
@@ -34,11 +300,12 @@
       "material": "bronze",
       "position": [0, 0.3, 1.22],
       "rotationEuler": [0, 0, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [-0.18, 0.24] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale and display nod limits are not recorded." }
       },
-      "explodeVector": [0, 0, 1],
+      "explodeVector": [0, 0.4, 1.8],
       "assemblyStep": 1
     },
     {
@@ -47,12 +314,13 @@
       "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
       "material": "bronze",
       "position": [0.86267, 0.3, 0.86267],
-      "rotationEuler": [0, -0.7853981633974483, 0],
+      "rotationEuler": [0, 0.7853981633974483, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [-0.18, 0.24] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale and display nod limits are not recorded." }
       },
-      "explodeVector": [0.7071067811865476, 0, 0.7071067811865476],
+      "explodeVector": [1.2727922061357855, 0.4, 1.2727922061357855],
       "assemblyStep": 2
     },
     {
@@ -61,12 +329,13 @@
       "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
       "material": "bronze",
       "position": [1.22, 0.3, 0],
-      "rotationEuler": [0, -1.5707963267948966, 0],
+      "rotationEuler": [0, 1.5707963267948966, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [-0.18, 0.24] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale and display nod limits are not recorded." }
       },
-      "explodeVector": [1, 0, 0],
+      "explodeVector": [1.8, 0.4, 0],
       "assemblyStep": 3
     },
     {
@@ -75,12 +344,13 @@
       "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
       "material": "bronze",
       "position": [0.86267, 0.3, -0.86267],
-      "rotationEuler": [0, -2.356194490192345, 0],
+      "rotationEuler": [0, 2.356194490192345, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [-0.18, 0.24] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale and display nod limits are not recorded." }
       },
-      "explodeVector": [0.7071067811865476, 0, -0.7071067811865476],
+      "explodeVector": [1.2727922061357855, 0.4, -1.2727922061357855],
       "assemblyStep": 4
     },
     {
@@ -90,11 +360,12 @@
       "material": "bronze",
       "position": [0, 0.3, -1.22],
       "rotationEuler": [0, 3.141592653589793, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [-0.18, 0.24] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale and display nod limits are not recorded." }
       },
-      "explodeVector": [0, 0, -1],
+      "explodeVector": [0, 0.4, -1.8],
       "assemblyStep": 5
     },
     {
@@ -103,12 +374,13 @@
       "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
       "material": "bronze",
       "position": [-0.86267, 0.3, -0.86267],
-      "rotationEuler": [0, 2.356194490192345, 0],
+      "rotationEuler": [0, -2.356194490192345, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [-0.18, 0.24] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale and display nod limits are not recorded." }
       },
-      "explodeVector": [-0.7071067811865476, 0, -0.7071067811865476],
+      "explodeVector": [-1.2727922061357855, 0.4, -1.2727922061357855],
       "assemblyStep": 6
     },
     {
@@ -117,12 +389,13 @@
       "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
       "material": "bronze",
       "position": [-1.22, 0.3, 0],
-      "rotationEuler": [0, 1.5707963267948966, 0],
+      "rotationEuler": [0, -1.5707963267948966, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [-0.18, 0.24] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale and display nod limits are not recorded." }
       },
-      "explodeVector": [-1, 0, 0],
+      "explodeVector": [-1.8, 0.4, 0],
       "assemblyStep": 7
     },
     {
@@ -131,12 +404,13 @@
       "geometry": { "type": "custom", "builder": "seismoscopeDragon", "params": { "radius": 0.16 } },
       "material": "bronze",
       "position": [-0.86267, 0.3, 0.86267],
-      "rotationEuler": [0, 0.7853981633974483, 0],
+      "rotationEuler": [0, -0.7853981633974483, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [-0.18, 0.24] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Dragon-head scale and display nod limits are not recorded." }
       },
-      "explodeVector": [-0.7071067811865476, 0, 0.7071067811865476],
+      "explodeVector": [-1.2727922061357855, 0.4, 1.2727922061357855],
       "assemblyStep": 8
     },
     {
@@ -144,12 +418,14 @@
       "name": { "zh": "北蟾蜍", "en": "North toad" },
       "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
       "material": "bronze",
-      "position": [0, -0.55, 1.5],
+      "position": [0, -0.47, 1.78],
+      "rotationEuler": [0, 0, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [0, 0.44] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale and display receiving-pose limits are not recorded." }
       },
-      "explodeVector": [0, -0.3, 1],
+      "explodeVector": [0, -0.75, 2.2],
       "assemblyStep": 9
     },
     {
@@ -157,12 +433,14 @@
       "name": { "zh": "东北蟾蜍", "en": "Northeast toad" },
       "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
       "material": "bronze",
-      "position": [1.06066, -0.55, 1.06066],
+      "position": [1.2586500705120545, -0.47, 1.2586500705120545],
+      "rotationEuler": [0, 0.7853981633974483, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [0, 0.44] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale and display receiving-pose limits are not recorded." }
       },
-      "explodeVector": [0.7071067811865476, -0.3, 0.7071067811865476],
+      "explodeVector": [1.5556349186104046, -0.75, 1.5556349186104046],
       "assemblyStep": 10
     },
     {
@@ -170,12 +448,14 @@
       "name": { "zh": "东蟾蜍", "en": "East toad" },
       "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
       "material": "bronze",
-      "position": [1.5, -0.55, 0],
+      "position": [1.78, -0.47, 0],
+      "rotationEuler": [0, 1.5707963267948966, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [0, 0.44] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale and display receiving-pose limits are not recorded." }
       },
-      "explodeVector": [1, -0.3, 0],
+      "explodeVector": [2.2, -0.75, 0],
       "assemblyStep": 11
     },
     {
@@ -183,12 +463,14 @@
       "name": { "zh": "东南蟾蜍", "en": "Southeast toad" },
       "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
       "material": "bronze",
-      "position": [1.06066, -0.55, -1.06066],
+      "position": [1.2586500705120545, -0.47, -1.2586500705120545],
+      "rotationEuler": [0, 2.356194490192345, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [0, 0.44] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale and display receiving-pose limits are not recorded." }
       },
-      "explodeVector": [0.7071067811865476, -0.3, -0.7071067811865476],
+      "explodeVector": [1.5556349186104046, -0.75, -1.5556349186104046],
       "assemblyStep": 12
     },
     {
@@ -196,12 +478,14 @@
       "name": { "zh": "南蟾蜍", "en": "South toad" },
       "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
       "material": "bronze",
-      "position": [0, -0.55, -1.5],
+      "position": [0, -0.47, -1.78],
+      "rotationEuler": [0, 3.141592653589793, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [0, 0.44] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale and display receiving-pose limits are not recorded." }
       },
-      "explodeVector": [0, -0.3, -1],
+      "explodeVector": [0, -0.75, -2.2],
       "assemblyStep": 13
     },
     {
@@ -209,12 +493,14 @@
       "name": { "zh": "西南蟾蜍", "en": "Southwest toad" },
       "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
       "material": "bronze",
-      "position": [-1.06066, -0.55, -1.06066],
+      "position": [-1.2586500705120545, -0.47, -1.2586500705120545],
+      "rotationEuler": [0, -2.356194490192345, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [0, 0.44] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale and display receiving-pose limits are not recorded." }
       },
-      "explodeVector": [-0.7071067811865476, -0.3, -0.7071067811865476],
+      "explodeVector": [-1.5556349186104046, -0.75, -1.5556349186104046],
       "assemblyStep": 14
     },
     {
@@ -222,12 +508,14 @@
       "name": { "zh": "西蟾蜍", "en": "West toad" },
       "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
       "material": "bronze",
-      "position": [-1.5, -0.55, 0],
+      "position": [-1.78, -0.47, 0],
+      "rotationEuler": [0, -1.5707963267948966, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [0, 0.44] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale and display receiving-pose limits are not recorded." }
       },
-      "explodeVector": [-1, -0.3, 0],
+      "explodeVector": [-2.2, -0.75, 0],
       "assemblyStep": 15
     },
     {
@@ -235,124 +523,126 @@
       "name": { "zh": "西北蟾蜍", "en": "Northwest toad" },
       "geometry": { "type": "custom", "builder": "seismoscopeToad", "params": { "radius": 0.18 } },
       "material": "bronze",
-      "position": [-1.06066, -0.55, 1.06066],
+      "position": [-1.2586500705120545, -0.47, 1.2586500705120545],
+      "rotationEuler": [0, -0.7853981633974483, 0],
+      "joint": { "kind": "revolute", "axis": [1, 0, 0], "limits": [0, 0.44] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Toad scale and display receiving-pose limits are not recorded." }
       },
-      "explodeVector": [-0.7071067811865476, -0.3, 0.7071067811865476],
+      "explodeVector": [-1.5556349186104046, -0.75, 1.5556349186104046],
       "assemblyStep": 16
     },
     {
       "id": "ball-0",
       "name": { "zh": "北路铜丸", "en": "North bronze ball" },
-      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.078 } },
       "material": "bronze",
-      "position": [0, 0, 1.22],
-      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "position": [0, 0.21, 1.43],
+      "joint": { "kind": "prismatic", "axis": [0, -0.9329523031752481, 0.36], "limits": [0, 0.61] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter, mouth-rest position, and diagonal display trajectory are not recorded." }
       },
-      "explodeVector": [0, 0.2, 1],
+      "explodeVector": [0, 1.15, 2.55],
       "assemblyStep": 17
     },
     {
       "id": "ball-1",
       "name": { "zh": "东北路铜丸", "en": "Northeast bronze ball" },
-      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.078 } },
       "material": "bronze",
-      "position": [0.86267, 0, 0.86267],
-      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "position": [1.0111626970967629, 0.21, 1.0111626970967629],
+      "joint": { "kind": "prismatic", "axis": [0.2545584412271571, -0.9329523031752481, 0.2545584412271571], "limits": [0, 0.61] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter, mouth-rest position, and diagonal display trajectory are not recorded." }
       },
-      "explodeVector": [0.7071067811865476, 0.2, 0.7071067811865476],
+      "explodeVector": [1.803122292025696, 1.15, 1.803122292025696],
       "assemblyStep": 18
     },
     {
       "id": "ball-2",
       "name": { "zh": "东路铜丸", "en": "East bronze ball" },
-      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.078 } },
       "material": "bronze",
-      "position": [1.22, 0, 0],
-      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "position": [1.43, 0.21, 0],
+      "joint": { "kind": "prismatic", "axis": [0.36, -0.9329523031752481, 0], "limits": [0, 0.61] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter, mouth-rest position, and diagonal display trajectory are not recorded." }
       },
-      "explodeVector": [1, 0.2, 0],
+      "explodeVector": [2.55, 1.15, 0],
       "assemblyStep": 19
     },
     {
       "id": "ball-3",
       "name": { "zh": "东南路铜丸", "en": "Southeast bronze ball" },
-      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.078 } },
       "material": "bronze",
-      "position": [0.86267, 0, -0.86267],
-      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "position": [1.0111626970967629, 0.21, -1.0111626970967629],
+      "joint": { "kind": "prismatic", "axis": [0.2545584412271571, -0.9329523031752481, -0.2545584412271571], "limits": [0, 0.61] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter, mouth-rest position, and diagonal display trajectory are not recorded." }
       },
-      "explodeVector": [0.7071067811865476, 0.2, -0.7071067811865476],
+      "explodeVector": [1.803122292025696, 1.15, -1.803122292025696],
       "assemblyStep": 20
     },
     {
       "id": "ball-4",
       "name": { "zh": "南路铜丸", "en": "South bronze ball" },
-      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.078 } },
       "material": "bronze",
-      "position": [0, 0, -1.22],
-      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "position": [0, 0.21, -1.43],
+      "joint": { "kind": "prismatic", "axis": [0, -0.9329523031752481, -0.36], "limits": [0, 0.61] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter, mouth-rest position, and diagonal display trajectory are not recorded." }
       },
-      "explodeVector": [0, 0.2, -1],
+      "explodeVector": [0, 1.15, -2.55],
       "assemblyStep": 21
     },
     {
       "id": "ball-5",
       "name": { "zh": "西南路铜丸", "en": "Southwest bronze ball" },
-      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.078 } },
       "material": "bronze",
-      "position": [-0.86267, 0, -0.86267],
-      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "position": [-1.0111626970967629, 0.21, -1.0111626970967629],
+      "joint": { "kind": "prismatic", "axis": [-0.2545584412271571, -0.9329523031752481, -0.2545584412271571], "limits": [0, 0.61] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter, mouth-rest position, and diagonal display trajectory are not recorded." }
       },
-      "explodeVector": [-0.7071067811865476, 0.2, -0.7071067811865476],
+      "explodeVector": [-1.803122292025696, 1.15, -1.803122292025696],
       "assemblyStep": 22
     },
     {
       "id": "ball-6",
       "name": { "zh": "西路铜丸", "en": "West bronze ball" },
-      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.078 } },
       "material": "bronze",
-      "position": [-1.22, 0, 0],
-      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "position": [-1.43, 0.21, 0],
+      "joint": { "kind": "prismatic", "axis": [-0.36, -0.9329523031752481, 0], "limits": [0, 0.61] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter, mouth-rest position, and diagonal display trajectory are not recorded." }
       },
-      "explodeVector": [-1, 0.2, 0],
+      "explodeVector": [-2.55, 1.15, 0],
       "assemblyStep": 23
     },
     {
       "id": "ball-7",
       "name": { "zh": "西北路铜丸", "en": "Northwest bronze ball" },
-      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.055 } },
+      "geometry": { "type": "custom", "builder": "seismoscopeBall", "params": { "radius": 0.078 } },
       "material": "bronze",
-      "position": [-0.86267, 0, 0.86267],
-      "joint": { "kind": "prismatic", "axis": [0, -1, 0], "limits": [0, 0.65] },
+      "position": [-1.0111626970967629, 0.21, 1.0111626970967629],
+      "joint": { "kind": "prismatic", "axis": [-0.2545584412271571, -0.9329523031752481, 0.2545584412271571], "limits": [0, 0.61] },
       "provenance": { "kind": "wenxian", "ref": "houfeng-196" },
       "dimensionProvenance": {
-        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter is not recorded." }
+        "@rest": { "kind": "tuice", "ref": "Display-scale reconstruction", "note": "Ball diameter, mouth-rest position, and diagonal display trajectory are not recorded." }
       },
-      "explodeVector": [-0.7071067811865476, 0.2, 0.7071067811865476],
+      "explodeVector": [-1.803122292025696, 1.15, 1.803122292025696],
       "assemblyStep": 24
     }
   ],
@@ -361,5 +651,14 @@
   "primaryDrive": "vessel",
   "cycleRad": 6.283185307179586,
   "expectedRatios": [],
-  "collisionWhitelist": []
+  "collisionWhitelist": [
+    ["dragon-0", "ball-0"],
+    ["dragon-1", "ball-1"],
+    ["dragon-2", "ball-2"],
+    ["dragon-3", "ball-3"],
+    ["dragon-4", "ball-4"],
+    ["dragon-5", "ball-5"],
+    ["dragon-6", "ball-6"],
+    ["dragon-7", "ball-7"]
+  ]
 }

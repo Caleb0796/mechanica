@@ -1,4 +1,4 @@
-import { ContactShadows, Html, OrbitControls } from "@react-three/drei";
+import { ContactShadows, OrbitControls } from "@react-three/drei";
 import {
   Canvas,
   type ThreeEvent,
@@ -99,7 +99,6 @@ import DriveHandle, {
 import ExplodedControl from "./ExplodedControl";
 import {
   GeometryLoading,
-  geometryOptionsForPart,
   useMachineGeometryWarmup,
 } from "./geometryWarmup";
 import SceneEnvironment, { prepareSceneEnvironment } from "./SceneEnvironment";
@@ -114,6 +113,7 @@ import {
   useAssemblyController,
 } from "./assembly";
 import {
+  DEMO_VIEWER_PROFILE,
   type ViewerProfile,
   VIEWER_PROFILES,
   visualMaterialFor,
@@ -276,7 +276,7 @@ interface PartNodeProps {
   maxAssemblyStep: number;
   module: MachineModule;
   onDraggingChange: (dragging: boolean) => void;
-  onDrivePart: (partId: string, delta: number, secondaryDelta?: number) => void;
+  onDrivePart: (partId: string, delta: number) => void;
   onDriveSuccess?: () => void;
   part: PartDef;
   partsById: Map<string, PartDef>;
@@ -298,34 +298,6 @@ type CrankConstraint = Extract<
   { type: "crank" }
 >;
 
-const TYPECASE_PROCESS_STEPS = [
-  {
-    label: { zh: "拣取活字", en: "Pick type" },
-    quote: "左右俱可推轉摘字",
-    source: "nongshu-zaolun",
-  },
-  {
-    label: { zh: "排入铁范", en: "Set the forme" },
-    quote: "以一鐵範置鐵板上，乃密布字印",
-    source: "mengxi-bisheng",
-  },
-  {
-    label: { zh: "加热药层", en: "Heat the resin" },
-    quote: "持就火煬之，藥稍鎔",
-    source: "mengxi-bisheng",
-  },
-  {
-    label: { zh: "压平字面", en: "Press flat" },
-    quote: "以一平板按其面，則字平如砥",
-    source: "mengxi-bisheng",
-  },
-  {
-    label: { zh: "交替印刷", en: "Print" },
-    quote: "一板印刷，一板已自布字",
-    source: "mengxi-bisheng",
-  },
-] as const;
-
 function mechanicaBounds(root: Object3D): Box3 {
   const bounds = new Box3();
   root.updateWorldMatrix(true, true);
@@ -341,14 +313,12 @@ function SpotlightRig({
   active,
   controls,
   diagnostics,
-  machineSlug,
   runId,
   targetPartId,
 }: {
   active: boolean;
   controls: RefObject<OrbitControlsHandle | null>;
   diagnostics?: MutableRefObject<CameraDiagnostics | null>;
-  machineSlug: MachineModule["data"]["slug"];
   runId: number;
   targetPartId?: string;
 }) {
@@ -388,11 +358,7 @@ function SpotlightRig({
     endTarget.current.copy(target);
     hasTarget.current = true;
     if (diagnostics?.current) diagnostics.current.phase = "spotlight";
-    if (machineSlug === "chainpump") {
-      endPosition.current
-        .copy(target)
-        .add(new Vector3(0, size * 0.35, Math.max(size * 3, 1.2)));
-    } else if (targetPartId === "lower-figure") {
+    if (targetPartId === "lower-figure") {
       endPosition.current
         .copy(target)
         .add(new Vector3(size * 0.8, size * 1.5, size * 4));
@@ -412,7 +378,6 @@ function SpotlightRig({
     camera,
     controls,
     diagnostics,
-    machineSlug,
     runId,
     scene,
     targetPartId,
@@ -527,6 +492,15 @@ function cameraSnapshot(
   };
 }
 
+function cameraFitKey(
+  slug: string,
+  schemeId: string | undefined,
+  assemblyState: string,
+  explode: number,
+): string {
+  return `${slug}:${schemeId ?? "default"}:${assemblyState}:explode-${Math.round(Math.max(0, Math.min(1, explode)) * 20)}`;
+}
+
 interface CameraTransition {
   endPosition: Vector3;
   endQuaternion: Quaternion;
@@ -541,6 +515,7 @@ function CameraDirector({
   controls,
   diagnostics,
   enabled,
+  explode,
   fitFullBounds,
   fitKey,
   fitWholeMachine,
@@ -558,6 +533,7 @@ function CameraDirector({
   controls: RefObject<OrbitControlsHandle | null>;
   diagnostics?: MutableRefObject<CameraDiagnostics | null>;
   enabled: boolean;
+  explode: number;
   fitFullBounds: boolean;
   fitKey: string;
   fitWholeMachine: boolean;
@@ -684,8 +660,9 @@ function CameraDirector({
 
     const fitBounds = focusBounds ?? wholeBounds;
     const fitSize = fitBounds.getSize(new Vector3());
+    const fitSphere = fitBounds.getBoundingSphere(new Sphere());
     const target =
-      fitWholeMachine || !profile.homePose
+      fitWholeMachine || explode > 0 || !profile.homePose
         ? fitBounds.getCenter(new Vector3())
         : new Vector3(...profile.homePose.target);
     if (fitWholeMachine) {
@@ -718,6 +695,14 @@ function CameraDirector({
       fov,
       Math.max(viewport.width / viewport.height, 0.001),
     );
+    const explodedFitMargin =
+      1 +
+      (Math.max(
+        profile.explodedMargin / Math.max(profile.margin, 0.001),
+        1,
+      ) -
+        1) *
+        Math.max(0, Math.min(1, explode));
     const wholeSphere = wholeBounds.getBoundingSphere(new Sphere());
     const authoredDistance = profile.homePose
       ? new Vector3(...profile.homePose.position).distanceTo(
@@ -725,8 +710,8 @@ function CameraDirector({
         )
       : fitDistance * Math.max(profile.margin, 1);
     const fittedHomeDistance = Math.max(
-      fitDistance,
-      wholeSphere.radius * (profile.minDistanceFactor ?? 1.6),
+      fitDistance * explodedFitMargin,
+      fitSphere.radius * (profile.minDistanceFactor ?? 1.6),
       authoredDistance,
     );
     const homeDistance = fitWholeMachine
@@ -776,7 +761,7 @@ function CameraDirector({
         introStartDistance: startPosition.distanceTo(target),
         phase: shouldPlayIntro ? "intro" : "idle",
         refitCount: (diagnostics.current?.refitCount ?? 0) + 1,
-        sphere: wholeSphere,
+        sphere: fitSphere,
         target: target.clone(),
         viewportHeight: viewport.height,
         viewportWidth: viewport.width,
@@ -847,7 +832,6 @@ interface TransientMaterialState {
   layerOpacity?: number;
   schemeHighlighted: boolean;
   seismoscopeDragonSpotlight: boolean;
-  spotlightCutaway: boolean;
   spotlightHighlighted: boolean;
 }
 
@@ -860,8 +844,8 @@ function applyTransientMaterialState(
   material.copy(baseMaterial);
   material.userData.mechanicaMaterialCacheKey = cacheKey;
 
-  if (state.aidCutaway || state.spotlightCutaway) {
-    material.opacity = 0.22;
+  if (state.aidCutaway) {
+    material.opacity = 0.12;
     material.transparent = true;
     material.depthWrite = false;
   }
@@ -1088,7 +1072,7 @@ const PartNode = memo(function PartNode({
 }: PartNodeProps) {
   const group = useRef<Group>(null);
   const instancedMeshes = useRef<Array<InstancedMesh | null>>([]);
-  const compareStaticPositioned = useRef(false);
+  const staticPositioned = useRef(false);
   const assemblyPointer = useRef<number | null>(null);
   const partPointerIntent = useRef<PointerIntent | null>(null);
   const assemblyStartPoint = useRef(new Vector3());
@@ -1097,18 +1081,12 @@ const PartNode = memo(function PartNode({
   const selected = useUiStore((state) => state.selectedPartId === part.id);
   const setHoveredPartId = useUiStore((state) => state.setHoveredPartId);
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
-  const geometryOptions = useMemo(
-    () => geometryOptionsForPart(module, part),
-    [module, part],
-  );
   const geometryResource = useMemo(
     () =>
       machineGeometryCache.prepare(module, part.geometry, {
         consumerKey: `${geometryScope}:${part.id}`,
-        factory: geometryOptions?.factory,
-        variant: geometryOptions?.variant,
       }),
-    [geometryOptions, geometryScope, module, part],
+    [geometryScope, module, part],
   );
   const geometries = useMemo(
     () => [...partGeometryEntries(geometryResource.geometry)],
@@ -1151,8 +1129,6 @@ const PartNode = memo(function PartNode({
     : undefined;
   const aidCutaway = aidCutawayPartIds.includes(part.id);
   const aidHighlighted = aidHighlightPartIds.includes(part.id);
-  const spotlightCutaway =
-    module.data.slug === "chainpump" && part.id === "trough" && spotlightActive;
   const schemeHighlighted = part.schemeTags?.includes(schemeId ?? "") ?? false;
   const spotlightHighlighted =
     spotlightActive && spotlightPartIds.includes(part.id);
@@ -1165,7 +1141,6 @@ const PartNode = memo(function PartNode({
   const transientStateKey = [
     aidCutaway ? "aid-cutaway" : "",
     aidHighlighted ? "aid-highlight" : "",
-    spotlightCutaway ? "cutaway" : "",
     schemeHighlighted ? "scheme" : "",
     spotlightHighlighted ? "spotlight" : "",
     seismoscopeDragonSpotlight ? "dragon" : "",
@@ -1198,7 +1173,6 @@ const PartNode = memo(function PartNode({
     layerOpacity,
     schemeHighlighted,
     seismoscopeDragonSpotlight,
-    spotlightCutaway,
     spotlightHighlighted,
   };
   const explodeVector = useMemo(() => radialExplodeVector(part), [part]);
@@ -1252,8 +1226,8 @@ const PartNode = memo(function PartNode({
   const drivable = drivePartIds.has(part.id);
   const crank = crankByRod.get(part.id);
   const wheel = crank ? partsById.get(crank.wheel) : undefined;
-  const compareStaticTransform = Boolean(
-    compareContext &&
+  const staticTransform = Boolean(
+    !reassembling &&
       !crank &&
       !part.joint &&
       !hasAnimatedGeometry &&
@@ -1262,8 +1236,17 @@ const PartNode = memo(function PartNode({
 
   useLayoutEffect(() => geometryResource.retain(), [geometryResource]);
   useLayoutEffect(() => {
-    compareStaticPositioned.current = false;
-  }, [compareStaticTransform, part]);
+    staticPositioned.current = false;
+  }, [
+    assemblyAppearance,
+    assemblyFlight,
+    part,
+    partExplode,
+    reassembling,
+    seated,
+    stagingSlot,
+    staticTransform,
+  ]);
 
   const setInstancedMesh = useCallback(
     (index: number, mesh: InstancedMesh | null) => {
@@ -1274,7 +1257,7 @@ const PartNode = memo(function PartNode({
 
   useFrame(() => {
     if (!group.current) return;
-    if (compareStaticTransform && compareStaticPositioned.current) return;
+    if (staticTransform && staticPositioned.current) return;
     group.current.scale.setScalar(assemblyAppearance);
     const state = displayState.current ?? graph.state();
     if (reassembling && !seated && stagingSlot) {
@@ -1345,7 +1328,7 @@ const PartNode = memo(function PartNode({
     } else if (part.joint?.kind === "prismatic") {
       group.current.position.addScaledVector(axis, value);
     }
-    compareStaticPositioned.current = true;
+    staticPositioned.current = true;
   });
 
   if (!visible) return null;
@@ -1439,20 +1422,6 @@ const PartNode = memo(function PartNode({
       partPointerIntent.current = null;
     }
   };
-  const woodenOxLoadStage =
-    module.data.slug === "wooden-ox" &&
-    schemeId === "wheelbarrow" &&
-    spotlightActive &&
-    spotlightPartIds.some((partId) => partId.startsWith("cargo-pod-"));
-  const forceMarker = woodenOxLoadStage
-    ? part.id.startsWith("cargo-pod-") && spotlightPartIds.includes(part.id)
-      ? "↓"
-      : part.id === "central-big-wheel" && spotlightPartIds.includes(part.id)
-        ? "↑"
-        : part.id.startsWith("twin-shaft-")
-          ? "≈0"
-          : null
-    : null;
   const content = (
     <>
       {renderOwnPart
@@ -1475,21 +1444,6 @@ const PartNode = memo(function PartNode({
             />
           ))
         : null}
-      {forceMarker ? (
-        <Html center position={[0, 0.16, 0]}>
-          <strong
-            data-testid="wooden-ox-force-marker"
-            style={{
-              color: forceMarker === "↓" ? "#e46855" : "#71c7b8",
-              fontSize: "1.4rem",
-              textShadow: "0 1px 4px #090a0a",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {forceMarker}
-          </strong>
-        </Html>
-      ) : null}
       {childParts.map((child) => (
         <PartNode
           aidCutawayPartIds={aidCutawayPartIds}
@@ -1569,9 +1523,7 @@ const PartNode = memo(function PartNode({
         <DriveHandle
           active={hovered || selected}
           coachTarget={!compareContext && part.id === module.spec.primaryDrive}
-          drive={(delta, secondaryDelta) =>
-            onDrivePart(part.id, delta, secondaryDelta)
-          }
+          drive={(delta) => onDrivePart(part.id, delta)}
           gizmoTestId={`drive-gizmo-${compareContext ? `${compareContext.side}-` : ""}${part.id}`}
           onDraggingChange={onDraggingChange}
           onDriveSuccess={() => onDriveSuccess?.()}
@@ -1604,7 +1556,7 @@ interface MachineSceneProps {
   introPlayed?: MutableRefObject<boolean>;
   interactionDisabled?: boolean;
   module: MachineModule;
-  onDrivePart: (partId: string, delta: number, secondaryDelta?: number) => void;
+  onDrivePart: (partId: string, delta: number) => void;
   onDriveSuccess?: () => void;
   onGeometryCommitted: (committedAt: number) => void;
   paused: boolean;
@@ -1759,13 +1711,25 @@ function ShadowBudget({
       meshes.push(mesh);
       meshesByPart.set(parent.name, meshes);
     });
-    for (const meshes of meshesByPart.values()) {
-      const partBounds = new Box3();
-      for (const mesh of meshes) partBounds.union(mechanicaBounds(mesh));
-      const partRadius = partBounds.isEmpty()
-        ? 0
-        : partBounds.getBoundingSphere(new Sphere()).radius;
-      const castShadow = partRadius >= machineSphere.radius * 0.02;
+    const shadowCandidates = [...meshesByPart.values()]
+      .map((meshes) => {
+        const partBounds = new Box3();
+        for (const mesh of meshes) partBounds.union(mechanicaBounds(mesh));
+        return {
+          meshes,
+          radius: partBounds.isEmpty()
+            ? 0
+            : partBounds.getBoundingSphere(new Sphere()).radius,
+        };
+      })
+      .sort((first, second) => second.radius - first.radius);
+    let remainingShadowMeshes = 12;
+    for (const candidate of shadowCandidates) {
+      const castShadow =
+        candidate.radius >= machineSphere.radius * 0.02 &&
+        candidate.meshes.length <= remainingShadowMeshes;
+      if (castShadow) remainingShadowMeshes -= candidate.meshes.length;
+      const { meshes } = candidate;
       for (const mesh of meshes) mesh.castShadow = castShadow;
       if (castShadow) casters += meshes.length;
       else suppressed += meshes.length;
@@ -2010,9 +1974,9 @@ function MachineScene({
     [activeSpec],
   );
   const viewerProfile =
-    module.spec.slug === "demo"
+    module.data.slug === "demo"
       ? {
-          ...VIEWER_PROFILES[module.data.slug],
+          ...DEMO_VIEWER_PROFILE,
           focusPartIds: undefined,
           homePose: undefined,
         }
@@ -2288,8 +2252,14 @@ function MachineScene({
         controls={orbitControls}
         diagnostics={cameraDiagnostics}
         enabled={!storyCamera && !assemblyCameraPending}
+        explode={explode}
         fitFullBounds={Boolean(compareContext)}
-        fitKey={`${module.data.slug}:${schemeId ?? "default"}:${assemblyCameraState}`}
+        fitKey={cameraFitKey(
+          module.data.slug,
+          schemeId,
+          assemblyCameraState,
+          explode,
+        )}
         fitWholeMachine={assemblyCameraState === "reassemble-staged"}
         introPlayed={introPlayed}
         machineRoot={machineRoot}
@@ -2313,10 +2283,9 @@ function MachineScene({
       <StoryCameraRig pose={storyCamera} />
       {!storyCamera ? (
         <SpotlightRig
-          active={spotlightActive}
+          active={spotlightActive && module.spec.slug === "demo"}
           controls={orbitControls}
           diagnostics={cameraDiagnostics}
-          machineSlug={module.data.slug}
           runId={spotlightRunId}
           targetPartId={spotlightPartIds.at(-1)}
         />
@@ -2401,6 +2370,16 @@ export function captureSpotlightState(
       (constraint) => constraint.type === "cam" && constraint.follower === part,
     );
     if (cam?.type === "cam") captured[part] = cam.liftHeight;
+  }
+  if (spec.slug === "loom" && type === "treadle:press") {
+    for (let index = 0; index < 8; index += 1) {
+      captured[`heddle-${index}`] = 0;
+    }
+    captured["warp-shed"] = 0;
+    captured["warp-shed-odd"] = 0;
+  } else if (spec.slug === "loom" && type === "heddle:lift") {
+    captured["warp-shed"] = 0;
+    captured["warp-shed-odd"] = 0;
   }
   return captured;
 }
@@ -2812,18 +2791,6 @@ export function MachineStoryStage({
   );
 }
 
-function gimbalDeviationDegrees(graph: IKinematicGraph): number | null {
-  const state = graph.state();
-  const shell = attitudeQuaternion(state, "outer-shell");
-  if (!shell) return null;
-  const world = new Matrix4()
-    .makeRotationFromQuaternion(new Quaternion(...shell))
-    .multiply(new Matrix4().makeRotationZ(state["outer-ring"] ?? 0))
-    .multiply(new Matrix4().makeRotationX(state["inner-ring"] ?? 0));
-  const worldUp = new Vector3(0, 1, 0).transformDirection(world);
-  return Math.acos(Math.max(-1, Math.min(1, worldUp.y))) * (180 / Math.PI);
-}
-
 function mechanismCaption(
   module: MachineModule,
   language: "en" | "zh",
@@ -2832,6 +2799,14 @@ function mechanismCaption(
 ): string {
   if (module.data.slug === "astroclock") {
     const phases: Record<string, { en: string; zh: string }> = {
+      "caption:reservoir": {
+        en: "The header reservoir feeds the water circuit",
+        zh: "天池为水路供水",
+      },
+      "caption:constant-head": {
+        en: "The constant-level tank steadies the flow",
+        zh: "平水壶稳定水流",
+      },
       "caption:fill": {
         en: "The scoop fills and overcomes the fork",
         zh: "水实即格叉不能胜壶",
@@ -2852,6 +2827,10 @@ function mechanismCaption(
         en: "The locks catch the next scoop",
         zh: "关锁再拒次壶",
       },
+      "caption:return": {
+        en: "The water-lift returns the spent water",
+        zh: "提水机构将余水送回",
+      },
     };
     const phase = phases[type];
     if (phase) {
@@ -2865,47 +2844,82 @@ function mechanismCaption(
     module.data.slug === "seismoscope" &&
     (type === "releaseBall" || type === "locked")
   ) {
+    if (type === "releaseBall") {
+      return language === "zh"
+        ? "一龙吐丸，落向对应蟾蜍 ·《后汉书》"
+        : "One dragon releases its ball toward the matching toad · Book of Later Han";
+    }
     return language === "zh"
-      ? `${type} · 虽一龙发机，而七首不动 ·《后汉书》`
-      : `${type} · One dragon releases; the other seven remain still · Book of Later Han`;
+      ? "其余七路保持互锁 ·《后汉书》"
+      : "The other seven directional paths remain locked · Book of Later Han";
   }
-  return `${type} · ${part}`;
+
+  const labels: Record<string, { en: string; zh: string }> = {
+    advance: { en: "The transmission advances", zh: "传动向前推进" },
+    "beat-up:advance": { en: "The beater packs the new weft", zh: "筘框向前打纬" },
+    "beat-up:return": { en: "The beater returns", zh: "筘框复位" },
+    blocked: { en: "Reverse motion is locked", zh: "逆向运动被锁止" },
+    camera: { en: "The view centers on the mechanism", zh: "视角对准机构" },
+    "camera:focus": { en: "The view follows the active station", zh: "视角跟随工作站" },
+    chime: { en: "The upper figure strikes the chime", zh: "上层人物击铙" },
+    "cloth:update": { en: "The woven pattern advances", zh: "锦面织纹更新" },
+    "cycle:ready": { en: "The loom returns to its ready position", zh: "织机回到起始位" },
+    "cycle:start": { en: "A weaving cycle begins", zh: "一次织造循环开始" },
+    drive: { en: "The drive advances", zh: "动力输入推进" },
+    "drive:slow": { en: "The drive approaches the trip point", zh: "动力接近触发点" },
+    drum: { en: "The lower figure strikes the drum", zh: "下层人物击鼓" },
+    "heddle:lift": { en: "The selected heddles rise", zh: "选中的综片提起" },
+    highlight: { en: "The active handoff is shown", zh: "当前传动交接显出" },
+    "highlight:off": { en: "The handoff is complete", zh: "当前传动交接完成" },
+    "highlight:on": { en: "The active mechanism is shown", zh: "当前工作机构显出" },
+    inert: { en: "The latch remains set", zh: "锁闩保持待命" },
+    "mallet:raise": { en: "The mallet rises", zh: "槌臂抬起" },
+    "odometer:readout": { en: "The distance register settles", zh: "里程读数稳定" },
+    "odometer:update": { en: "The distance train advances", zh: "里程轮系推进" },
+    "pattern:contrast": { en: "The second program produces a different weave", zh: "第二程序织出不同纹样" },
+    "phase:celestial-output": { en: "The celestial display turns", zh: "天文显示转动" },
+    "phase:end": { en: "The water beat is complete", zh: "一次水力节拍完成" },
+    "phase:escapement-release": { en: "The escapement releases one step", zh: "擒纵释放一步" },
+    "phase:escapement-yield": { en: "The regulating fork yields", zh: "调速格叉让位" },
+    "phase:reporting-output": { en: "The reporting figures respond", zh: "报时人物动作" },
+    "phase:scoop-loaded": { en: "The receiving scoop is loaded", zh: "受水壶装满" },
+    "phase:start": { en: "The mechanism returns to its start state", zh: "机构回到起始状态" },
+    "phase:vertical-transmission": { en: "Motion climbs the celestial column", zh: "运动沿天柱上传" },
+    "phase:water-arrival": { en: "Water reaches the receiving scoop", zh: "水流抵达受水壶" },
+    placard: { en: "A reporting placard appears", zh: "报时牌显出" },
+    "program:active": { en: "The first stored program is active", zh: "第一套存储程序启用" },
+    "program:order": { en: "The heddle order is set", zh: "综片次序设定" },
+    "program:reorder": { en: "The stored program changes", zh: "存储程序切换" },
+    "program:scheme": { en: "The selector reconstruction remains engaged", zh: "选综复原方案保持啮合" },
+    pulse: { en: "A directional pulse reaches the detector", zh: "方向脉冲抵达探测机构" },
+    reset: { en: "The mechanism resets", zh: "机构复位" },
+    "shed:open": { en: "The warp shed opens", zh: "经纱开口形成" },
+    source: { en: "The historical source is identified", zh: "史料依据已标明" },
+    "spotlight:done": { en: "The demonstration is complete", zh: "机构演示完成" },
+    "transmission:advance": { en: "Motion passes to the next stage", zh: "运动传至下一轴段" },
+    "treadle:press": { en: "The treadle bank enters the program", zh: "踏板组输入程序" },
+    "weft:count": { en: "The woven cloth advances", zh: "织成锦面推进" },
+    "weft:insert": { en: "The shuttle crosses the open shed", zh: "梭子穿过经纱开口" },
+  };
+  const eventLabel =
+    labels[type]?.[language] ??
+    (language === "zh"
+      ? "机构进入下一工作状态"
+      : "The mechanism enters its next working state");
+  const namedPart = module.spec.parts.find((candidate) => candidate.id === part);
+  const partLabel = namedPart?.name[language];
+  return partLabel ? `${eventLabel} · ${partLabel}` : eventLabel;
 }
 
 function SpotlightSemanticReadout({
-  active,
-  graph,
   language,
   module,
   visible,
 }: {
-  active: boolean;
-  graph: IKinematicGraph;
   language: "en" | "zh";
   module: MachineModule;
   visible: boolean;
 }) {
-  const [retrievalProgress, setRetrievalProgress] = useState(0);
-  useEffect(() => {
-    if (module.data.slug !== "typecase" || !visible) {
-      setRetrievalProgress(0);
-      return;
-    }
-    if (!active) {
-      setRetrievalProgress(100);
-      return;
-    }
-    const startedAt = performance.now();
-    let frame = 0;
-    const animate = (now: number) => {
-      const progress = Math.min(100, ((now - startedAt) / 900) * 100);
-      setRetrievalProgress(progress);
-      if (progress < 100) frame = requestAnimationFrame(animate);
-    };
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, [active, module.data.slug, visible]);
-
   if (!visible) return null;
   const localized = (en: string, zh: string) => (language === "en" ? en : zh);
   const rows: Array<{ label: string; value: string }> = [];
@@ -2922,98 +2936,12 @@ function SpotlightSemanticReadout({
       },
     );
   }
-  if (module.data.slug === "chariot") {
-    const state = graph.state();
-    const chassis = (state["chassis-pivot"] ?? 0) * (180 / Math.PI);
-    const compensation = (state["figure-turntable"] ?? 0) * (180 / Math.PI);
-    const worldHeading = chassis + compensation;
-    const degrees = (value: number) => {
-      const normalized = Math.abs(value) < 0.05 ? 0 : value;
-      return `${normalized > 0 ? "+" : ""}${normalized.toFixed(1)}°`;
-    };
-    rows.push(
-      { label: localized("Chassis", "车身"), value: degrees(chassis) },
-      {
-        label: localized("Geartrain compensation", "齿轮系补偿"),
-        value: degrees(compensation),
-      },
-      {
-        label: localized("Figure world heading", "木人世界朝向"),
-        value: degrees(worldHeading),
-      },
-    );
-  }
-  if (module.data.slug === "wooden-ox") {
-    rows.push(
-      {
-        label: localized("Wheelbarrow load path", "轮式承重路径"),
-        value: localized(
-          "Cargo ↓ axle; hand force ≈ 0",
-          "货重 ↓ 车轴；手力 ≈ 0",
-        ),
-      },
-      {
-        label: localized("Walker reconstruction", "步行式复原"),
-        value: localized("Four-leg crank gait", "四足曲柄步态"),
-      },
-    );
-  }
-  if (module.data.slug === "typecase") {
-    rows.push({
-      label: localized("Target character", "目标字"),
-      value: localized("字 → indexed sector", "字 → 索引扇区"),
-    });
-  }
   if (module.data.slug === "loom") {
     rows.push({
       label: localized("Program A / B cloth", "程序 A / B 织纹"),
       value: "▦ ▦ ▦   →   ◆ ◇ ◆",
     });
   }
-  if (module.data.slug === "chainpump") {
-    rows.push(
-      {
-        label: localized("Side cutaway", "侧视剖切"),
-        value: localized("Trough translucent", "木槽已半透明"),
-      },
-      {
-        label: localized("Pallet chain", "龙骨板链"),
-        value: localized("Drive link + water scraper", "传动链节 + 刮水活塞"),
-      },
-    );
-  }
-  if (module.data.slug === "bellows") {
-    rows.push(
-      {
-        label: localized("Water-powered bellows", "水排"),
-        value: localized("Rotary → reciprocating", "旋转 → 往复"),
-      },
-      {
-        label: localized("Steam-engine mirror", "蒸汽机镜像"),
-        value: localized("Reciprocating → rotary", "往复 → 旋转"),
-      },
-    );
-  }
-  if (module.data.slug === "gimbal") {
-    const deviation = gimbalDeviationDegrees(graph);
-    rows.push(
-      {
-        label: localized("Bowl deviation", "香盂偏差"),
-        value:
-          deviation === null
-            ? localized("Not measured", "尚未测量")
-            : `${deviation.toFixed(2)}° (<0.5°)`,
-      },
-      {
-        label: localized("Modern comparison", "现代对照"),
-        value: localized(
-          "Passive rings · powered phone gimbal",
-          "无源套环 · 有源手机云台",
-        ),
-      },
-    );
-  }
-
   if (rows.length === 0) return null;
   return (
     <div data-testid="spotlight-semantic-readout">
@@ -3025,18 +2953,6 @@ function SpotlightSemanticReadout({
           </div>
         ))}
       </dl>
-      {module.data.slug === "typecase" ? (
-        <div data-testid="typecase-retrieval-race">
-          <label className="panel-copy">
-            {localized("Carousel", "转轮")}
-            <progress max="100" value={retrievalProgress} />
-          </label>
-          <label className="panel-copy">
-            {localized("Walk the racks", "步行查架")}
-            <progress max="100" value={retrievalProgress * 0.38} />
-          </label>
-        </div>
-      ) : null}
       {module.data.slug === "loom" ? (
         <output data-testid="loom-pattern-swatches">▦▦▦ · ◆◇◆</output>
       ) : null}
@@ -3055,12 +2971,11 @@ export default function MachineViewer({
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const storyAvailable =
     module.data.slug === "astroclock" ||
-    module.data.slug === "chariot" ||
     module.data.slug === "seismoscope";
   const viewerProfile =
-    module.spec.slug === "demo"
+    module.data.slug === "demo"
       ? {
-          ...VIEWER_PROFILES[module.data.slug],
+          ...DEMO_VIEWER_PROFILE,
           focusPartIds: undefined,
           homePose: undefined,
         }
@@ -3118,8 +3033,6 @@ export default function MachineViewer({
   const [spotlightPartIds, setSpotlightPartIds] = useState<string[]>([]);
   const [spotlightRunId, setSpotlightRunId] = useState(0);
   const [spotlightTranscript, setSpotlightTranscript] = useState<string[]>([]);
-  const [typecaseProcessBusy, setTypecaseProcessBusy] = useState(false);
-  const [typecaseProcessStep, setTypecaseProcessStep] = useState(-1);
   const [odometerReadout, setOdometerReadout] = useState<string | null>(
     module.spec.slug === "odometer" ? "0.00" : null,
   );
@@ -3129,7 +3042,6 @@ export default function MachineViewer({
   const [idleDemand, setIdleDemand] = useState(false);
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
-  const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
   const viewerIntroPlayed = useRef(false);
@@ -3164,6 +3076,24 @@ export default function MachineViewer({
   const setShowScene = useUiStore((state) => state.setShowScene);
   const selectedPartId = useUiStore((state) => state.selectedPartId);
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
+  const mechanismCutawayPartIds = useMemo(() => {
+    const aid = module.aids?.find((candidate) => candidate.kind === "cutaway");
+    return aid?.kind === "cutaway" ? aid.partIds : EMPTY_PART_IDS;
+  }, [module.aids]);
+  const retainMechanismCutaway =
+    module.data.slug === "seismoscope" && spotlightDone;
+  const visibleCutawayPartIds = useMemo(
+    () =>
+      spotlightActive || retainMechanismCutaway
+        ? [...new Set([...aidCutawayPartIds, ...mechanismCutawayPartIds])]
+        : aidCutawayPartIds,
+    [
+      aidCutawayPartIds,
+      mechanismCutawayPartIds,
+      retainMechanismCutaway,
+      spotlightActive,
+    ],
+  );
   const selectedDrivePart = useMemo(
     () =>
       activeSpec.parts.find(
@@ -3335,10 +3265,6 @@ export default function MachineViewer({
       cancelAnimationFrame(spotlightFrame.current);
       spotlightFrame.current = null;
     }
-    if (processFrame.current !== null) {
-      cancelAnimationFrame(processFrame.current);
-      processFrame.current = null;
-    }
     displayState.current = null;
     cameraDiagnostics.current = null;
     setAidCutawayPartIds([]);
@@ -3348,8 +3274,6 @@ export default function MachineViewer({
     setSpotlightDone(false);
     setSpotlightPartIds([]);
     setSpotlightTranscript([]);
-    setTypecaseProcessBusy(false);
-    setTypecaseProcessStep(-1);
     setHoveredPartId(null);
     setSelectedPartId(null);
     setActiveSchemeId(schemeId);
@@ -3391,16 +3315,20 @@ export default function MachineViewer({
     graph.setScheme(
       activeSchemeId ? module.schemes?.[activeSchemeId] : undefined,
     );
+    setHoveredPartId(null);
     setSelectedPartId(null);
-  }, [activeSchemeId, graph, module.schemes, setSelectedPartId]);
+  }, [
+    activeSchemeId,
+    graph,
+    module.schemes,
+    setHoveredPartId,
+    setSelectedPartId,
+  ]);
 
   useEffect(
     () => () => {
       if (spotlightFrame.current !== null) {
         cancelAnimationFrame(spotlightFrame.current);
-      }
-      if (processFrame.current !== null) {
-        cancelAnimationFrame(processFrame.current);
       }
       if (completionFrame.current !== null) {
         cancelAnimationFrame(completionFrame.current);
@@ -3655,8 +3583,13 @@ export default function MachineViewer({
   const recordEvent = (type: string, part: string) => {
     const nextCaption = mechanismCaption(module, language, type, part);
     setCaption(nextCaption);
+    if (type === "reset") {
+      setSpotlightDone(false);
+      setSpotlightTranscript([]);
+    }
     if (
-      (module.data.slug === "astroclock" && type.startsWith("caption:")) ||
+      (module.data.slug === "astroclock" &&
+        (type.startsWith("caption:") || type.startsWith("phase:"))) ||
       (module.data.slug === "seismoscope" &&
         (type === "releaseBall" || type === "locked"))
     ) {
@@ -3669,7 +3602,9 @@ export default function MachineViewer({
       if (Number.isFinite(value)) setOdometerReadout(value.toFixed(2));
     }
     if (type === "scheme:switch" && module.schemes?.[part]) {
-      setSpotlightAutoFitKey(`${module.data.slug}:${part}:default`);
+      setSpotlightAutoFitKey(
+        cameraFitKey(module.data.slug, part, "default", explode),
+      );
       setActiveSchemeId(part);
     }
     if (type === "spotlight:done") setSpotlightDone(true);
@@ -3684,21 +3619,21 @@ export default function MachineViewer({
       (candidate) => candidate.id === triggerId,
     );
     if (!trigger) return;
-    if (triggerId !== "spotlight") {
-      trigger.run(graph, recordEvent);
-      return;
-    }
+    const isSpotlight = triggerId === "spotlight";
 
     setSpotlightAutoFitKey(null);
     let spotlightSpec = activeSpec;
     if (
+      isSpotlight &&
       module.spec.slug === "seismoscope" &&
       activeSchemeId !== "fengrui" &&
       module.schemes?.fengrui
     ) {
       graph.setScheme(module.schemes.fengrui);
       setActiveSchemeId("fengrui");
-      setSpotlightAutoFitKey("seismoscope:fengrui:default");
+      setSpotlightAutoFitKey(
+        cameraFitKey("seismoscope", "fengrui", "default", explode),
+      );
       spotlightSpec = applySchemePatch(module.spec, module.schemes.fengrui);
     }
 
@@ -3708,14 +3643,14 @@ export default function MachineViewer({
     }
     setPaused(true);
     setSpotlightActive(true);
-    setSpotlightDone(false);
+    if (isSpotlight) setSpotlightDone(false);
     setSpotlightPartIds([spotlightSpec.primaryDrive]);
-    setSpotlightTranscript([]);
+    if (isSpotlight) setSpotlightTranscript([]);
     setSpotlightRunId((current) => current + 1);
 
     const initialState = graph.state();
     const captured: CapturedEvent[] = [];
-    let donePart = spotlightSpec.primaryDrive;
+    let donePart: string | null = null;
     trigger.run(graph, (type, part) => {
       if (type === "spotlight:done") {
         donePart = part;
@@ -3735,39 +3670,36 @@ export default function MachineViewer({
       const event = captured[index];
       if (!event) {
         displayState.current = null;
-        recordEvent("spotlight:done", donePart);
+        if (donePart) recordEvent("spotlight:done", donePart);
         setSpotlightActive(false);
         spotlightFrame.current = null;
         return;
       }
 
       recordEvent(event.type, event.part);
+      const changed = statesDiffer(previousState, event.state);
+      const realPart = spotlightSpec.parts.some(
+        (part) => part.id === event.part,
+      );
       if (event.type === "highlight:off") {
         setSpotlightPartIds((current) =>
           current.filter((partId) => partId !== event.part),
         );
-      } else if (
-        event.type.includes("drive") ||
-        event.type.includes("highlight") ||
-        event.type.startsWith("force:") ||
-        event.type === "locked" ||
-        event.type === "mallet:raise"
-      ) {
+      } else if (realPart && (changed || event.type.includes("highlight"))) {
         setSpotlightPartIds((current) =>
           current.includes(event.part) ? current : [...current, event.part],
         );
       }
 
-      const changed = statesDiffer(previousState, event.state);
       const priorType = captured[index - 1]?.type;
       const duration =
         changed && priorType === "drive:slow"
-          ? 1200
+          ? 500
           : changed && event.type.includes("drive")
-            ? 420
+            ? 320
             : changed
               ? 240
-              : 90;
+              : 45;
       const startedAt = performance.now();
       const animate = (now: number) => {
         const progress = Math.min(1, (now - startedAt) / duration);
@@ -3789,43 +3721,7 @@ export default function MachineViewer({
     playNext();
   };
 
-  const runTypecaseProcessStage = (stage: number) => {
-    if (typecaseProcessBusy) return;
-    const trigger = module.mechanism?.triggers.find(
-      (candidate) => candidate.id === "process",
-    );
-    if (!trigger) return;
-    const nextStep = stage - 1;
-    if (stage !== 0 && nextStep !== typecaseProcessStep + 1) return;
-    const before = graph.state();
-    const events: Array<{ type: string; part: string }> = [];
-    trigger.run(graph, (type, part) => events.push({ type, part }), stage);
-    const after = graph.state();
-    for (const event of events) recordEvent(event.type, event.part);
-    setPaused(true);
-    setTypecaseProcessBusy(true);
-    setTypecaseProcessStep(nextStep);
-    displayState.current = before;
-    const startedAt = performance.now();
-    const animate = (now: number) => {
-      const progress = Math.min(1, (now - startedAt) / 420);
-      displayState.current = interpolateState(
-        before,
-        after,
-        1 - (1 - progress) ** 3,
-      );
-      if (progress < 1) {
-        processFrame.current = requestAnimationFrame(animate);
-        return;
-      }
-      displayState.current = null;
-      setTypecaseProcessBusy(false);
-      processFrame.current = null;
-    };
-    processFrame.current = requestAnimationFrame(animate);
-  };
-
-  const drivePart = (partId: string, delta: number, secondaryDelta = 0) => {
+  const drivePart = (partId: string, delta: number) => {
     if (module.spec.slug === "astroclock" && delta < 0) {
       const reverseLock = module.mechanism?.triggers.find(
         (candidate) => candidate.id === "drag-shulun",
@@ -3841,29 +3737,6 @@ export default function MachineViewer({
         (candidate) => candidate.id === "quake",
       );
       quake?.run(graph, recordEvent, delta >= 0 ? 6 : 2);
-      return;
-    }
-    if (module.spec.slug === "gimbal" && partId === "outer-shell") {
-      const current = attitudeQuaternion(graph.state(), partId) ?? [0, 0, 0, 1];
-      const attitude = new Quaternion(...current)
-        .premultiply(
-          new Quaternion().setFromAxisAngle(
-            new Vector3(1, 0, 0),
-            secondaryDelta,
-          ),
-        )
-        .premultiply(
-          new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), delta),
-        )
-        .normalize();
-      graph.setAttitude(partId, [
-        attitude.x,
-        attitude.y,
-        attitude.z,
-        attitude.w,
-      ]);
-      recordEvent("drive:attitude", partId);
-      recordEvent("stabilize", "incense-bowl");
       return;
     }
     const trigger = module.mechanism?.triggers.find(
@@ -3957,6 +3830,7 @@ export default function MachineViewer({
               dpr={[1, 2]}
               frameloop={idleDemand ? "demand" : "always"}
               gl={{
+                antialias: false,
                 toneMapping: ACESFilmicToneMapping,
                 toneMappingExposure: 1.05,
               }}
@@ -3978,7 +3852,7 @@ export default function MachineViewer({
                 <>
                   <MachineScene
                     activeSpec={activeSpec}
-                    aidCutawayPartIds={aidCutawayPartIds}
+                    aidCutawayPartIds={visibleCutawayPartIds}
                     aidHighlightPartIds={aidHighlightPartIds}
                     appearance={newSchemeAppearance}
                     assembly={assembly}
@@ -4315,18 +4189,12 @@ export default function MachineViewer({
               (trigger) => !trigger.id.startsWith("drive:"),
             ) ? (
               module.mechanism.triggers
-                .filter(
-                  (trigger) =>
-                    !trigger.id.startsWith("drive:") &&
-                    !(
-                      module.spec.slug === "typecase" &&
-                      trigger.id === "process"
-                    ),
-                )
+                .filter((trigger) => !trigger.id.startsWith("drive:"))
                 .map((trigger) => (
                   <button
                     className="mechanism-button"
                     data-testid={`mech-trigger-${trigger.id}`}
+                    disabled={spotlightActive}
                     key={trigger.id}
                     onClick={() => runTrigger(trigger.id)}
                     type="button"
@@ -4337,45 +4205,6 @@ export default function MachineViewer({
             ) : (
               <p className="panel-empty">{t("viewer.noMechanisms")}</p>
             )}
-            {module.spec.slug === "typecase" ? (
-              <div data-testid="typecase-process-stepper">
-                {TYPECASE_PROCESS_STEPS.map((step, index) => (
-                  <button
-                    aria-current={
-                      typecaseProcessStep === index ? "step" : undefined
-                    }
-                    className="mechanism-button"
-                    data-testid={`typecase-process-step-${index + 1}`}
-                    disabled={
-                      typecaseProcessBusy || index !== typecaseProcessStep + 1
-                    }
-                    key={step.source + step.quote}
-                    onClick={() => runTypecaseProcessStage(index + 1)}
-                    type="button"
-                  >
-                    {index + 1}. {step.label[language]}
-                  </button>
-                ))}
-                <button
-                  className="ghost-button"
-                  data-testid="typecase-process-reset"
-                  disabled={typecaseProcessBusy || typecaseProcessStep < 0}
-                  onClick={() => runTypecaseProcessStage(0)}
-                  type="button"
-                >
-                  {language === "zh" ? "重置流程" : "Reset process"}
-                </button>
-                {typecaseProcessStep >= 0 ? (
-                  <p
-                    className="event-caption"
-                    data-testid="typecase-process-source"
-                  >
-                    「{TYPECASE_PROCESS_STEPS[typecaseProcessStep].quote}」 ·{" "}
-                    {TYPECASE_PROCESS_STEPS[typecaseProcessStep].source}
-                  </p>
-                ) : null}
-              </div>
-            ) : null}
           </div>
           {odometerReadout !== null ? (
             <p aria-live="polite" className="event-caption">
@@ -4400,15 +4229,15 @@ export default function MachineViewer({
             <button
               className="gold-button"
               data-testid="spotlight-play"
-              disabled={!spotlight || viewerGeometryReadyAt === null}
+              disabled={
+                !spotlight || viewerGeometryReadyAt === null || spotlightActive
+              }
               onClick={() => spotlight && runTrigger(spotlight.id)}
               type="button"
             >
               {t("viewer.spotlightPlay")}
             </button>
             <SpotlightSemanticReadout
-              active={spotlightActive}
-              graph={graph}
               language={language}
               module={module}
               visible={spotlightActive || spotlightDone}

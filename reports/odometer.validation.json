@@ -1,6 +1,6 @@
 {
   "slug": "odometer",
-  "when": "2026-07-18T23:23:13.407Z",
+  "when": "2026-07-20T16:31:42.119Z",
   "checks": [
     {
       "id": "base:provenance:part:chassis-base",
@@ -45,9 +45,21 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
+      "id": "base:provenance:part:road-transfer-witness",
+      "status": "pass",
+      "message": "Part road-transfer-witness has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
       "id": "base:provenance:part:xiapinglun",
       "status": "pass",
       "message": "Part xiapinglun has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:part:lower-gear-witness",
+      "status": "pass",
+      "message": "Part lower-gear-witness has valid provenance.",
       "sourceRef": "songshi-ludaolong"
     },
     {
@@ -75,33 +87,45 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "base:provenance:part:front-left-post",
+      "id": "base:provenance:part:guanxin-shaft-lower",
       "status": "pass",
-      "message": "Part front-left-post has valid provenance.",
-      "sourceRef": "songshi-waiguan"
+      "message": "Part guanxin-shaft-lower has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "base:provenance:part:front-right-post",
+      "id": "base:provenance:part:zhongping-shaft",
       "status": "pass",
-      "message": "Part front-right-post has valid provenance.",
-      "sourceRef": "songshi-waiguan"
+      "message": "Part zhongping-shaft has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "base:provenance:part:rear-left-post",
+      "id": "base:provenance:part:shangping-shaft",
       "status": "pass",
-      "message": "Part rear-left-post has valid provenance.",
-      "sourceRef": "songshi-waiguan"
+      "message": "Part shangping-shaft has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "base:provenance:part:rear-right-post",
+      "id": "base:provenance:part:trip-linkage-drum",
       "status": "pass",
-      "message": "Part rear-right-post has valid provenance.",
-      "sourceRef": "songshi-waiguan"
+      "message": "Part trip-linkage-drum has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:part:trip-linkage-chime",
+      "status": "pass",
+      "message": "Part trip-linkage-chime has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
     },
     {
       "id": "base:provenance:part:canopy-roof",
       "status": "pass",
       "message": "Part canopy-roof has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:part:lower-figure-body",
+      "status": "pass",
+      "message": "Part lower-figure-body has valid provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -111,9 +135,27 @@
       "sourceRef": "songshi-waiguan"
     },
     {
+      "id": "base:provenance:part:upper-figure-body",
+      "status": "pass",
+      "message": "Part upper-figure-body has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
       "id": "base:provenance:part:upper-figure",
       "status": "pass",
       "message": "Part upper-figure has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:part:li-instrument-support",
+      "status": "pass",
+      "message": "Part li-instrument-support has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:part:ten-li-instrument-support",
+      "status": "pass",
+      "message": "Part ten-li-instrument-support has valid provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -129,21 +171,75 @@
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:chassis-base:size.0",
+      "id": "base:provenance:dimension:chassis-base:params.bearingDepth",
       "status": "pass",
-      "message": "chassis-base.size.0 has dimension provenance.",
+      "message": "chassis-base.params.bearingDepth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:chassis-base:size.1",
+      "id": "base:provenance:dimension:chassis-base:params.bearingHeight",
       "status": "pass",
-      "message": "chassis-base.size.1 has dimension provenance.",
+      "message": "chassis-base.params.bearingHeight has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:chassis-base:size.2",
+      "id": "base:provenance:dimension:chassis-base:params.bearingOffset",
       "status": "pass",
-      "message": "chassis-base.size.2 has dimension provenance.",
+      "message": "chassis-base.params.bearingOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.bearingWidth",
+      "status": "pass",
+      "message": "chassis-base.params.bearingWidth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.crossMemberOffset",
+      "status": "pass",
+      "message": "chassis-base.params.crossMemberOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.gearClearance",
+      "status": "pass",
+      "message": "chassis-base.params.gearClearance has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.height",
+      "status": "pass",
+      "message": "chassis-base.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.length",
+      "status": "pass",
+      "message": "chassis-base.params.length has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.railWidth",
+      "status": "pass",
+      "message": "chassis-base.params.railWidth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.whirlwindClearance",
+      "status": "pass",
+      "message": "chassis-base.params.whirlwindClearance has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.whirlwindOffset",
+      "status": "pass",
+      "message": "chassis-base.params.whirlwindOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chassis-base:params.width",
+      "status": "pass",
+      "message": "chassis-base.params.width has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -195,39 +291,105 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "base:provenance:dimension:platform:size.0",
+      "id": "base:provenance:dimension:platform:params.depth",
       "status": "pass",
-      "message": "platform.size.0 has dimension provenance.",
+      "message": "platform.params.depth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:platform:size.1",
+      "id": "base:provenance:dimension:platform:params.lowerHeight",
       "status": "pass",
-      "message": "platform.size.1 has dimension provenance.",
+      "message": "platform.params.lowerHeight has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:platform:size.2",
+      "id": "base:provenance:dimension:platform:params.panel",
       "status": "pass",
-      "message": "platform.size.2 has dimension provenance.",
+      "message": "platform.params.panel has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:drawbar:size.0",
+      "id": "base:provenance:dimension:platform:params.post",
       "status": "pass",
-      "message": "drawbar.size.0 has dimension provenance.",
+      "message": "platform.params.post has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:drawbar:size.1",
+      "id": "base:provenance:dimension:platform:params.railHeight",
       "status": "pass",
-      "message": "drawbar.size.1 has dimension provenance.",
+      "message": "platform.params.railHeight has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:drawbar:size.2",
+      "id": "base:provenance:dimension:platform:params.skirtHeight",
       "status": "pass",
-      "message": "drawbar.size.2 has dimension provenance.",
+      "message": "platform.params.skirtHeight has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:platform:params.upperGearClearance",
+      "status": "pass",
+      "message": "platform.params.upperGearClearance has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:platform:params.upperGearOffset",
+      "status": "pass",
+      "message": "platform.params.upperGearOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:platform:params.upperHeight",
+      "status": "pass",
+      "message": "platform.params.upperHeight has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:platform:params.wheelWellDepth",
+      "status": "pass",
+      "message": "platform.params.wheelWellDepth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:platform:params.wheelWellWidth",
+      "status": "pass",
+      "message": "platform.params.wheelWellWidth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:platform:params.width",
+      "status": "pass",
+      "message": "platform.params.width has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drawbar:params.headRadius",
+      "status": "pass",
+      "message": "drawbar.params.headRadius has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drawbar:params.length",
+      "status": "pass",
+      "message": "drawbar.params.length has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drawbar:params.radius",
+      "status": "pass",
+      "message": "drawbar.params.radius has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drawbar:params.rise",
+      "status": "pass",
+      "message": "drawbar.params.rise has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drawbar:params.yokeWidth",
+      "status": "pass",
+      "message": "drawbar.params.yokeWidth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -249,6 +411,42 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
+      "id": "base:provenance:dimension:road-transfer-witness:params.couplingLength",
+      "status": "pass",
+      "message": "road-transfer-witness.params.couplingLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:road-transfer-witness:params.couplingRadius",
+      "status": "pass",
+      "message": "road-transfer-witness.params.couplingRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:road-transfer-witness:params.direction",
+      "status": "pass",
+      "message": "road-transfer-witness.params.direction has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:road-transfer-witness:params.length",
+      "status": "pass",
+      "message": "road-transfer-witness.params.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:road-transfer-witness:params.thickness",
+      "status": "pass",
+      "message": "road-transfer-witness.params.thickness has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:road-transfer-witness:params.width",
+      "status": "pass",
+      "message": "road-transfer-witness.params.width has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
       "id": "base:provenance:dimension:xiapinglun:module",
       "status": "pass",
       "message": "xiapinglun.module has dimension provenance.",
@@ -264,6 +462,42 @@
       "id": "base:provenance:dimension:xiapinglun:thickness",
       "status": "pass",
       "message": "xiapinglun.thickness has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:lower-gear-witness:params.couplingLength",
+      "status": "pass",
+      "message": "lower-gear-witness.params.couplingLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:lower-gear-witness:params.couplingRadius",
+      "status": "pass",
+      "message": "lower-gear-witness.params.couplingRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:lower-gear-witness:params.direction",
+      "status": "pass",
+      "message": "lower-gear-witness.params.direction has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:lower-gear-witness:params.length",
+      "status": "pass",
+      "message": "lower-gear-witness.params.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:lower-gear-witness:params.thickness",
+      "status": "pass",
+      "message": "lower-gear-witness.params.thickness has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:lower-gear-witness:params.width",
+      "status": "pass",
+      "message": "lower-gear-witness.params.width has dimension provenance.",
       "sourceRef": "songshi-ludaolong"
     },
     {
@@ -339,93 +573,249 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "base:provenance:dimension:front-left-post:size.0",
+      "id": "base:provenance:dimension:guanxin-shaft-lower:length",
       "status": "pass",
-      "message": "front-left-post.size.0 has dimension provenance.",
+      "message": "guanxin-shaft-lower.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:guanxin-shaft-lower:radius",
+      "status": "pass",
+      "message": "guanxin-shaft-lower.radius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:zhongping-shaft:params.collarHeight",
+      "status": "pass",
+      "message": "zhongping-shaft.params.collarHeight has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:zhongping-shaft:params.collarOffsetA",
+      "status": "pass",
+      "message": "zhongping-shaft.params.collarOffsetA has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:zhongping-shaft:params.collarOffsetB",
+      "status": "pass",
+      "message": "zhongping-shaft.params.collarOffsetB has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:zhongping-shaft:params.collarRadius",
+      "status": "pass",
+      "message": "zhongping-shaft.params.collarRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:zhongping-shaft:params.length",
+      "status": "pass",
+      "message": "zhongping-shaft.params.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:zhongping-shaft:params.radius",
+      "status": "pass",
+      "message": "zhongping-shaft.params.radius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:shangping-shaft:params.collarHeight",
+      "status": "pass",
+      "message": "shangping-shaft.params.collarHeight has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:shangping-shaft:params.collarOffsetA",
+      "status": "pass",
+      "message": "shangping-shaft.params.collarOffsetA has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:shangping-shaft:params.collarOffsetB",
+      "status": "pass",
+      "message": "shangping-shaft.params.collarOffsetB has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:shangping-shaft:params.collarRadius",
+      "status": "pass",
+      "message": "shangping-shaft.params.collarRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:shangping-shaft:params.length",
+      "status": "pass",
+      "message": "shangping-shaft.params.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:shangping-shaft:params.radius",
+      "status": "pass",
+      "message": "shangping-shaft.params.radius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-drum:joint.limits.0",
+      "status": "pass",
+      "message": "trip-linkage-drum.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-drum:joint.limits.1",
+      "status": "pass",
+      "message": "trip-linkage-drum.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-drum:params.displayOffset",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.displayOffset has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-drum:params.leverHeight",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.leverHeight has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-drum:params.pinLength",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.pinLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-drum:params.reach",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.reach has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-drum:params.rodLength",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.rodLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-drum:params.rodRadius",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.rodRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-chime:joint.limits.0",
+      "status": "pass",
+      "message": "trip-linkage-chime.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-chime:joint.limits.1",
+      "status": "pass",
+      "message": "trip-linkage-chime.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-chime:params.displayOffset",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.displayOffset has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-chime:params.leverHeight",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.leverHeight has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-chime:params.pinLength",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.pinLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-chime:params.reach",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.reach has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-chime:params.rodLength",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.rodLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:trip-linkage-chime:params.rodRadius",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.rodRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "base:provenance:dimension:canopy-roof:params.depth",
+      "status": "pass",
+      "message": "canopy-roof.params.depth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:front-left-post:size.1",
+      "id": "base:provenance:dimension:canopy-roof:params.ridgeLength",
       "status": "pass",
-      "message": "front-left-post.size.1 has dimension provenance.",
+      "message": "canopy-roof.params.ridgeLength has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:front-left-post:size.2",
+      "id": "base:provenance:dimension:canopy-roof:params.ridgeRadius",
       "status": "pass",
-      "message": "front-left-post.size.2 has dimension provenance.",
+      "message": "canopy-roof.params.ridgeRadius has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:front-right-post:size.0",
+      "id": "base:provenance:dimension:canopy-roof:params.rise",
       "status": "pass",
-      "message": "front-right-post.size.0 has dimension provenance.",
+      "message": "canopy-roof.params.rise has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:front-right-post:size.1",
+      "id": "base:provenance:dimension:canopy-roof:params.thickness",
       "status": "pass",
-      "message": "front-right-post.size.1 has dimension provenance.",
+      "message": "canopy-roof.params.thickness has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:front-right-post:size.2",
+      "id": "base:provenance:dimension:canopy-roof:params.width",
       "status": "pass",
-      "message": "front-right-post.size.2 has dimension provenance.",
+      "message": "canopy-roof.params.width has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:rear-left-post:size.0",
+      "id": "base:provenance:dimension:lower-figure-body:joint.limits.0",
       "status": "pass",
-      "message": "rear-left-post.size.0 has dimension provenance.",
+      "message": "lower-figure-body.joint.limits.0 has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:rear-left-post:size.1",
+      "id": "base:provenance:dimension:lower-figure-body:joint.limits.1",
       "status": "pass",
-      "message": "rear-left-post.size.1 has dimension provenance.",
+      "message": "lower-figure-body.joint.limits.1 has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:rear-left-post:size.2",
+      "id": "base:provenance:dimension:lower-figure-body:params.depth",
       "status": "pass",
-      "message": "rear-left-post.size.2 has dimension provenance.",
+      "message": "lower-figure-body.params.depth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:rear-right-post:size.0",
+      "id": "base:provenance:dimension:lower-figure-body:params.height",
       "status": "pass",
-      "message": "rear-right-post.size.0 has dimension provenance.",
+      "message": "lower-figure-body.params.height has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:rear-right-post:size.1",
+      "id": "base:provenance:dimension:lower-figure-body:params.shoulderWidth",
       "status": "pass",
-      "message": "rear-right-post.size.1 has dimension provenance.",
-      "sourceRef": "songshi-waiguan"
-    },
-    {
-      "id": "base:provenance:dimension:rear-right-post:size.2",
-      "status": "pass",
-      "message": "rear-right-post.size.2 has dimension provenance.",
-      "sourceRef": "songshi-waiguan"
-    },
-    {
-      "id": "base:provenance:dimension:canopy-roof:size.0",
-      "status": "pass",
-      "message": "canopy-roof.size.0 has dimension provenance.",
-      "sourceRef": "songshi-waiguan"
-    },
-    {
-      "id": "base:provenance:dimension:canopy-roof:size.1",
-      "status": "pass",
-      "message": "canopy-roof.size.1 has dimension provenance.",
-      "sourceRef": "songshi-waiguan"
-    },
-    {
-      "id": "base:provenance:dimension:canopy-roof:size.2",
-      "status": "pass",
-      "message": "canopy-roof.size.2 has dimension provenance.",
+      "message": "lower-figure-body.params.shoulderWidth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -441,21 +831,81 @@
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:lower-figure:size.0",
+      "id": "base:provenance:dimension:lower-figure:params.contactDepth",
       "status": "pass",
-      "message": "lower-figure.size.0 has dimension provenance.",
+      "message": "lower-figure.params.contactDepth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:lower-figure:size.1",
+      "id": "base:provenance:dimension:lower-figure:params.contactOffset",
       "status": "pass",
-      "message": "lower-figure.size.1 has dimension provenance.",
+      "message": "lower-figure.params.contactOffset has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:lower-figure:size.2",
+      "id": "base:provenance:dimension:lower-figure:params.direction",
       "status": "pass",
-      "message": "lower-figure.size.2 has dimension provenance.",
+      "message": "lower-figure.params.direction has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:lower-figure:params.handle",
+      "status": "pass",
+      "message": "lower-figure.params.handle has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:lower-figure:params.head",
+      "status": "pass",
+      "message": "lower-figure.params.head has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:lower-figure:params.length",
+      "status": "pass",
+      "message": "lower-figure.params.length has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:lower-figure:params.planeOffset",
+      "status": "pass",
+      "message": "lower-figure.params.planeOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:lower-figure:params.thickness",
+      "status": "pass",
+      "message": "lower-figure.params.thickness has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:upper-figure-body:joint.limits.0",
+      "status": "pass",
+      "message": "upper-figure-body.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:upper-figure-body:joint.limits.1",
+      "status": "pass",
+      "message": "upper-figure-body.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:upper-figure-body:params.depth",
+      "status": "pass",
+      "message": "upper-figure-body.params.depth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:upper-figure-body:params.height",
+      "status": "pass",
+      "message": "upper-figure-body.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:upper-figure-body:params.shoulderWidth",
+      "status": "pass",
+      "message": "upper-figure-body.params.shoulderWidth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -471,45 +921,159 @@
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:upper-figure:size.0",
+      "id": "base:provenance:dimension:upper-figure:params.contactDepth",
       "status": "pass",
-      "message": "upper-figure.size.0 has dimension provenance.",
+      "message": "upper-figure.params.contactDepth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:upper-figure:size.1",
+      "id": "base:provenance:dimension:upper-figure:params.contactOffset",
       "status": "pass",
-      "message": "upper-figure.size.1 has dimension provenance.",
+      "message": "upper-figure.params.contactOffset has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:upper-figure:size.2",
+      "id": "base:provenance:dimension:upper-figure:params.direction",
       "status": "pass",
-      "message": "upper-figure.size.2 has dimension provenance.",
+      "message": "upper-figure.params.direction has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:drum:length",
+      "id": "base:provenance:dimension:upper-figure:params.handle",
       "status": "pass",
-      "message": "drum.length has dimension provenance.",
+      "message": "upper-figure.params.handle has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:drum:radius",
+      "id": "base:provenance:dimension:upper-figure:params.head",
       "status": "pass",
-      "message": "drum.radius has dimension provenance.",
+      "message": "upper-figure.params.head has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:chime:radius",
+      "id": "base:provenance:dimension:upper-figure:params.length",
       "status": "pass",
-      "message": "chime.radius has dimension provenance.",
+      "message": "upper-figure.params.length has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:provenance:dimension:chime:tube",
+      "id": "base:provenance:dimension:upper-figure:params.planeOffset",
       "status": "pass",
-      "message": "chime.tube has dimension provenance.",
+      "message": "upper-figure.params.planeOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:upper-figure:params.thickness",
+      "status": "pass",
+      "message": "upper-figure.params.thickness has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:li-instrument-support:params.bar",
+      "status": "pass",
+      "message": "li-instrument-support.params.bar has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:li-instrument-support:params.depth",
+      "status": "pass",
+      "message": "li-instrument-support.params.depth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:li-instrument-support:params.height",
+      "status": "pass",
+      "message": "li-instrument-support.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:li-instrument-support:params.width",
+      "status": "pass",
+      "message": "li-instrument-support.params.width has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:ten-li-instrument-support:params.bar",
+      "status": "pass",
+      "message": "ten-li-instrument-support.params.bar has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:ten-li-instrument-support:params.depth",
+      "status": "pass",
+      "message": "ten-li-instrument-support.params.depth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:ten-li-instrument-support:params.height",
+      "status": "pass",
+      "message": "ten-li-instrument-support.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:ten-li-instrument-support:params.width",
+      "status": "pass",
+      "message": "ten-li-instrument-support.params.width has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drum:joint.limits.0",
+      "status": "pass",
+      "message": "drum.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drum:joint.limits.1",
+      "status": "pass",
+      "message": "drum.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drum:params.hoop",
+      "status": "pass",
+      "message": "drum.params.hoop has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drum:params.length",
+      "status": "pass",
+      "message": "drum.params.length has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:drum:params.radius",
+      "status": "pass",
+      "message": "drum.params.radius has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chime:joint.limits.0",
+      "status": "pass",
+      "message": "chime.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chime:joint.limits.1",
+      "status": "pass",
+      "message": "chime.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chime:params.height",
+      "status": "pass",
+      "message": "chime.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chime:params.loopRadius",
+      "status": "pass",
+      "message": "chime.params.loopRadius has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:provenance:dimension:chime:params.radius",
+      "status": "pass",
+      "message": "chime.params.radius has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -572,25 +1136,37 @@
       "message": "Mesh 3 joins two gears."
     },
     {
-      "id": "base:integrity:constraint:5:mesh-endpoints",
+      "id": "base:integrity:constraint:6:mesh-endpoints",
       "status": "pass",
-      "message": "Mesh 5 joins two gears."
+      "message": "Mesh 6 joins two gears."
     },
     {
-      "id": "base:integrity:constraint:7:mesh-endpoints",
+      "id": "base:integrity:constraint:9:mesh-endpoints",
       "status": "pass",
-      "message": "Mesh 7 joins two gears."
+      "message": "Mesh 9 joins two gears."
     },
     {
-      "id": "base:integrity:constraint:8:provenance",
+      "id": "base:integrity:constraint:11:provenance",
       "status": "pass",
-      "message": "Constraint 8 has valid provenance.",
+      "message": "Constraint 11 has valid provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "base:integrity:constraint:9:provenance",
+      "id": "base:integrity:constraint:12:provenance",
       "status": "pass",
-      "message": "Constraint 9 has valid provenance.",
+      "message": "Constraint 12 has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:integrity:constraint:13:provenance",
+      "status": "pass",
+      "message": "Constraint 13 has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "base:integrity:constraint:14:provenance",
+      "status": "pass",
+      "message": "Constraint 14 has valid provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -622,6 +1198,11 @@
       "id": "base:integrity:mechanism:trigger:spotlight",
       "status": "pass",
       "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:ten-li-spotlight",
+      "status": "pass",
+      "message": "Trigger ten-li-spotlight runs on a fresh graph."
     },
     {
       "id": "base:integrity:mechanism:trigger:drive:zulun",
@@ -727,14 +1308,44 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
+      "id": "base:range:trip-linkage-drum",
+      "status": "pass",
+      "message": "Joint trip-linkage-drum remains within [0, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:trip-linkage-chime",
+      "status": "pass",
+      "message": "Joint trip-linkage-chime remains within [0, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lower-figure-body",
+      "status": "pass",
+      "message": "Joint lower-figure-body remains within [0, 0.14] over the sampled cycle."
+    },
+    {
       "id": "base:range:lower-figure",
       "status": "pass",
       "message": "Joint lower-figure remains within [0, 0.28] over the sampled cycle."
     },
     {
+      "id": "base:range:upper-figure-body",
+      "status": "pass",
+      "message": "Joint upper-figure-body remains within [0, 0.18] over the sampled cycle."
+    },
+    {
       "id": "base:range:upper-figure",
       "status": "pass",
       "message": "Joint upper-figure remains within [0, 0.28] over the sampled cycle."
+    },
+    {
+      "id": "base:range:drum",
+      "status": "pass",
+      "message": "Joint drum remains within [0, 0.16] over the sampled cycle."
+    },
+    {
+      "id": "base:range:chime",
+      "status": "pass",
+      "message": "Joint chime remains within [0, 0.35] over the sampled cycle."
     },
     {
       "id": "base:collision:whitelist:lilun:xiapinglun",
@@ -752,9 +1363,144 @@
       "message": "Whitelisted gear pair xiaopinglun/shangpinglun passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
     },
     {
-      "id": "base:collision:bvh",
+      "id": "base:collision:whitelist:chassis-base:road-axle",
       "status": "pass",
-      "message": "No issue found at 1.8900000000000001° resolution; the sampling cap prevents an exact collision-free claim."
+      "message": "Whitelisted contact pair chassis-base/road-axle intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:chassis-base:road-transfer-witness",
+      "status": "pass",
+      "message": "Whitelisted contact pair chassis-base/road-transfer-witness intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:chassis-base:platform",
+      "status": "pass",
+      "message": "Whitelisted contact pair chassis-base/platform intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:platform:canopy-roof",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/canopy-roof intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:platform:lower-figure-body",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/lower-figure-body intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:platform:upper-figure-body",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/upper-figure-body intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:chassis-base:zhongping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair chassis-base/zhongping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:platform:zhongping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/zhongping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:platform:shangping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/shangping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:platform:ten-li-instrument-support",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/ten-li-instrument-support intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:xiapinglun:guanxin-shaft-lower",
+      "status": "pass",
+      "message": "Whitelisted contact pair xiapinglun/guanxin-shaft-lower intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:xuanfenglun:guanxin-shaft-lower",
+      "status": "pass",
+      "message": "Whitelisted contact pair xuanfenglun/guanxin-shaft-lower intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:zhongpinglun:guanxin-shaft-lower",
+      "status": "pass",
+      "message": "Whitelisted contact pair zhongpinglun/guanxin-shaft-lower intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:zhongpinglun:zhongping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair zhongpinglun/zhongping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:xiaopinglun:zhongping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair xiaopinglun/zhongping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:shangpinglun:shangping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair shangpinglun/shangping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:zhongping-shaft:trip-linkage-drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair zhongping-shaft/trip-linkage-drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:shangping-shaft:trip-linkage-chime",
+      "status": "pass",
+      "message": "Whitelisted contact pair shangping-shaft/trip-linkage-chime intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:lower-figure-body:trip-linkage-drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair lower-figure-body/trip-linkage-drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:lower-figure:trip-linkage-drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair lower-figure/trip-linkage-drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:trip-linkage-chime:upper-figure",
+      "status": "pass",
+      "message": "Whitelisted contact pair trip-linkage-chime/upper-figure intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:lower-figure-body:lower-figure",
+      "status": "pass",
+      "message": "Whitelisted contact pair lower-figure-body/lower-figure intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:lower-figure:drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair lower-figure/drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:upper-figure-body:upper-figure",
+      "status": "pass",
+      "message": "Whitelisted contact pair upper-figure-body/upper-figure intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:upper-figure:chime",
+      "status": "pass",
+      "message": "Whitelisted contact pair upper-figure/chime intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:li-instrument-support:drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair li-instrument-support/drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:ten-li-instrument-support:chime",
+      "status": "pass",
+      "message": "Whitelisted contact pair ten-li-instrument-support/chime intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:lower-figure:li-instrument-support",
+      "status": "fail",
+      "message": "Parts lower-figure and li-instrument-support collide while driving zulun at angle 158.17919010824608 rad."
     },
     {
       "id": "ludaolong:provenance:part:chassis-base",
@@ -799,9 +1545,21 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
+      "id": "ludaolong:provenance:part:road-transfer-witness",
+      "status": "pass",
+      "message": "Part road-transfer-witness has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
       "id": "ludaolong:provenance:part:xiapinglun",
       "status": "pass",
       "message": "Part xiapinglun has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:part:lower-gear-witness",
+      "status": "pass",
+      "message": "Part lower-gear-witness has valid provenance.",
       "sourceRef": "songshi-ludaolong"
     },
     {
@@ -829,33 +1587,45 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "ludaolong:provenance:part:front-left-post",
+      "id": "ludaolong:provenance:part:guanxin-shaft-lower",
       "status": "pass",
-      "message": "Part front-left-post has valid provenance.",
-      "sourceRef": "songshi-waiguan"
+      "message": "Part guanxin-shaft-lower has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "ludaolong:provenance:part:front-right-post",
+      "id": "ludaolong:provenance:part:zhongping-shaft",
       "status": "pass",
-      "message": "Part front-right-post has valid provenance.",
-      "sourceRef": "songshi-waiguan"
+      "message": "Part zhongping-shaft has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "ludaolong:provenance:part:rear-left-post",
+      "id": "ludaolong:provenance:part:shangping-shaft",
       "status": "pass",
-      "message": "Part rear-left-post has valid provenance.",
-      "sourceRef": "songshi-waiguan"
+      "message": "Part shangping-shaft has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "ludaolong:provenance:part:rear-right-post",
+      "id": "ludaolong:provenance:part:trip-linkage-drum",
       "status": "pass",
-      "message": "Part rear-right-post has valid provenance.",
-      "sourceRef": "songshi-waiguan"
+      "message": "Part trip-linkage-drum has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:part:trip-linkage-chime",
+      "status": "pass",
+      "message": "Part trip-linkage-chime has valid provenance.",
+      "sourceRef": "songshi-ludaolong"
     },
     {
       "id": "ludaolong:provenance:part:canopy-roof",
       "status": "pass",
       "message": "Part canopy-roof has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:part:lower-figure-body",
+      "status": "pass",
+      "message": "Part lower-figure-body has valid provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -865,9 +1635,27 @@
       "sourceRef": "songshi-waiguan"
     },
     {
+      "id": "ludaolong:provenance:part:upper-figure-body",
+      "status": "pass",
+      "message": "Part upper-figure-body has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
       "id": "ludaolong:provenance:part:upper-figure",
       "status": "pass",
       "message": "Part upper-figure has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:part:li-instrument-support",
+      "status": "pass",
+      "message": "Part li-instrument-support has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:part:ten-li-instrument-support",
+      "status": "pass",
+      "message": "Part ten-li-instrument-support has valid provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -883,21 +1671,75 @@
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:chassis-base:size.0",
+      "id": "ludaolong:provenance:dimension:chassis-base:params.bearingDepth",
       "status": "pass",
-      "message": "chassis-base.size.0 has dimension provenance.",
+      "message": "chassis-base.params.bearingDepth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:chassis-base:size.1",
+      "id": "ludaolong:provenance:dimension:chassis-base:params.bearingHeight",
       "status": "pass",
-      "message": "chassis-base.size.1 has dimension provenance.",
+      "message": "chassis-base.params.bearingHeight has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:chassis-base:size.2",
+      "id": "ludaolong:provenance:dimension:chassis-base:params.bearingOffset",
       "status": "pass",
-      "message": "chassis-base.size.2 has dimension provenance.",
+      "message": "chassis-base.params.bearingOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.bearingWidth",
+      "status": "pass",
+      "message": "chassis-base.params.bearingWidth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.crossMemberOffset",
+      "status": "pass",
+      "message": "chassis-base.params.crossMemberOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.gearClearance",
+      "status": "pass",
+      "message": "chassis-base.params.gearClearance has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.height",
+      "status": "pass",
+      "message": "chassis-base.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.length",
+      "status": "pass",
+      "message": "chassis-base.params.length has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.railWidth",
+      "status": "pass",
+      "message": "chassis-base.params.railWidth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.whirlwindClearance",
+      "status": "pass",
+      "message": "chassis-base.params.whirlwindClearance has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.whirlwindOffset",
+      "status": "pass",
+      "message": "chassis-base.params.whirlwindOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chassis-base:params.width",
+      "status": "pass",
+      "message": "chassis-base.params.width has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -949,39 +1791,105 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "ludaolong:provenance:dimension:platform:size.0",
+      "id": "ludaolong:provenance:dimension:platform:params.depth",
       "status": "pass",
-      "message": "platform.size.0 has dimension provenance.",
+      "message": "platform.params.depth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:platform:size.1",
+      "id": "ludaolong:provenance:dimension:platform:params.lowerHeight",
       "status": "pass",
-      "message": "platform.size.1 has dimension provenance.",
+      "message": "platform.params.lowerHeight has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:platform:size.2",
+      "id": "ludaolong:provenance:dimension:platform:params.panel",
       "status": "pass",
-      "message": "platform.size.2 has dimension provenance.",
+      "message": "platform.params.panel has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:drawbar:size.0",
+      "id": "ludaolong:provenance:dimension:platform:params.post",
       "status": "pass",
-      "message": "drawbar.size.0 has dimension provenance.",
+      "message": "platform.params.post has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:drawbar:size.1",
+      "id": "ludaolong:provenance:dimension:platform:params.railHeight",
       "status": "pass",
-      "message": "drawbar.size.1 has dimension provenance.",
+      "message": "platform.params.railHeight has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:drawbar:size.2",
+      "id": "ludaolong:provenance:dimension:platform:params.skirtHeight",
       "status": "pass",
-      "message": "drawbar.size.2 has dimension provenance.",
+      "message": "platform.params.skirtHeight has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:platform:params.upperGearClearance",
+      "status": "pass",
+      "message": "platform.params.upperGearClearance has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:platform:params.upperGearOffset",
+      "status": "pass",
+      "message": "platform.params.upperGearOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:platform:params.upperHeight",
+      "status": "pass",
+      "message": "platform.params.upperHeight has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:platform:params.wheelWellDepth",
+      "status": "pass",
+      "message": "platform.params.wheelWellDepth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:platform:params.wheelWellWidth",
+      "status": "pass",
+      "message": "platform.params.wheelWellWidth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:platform:params.width",
+      "status": "pass",
+      "message": "platform.params.width has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drawbar:params.headRadius",
+      "status": "pass",
+      "message": "drawbar.params.headRadius has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drawbar:params.length",
+      "status": "pass",
+      "message": "drawbar.params.length has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drawbar:params.radius",
+      "status": "pass",
+      "message": "drawbar.params.radius has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drawbar:params.rise",
+      "status": "pass",
+      "message": "drawbar.params.rise has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drawbar:params.yokeWidth",
+      "status": "pass",
+      "message": "drawbar.params.yokeWidth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -1003,6 +1911,42 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
+      "id": "ludaolong:provenance:dimension:road-transfer-witness:params.couplingLength",
+      "status": "pass",
+      "message": "road-transfer-witness.params.couplingLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:road-transfer-witness:params.couplingRadius",
+      "status": "pass",
+      "message": "road-transfer-witness.params.couplingRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:road-transfer-witness:params.direction",
+      "status": "pass",
+      "message": "road-transfer-witness.params.direction has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:road-transfer-witness:params.length",
+      "status": "pass",
+      "message": "road-transfer-witness.params.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:road-transfer-witness:params.thickness",
+      "status": "pass",
+      "message": "road-transfer-witness.params.thickness has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:road-transfer-witness:params.width",
+      "status": "pass",
+      "message": "road-transfer-witness.params.width has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
       "id": "ludaolong:provenance:dimension:xiapinglun:module",
       "status": "pass",
       "message": "xiapinglun.module has dimension provenance.",
@@ -1018,6 +1962,42 @@
       "id": "ludaolong:provenance:dimension:xiapinglun:thickness",
       "status": "pass",
       "message": "xiapinglun.thickness has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-gear-witness:params.couplingLength",
+      "status": "pass",
+      "message": "lower-gear-witness.params.couplingLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-gear-witness:params.couplingRadius",
+      "status": "pass",
+      "message": "lower-gear-witness.params.couplingRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-gear-witness:params.direction",
+      "status": "pass",
+      "message": "lower-gear-witness.params.direction has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-gear-witness:params.length",
+      "status": "pass",
+      "message": "lower-gear-witness.params.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-gear-witness:params.thickness",
+      "status": "pass",
+      "message": "lower-gear-witness.params.thickness has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-gear-witness:params.width",
+      "status": "pass",
+      "message": "lower-gear-witness.params.width has dimension provenance.",
       "sourceRef": "songshi-ludaolong"
     },
     {
@@ -1093,93 +2073,249 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
-      "id": "ludaolong:provenance:dimension:front-left-post:size.0",
+      "id": "ludaolong:provenance:dimension:guanxin-shaft-lower:length",
       "status": "pass",
-      "message": "front-left-post.size.0 has dimension provenance.",
+      "message": "guanxin-shaft-lower.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:guanxin-shaft-lower:radius",
+      "status": "pass",
+      "message": "guanxin-shaft-lower.radius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:zhongping-shaft:params.collarHeight",
+      "status": "pass",
+      "message": "zhongping-shaft.params.collarHeight has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:zhongping-shaft:params.collarOffsetA",
+      "status": "pass",
+      "message": "zhongping-shaft.params.collarOffsetA has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:zhongping-shaft:params.collarOffsetB",
+      "status": "pass",
+      "message": "zhongping-shaft.params.collarOffsetB has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:zhongping-shaft:params.collarRadius",
+      "status": "pass",
+      "message": "zhongping-shaft.params.collarRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:zhongping-shaft:params.length",
+      "status": "pass",
+      "message": "zhongping-shaft.params.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:zhongping-shaft:params.radius",
+      "status": "pass",
+      "message": "zhongping-shaft.params.radius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:shangping-shaft:params.collarHeight",
+      "status": "pass",
+      "message": "shangping-shaft.params.collarHeight has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:shangping-shaft:params.collarOffsetA",
+      "status": "pass",
+      "message": "shangping-shaft.params.collarOffsetA has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:shangping-shaft:params.collarOffsetB",
+      "status": "pass",
+      "message": "shangping-shaft.params.collarOffsetB has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:shangping-shaft:params.collarRadius",
+      "status": "pass",
+      "message": "shangping-shaft.params.collarRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:shangping-shaft:params.length",
+      "status": "pass",
+      "message": "shangping-shaft.params.length has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:shangping-shaft:params.radius",
+      "status": "pass",
+      "message": "shangping-shaft.params.radius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-drum:joint.limits.0",
+      "status": "pass",
+      "message": "trip-linkage-drum.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-drum:joint.limits.1",
+      "status": "pass",
+      "message": "trip-linkage-drum.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-drum:params.displayOffset",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.displayOffset has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-drum:params.leverHeight",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.leverHeight has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-drum:params.pinLength",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.pinLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-drum:params.reach",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.reach has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-drum:params.rodLength",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.rodLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-drum:params.rodRadius",
+      "status": "pass",
+      "message": "trip-linkage-drum.params.rodRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-chime:joint.limits.0",
+      "status": "pass",
+      "message": "trip-linkage-chime.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-chime:joint.limits.1",
+      "status": "pass",
+      "message": "trip-linkage-chime.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-chime:params.displayOffset",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.displayOffset has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-chime:params.leverHeight",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.leverHeight has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-chime:params.pinLength",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.pinLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-chime:params.reach",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.reach has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-chime:params.rodLength",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.rodLength has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:trip-linkage-chime:params.rodRadius",
+      "status": "pass",
+      "message": "trip-linkage-chime.params.rodRadius has dimension provenance.",
+      "sourceRef": "songshi-ludaolong"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:canopy-roof:params.depth",
+      "status": "pass",
+      "message": "canopy-roof.params.depth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:front-left-post:size.1",
+      "id": "ludaolong:provenance:dimension:canopy-roof:params.ridgeLength",
       "status": "pass",
-      "message": "front-left-post.size.1 has dimension provenance.",
+      "message": "canopy-roof.params.ridgeLength has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:front-left-post:size.2",
+      "id": "ludaolong:provenance:dimension:canopy-roof:params.ridgeRadius",
       "status": "pass",
-      "message": "front-left-post.size.2 has dimension provenance.",
+      "message": "canopy-roof.params.ridgeRadius has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:front-right-post:size.0",
+      "id": "ludaolong:provenance:dimension:canopy-roof:params.rise",
       "status": "pass",
-      "message": "front-right-post.size.0 has dimension provenance.",
+      "message": "canopy-roof.params.rise has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:front-right-post:size.1",
+      "id": "ludaolong:provenance:dimension:canopy-roof:params.thickness",
       "status": "pass",
-      "message": "front-right-post.size.1 has dimension provenance.",
+      "message": "canopy-roof.params.thickness has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:front-right-post:size.2",
+      "id": "ludaolong:provenance:dimension:canopy-roof:params.width",
       "status": "pass",
-      "message": "front-right-post.size.2 has dimension provenance.",
+      "message": "canopy-roof.params.width has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:rear-left-post:size.0",
+      "id": "ludaolong:provenance:dimension:lower-figure-body:joint.limits.0",
       "status": "pass",
-      "message": "rear-left-post.size.0 has dimension provenance.",
+      "message": "lower-figure-body.joint.limits.0 has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:rear-left-post:size.1",
+      "id": "ludaolong:provenance:dimension:lower-figure-body:joint.limits.1",
       "status": "pass",
-      "message": "rear-left-post.size.1 has dimension provenance.",
+      "message": "lower-figure-body.joint.limits.1 has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:rear-left-post:size.2",
+      "id": "ludaolong:provenance:dimension:lower-figure-body:params.depth",
       "status": "pass",
-      "message": "rear-left-post.size.2 has dimension provenance.",
+      "message": "lower-figure-body.params.depth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:rear-right-post:size.0",
+      "id": "ludaolong:provenance:dimension:lower-figure-body:params.height",
       "status": "pass",
-      "message": "rear-right-post.size.0 has dimension provenance.",
+      "message": "lower-figure-body.params.height has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:rear-right-post:size.1",
+      "id": "ludaolong:provenance:dimension:lower-figure-body:params.shoulderWidth",
       "status": "pass",
-      "message": "rear-right-post.size.1 has dimension provenance.",
-      "sourceRef": "songshi-waiguan"
-    },
-    {
-      "id": "ludaolong:provenance:dimension:rear-right-post:size.2",
-      "status": "pass",
-      "message": "rear-right-post.size.2 has dimension provenance.",
-      "sourceRef": "songshi-waiguan"
-    },
-    {
-      "id": "ludaolong:provenance:dimension:canopy-roof:size.0",
-      "status": "pass",
-      "message": "canopy-roof.size.0 has dimension provenance.",
-      "sourceRef": "songshi-waiguan"
-    },
-    {
-      "id": "ludaolong:provenance:dimension:canopy-roof:size.1",
-      "status": "pass",
-      "message": "canopy-roof.size.1 has dimension provenance.",
-      "sourceRef": "songshi-waiguan"
-    },
-    {
-      "id": "ludaolong:provenance:dimension:canopy-roof:size.2",
-      "status": "pass",
-      "message": "canopy-roof.size.2 has dimension provenance.",
+      "message": "lower-figure-body.params.shoulderWidth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -1195,21 +2331,81 @@
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:lower-figure:size.0",
+      "id": "ludaolong:provenance:dimension:lower-figure:params.contactDepth",
       "status": "pass",
-      "message": "lower-figure.size.0 has dimension provenance.",
+      "message": "lower-figure.params.contactDepth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:lower-figure:size.1",
+      "id": "ludaolong:provenance:dimension:lower-figure:params.contactOffset",
       "status": "pass",
-      "message": "lower-figure.size.1 has dimension provenance.",
+      "message": "lower-figure.params.contactOffset has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:lower-figure:size.2",
+      "id": "ludaolong:provenance:dimension:lower-figure:params.direction",
       "status": "pass",
-      "message": "lower-figure.size.2 has dimension provenance.",
+      "message": "lower-figure.params.direction has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-figure:params.handle",
+      "status": "pass",
+      "message": "lower-figure.params.handle has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-figure:params.head",
+      "status": "pass",
+      "message": "lower-figure.params.head has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-figure:params.length",
+      "status": "pass",
+      "message": "lower-figure.params.length has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-figure:params.planeOffset",
+      "status": "pass",
+      "message": "lower-figure.params.planeOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:lower-figure:params.thickness",
+      "status": "pass",
+      "message": "lower-figure.params.thickness has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:upper-figure-body:joint.limits.0",
+      "status": "pass",
+      "message": "upper-figure-body.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:upper-figure-body:joint.limits.1",
+      "status": "pass",
+      "message": "upper-figure-body.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:upper-figure-body:params.depth",
+      "status": "pass",
+      "message": "upper-figure-body.params.depth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:upper-figure-body:params.height",
+      "status": "pass",
+      "message": "upper-figure-body.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:upper-figure-body:params.shoulderWidth",
+      "status": "pass",
+      "message": "upper-figure-body.params.shoulderWidth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -1225,45 +2421,159 @@
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:upper-figure:size.0",
+      "id": "ludaolong:provenance:dimension:upper-figure:params.contactDepth",
       "status": "pass",
-      "message": "upper-figure.size.0 has dimension provenance.",
+      "message": "upper-figure.params.contactDepth has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:upper-figure:size.1",
+      "id": "ludaolong:provenance:dimension:upper-figure:params.contactOffset",
       "status": "pass",
-      "message": "upper-figure.size.1 has dimension provenance.",
+      "message": "upper-figure.params.contactOffset has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:upper-figure:size.2",
+      "id": "ludaolong:provenance:dimension:upper-figure:params.direction",
       "status": "pass",
-      "message": "upper-figure.size.2 has dimension provenance.",
+      "message": "upper-figure.params.direction has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:drum:length",
+      "id": "ludaolong:provenance:dimension:upper-figure:params.handle",
       "status": "pass",
-      "message": "drum.length has dimension provenance.",
+      "message": "upper-figure.params.handle has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:drum:radius",
+      "id": "ludaolong:provenance:dimension:upper-figure:params.head",
       "status": "pass",
-      "message": "drum.radius has dimension provenance.",
+      "message": "upper-figure.params.head has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:chime:radius",
+      "id": "ludaolong:provenance:dimension:upper-figure:params.length",
       "status": "pass",
-      "message": "chime.radius has dimension provenance.",
+      "message": "upper-figure.params.length has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:provenance:dimension:chime:tube",
+      "id": "ludaolong:provenance:dimension:upper-figure:params.planeOffset",
       "status": "pass",
-      "message": "chime.tube has dimension provenance.",
+      "message": "upper-figure.params.planeOffset has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:upper-figure:params.thickness",
+      "status": "pass",
+      "message": "upper-figure.params.thickness has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:li-instrument-support:params.bar",
+      "status": "pass",
+      "message": "li-instrument-support.params.bar has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:li-instrument-support:params.depth",
+      "status": "pass",
+      "message": "li-instrument-support.params.depth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:li-instrument-support:params.height",
+      "status": "pass",
+      "message": "li-instrument-support.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:li-instrument-support:params.width",
+      "status": "pass",
+      "message": "li-instrument-support.params.width has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:ten-li-instrument-support:params.bar",
+      "status": "pass",
+      "message": "ten-li-instrument-support.params.bar has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:ten-li-instrument-support:params.depth",
+      "status": "pass",
+      "message": "ten-li-instrument-support.params.depth has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:ten-li-instrument-support:params.height",
+      "status": "pass",
+      "message": "ten-li-instrument-support.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:ten-li-instrument-support:params.width",
+      "status": "pass",
+      "message": "ten-li-instrument-support.params.width has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drum:joint.limits.0",
+      "status": "pass",
+      "message": "drum.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drum:joint.limits.1",
+      "status": "pass",
+      "message": "drum.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drum:params.hoop",
+      "status": "pass",
+      "message": "drum.params.hoop has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drum:params.length",
+      "status": "pass",
+      "message": "drum.params.length has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:drum:params.radius",
+      "status": "pass",
+      "message": "drum.params.radius has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chime:joint.limits.0",
+      "status": "pass",
+      "message": "chime.joint.limits.0 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chime:joint.limits.1",
+      "status": "pass",
+      "message": "chime.joint.limits.1 has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chime:params.height",
+      "status": "pass",
+      "message": "chime.params.height has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chime:params.loopRadius",
+      "status": "pass",
+      "message": "chime.params.loopRadius has dimension provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:provenance:dimension:chime:params.radius",
+      "status": "pass",
+      "message": "chime.params.radius has dimension provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -1326,25 +2636,37 @@
       "message": "Mesh 3 joins two gears."
     },
     {
-      "id": "ludaolong:integrity:constraint:5:mesh-endpoints",
+      "id": "ludaolong:integrity:constraint:6:mesh-endpoints",
       "status": "pass",
-      "message": "Mesh 5 joins two gears."
+      "message": "Mesh 6 joins two gears."
     },
     {
-      "id": "ludaolong:integrity:constraint:7:mesh-endpoints",
+      "id": "ludaolong:integrity:constraint:9:mesh-endpoints",
       "status": "pass",
-      "message": "Mesh 7 joins two gears."
+      "message": "Mesh 9 joins two gears."
     },
     {
-      "id": "ludaolong:integrity:constraint:8:provenance",
+      "id": "ludaolong:integrity:constraint:11:provenance",
       "status": "pass",
-      "message": "Constraint 8 has valid provenance.",
+      "message": "Constraint 11 has valid provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
-      "id": "ludaolong:integrity:constraint:9:provenance",
+      "id": "ludaolong:integrity:constraint:12:provenance",
       "status": "pass",
-      "message": "Constraint 9 has valid provenance.",
+      "message": "Constraint 12 has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:integrity:constraint:13:provenance",
+      "status": "pass",
+      "message": "Constraint 13 has valid provenance.",
+      "sourceRef": "songshi-waiguan"
+    },
+    {
+      "id": "ludaolong:integrity:constraint:14:provenance",
+      "status": "pass",
+      "message": "Constraint 14 has valid provenance.",
       "sourceRef": "songshi-waiguan"
     },
     {
@@ -1376,6 +2698,11 @@
       "id": "ludaolong:integrity:mechanism:trigger:spotlight",
       "status": "pass",
       "message": "Trigger spotlight runs on a fresh graph."
+    },
+    {
+      "id": "ludaolong:integrity:mechanism:trigger:ten-li-spotlight",
+      "status": "pass",
+      "message": "Trigger ten-li-spotlight runs on a fresh graph."
     },
     {
       "id": "ludaolong:integrity:mechanism:trigger:drive:zulun",
@@ -1481,14 +2808,44 @@
       "sourceRef": "songshi-ludaolong"
     },
     {
+      "id": "ludaolong:range:trip-linkage-drum",
+      "status": "pass",
+      "message": "Joint trip-linkage-drum remains within [0, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "ludaolong:range:trip-linkage-chime",
+      "status": "pass",
+      "message": "Joint trip-linkage-chime remains within [0, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "ludaolong:range:lower-figure-body",
+      "status": "pass",
+      "message": "Joint lower-figure-body remains within [0, 0.14] over the sampled cycle."
+    },
+    {
       "id": "ludaolong:range:lower-figure",
       "status": "pass",
       "message": "Joint lower-figure remains within [0, 0.28] over the sampled cycle."
     },
     {
+      "id": "ludaolong:range:upper-figure-body",
+      "status": "pass",
+      "message": "Joint upper-figure-body remains within [0, 0.18] over the sampled cycle."
+    },
+    {
       "id": "ludaolong:range:upper-figure",
       "status": "pass",
       "message": "Joint upper-figure remains within [0, 0.28] over the sampled cycle."
+    },
+    {
+      "id": "ludaolong:range:drum",
+      "status": "pass",
+      "message": "Joint drum remains within [0, 0.16] over the sampled cycle."
+    },
+    {
+      "id": "ludaolong:range:chime",
+      "status": "pass",
+      "message": "Joint chime remains within [0, 0.35] over the sampled cycle."
     },
     {
       "id": "ludaolong:collision:whitelist:lilun:xiapinglun",
@@ -1506,14 +2863,149 @@
       "message": "Whitelisted gear pair xiaopinglun/shangpinglun passes module, axis, plane-overlap, signed-clearance, and 3D tooth-contact checks."
     },
     {
-      "id": "ludaolong:collision:bvh",
+      "id": "ludaolong:collision:whitelist:chassis-base:road-axle",
       "status": "pass",
-      "message": "No issue found at 1.8900000000000001° resolution; the sampling cap prevents an exact collision-free claim."
+      "message": "Whitelisted contact pair chassis-base/road-axle intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:chassis-base:road-transfer-witness",
+      "status": "pass",
+      "message": "Whitelisted contact pair chassis-base/road-transfer-witness intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:chassis-base:platform",
+      "status": "pass",
+      "message": "Whitelisted contact pair chassis-base/platform intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:platform:canopy-roof",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/canopy-roof intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:platform:lower-figure-body",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/lower-figure-body intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:platform:upper-figure-body",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/upper-figure-body intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:chassis-base:zhongping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair chassis-base/zhongping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:platform:zhongping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/zhongping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:platform:shangping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/shangping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:platform:ten-li-instrument-support",
+      "status": "pass",
+      "message": "Whitelisted contact pair platform/ten-li-instrument-support intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:xiapinglun:guanxin-shaft-lower",
+      "status": "pass",
+      "message": "Whitelisted contact pair xiapinglun/guanxin-shaft-lower intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:xuanfenglun:guanxin-shaft-lower",
+      "status": "pass",
+      "message": "Whitelisted contact pair xuanfenglun/guanxin-shaft-lower intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:zhongpinglun:guanxin-shaft-lower",
+      "status": "pass",
+      "message": "Whitelisted contact pair zhongpinglun/guanxin-shaft-lower intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:zhongpinglun:zhongping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair zhongpinglun/zhongping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:xiaopinglun:zhongping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair xiaopinglun/zhongping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:shangpinglun:shangping-shaft",
+      "status": "pass",
+      "message": "Whitelisted contact pair shangpinglun/shangping-shaft intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:zhongping-shaft:trip-linkage-drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair zhongping-shaft/trip-linkage-drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:shangping-shaft:trip-linkage-chime",
+      "status": "pass",
+      "message": "Whitelisted contact pair shangping-shaft/trip-linkage-chime intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:lower-figure-body:trip-linkage-drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair lower-figure-body/trip-linkage-drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:lower-figure:trip-linkage-drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair lower-figure/trip-linkage-drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:trip-linkage-chime:upper-figure",
+      "status": "pass",
+      "message": "Whitelisted contact pair trip-linkage-chime/upper-figure intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:lower-figure-body:lower-figure",
+      "status": "pass",
+      "message": "Whitelisted contact pair lower-figure-body/lower-figure intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:lower-figure:drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair lower-figure/drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:upper-figure-body:upper-figure",
+      "status": "pass",
+      "message": "Whitelisted contact pair upper-figure-body/upper-figure intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:upper-figure:chime",
+      "status": "pass",
+      "message": "Whitelisted contact pair upper-figure/chime intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:li-instrument-support:drum",
+      "status": "pass",
+      "message": "Whitelisted contact pair li-instrument-support/drum intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:whitelist:ten-li-instrument-support:chime",
+      "status": "pass",
+      "message": "Whitelisted contact pair ten-li-instrument-support/chime intersects during its complete motion sweep."
+    },
+    {
+      "id": "ludaolong:collision:lower-figure:li-instrument-support",
+      "status": "fail",
+      "message": "Parts lower-figure and li-instrument-support collide while driving zulun at angle 158.17919010824608 rad."
     }
   ],
   "summary": {
-    "pass": 260,
-    "fail": 0,
+    "pass": 518,
+    "fail": 2,
     "warn": 0,
     "resolutionDeg": 1.8900000000000001
   }

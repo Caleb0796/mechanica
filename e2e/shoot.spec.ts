@@ -36,14 +36,8 @@ declare const process: {
 const machineSlugs = [
   "astroclock",
   "seismoscope",
-  "chariot",
   "odometer",
-  "wooden-ox",
   "loom",
-  "typecase",
-  "chainpump",
-  "bellows",
-  "gimbal",
 ] as const;
 const captureStates = [
   "hover",
@@ -194,10 +188,9 @@ async function enterCaptureState(
       return;
     }
     case "inspect": {
-      const partId =
-        slug === "chariot"
-          ? "left-road-wheel"
-          : await page.evaluate(() => window.__mech?.spec.primaryDrive ?? null);
+      const partId = await page.evaluate(
+        () => window.__mech?.spec.primaryDrive ?? null,
+      );
       if (!partId) throw new Error(`${slug}:inspect has no selectable part`);
       await page.evaluate((id) => window.__mechSelect?.(id), partId);
       await expect(page.getByTestId("part-inspector")).toHaveAttribute(

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { BoxGeometry } from "three";
 import type { MachineModule, PartDef, Provenance } from "../../src/sim/types";
 import { KinematicGraph } from "../../src/sim/graph";
 import { collisionPairsAtAngle } from "../../src/validate/collision";
@@ -58,7 +59,7 @@ function boxPart(id: string, position: [number, number, number]): PartDef {
 function miniModule(): MachineModule {
   return {
     spec: {
-      slug: "chariot",
+      slug: "fixture",
       parts: [
         gearPart("g20", 20, [0, 0, 0]),
         gearPart("g40", 40, [0.601, 0, 0]),
@@ -73,7 +74,7 @@ function miniModule(): MachineModule {
       collisionWhitelist: [["g20", "g40"]],
     },
     data: {
-      slug: "chariot",
+      slug: "demo",
       names: { zh: "测试", en: "Test" },
       era: { zh: "测试", en: "Test" },
       inventors: [{ zh: "测试", en: "Test" }],
@@ -298,6 +299,176 @@ describe("independent machine validation", () => {
         (check) => check.id === "base:collision:whitelist:g20:g40",
       ),
     ).toMatchObject({ status: "pass" });
+  });
+
+  it("checks whitelisted gears through an alternate declared drive", () => {
+    const module = miniModule();
+    const alternateDrive = gearPart("g10", 10, [3, 0, 0]);
+    const alternateGear = gearPart("g30", 30, [3.401, 0, 0]);
+    module.spec.parts.push(alternateDrive, alternateGear);
+    module.spec.constraints.push({
+      type: "mesh",
+      a: alternateDrive.id,
+      b: alternateGear.id,
+    });
+    module.spec.driveNodes.push(alternateDrive.id);
+    module.spec.collisionWhitelist?.push([alternateDrive.id, alternateGear.id]);
+    let probeCalls = 0;
+    module.mechanism?.triggers.push({
+      id: `drive:${alternateDrive.id}`,
+      label: { zh: "备用驱动", en: "Alternate drive" },
+      run(graph, _emit, param) {
+        if (Math.abs(param ?? 0) === 1) probeCalls += 1;
+        graph.drive(alternateDrive.id, param ?? 0);
+      },
+    });
+
+    const report = runValidation(module, { allowMissingSnapshots: true });
+
+    expect(
+      report.checks.find(
+        (check) => check.id === "base:collision:whitelist:g10:g30",
+      ),
+    ).toMatchObject({ status: "pass" });
+    expect(probeCalls).toBeGreaterThan(0);
+  });
+
+  it("checks global collisions through a disconnected alternate drive", () => {
+    const module = miniModule();
+    const primary = boxPart("primary-drive", [1, 1, 0]);
+    primary.joint = { kind: "revolute", axis: [0, 0, 1] };
+    primary.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    const alternate = boxPart("alternate-drive", [0, 0, 0]);
+    alternate.joint = { kind: "revolute", axis: [0, 0, 1] };
+    alternate.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    const pin = boxPart("alternate-pin", [0.2, 0, 0]);
+    pin.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    pin.parent = alternate.id;
+    const target = boxPart("alternate-target", [0, 0.2, 0]);
+    target.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    module.spec = {
+      ...module.spec,
+      parts: [primary, alternate, pin, target],
+      constraints: [],
+      driveNodes: [primary.id, alternate.id],
+      primaryDrive: primary.id,
+      expectedRatios: [],
+      collisionWhitelist: [],
+    };
+
+    const report = runValidation(module, { allowMissingSnapshots: true });
+
+    expect(
+      report.checks.find(
+        (check) => check.id === "base:collision:alternate-pin:alternate-target",
+      ),
+    ).toMatchObject({
+      status: "fail",
+      message: expect.stringContaining("alternate-drive"),
+    });
+  });
+
+  it("checks a trigger-distinct path for a connected alternate drive", () => {
+    const module = miniModule();
+    const primary = boxPart("primary-drive", [1, 1, 0]);
+    primary.joint = { kind: "revolute", axis: [0, 0, 1] };
+    primary.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    const alternate = boxPart("alternate-drive", [1.2, 1, 0]);
+    alternate.joint = { kind: "revolute", axis: [0, 0, 1] };
+    alternate.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    const triggerRotor = boxPart("trigger-rotor", [0, 0, 0]);
+    triggerRotor.joint = { kind: "revolute", axis: [0, 0, 1] };
+    triggerRotor.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    const pin = boxPart("trigger-pin", [0.2, 0, 0]);
+    pin.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    pin.parent = triggerRotor.id;
+    const target = boxPart("trigger-target", [0, 0.2, 0]);
+    target.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    module.spec = {
+      ...module.spec,
+      parts: [primary, alternate, triggerRotor, pin, target],
+      constraints: [
+        {
+          type: "lockstep",
+          a: primary.id,
+          b: alternate.id,
+          ratio: 1,
+          provenance: inferred,
+        },
+      ],
+      driveNodes: [primary.id, alternate.id],
+      primaryDrive: primary.id,
+      expectedRatios: [],
+      collisionWhitelist: [],
+    };
+    module.mechanism?.triggers.push({
+      id: `drive:${alternate.id}`,
+      label: { zh: "备用驱动", en: "Alternate drive" },
+      run(graph, _emit, param) {
+        graph.drive(alternate.id, param ?? 0);
+        graph.drive(triggerRotor.id, param ?? 0);
+      },
+    });
+
+    const report = runValidation(module, { allowMissingSnapshots: true });
+
+    expect(
+      report.checks.find(
+        (check) => check.id === "base:collision:trigger-pin:trigger-target",
+      ),
+    ).toMatchObject({
+      status: "fail",
+      message: expect.stringContaining("alternate-drive"),
+    });
+  });
+
+  it("refreshes jointless crank-rod bounds throughout the sampled sweep", () => {
+    const module = miniModule();
+    const wheel = boxPart("crank-wheel", [0, 0, 0]);
+    wheel.geometry = { type: "box", size: [0.02, 0.02, 0.02] };
+    wheel.joint = { kind: "revolute", axis: [0, 0, 1] };
+    const rod: PartDef = {
+      id: "crank-rod",
+      name: { zh: "连杆", en: "Crank rod" },
+      geometry: { type: "link", length: 0.5, width: 0.02 },
+      material: "wood",
+      position: [0, 0, 0],
+      provenance: inferred,
+      dimensionProvenance: { length: inferred, width: inferred },
+      schemeTags: ["test"],
+    };
+    const slider = boxPart("crank-slider", [2, 2, 0]);
+    slider.joint = { kind: "prismatic", axis: [0, 1, 0] };
+    const target = boxPart("crank-target", [0.1, -0.229, 0]);
+    target.geometry = { type: "box", size: [0.03, 0.03, 0.03] };
+    module.spec = {
+      ...module.spec,
+      parts: [wheel, rod, slider, target],
+      constraints: [
+        {
+          type: "crank",
+          wheel: wheel.id,
+          rod: rod.id,
+          slider: slider.id,
+          crankRadius: 0.2,
+          rodLength: 0.5,
+          axis: [0, 0, 1],
+          provenance: inferred,
+        },
+      ],
+      driveNodes: [wheel.id],
+      primaryDrive: wheel.id,
+      expectedRatios: [],
+      collisionWhitelist: [],
+    };
+
+    const report = runValidation(module, { allowMissingSnapshots: true });
+
+    expect(
+      report.checks.find(
+        (check) => check.id === "base:collision:crank-rod:crank-target",
+      ),
+    ).toMatchObject({ status: "fail" });
   });
 
   it("fails overlapping non-whitelisted boxes", () => {
@@ -535,7 +706,7 @@ describe("independent machine validation", () => {
   it("invalidates a source snapshot after the current quote changes", () => {
     const module = miniModule();
     const snapshotPath =
-      "/repo/artifacts/source-snapshots/chariot/source-1.json";
+      "/repo/artifacts/source-snapshots/fixture/source-1.json";
     const options = {
       repoRoot: "/repo",
       fileExists: (path: string) => path === snapshotPath,
@@ -628,6 +799,41 @@ describe("independent machine validation", () => {
         (check) => check.id === "base:collision:orbit-pin:orbit-target",
       )?.status,
     ).toBe("fail");
+  });
+
+  it("rotates off-origin custom collision bounds around the part origin", () => {
+    const module = miniModule();
+    const rotated = boxPart("rotated-custom", [0, 0, 0]);
+    rotated.geometry = {
+      type: "custom",
+      builder: "offOriginCollision",
+      params: { offset: 1, size: 0.2 },
+    };
+    rotated.rotationEuler = [0, Math.PI / 2, 0];
+    rotated.joint = { kind: "revolute", axis: [0, 1, 0] };
+    const target = boxPart("rotated-target", [0, 0, -1]);
+    target.geometry = { type: "box", size: [0.2, 0.2, 0.2] };
+    module.spec = {
+      ...module.spec,
+      parts: [rotated, target],
+      constraints: [],
+      driveNodes: [rotated.id],
+      primaryDrive: rotated.id,
+      expectedRatios: [],
+      collisionWhitelist: [],
+    };
+    module.customBuilders = {
+      offOriginCollision: (params) =>
+        new BoxGeometry(params.size, params.size, params.size).translate(
+          params.offset,
+          0,
+          0,
+        ),
+    };
+
+    expect(
+      collisionPairsAtAngle(module, new KinematicGraph(module.spec), 0),
+    ).toContainEqual(["rotated-custom", "rotated-target"]);
   });
 
   it("moves prismatic joints along their declared parent-space axis", () => {

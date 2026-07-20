@@ -2,9 +2,26 @@
   {
     "id": "chassis-base",
     "name": { "zh": "赤质车架", "en": "Red carriage chassis" },
-    "geometry": { "type": "beam", "size": [2.8, 0.18, 0.7] },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerUnderframe",
+      "params": {
+        "length": 3.0,
+        "width": 0.9,
+        "height": 0.18,
+        "railWidth": 0.1,
+        "gearClearance": 0.56,
+        "whirlwindClearance": 0.14,
+        "whirlwindOffset": 0.86212,
+        "crossMemberOffset": 1.12,
+        "bearingWidth": 0.22,
+        "bearingHeight": 0.18,
+        "bearingDepth": 0.14,
+        "bearingOffset": 0.6
+      }
+    },
     "material": "wood",
-    "position": [0, 0.45, 0],
+    "position": [0, 1.08, 0],
     "joint": { "kind": "fixed", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
     "dimensionProvenance": {
@@ -16,16 +33,34 @@
     },
     "dimensionNotes": [
       {
-        "value": 2.8,
+        "value": 3.0,
         "unit": "m",
         "provenance": {
           "kind": "tuice",
           "ref": "songshi-waiguan",
-          "note": "Display-scale chassis length."
+          "note": "Display-scale twin-rail chassis length, enlarged to carry the enclosed gear train."
+        }
+      },
+      {
+        "value": 0.56,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Inferred central rail clearance bay around the axle-mounted 18-tooth drive wheel."
+        }
+      },
+      {
+        "value": 0.14,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-ludaolong",
+          "note": "Inferred local rail clearance around the coaxial bronze whirlwind wheel; crossmembers are set beyond the same gear envelope."
         }
       }
     ],
-    "explodeVector": [0, -0.8, 0],
+    "explodeVector": [0, -0.85, 0],
     "assemblyStep": 0
   },
   {
@@ -59,13 +94,18 @@
         }
       }
     ],
-    "explodeVector": [0, 0, 0.9],
+    "explodeVector": [0, -0.45, 0],
     "assemblyStep": 1
   },
   {
     "id": "zulun",
     "name": { "zh": "左足轮", "en": "Left road wheel" },
-    "geometry": { "type": "wheel", "radius": 0.936, "width": 0.12, "spokes": 16 },
+    "geometry": {
+      "type": "wheel",
+      "radius": 0.936,
+      "width": 0.12,
+      "spokes": 16
+    },
     "material": "wood",
     "position": [0, -1.05, 0],
     "parent": "road-axle",
@@ -91,14 +131,19 @@
         "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
       }
     ],
-    "explodeVector": [0, 0, -1],
+    "explodeVector": [0, -0.35, -0.9],
     "assemblyStep": 2,
     "interactive": true
   },
   {
     "id": "right-zulun",
     "name": { "zh": "右足轮", "en": "Right road wheel" },
-    "geometry": { "type": "wheel", "radius": 0.936, "width": 0.12, "spokes": 16 },
+    "geometry": {
+      "type": "wheel",
+      "radius": 0.936,
+      "width": 0.12,
+      "spokes": 16
+    },
     "material": "wood",
     "position": [0, 1.05, 0],
     "parent": "road-axle",
@@ -124,44 +169,80 @@
         "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
       }
     ],
-    "explodeVector": [0, 0, 1],
+    "explodeVector": [0, -0.35, 0.9],
     "assemblyStep": 2
   },
   {
     "id": "platform",
-    "name": { "zh": "重台", "en": "Two-tier platform" },
-    "geometry": { "type": "box", "size": [2.6, 0.12, 1.8] },
+    "name": { "zh": "赤质重台勾阑", "en": "Red double-storey pavilion" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerPavilion",
+      "params": {
+        "width": 3.0,
+        "depth": 2.1,
+        "skirtHeight": 0.72,
+        "lowerHeight": 1.08,
+        "upperHeight": 1.08,
+        "post": 0.09,
+        "panel": 0.045,
+        "railHeight": 0.28,
+        "wheelWellWidth": 2.0,
+        "wheelWellDepth": 1.9,
+        "upperGearClearance": 1.32,
+        "upperGearOffset": 0.86212
+      }
+    },
     "material": "wood",
-    "position": [0, 1.91, 0],
+    "position": [0, 1.12, 0],
     "joint": { "kind": "fixed", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
     "dimensionProvenance": {
       "@rest": {
         "kind": "tuice",
         "ref": "songshi-waiguan",
-        "note": "The text records a raised platform but not its dimensions."
+        "note": "The text records a red, double-storey carriage with railings and carved brackets, but not its dimensions."
       }
     },
     "dimensionNotes": [
       {
-        "value": 2.6,
+        "value": 3.0,
         "unit": "m",
         "provenance": {
           "kind": "tuice",
           "ref": "songshi-waiguan",
-          "note": "Platform length inferred from the wheel spacing."
+          "note": "Pavilion length inferred from the paired wheel spacing and enclosed gear train."
+        }
+      },
+      {
+        "value": 1.9,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Inferred central lower-body recess between the paired road wheels; full-depth end ears retain the 2.1 m pavilion envelope."
         }
       }
     ],
-    "explodeVector": [0, 0.8, 0],
+    "explodeVector": [-1.15, 0.25, 0],
     "assemblyStep": 3
   },
   {
     "id": "drawbar",
     "name": { "zh": "独辕凤首", "en": "Single phoenix-headed drawbar" },
-    "geometry": { "type": "beam", "size": [2.3, 0.12, 0.12] },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerDrawbar",
+      "params": {
+        "length": 2.35,
+        "radius": 0.05,
+        "rise": 0.28,
+        "yokeWidth": 1.25,
+        "headRadius": 0.11
+      }
+    },
     "material": "wood",
-    "position": [2.7, 0.55, 0],
+    "position": [1.55, 1.0, 0],
     "joint": { "kind": "fixed", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
     "dimensionProvenance": {
@@ -173,16 +254,16 @@
     },
     "dimensionNotes": [
       {
-        "value": 2.3,
+        "value": 2.35,
         "unit": "m",
         "provenance": {
           "kind": "tuice",
           "ref": "songshi-waiguan",
-          "note": "Display-scale drawbar length."
+          "note": "Display-scale curved drawbar length from the chassis to its phoenix-head finial."
         }
       }
     ],
-    "explodeVector": [1.2, 0, 0],
+    "explodeVector": [0.9, -0.35, 0],
     "assemblyStep": 3
   },
   {
@@ -196,7 +277,7 @@
       "toothStyle": "pin"
     },
     "material": "wood",
-    "position": [0, 0, 0],
+    "position": [0, -0.3, 0],
     "parent": "road-axle",
     "joint": { "kind": "fixed", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
@@ -210,7 +291,7 @@
       "@rest": {
         "kind": "tuice",
         "ref": "songshi-ludaolong",
-        "note": "Thickness and tooth profile are reconstruction choices."
+        "note": "Thickness and tooth profile are reconstruction choices; the recorded wheel is shifted toward the left road wheel to make 附於左足 visible."
       }
     },
     "dimensionNotes": [
@@ -227,7 +308,55 @@
         "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
       }
     ],
-    "explodeVector": [-0.8, 0.2, 0],
+    "explodeVector": [-0.25, -0.55, -0.25],
+    "assemblyStep": 4
+  },
+  {
+    "id": "road-transfer-witness",
+    "name": {
+      "zh": "足轮轴键套与转动标",
+      "en": "Keyed road-axle coupling and index"
+    },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerRotationWitness",
+      "params": {
+        "length": 0.155,
+        "width": 0.035,
+        "thickness": 0.018,
+        "direction": 1,
+        "couplingLength": 0.58,
+        "couplingRadius": 0.05
+      }
+    },
+    "material": "bronze",
+    "position": [0, -0.38, 0],
+    "parent": "road-axle",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-ludaolong",
+      "note": "A keyed sleeve exposes the physical axle path from the road wheel toward the recorded attached 18-tooth gear; an asymmetric face index makes their shared rotation visible at normal zoom."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Coupling, key, marker size, and face offset are reconstruction choices outside the recorded gear dimensions."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.155,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-ludaolong",
+          "note": "Radial witness length kept inside the 18-tooth wheel face."
+        }
+      }
+    ],
+    "explodeVector": [0.04, -0.03, -0.03],
     "assemblyStep": 4
   },
   {
@@ -241,7 +370,7 @@
       "toothStyle": "trapezoid"
     },
     "material": "wood",
-    "position": [0.86212, 0.936, 0],
+    "position": [0.86212, 0.936, -0.3],
     "joint": { "kind": "revolute", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
     "dimensionProvenance": {
@@ -271,7 +400,52 @@
         "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
       }
     ],
-    "explodeVector": [-0.3, 0.7, 0],
+    "explodeVector": [0.35, -0.15, 0.75],
+    "assemblyStep": 5
+  },
+  {
+    "id": "lower-gear-witness",
+    "name": { "zh": "下平轮转动标", "en": "Lower-wheel rotation index" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerRotationWitness",
+      "params": {
+        "length": 0.59,
+        "width": 0.045,
+        "thickness": 0.018,
+        "direction": -1,
+        "couplingLength": 0.18,
+        "couplingRadius": 0.055
+      }
+    },
+    "material": "bronze",
+    "position": [0, 0.145, 0],
+    "parent": "guanxin-shaft-lower",
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-ludaolong",
+      "note": "A face index makes the first perpendicular road-wheel handoff visible without changing the recorded 54-tooth wheel."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "Marker size and face offset are reconstruction choices outside the recorded gear dimensions."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.59,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-ludaolong",
+          "note": "Radial witness reaches toward the 18-tooth mesh while remaining inside the 54-tooth lower wheel face."
+        }
+      }
+    ],
+    "explodeVector": [0.04, 0.03, 0.04],
     "assemblyStep": 5
   },
   {
@@ -285,7 +459,7 @@
       "toothStyle": "trapezoid"
     },
     "material": "bronze",
-    "position": [0.86212, 1.05, 0],
+    "position": [0.86212, 1.3, -0.3],
     "joint": { "kind": "revolute", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
     "dimensionProvenance": {
@@ -304,7 +478,7 @@
         "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
       }
     ],
-    "explodeVector": [-0.2, 1, 0],
+    "explodeVector": [0.45, 0, 0.9],
     "assemblyStep": 6
   },
   {
@@ -318,7 +492,7 @@
       "toothStyle": "trapezoid"
     },
     "material": "wood",
-    "position": [1.50584, 1.05, 0],
+    "position": [0.86212, 1.3, 0.34372],
     "joint": { "kind": "revolute", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
     "dimensionProvenance": {
@@ -348,7 +522,7 @@
         "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
       }
     ],
-    "explodeVector": [0.3, 0.8, 0],
+    "explodeVector": [-0.55, 0.15, 0.95],
     "assemblyStep": 7,
     "interactive": true
   },
@@ -363,7 +537,7 @@
       "toothStyle": "trapezoid"
     },
     "material": "wood",
-    "position": [1.50584, 1.15, 0],
+    "position": [0.86212, 1.45, 0.34372],
     "joint": { "kind": "revolute", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
     "dimensionProvenance": {
@@ -382,7 +556,7 @@
         "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
       }
     ],
-    "explodeVector": [0.3, 1, 0],
+    "explodeVector": [-0.45, 0.3, 1.05],
     "assemblyStep": 8
   },
   {
@@ -396,7 +570,7 @@
       "toothStyle": "trapezoid"
     },
     "material": "wood",
-    "position": [2.19324, 1.15, 0],
+    "position": [0.86212, 1.45, -0.34278],
     "joint": { "kind": "revolute", "axis": [0, 1, 0] },
     "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
     "dimensionProvenance": {
@@ -415,162 +589,316 @@
         "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" }
       }
     ],
-    "explodeVector": [0.8, 0.9, 0],
+    "explodeVector": [0.55, 0.3, -0.9],
     "assemblyStep": 9,
     "interactive": true
   },
   {
-    "id": "front-left-post",
-    "name": { "zh": "前左台柱", "en": "Front-left platform post" },
-    "geometry": { "type": "beam", "size": [0.09, 2.25, 0.09] },
-    "material": "wood",
-    "position": [1.2, 3.15, -0.82],
-    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
-    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "id": "guanxin-shaft-lower",
+    "name": { "zh": "下平轮立贯心轴", "en": "Lower through-center shaft" },
+    "geometry": { "type": "shaft", "radius": 0.02, "length": 0.45 },
+    "material": "iron",
+    "position": [0.86212, 1.075, -0.3],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-ludaolong" },
     "dimensionProvenance": {
       "@rest": {
         "kind": "tuice",
-        "ref": "songshi-waiguan",
-        "note": "Post dimensions follow the recorded raised-platform form."
+        "ref": "songshi-ludaolong",
+        "note": "The vertical through-center shaft is recorded; its radius, length, and fitted position are reconstruction dimensions."
       }
     },
     "dimensionNotes": [
       {
-        "value": 2.25,
+        "value": 0.45,
         "unit": "m",
+        "ancient": "立貫心軸一，其上設銅旋風輪一",
         "provenance": {
           "kind": "tuice",
-          "ref": "songshi-waiguan",
-          "note": "Post height inferred for display."
+          "ref": "songshi-ludaolong",
+          "note": "Visible shaft length joining the 54-tooth and 3-tooth coaxial pair."
         }
       }
     ],
-    "explodeVector": [0.8, 0, -0.8],
-    "assemblyStep": 3
+    "explodeVector": [0.4, 0.15, 0.8],
+    "assemblyStep": 7
   },
   {
-    "id": "front-right-post",
-    "name": { "zh": "前右台柱", "en": "Front-right platform post" },
-    "geometry": { "type": "beam", "size": [0.09, 2.25, 0.09] },
-    "material": "wood",
-    "position": [1.2, 3.15, 0.82],
-    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
-    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "id": "zhongping-shaft",
+    "name": { "zh": "中平轮击鼓贯心轴", "en": "Middle-wheel drum trip shaft" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerTripShaft",
+      "params": {
+        "radius": 0.03,
+        "length": 1.04,
+        "collarOffsetA": 0.33,
+        "collarOffsetB": 0.44,
+        "collarRadius": 0.055,
+        "collarHeight": 0.03
+      }
+    },
+    "material": "iron",
+    "position": [0.86212, 1.51, 0.34372],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-ludaolong",
+      "note": "A vertical extension from the middle-wheel stack makes the recorded one-li drum trip physically legible."
+    },
     "dimensionProvenance": {
       "@rest": {
         "kind": "tuice",
-        "ref": "songshi-waiguan",
-        "note": "Post dimensions follow the recorded raised-platform form."
+        "ref": "songshi-ludaolong",
+        "note": "Shaft radius, extension length, and placement are reconstruction dimensions fitted to the enclosed train."
       }
     },
     "dimensionNotes": [
       {
-        "value": 2.25,
+        "value": 1.04,
         "unit": "m",
         "provenance": {
           "kind": "tuice",
-          "ref": "songshi-waiguan",
-          "note": "Post height inferred for display."
+          "ref": "songshi-ludaolong",
+          "note": "Extension reaches from the 100-tooth middle wheel to the lower-tier trip lever."
         }
       }
     ],
-    "explodeVector": [0.8, 0, 0.8],
-    "assemblyStep": 3
+    "explodeVector": [-0.6, 0.5, 1.0],
+    "assemblyStep": 9
   },
   {
-    "id": "rear-left-post",
-    "name": { "zh": "后左台柱", "en": "Rear-left platform post" },
-    "geometry": { "type": "beam", "size": [0.09, 2.25, 0.09] },
-    "material": "wood",
-    "position": [-1.2, 3.15, -0.82],
-    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
-    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "id": "shangping-shaft",
+    "name": { "zh": "上平轮击镯轴", "en": "Upper-wheel chime trip shaft" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerTripShaft",
+      "params": {
+        "radius": 0.03,
+        "length": 1.66,
+        "collarOffsetA": -0.44,
+        "collarOffsetB": 0.64,
+        "collarRadius": 0.055,
+        "collarHeight": 0.03
+      }
+    },
+    "material": "iron",
+    "position": [0.86212, 2.28, -0.34278],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-ludaolong",
+      "note": "A vertical extension from the upper wheel makes the recorded ten-li chime trip physically legible."
+    },
     "dimensionProvenance": {
       "@rest": {
         "kind": "tuice",
-        "ref": "songshi-waiguan",
-        "note": "Post dimensions follow the recorded raised-platform form."
+        "ref": "songshi-ludaolong",
+        "note": "Shaft radius, extension length, and placement are reconstruction dimensions fitted to the upper tier."
       }
     },
     "dimensionNotes": [
       {
-        "value": 2.25,
+        "value": 1.66,
         "unit": "m",
         "provenance": {
           "kind": "tuice",
-          "ref": "songshi-waiguan",
-          "note": "Post height inferred for display."
+          "ref": "songshi-ludaolong",
+          "note": "Extension reaches from the 100-tooth upper wheel to the upper-tier trip lever."
         }
       }
     ],
-    "explodeVector": [-0.8, 0, -0.8],
-    "assemblyStep": 3
+    "explodeVector": [0.65, 0.55, -0.95],
+    "assemblyStep": 9
   },
   {
-    "id": "rear-right-post",
-    "name": { "zh": "后右台柱", "en": "Rear-right platform post" },
-    "geometry": { "type": "beam", "size": [0.09, 2.25, 0.09] },
-    "material": "wood",
-    "position": [-1.2, 3.15, 0.82],
-    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
-    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "id": "trip-linkage-drum",
+    "name": {
+      "zh": "一里拨子杠杆引杆",
+      "en": "One-li trip lever and pull rod"
+    },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerTripLinkage",
+      "params": {
+        "reach": 0.82,
+        "leverHeight": 0.05,
+        "rodLength": 0.295,
+        "rodRadius": 0.018,
+        "pinLength": 0.18,
+        "displayOffset": 0.14
+      }
+    },
+    "material": "iron",
+    "position": [0.86212, 2.01, 0.34372],
+    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.24] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-ludaolong",
+      "note": "Trip pin, lever, pivot, and pull rod reconstruct the missing visible handoff from one middle-wheel revolution to one drum strike."
+    },
     "dimensionProvenance": {
       "@rest": {
         "kind": "tuice",
-        "ref": "songshi-waiguan",
-        "note": "Post dimensions follow the recorded raised-platform form."
+        "ref": "songshi-ludaolong",
+        "note": "All linkage dimensions and placement are display-scale reconstruction choices."
       }
     },
     "dimensionNotes": [
       {
-        "value": 2.25,
+        "value": 0.82,
         "unit": "m",
         "provenance": {
           "kind": "tuice",
-          "ref": "songshi-waiguan",
-          "note": "Post height inferred for display."
+          "ref": "songshi-ludaolong",
+          "note": "Lever reach aligns the middle-wheel shaft with the lower figure's mallet shoulder."
         }
       }
     ],
-    "explodeVector": [-0.8, 0, 0.8],
-    "assemblyStep": 3
-  },
-  {
-    "id": "canopy-roof",
-    "name": { "zh": "重台顶盖", "en": "Upper canopy roof" },
-    "geometry": { "type": "box", "size": [2.7, 0.12, 1.9] },
-    "material": "wood",
-    "position": [0, 4.35, 0],
-    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
-    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
-    "dimensionProvenance": {
-      "@rest": {
-        "kind": "tuice",
-        "ref": "songshi-waiguan",
-        "note": "Canopy dimensions are inferred from the recorded double-tier structure."
-      }
-    },
-    "dimensionNotes": [
-      {
-        "value": 2.7,
-        "unit": "m",
-        "provenance": {
-          "kind": "tuice",
-          "ref": "songshi-waiguan",
-          "note": "Canopy width chosen to clear the gear train."
-        }
-      }
-    ],
-    "explodeVector": [0, 1.1, 0],
+    "explodeVector": [-0.75, 0.7, 1.0],
     "assemblyStep": 10
   },
   {
-    "id": "lower-figure",
-    "name": { "zh": "击鼓木人", "en": "Drum-striking figure" },
-    "geometry": { "type": "box", "size": [0.22, 0.65, 0.22] },
+    "id": "trip-linkage-chime",
+    "name": {
+      "zh": "十里拨子杠杆引杆",
+      "en": "Ten-li trip lever and pull rod"
+    },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerTripLinkage",
+      "params": {
+        "reach": 0.82,
+        "leverHeight": 0.05,
+        "rodLength": 0.295,
+        "rodRadius": 0.018,
+        "pinLength": 0.18,
+        "displayOffset": 0.44
+      }
+    },
+    "material": "iron",
+    "position": [0.86212, 3.09, -0.34278],
+    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.24] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-ludaolong",
+      "note": "Trip pin, lever, pivot, and pull rod reconstruct the missing visible handoff from one upper-wheel revolution to one chime strike."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-ludaolong",
+        "note": "All linkage dimensions and placement are display-scale reconstruction choices."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.82,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-ludaolong",
+          "note": "Lever reach aligns the upper-wheel shaft with the upper figure's hammer shoulder."
+        }
+      }
+    ],
+    "explodeVector": [0.8, 0.75, -1.0],
+    "assemblyStep": 10
+  },
+  {
+    "id": "canopy-roof",
+    "name": { "zh": "重台庑殿顶", "en": "Pavilion hip roof" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerHipRoof",
+      "params": {
+        "width": 3.18,
+        "depth": 2.28,
+        "rise": 0.42,
+        "thickness": 0.1,
+        "ridgeLength": 1.2,
+        "ridgeRadius": 0.045
+      }
+    },
     "material": "wood",
-    "position": [-0.55, 4.82, 0],
-    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.28] },
+    "position": [0, 4.06, 0],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Hip-roof dimensions are inferred from the recorded ceremonial double-tier structure."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 3.18,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Roof width provides a modest overhang above the double-storey pavilion."
+        }
+      }
+    ],
+    "explodeVector": [-1.15, 1.0, 0],
+    "assemblyStep": 10
+  },
+  {
+    "id": "lower-figure-body",
+    "name": { "zh": "下层击鼓木人身", "en": "Lower-tier drum figure body" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerFigure",
+      "params": { "height": 0.82, "shoulderWidth": 0.3, "depth": 0.26 }
+    },
+    "material": "wood",
+    "position": [0.15, 2.26, 0.34372],
+    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.14] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The lower-tier figure's robe, head, hat, proportions, and station placement are reconstruction choices."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.82,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Mounted lower-tier figure height chosen to remain legible beside the drum."
+        }
+      }
+    ],
+    "explodeVector": [-0.85, 0.75, 0.75],
+    "assemblyStep": 11
+  },
+  {
+    "id": "lower-figure",
+    "name": { "zh": "下层击鼓臂", "en": "Lower-tier drum mallet arm" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerMalletArm",
+      "params": {
+        "length": 0.38,
+        "thickness": 0.04,
+        "handle": 0.19,
+        "head": 0.05,
+        "direction": -1,
+        "planeOffset": 0.14,
+        "contactDepth": 0.18,
+        "contactOffset": 0.09
+      }
+    },
+    "material": "wood",
+    "position": [-0.11, 0.17, 0],
+    "parent": "lower-figure-body",
+    "joint": { "kind": "revolute", "axis": [0, 0, -1], "limits": [0, 0.28] },
     "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
     "dimensionProvenance": {
       "joint.limits.0": {
@@ -586,30 +914,77 @@
       "@rest": {
         "kind": "tuice",
         "ref": "songshi-waiguan",
-        "note": "Figure proportions are not recorded."
+        "note": "Arm, mallet, and shoulder placement make the recorded lower-tier strike visible; their dimensions are not recorded."
       }
     },
     "dimensionNotes": [
       {
-        "value": 0.65,
+        "value": 0.38,
         "unit": "m",
         "provenance": {
           "kind": "tuice",
           "ref": "songshi-waiguan",
-          "note": "Representative figure height."
+          "note": "Display-scale reach from the figure's shoulder toward the drum."
         }
       }
     ],
-    "explodeVector": [-0.5, 0.8, 0],
+    "explodeVector": [0.06, 0.08, 0.06],
+    "assemblyStep": 11
+  },
+  {
+    "id": "upper-figure-body",
+    "name": { "zh": "上层击镯木人身", "en": "Upper-tier chime figure body" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerFigure",
+      "params": { "height": 0.82, "shoulderWidth": 0.3, "depth": 0.26 }
+    },
+    "material": "wood",
+    "position": [0.15, 3.34, -0.34278],
+    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.18] },
+    "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "The upper-tier figure's robe, head, hat, proportions, and station placement are reconstruction choices."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.82,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Mounted upper-tier figure height chosen to remain legible beside the chime."
+        }
+      }
+    ],
+    "explodeVector": [0.85, 0.75, -0.7],
     "assemblyStep": 11
   },
   {
     "id": "upper-figure",
-    "name": { "zh": "击镯木人", "en": "Chime-striking figure" },
-    "geometry": { "type": "box", "size": [0.22, 0.65, 0.22] },
+    "name": { "zh": "上层击镯臂", "en": "Upper-tier chime hammer arm" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerMalletArm",
+      "params": {
+        "length": 0.38,
+        "thickness": 0.04,
+        "handle": 0.18,
+        "head": 0.065,
+        "direction": -1,
+        "planeOffset": 0.44,
+        "contactDepth": 0.18,
+        "contactOffset": 0.09
+      }
+    },
     "material": "wood",
-    "position": [0.55, 4.82, 0],
-    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.28] },
+    "position": [-0.11, 0.17, 0],
+    "parent": "upper-figure-body",
+    "joint": { "kind": "revolute", "axis": [0, 0, -1], "limits": [0, 0.28] },
     "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
     "dimensionProvenance": {
       "joint.limits.0": {
@@ -625,31 +1000,108 @@
       "@rest": {
         "kind": "tuice",
         "ref": "songshi-waiguan",
-        "note": "Figure proportions are not recorded."
+        "note": "Arm, hammer, and shoulder placement make the recorded upper-tier strike visible; their dimensions are not recorded."
       }
     },
     "dimensionNotes": [
       {
-        "value": 0.65,
+        "value": 0.38,
         "unit": "m",
         "provenance": {
           "kind": "tuice",
           "ref": "songshi-waiguan",
-          "note": "Representative figure height."
+          "note": "Display-scale reach from the figure's shoulder toward the chime."
         }
       }
     ],
-    "explodeVector": [0.5, 0.8, 0],
+    "explodeVector": [0.06, 0.08, -0.06],
+    "assemblyStep": 11
+  },
+  {
+    "id": "li-instrument-support",
+    "name": { "zh": "里鼓架", "en": "Li drum support" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerInstrumentStand",
+      "params": { "width": 0.5, "height": 0.48, "depth": 0.28, "bar": 0.035 }
+    },
+    "material": "wood",
+    "position": [-0.29, 2.14, 0.34372],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-waiguan",
+      "note": "An open support is required to mount the recorded drum within the lower pavilion station; its form is not described."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Support dimensions and placement are reconstruction choices fitted to the lower-tier figure station."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.48,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Display support height reaches from the lower deck to the drum axle."
+        }
+      }
+    ],
+    "explodeVector": [-0.75, 0.5, 0.8],
+    "assemblyStep": 11
+  },
+  {
+    "id": "ten-li-instrument-support",
+    "name": { "zh": "十里镯架", "en": "Ten-li chime support" },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerInstrumentStand",
+      "params": { "width": 0.46, "height": 0.5, "depth": 0.26, "bar": 0.035 }
+    },
+    "material": "wood",
+    "position": [-0.29, 3.22, -0.02278],
+    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "provenance": {
+      "kind": "tuice",
+      "ref": "songshi-waiguan",
+      "note": "An open support is required to suspend the recorded chime within the upper pavilion station; its form is not described."
+    },
+    "dimensionProvenance": {
+      "@rest": {
+        "kind": "tuice",
+        "ref": "songshi-waiguan",
+        "note": "Support dimensions and placement are reconstruction choices fitted to the upper-tier figure station."
+      }
+    },
+    "dimensionNotes": [
+      {
+        "value": 0.5,
+        "unit": "m",
+        "provenance": {
+          "kind": "tuice",
+          "ref": "songshi-waiguan",
+          "note": "Display support height reaches from the upper deck to the chime hanger."
+        }
+      }
+    ],
+    "explodeVector": [0.75, 0.55, -0.8],
     "assemblyStep": 11
   },
   {
     "id": "drum",
     "name": { "zh": "里鼓", "en": "Li drum" },
-    "geometry": { "type": "shaft", "radius": 0.19, "length": 0.26 },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerDrum",
+      "params": { "radius": 0.19, "length": 0.34, "hoop": 0.012 }
+    },
     "material": "wood",
-    "position": [-0.55, 5.28, 0.42],
-    "rotationEuler": [1.5707963267948966, 0, 0],
-    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "position": [-0.29, 2.31, 0.34372],
+    "joint": { "kind": "revolute", "axis": [0, 1, 0], "limits": [0, 0.16] },
     "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
     "dimensionProvenance": {
       "@rest": {
@@ -669,16 +1121,20 @@
         }
       }
     ],
-    "explodeVector": [-0.5, 0.7, 0.7],
+    "explodeVector": [-1.0, 0.55, 1.05],
     "assemblyStep": 12
   },
   {
     "id": "chime",
     "name": { "zh": "十里镯", "en": "Ten-li chime" },
-    "geometry": { "type": "ring", "radius": 0.18, "tube": 0.025 },
+    "geometry": {
+      "type": "custom",
+      "builder": "odometerChime",
+      "params": { "radius": 0.18, "height": 0.27, "loopRadius": 0.035 }
+    },
     "material": "bronze",
-    "position": [0.55, 5.28, 0.42],
-    "joint": { "kind": "fixed", "axis": [0, 1, 0] },
+    "position": [-0.29, 3.39, -0.02278],
+    "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.35] },
     "provenance": { "kind": "wenxian", "ref": "songshi-waiguan" },
     "dimensionProvenance": {
       "@rest": {
@@ -698,7 +1154,7 @@
         }
       }
     ],
-    "explodeVector": [0.5, 0.7, 0.7],
+    "explodeVector": [1.0, 0.65, -1.0],
     "assemblyStep": 12
   }
 ]

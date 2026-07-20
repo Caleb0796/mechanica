@@ -1,8 +1,5 @@
-import * as THREE from "three";
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-
 import type { StandardMaterialPresentation } from "../../core/materials";
-import type { MachineSlug, PartDef } from "../../sim/types";
+import type { ExhibitData, MachineSlug, PartDef } from "../../sim/types";
 
 type V3 = readonly [number, number, number];
 
@@ -27,10 +24,10 @@ export interface ViewerProfile {
 export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
   astroclock: {
     direction: [1, 0.72, 1.4],
-    margin: 1.5,
+    margin: 1.35,
     explodedMargin: 1.5,
     homePose: {
-      position: [23.59, 20.844, 30.007],
+      position: [20.762, 18.809, 26.049],
       target: [2.8, 5.875, 0.9],
       fov: 36,
     },
@@ -46,120 +43,48 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
     margin: 1.45,
     explodedMargin: 1.5,
     homePose: {
-      position: [5.806, 3.152, 7.837],
-      target: [0, 0.25, 0],
+      position: [6.835, 3.166, 9.225],
+      target: [0, -0.25, 0],
       fov: 36,
     },
     minDistanceFactor: 1.7,
     targetOffset: [0, -0.08, 0],
-  },
-  chariot: {
-    direction: [1.35, 0.55, 1],
-    margin: 1.4,
-    explodedMargin: 1.5,
-    homePose: {
-      position: [10.913, 6.251, 7.71],
-      target: [0.505, 2.011, 0],
-      fov: 36,
-    },
-    minDistanceFactor: 2,
-    targetOffset: [0, -0.1, 0],
   },
   odometer: {
     direction: [1.25, 0.65, 1.1],
-    margin: 1.55,
-    explodedMargin: 1.65,
+    margin: 1.8,
+    explodedMargin: 2.35,
     homePose: {
-      position: [12.119, 8.283, 9.586],
-      target: [1.225, 2.618, 0],
+      position: [11.818, 7.326, 9.321],
+      target: [1.225, 1.818, 0],
       fov: 36,
     },
     minDistanceFactor: 1.7,
     minPolarAngle: 0.9,
     maxPolarAngle: 1.45,
-    targetOffset: [0, -0.08, 0],
-  },
-  "wooden-ox": {
-    direction: [1.45, 0.55, 0.9],
-    margin: 1.05,
-    explodedMargin: 1.4,
-    homePose: {
-      position: [5.127, 2.672, 2.912],
-      target: [0.435, 0.891, 0],
-      fov: 36,
-    },
-    minDistanceFactor: 1.6,
-    targetOffset: [0, -0.04, 0],
+    targetOffset: [0, -0.13, 0],
   },
   loom: {
     direction: [1.2, 0.52, 1.3],
-    margin: 1.25,
-    explodedMargin: 1.35,
+    margin: 1.55,
+    explodedMargin: 2.1,
     homePose: {
-      position: [1.33, 0.809, 1.441],
-      target: [0, 0.233, 0],
+      position: [1.588, 0.868, 1.72],
+      target: [0, 0.18, 0],
       fov: 36,
     },
     minDistanceFactor: 1.7,
     minPolarAngle: 0.9,
     maxPolarAngle: 1.45,
-    targetOffset: [0, -0.08, 0],
+    targetOffset: [0, -0.13, 0],
   },
-  typecase: {
-    direction: [1.25, 0.6, 1.1],
-    margin: 1,
-    explodedMargin: 1.15,
-    homePose: {
-      position: [7.786, 4.263, 7.163],
-      target: [0, 0.526, 0.311],
-      fov: 36,
-    },
-    minDistanceFactor: 1.7,
-    minPolarAngle: 0.9,
-    maxPolarAngle: 1.45,
-    targetOffset: [0, -0.06, 0],
-  },
-  chainpump: {
-    direction: [1.3, 0.65, 1],
-    margin: 0.9,
-    explodedMargin: 1,
-    homePose: {
-      position: [9.926, 5.851, 7.58],
-      target: [0.072, 0.924, 0],
-      fov: 36,
-    },
-    minDistanceFactor: 1.7,
-    minAzimuthAngle: 0.56,
-    maxAzimuthAngle: 1.26,
-    minPolarAngle: 1.05,
-    maxPolarAngle: 1.45,
-    targetOffset: [0.04, 0, 0],
-  },
-  bellows: {
-    direction: [1.35, 0.62, 1],
-    margin: 1.1,
-    explodedMargin: 1.2,
-    homePose: {
-      position: [19.953, 10.002, 15.151],
-      target: [-0.5, 0.609, 0],
-      fov: 36,
-    },
-    minDistanceFactor: 1.7,
-    targetOffset: [0, -0.1, 0],
-  },
-  gimbal: {
-    direction: [1, 0.42, 1.35],
-    margin: 1.25,
-    explodedMargin: 1.45,
-    homePose: {
-      position: [0.229, 0.096, 0.308],
-      target: [0, 0, -0.0014],
-      fov: 36,
-    },
-    minDistanceFactor: 2,
-    targetOffset: [0, -0.08, 0],
-    focusPartIds: ["outer-shell"],
-  },
+};
+
+export const DEMO_VIEWER_PROFILE: ViewerProfile = {
+  direction: [1, 0.6, 1.2],
+  margin: 1.35,
+  explodedMargin: 1.45,
+  minDistanceFactor: 1.7,
 };
 
 export type VisualMaterialPresentation = StandardMaterialPresentation;
@@ -231,12 +156,14 @@ function movingMaterialFor(part: PartDef): VisualMaterialPresentation {
 }
 
 export function visualMaterialFor(
-  slug: MachineSlug,
+  slug: ExhibitData["slug"],
   part: PartDef,
 ): VisualMaterialPresentation | undefined {
   const id = part.id.toLowerCase();
 
   switch (slug) {
+    case "demo":
+      return movingMaterialFor(part);
     case "astroclock":
       if (id.startsWith("jack-")) return FIGURE_ACCENT;
       if (matches(id, /gear|wheel|shaft|escap|arm|link|drum|cam/)) {
@@ -260,24 +187,13 @@ export function visualMaterialFor(
       if (matches(id, /vessel|body|shell|bowl/)) {
         return {
           color: "#477c70",
-          metalness: 0.76,
-          roughness: 0.43,
+          metalness: 0.68,
+          roughness: 0.46,
           textureVariant: "bronze:excavated",
         };
       }
       return matches(id, /pendulum|lever|chute|trigger|column/)
         ? movingMaterialFor(part)
-        : undefined;
-    case "chariot":
-      if (matches(id, /figure|person|head|arm|pointer/)) return FIGURE_ACCENT;
-      if (matches(id, /gear|wheel|shaft|axle|link/)) {
-        return movingMaterialFor(part);
-      }
-      return matches(
-        id,
-        /chassis|canopy|frame|platform|body|drawbar|housing|support/,
-      )
-        ? DARK_WOOD
         : undefined;
     case "odometer":
       if (matches(id, /figure/)) return FIGURE_ACCENT;
@@ -290,353 +206,38 @@ export function visualMaterialFor(
       )
         ? DARK_WOOD
         : undefined;
-    case "wooden-ox":
-      if (id === "curved-head" || matches(id, /ear|horn|muzzle/)) {
+    case "loom":
+      if (id === "woven-cloth") {
         return {
-          color: "#a96835",
-          metalness: 0.08,
-          roughness: 0.58,
-          textureVariant: "wood:light",
+          color: "#9f352d",
+          metalness: 0,
+          roughness: 0.48,
         };
       }
-      if (matches(id, /wheel|shaft|axle|lever|link|ratchet|pawl/)) {
+      if (id === "warp-shed-odd") {
+        return {
+          color: "#b65b48",
+          metalness: 0,
+          opacity: 0.92,
+          roughness: 0.62,
+          transparent: true,
+        };
+      }
+      if (id === "warp-shed") {
+        return {
+          color: "#d8c58d",
+          metalness: 0,
+          opacity: 0.92,
+          roughness: 0.62,
+          transparent: true,
+        };
+      }
+      if (matches(id, /heddle|selector|hook|cam|counter/)) {
         return movingMaterialFor(part);
       }
-      return matches(id, /body|frame|bed|support|chest|box/)
-        ? DARK_WOOD
-        : undefined;
-    case "loom":
-      if (matches(id, /heddle|reed|shuttle|warp|weft|cloth|beam/)) {
+      if (matches(id, /beater|shuttle|beam|treadle/)) {
         return movingMaterialFor(part);
       }
       return matches(id, /frame|post|base|support/) ? DARK_WOOD : undefined;
-    case "typecase":
-      if (matches(id, /type|rack|gear|wheel|shaft|carriage|tray/)) {
-        return movingMaterialFor(part);
-      }
-      return matches(id, /case|stand|frame|table|base|support|housing/)
-        ? DARK_WOOD
-        : undefined;
-    case "chainpump":
-      if (matches(id, /water/)) {
-        return {
-          color: "#39bfd3",
-          emissive: "#063943",
-          emissiveIntensity: 0.03,
-          metalness: 0.08,
-          opacity: 0.58,
-          roughness: 0.2,
-          textureVariant: "none",
-          transparent: true,
-        };
-      }
-      if (matches(id, /pallet|sprocket|chain|wheel|shaft|axle|crank/)) {
-        return movingMaterialFor(part);
-      }
-      return matches(id, /trough|frame|base|support|housing/)
-        ? DARK_WOOD
-        : undefined;
-    case "bellows":
-      if (matches(id, /bellows|lid|nozzle/)) {
-        return {
-          color: "#985637",
-          metalness: 0.12,
-          roughness: 0.57,
-          textureVariant: "lacquer:red",
-        };
-      }
-      if (matches(id, /wheel|shaft|cam|rod|link|crank|axle/)) {
-        return movingMaterialFor(part);
-      }
-      return matches(id, /frame|base|support|housing|furnace/)
-        ? DARK_WOOD
-        : undefined;
-    case "gimbal":
-      if (matches(id, /stand|support|base|post|frame|hanger/)) {
-        return {
-          ...DARK_WOOD,
-          opacity: 0.24,
-          transparent: true,
-        };
-      }
-      if (matches(id, /shell/)) {
-        return {
-          alphaTest: 0.42,
-          color: "#78998a",
-          metalness: 0.72,
-          opacity: 1,
-          roughness: 0.38,
-          textureVariant: "bronze:openwork",
-          transparent: false,
-        };
-      }
-      if (id === "outer-ring") {
-        return {
-          color: "#cbd3d7",
-          metalness: 0.84,
-          roughness: 0.22,
-        };
-      }
-      if (matches(id, /ring|axis|shaft/)) {
-        return {
-          color: "#d9c17a",
-          emissive: "#2a2108",
-          emissiveIntensity: 0,
-          metalness: 0.82,
-          roughness: 0.25,
-          textureVariant: "bronze:gilded",
-        };
-      }
-      if (matches(id, /bowl|lamp|cup/)) return WARM_BRONZE;
-      if (matches(id, /flame/)) {
-        return {
-          color: "#ff9f32",
-          emissive: "#ff5a12",
-          emissiveIntensity: 1.4,
-          metalness: 0,
-          roughness: 0.24,
-          textureVariant: "none",
-        };
-      }
-      return undefined;
   }
-}
-
-type Vector3Tuple = readonly [number, number, number];
-
-function transformGeometry(
-  geometry: THREE.BufferGeometry,
-  position: Vector3Tuple,
-  rotation: Vector3Tuple = [0, 0, 0],
-  scale: Vector3Tuple = [1, 1, 1],
-): THREE.BufferGeometry {
-  const matrix = new THREE.Matrix4().compose(
-    new THREE.Vector3(...position),
-    new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation)),
-    new THREE.Vector3(...scale),
-  );
-  geometry.applyMatrix4(matrix);
-  return geometry;
-}
-
-function mergeSemanticGeometry(
-  geometries: THREE.BufferGeometry[],
-): THREE.BufferGeometry | null {
-  const merged = mergeGeometries(geometries, false);
-  for (const geometry of geometries) geometry.dispose();
-  if (!merged) return null;
-  merged.computeVertexNormals();
-  merged.computeBoundingBox();
-  merged.computeBoundingSphere();
-  return merged;
-}
-
-function fitSemanticEnvelope(
-  geometry: THREE.BufferGeometry | null,
-  envelope: readonly [number, number, number],
-): THREE.BufferGeometry | null {
-  if (!geometry) return null;
-  geometry.computeBoundingBox();
-  const bounds = geometry.boundingBox;
-  if (!bounds) return geometry;
-  const center = bounds.getCenter(new THREE.Vector3());
-  const size = bounds.getSize(new THREE.Vector3());
-  geometry.translate(-center.x, -center.y, -center.z);
-  geometry.scale(
-    envelope[0] / size.x,
-    envelope[1] / size.y,
-    envelope[2] / size.z,
-  );
-  geometry.computeVertexNormals();
-  geometry.computeBoundingBox();
-  geometry.computeBoundingSphere();
-  return geometry;
-}
-
-function buildJack(
-  size: readonly [number, number, number],
-): THREE.BufferGeometry | null {
-  const [width, height, depth] = size;
-  const headRadius = Math.min(width, depth) * 0.16;
-  const armRadius = Math.min(width, depth) * 0.055;
-  const armLength = width * 0.38;
-  return mergeSemanticGeometry([
-    transformGeometry(
-      new THREE.SphereGeometry(1, 16, 12),
-      [0, height * 0.29, 0],
-      [0, 0, 0],
-      [headRadius, headRadius * 1.08, headRadius],
-    ),
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.32, height * 0.44, depth * 0.34),
-      [0, -height * 0.03, 0],
-    ),
-    transformGeometry(
-      new THREE.CylinderGeometry(armRadius, armRadius, armLength, 10),
-      [-width * 0.2, height * 0.08, 0],
-      [0, 0, -0.78],
-    ),
-    transformGeometry(
-      new THREE.CylinderGeometry(armRadius, armRadius, armLength, 10),
-      [width * 0.2, height * 0.08, 0],
-      [0, 0, 0.78],
-    ),
-  ]);
-}
-
-function buildStrikingFigure(
-  size: readonly [number, number, number],
-): THREE.BufferGeometry | null {
-  const [width, height, depth] = size;
-  const headRadius = Math.min(width, depth) * 0.16;
-  const limbRadius = Math.min(width, depth) * 0.055;
-  return mergeSemanticGeometry([
-    transformGeometry(
-      new THREE.SphereGeometry(1, 16, 12),
-      [0, height * 0.31, 0],
-      [0, 0, 0],
-      [headRadius, headRadius * 1.08, headRadius],
-    ),
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.34, height * 0.42, depth * 0.34),
-      [0, height * 0.02, 0],
-    ),
-    transformGeometry(
-      new THREE.CylinderGeometry(limbRadius, limbRadius, height * 0.25, 10),
-      [-width * 0.1, -height * 0.27, 0],
-      [0, 0, -0.08],
-    ),
-    transformGeometry(
-      new THREE.CylinderGeometry(limbRadius, limbRadius, height * 0.25, 10),
-      [width * 0.1, -height * 0.27, 0],
-      [0, 0, 0.08],
-    ),
-    transformGeometry(
-      new THREE.CylinderGeometry(limbRadius, limbRadius, height * 0.42, 10),
-      [width * 0.2, height * 0.15, 0],
-      [0, 0, -0.56],
-    ),
-    transformGeometry(
-      new THREE.SphereGeometry(1, 12, 8),
-      [width * 0.32, height * 0.32, 0],
-      [0, 0, 0],
-      [limbRadius * 1.7, limbRadius * 1.7, limbRadius * 1.7],
-    ),
-  ]);
-}
-
-function buildOxHead(
-  size: readonly [number, number, number],
-): THREE.BufferGeometry | null {
-  const [width, height, depth] = size;
-  return mergeSemanticGeometry([
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.28, height * 0.62, depth * 0.58),
-      [-width * 0.28, -height * 0.05, 0],
-    ),
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.4, height * 0.42, depth * 0.66),
-      [-width * 0.02, height * 0.03, 0],
-    ),
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.46, height * 0.25, depth * 0.42),
-      [width * 0.28, -height * 0.08, 0],
-    ),
-    transformGeometry(
-      new THREE.ConeGeometry(depth * 0.085, height * 0.28, 10),
-      [-width * 0.03, height * 0.29, depth * 0.25],
-      [0.14, 0, -0.18],
-    ),
-    transformGeometry(
-      new THREE.ConeGeometry(depth * 0.085, height * 0.28, 10),
-      [-width * 0.03, height * 0.29, -depth * 0.25],
-      [-0.14, 0, 0.18],
-    ),
-    transformGeometry(
-      new THREE.SphereGeometry(1, 12, 8),
-      [-width * 0.1, height * 0.16, depth * 0.32],
-      [0, 0, 0],
-      [width * 0.11, height * 0.07, depth * 0.16],
-    ),
-    transformGeometry(
-      new THREE.SphereGeometry(1, 12, 8),
-      [-width * 0.1, height * 0.16, -depth * 0.32],
-      [0, 0, 0],
-      [width * 0.11, height * 0.07, depth * 0.16],
-    ),
-  ]);
-}
-
-function buildBellowsChest(
-  size: readonly [number, number, number],
-): THREE.BufferGeometry | null {
-  const [width, height, depth] = size;
-  const nozzleRadius = Math.min(height, depth) * 0.11;
-  return mergeSemanticGeometry([
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.68, height * 0.25, depth * 0.72),
-      [-width * 0.08, height * 0.17, 0],
-    ),
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.68, height * 0.25, depth * 0.72),
-      [-width * 0.08, -height * 0.17, 0],
-    ),
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.68, height * 0.05, depth * 0.76),
-      [-width * 0.08, height * 0.32, 0],
-      [0, 0, 0.08],
-    ),
-    transformGeometry(
-      new THREE.BoxGeometry(width * 0.68, height * 0.05, depth * 0.76),
-      [-width * 0.08, -height * 0.32, 0],
-      [0, 0, -0.08],
-    ),
-    transformGeometry(
-      new THREE.CylinderGeometry(
-        nozzleRadius * 0.62,
-        nozzleRadius,
-        width * 0.25,
-        12,
-      ),
-      [width * 0.37, 0, 0],
-      [0, 0, -Math.PI / 2],
-    ),
-  ]);
-}
-
-export function buildSemanticPartGeometry(
-  slug: MachineSlug,
-  part: PartDef,
-): THREE.BufferGeometry | null {
-  if (part.geometry.type !== "box" && part.geometry.type !== "beam")
-    return null;
-
-  if (slug === "astroclock" && part.id.startsWith("jack-")) {
-    return fitSemanticEnvelope(
-      buildJack(part.geometry.size),
-      part.geometry.size,
-    );
-  }
-  if (
-    slug === "odometer" &&
-    (part.id === "lower-figure" || part.id === "upper-figure")
-  ) {
-    return fitSemanticEnvelope(
-      buildStrikingFigure(part.geometry.size),
-      part.geometry.size,
-    );
-  }
-  if (slug === "wooden-ox" && part.id === "curved-head") {
-    return fitSemanticEnvelope(
-      buildOxHead(part.geometry.size),
-      part.geometry.size,
-    );
-  }
-  if (slug === "bellows" && part.id === "bellows-chest") {
-    return fitSemanticEnvelope(
-      buildBellowsChest(part.geometry.size),
-      part.geometry.size,
-    );
-  }
-  return null;
 }

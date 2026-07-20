@@ -98,7 +98,7 @@ describe("KinematicGraph linear layers", () => {
     ).toBe(285);
   });
 
-  it("computes the chariot 12/48 reduction as 90 degrees", () => {
+  it("computes a synthetic 12/48 reduction as 90 degrees", () => {
     const graph = new KinematicGraph(
       spec(
         [gear("drive12", 12), gear("driven48", 48)],

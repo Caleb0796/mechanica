@@ -2,8 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import astroclock from "../../src/machines/astroclock/build";
 import astroclockStory from "../../src/machines/astroclock/story";
-import chariot from "../../src/machines/chariot/build";
-import chariotStory from "../../src/machines/chariot/story";
 import seismoscope from "../../src/machines/seismoscope/build";
 import seismoscopeStory from "../../src/machines/seismoscope/story";
 import { applySchemePatch, KinematicGraph } from "../../src/sim/graph";
@@ -16,7 +14,6 @@ const stories: Array<{
   steps: readonly StoryStep[];
 }> = [
   { minimumSteps: 8, module: astroclock, steps: astroclockStory },
-  { minimumSteps: 6, module: chariot, steps: chariotStory },
   { minimumSteps: 6, module: seismoscope, steps: seismoscopeStory },
 ];
 
@@ -85,9 +82,19 @@ describe("flagship stories", () => {
             `${step.id}: ${step.driveTo.node} must visibly move`,
           ).toBeDefined();
 
-          const graph = new KinematicGraph(spec);
+          const graph = new KinematicGraph(module.spec);
+          graph.setScheme(
+            activeSchemeId ? module.schemes?.[activeSchemeId] : undefined,
+          );
           const before = graph.state();
-          graph.drive(step.driveTo.node, step.driveTo.value);
+          const trigger = module.mechanism?.triggers.find(
+            (candidate) => candidate.id === `drive:${step.driveTo?.node}`,
+          );
+          if (trigger) {
+            trigger.run(graph, () => undefined, step.driveTo.value);
+          } else {
+            graph.drive(step.driveTo.node, step.driveTo.value);
+          }
           expect(
             (step.highlight ?? []).some(
               (partId) =>
@@ -102,13 +109,16 @@ describe("flagship stories", () => {
   );
 
   it("eases drives to rest and switches drive nodes only at zero", () => {
-    const driven = chariotStory.find((step) => step.id === "right-angle-turn")!;
+    const driven = astroclockStory.find((step) => step.id === "escapement-beat")!;
     const idle = { ...driven, driveTo: undefined, id: "idle" };
     const returning = storyStageState([driven, idle], 0.5);
     const settled = storyStageState([driven, idle], 1);
 
-    expect(returning.driveTo?.node).toBe("right-sub-wheel");
-    expect(returning.driveTo?.value).toBeCloseTo(Math.PI / 2, 12);
+    expect(returning.driveTo?.node).toBe("shulun");
+    expect(returning.driveTo?.value).toBeCloseTo(
+      driven.driveTo!.value / 2,
+      12,
+    );
     expect(settled.driveTo).toBeUndefined();
 
     const switched = storyStageState(
@@ -116,21 +126,21 @@ describe("flagship stories", () => {
         driven,
         {
           ...driven,
-          driveTo: { node: "great-wheel", seconds: 2, value: Math.PI / 2 },
+          driveTo: { node: "celestial-column", seconds: 2, value: Math.PI / 2 },
           id: "switched",
         },
       ],
       0.5,
     );
     expect(switched.driveTo).toEqual({
-      node: "great-wheel",
+      node: "celestial-column",
       seconds: 2,
       value: 0,
     });
   });
 
   it("dollies out while crossfading between reconstruction schemes", () => {
-    const transition = storyStageState(chariotStory, 5.5 / 6);
+    const transition = storyStageState(seismoscopeStory, 3.5 / 7);
     const linearPosition = transition.fromStep.camera.position.map(
       (value, axis) => (value + transition.toStep.camera.position[axis]) / 2,
     );

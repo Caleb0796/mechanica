@@ -1,34 +1,18 @@
 import astroclockDataJson from "../src/data/machines/astroclock.json";
-import bellowsDataJson from "../src/data/machines/bellows.json";
-import chainpumpDataJson from "../src/data/machines/chainpump.json";
-import chariotDataJson from "../src/data/machines/chariot.json";
-import gimbalDataJson from "../src/data/machines/gimbal.json";
 import loomDataJson from "../src/data/machines/loom.json";
 import odometerDataJson from "../src/data/machines/odometer.json";
 import seismoscopeDataJson from "../src/data/machines/seismoscope.json";
-import typecaseDataJson from "../src/data/machines/typecase.json";
-import woodenOxDataJson from "../src/data/machines/wooden-ox.json";
 import astroclockPartsJson from "../src/machines/astroclock/parts.json";
-import bellowsPartsJson from "../src/machines/bellows/parts.json";
-import chainpumpPartsJson from "../src/machines/chainpump/parts.json";
-import chariotPartsJson from "../src/machines/chariot/parts.json";
-import gimbalPartsJson from "../src/machines/gimbal/parts.json";
 import loomPartsJson from "../src/machines/loom/parts.json";
 import odometerPartsJson from "../src/machines/odometer/parts.json";
 import seismoscopePartsJson from "../src/machines/seismoscope/parts.json";
-import typecasePartsJson from "../src/machines/typecase/parts.json";
-import woodenOxPartsJson from "../src/machines/wooden-ox/parts.json";
 import astroclockCombridgeJson from "../src/machines/astroclock/schemes/combridge-hinged.json";
 import astroclockFixedScoopJson from "../src/machines/astroclock/schemes/fixed-scoop.json";
-import chariotLanchesterJson from "../src/machines/chariot/schemes/lanchester-diff.json";
-import chariotYanSuJson from "../src/machines/chariot/schemes/yansu-clutch.json";
 import loomLinkageJson from "../src/machines/loom/schemes/linkage.json";
 import loomSlidingFrameJson from "../src/machines/loom/schemes/sliding-frame.json";
 import odometerLuDaolongJson from "../src/machines/odometer/schemes/ludaolong.json";
 import seismoscopeFengJson from "../src/machines/seismoscope/schemes/fengrui.json";
 import seismoscopeWangJson from "../src/machines/seismoscope/schemes/wangzhenduo.json";
-import woodenOxWalkerJson from "../src/machines/wooden-ox/schemes/walker.json";
-import woodenOxWheelbarrowJson from "../src/machines/wooden-ox/schemes/wheelbarrow.json";
 import type { MachineData, MachineSlug } from "../src/sim/types";
 
 declare const process: { env: Record<string, string | undefined> };
@@ -50,7 +34,7 @@ export const DOCENT_PROMPT_CORE = `你是数字博物馆「古械重生 Mechanic
 - 存在学术争议时并列诸家方案与各自依据，不替观众下唯一结论；
 - 回答默认 ≤200 字，观众追问再展开；语言跟随 lang 字段。
 【馆藏资料】= 当前机械完整 MachineData JSON + 当前选中零件 partId + 当前方案 schemeId
-            + 十台机械 oneLiner 索引（供跨馆指引）。`;
+            + 四台机械 oneLiner 索引（供跨馆指引）。`;
 
 type DocentRole = "user" | "assistant";
 
@@ -106,25 +90,13 @@ const machines: Record<MachineSlug, MachineRecord> = {
     seismoscopeWangJson,
     seismoscopeFengJson,
   ]),
-  chariot: machineRecord(chariotDataJson, chariotPartsJson, [
-    chariotYanSuJson,
-    chariotLanchesterJson,
-  ]),
   odometer: machineRecord(odometerDataJson, odometerPartsJson, [
     odometerLuDaolongJson,
-  ]),
-  "wooden-ox": machineRecord(woodenOxDataJson, woodenOxPartsJson, [
-    woodenOxWheelbarrowJson,
-    woodenOxWalkerJson,
   ]),
   loom: machineRecord(loomDataJson, loomPartsJson, [
     loomSlidingFrameJson,
     loomLinkageJson,
   ]),
-  typecase: machineRecord(typecaseDataJson, typecasePartsJson),
-  chainpump: machineRecord(chainpumpDataJson, chainpumpPartsJson),
-  bellows: machineRecord(bellowsDataJson, bellowsPartsJson),
-  gimbal: machineRecord(gimbalDataJson, gimbalPartsJson),
 };
 
 const machineSlugs = new Set(Object.keys(machines));
@@ -144,7 +116,7 @@ schemeId=${body.schemeId ?? "null"}
 【当前机械 MachineData JSON】
 ${JSON.stringify(machine.data)}
 
-【十台机械 oneLiner 索引】
+【四台机械 oneLiner 索引】
 ${JSON.stringify(oneLinerIndex)}`;
 }
 

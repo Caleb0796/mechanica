@@ -17,7 +17,7 @@ interface DriveHandleProps {
   active: boolean;
   children: ReactNode;
   coachTarget?: boolean;
-  drive: (delta: number, secondaryDelta?: number) => void;
+  drive: (delta: number) => void;
   gizmoTestId: string;
   onDraggingChange: (dragging: boolean) => void;
   onDriveSuccess: () => void;

@@ -24,14 +24,8 @@ const maxTotalBytes = 25 * 1024 * 1024
 const machineSlugs = new Set([
   'astroclock',
   'seismoscope',
-  'chariot',
   'odometer',
-  'wooden-ox',
   'loom',
-  'typecase',
-  'chainpump',
-  'bellows',
-  'gimbal',
 ])
 const rasterExtensions = ['jpg', 'png', 'webp']
 let lastRequestAt = 0
@@ -91,7 +85,7 @@ function stripHtml(value) {
 
 function machineFiles() {
   const files = readdirSync(dataDirectory).filter((name) => name.endsWith('.json')).sort()
-  if (files.length !== 10) throw new Error(`expected 10 machine data JSONs, found ${files.length}`)
+  if (files.length !== 4) throw new Error(`expected 4 machine data JSONs, found ${files.length}`)
   return files
 }
 

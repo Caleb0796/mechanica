@@ -217,15 +217,18 @@
         "en": "Celestial column"
       },
       "geometry": {
-        "type": "shaft",
-        "radius": 0.12,
-        "length": 6.084
+        "type": "custom",
+        "builder": "astroclockCelestialColumn",
+        "params": {
+          "radius": 0.12,
+          "length": 6.084
+        }
       },
       "material": "iron",
       "position": [
-        5,
-        6,
-        0
+        1.55,
+        6.15,
+        0.25
       ],
       "joint": {
         "kind": "revolute",
@@ -240,7 +243,7 @@
         "ref": "xyxfy-taiti"
       },
       "dimensionProvenance": {
-        "length": {
+        "params.length": {
           "kind": "wenxian",
           "ref": "xyxfy-taiti"
         },
@@ -284,9 +287,9 @@
       },
       "material": "wood",
       "position": [
-        1.5,
-        7.6,
-        0
+        0.35,
+        6.55,
+        0.3
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -356,16 +359,19 @@
         "en": "Day-night wheel"
       },
       "geometry": {
-        "type": "wheel",
-        "radius": 0.55,
-        "width": 0.12,
-        "spokes": 12
+        "type": "custom",
+        "builder": "astroclockReportingDrum",
+        "params": {
+          "radius": 0.55,
+          "width": 0.12,
+          "spokes": 12
+        }
       },
       "material": "wood",
       "position": [
-        -1.8,
-        6.6,
-        0
+        -0.95,
+        6.55,
+        0.3
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -413,9 +419,9 @@
       },
       "material": "iron",
       "position": [
-        0,
-        7.7,
-        0
+        1.55,
+        8.15,
+        0.55
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -463,9 +469,9 @@
       },
       "material": "bronze",
       "position": [
-        0,
-        8.7,
-        0
+        1.55,
+        9.25,
+        0.55
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -506,16 +512,19 @@
         "en": "Water-lift wheel"
       },
       "geometry": {
-        "type": "wheel",
-        "radius": 0.8735,
-        "width": 0.16,
-        "spokes": 12
+        "type": "custom",
+        "builder": "astroclockNoriaWheel",
+        "params": {
+          "radius": 0.8735,
+          "width": 0.16,
+          "spokes": 12
+        }
       },
       "material": "wood",
       "position": [
-        8,
-        3,
-        0
+        -1.85,
+        2.25,
+        0.35
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -535,7 +544,7 @@
         "ref": "xyxfy-water"
       },
       "dimensionProvenance": {
-        "radius": {
+        "params.radius": {
           "kind": "wenxian",
           "ref": "xyxfy-water",
           "note": "Half of the recorded 1.747 m diameter."
@@ -572,18 +581,20 @@
         "en": "Water supply trough"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          2.2,
-          0.3,
-          0.8
-        ]
+        "type": "custom",
+        "builder": "astroclockWaterVessel",
+        "params": {
+          "sizeX": 2.2,
+          "sizeY": 0.3,
+          "sizeZ": 0.8,
+          "variant": 0
+        }
       },
       "material": "wood",
       "position": [
-        8,
-        1.5,
-        0
+        -2.25,
+        0.95,
+        0.35
       ],
       "joint": {
         "kind": "fixed",
@@ -618,18 +629,20 @@
         "en": "Header reservoir"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          1.8,
-          0.7,
-          1.2
-        ]
+        "type": "custom",
+        "builder": "astroclockWaterVessel",
+        "params": {
+          "sizeX": 1.8,
+          "sizeY": 0.7,
+          "sizeZ": 1.2,
+          "variant": 1
+        }
       },
       "material": "wood",
       "position": [
-        5.5,
-        0.8,
-        0
+        -2.25,
+        9.45,
+        -0.55
       ],
       "joint": {
         "kind": "fixed",
@@ -664,18 +677,20 @@
         "en": "Constant-level tank"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          1.2,
-          0.45,
-          0.9
-        ]
+        "type": "custom",
+        "builder": "astroclockWaterVessel",
+        "params": {
+          "sizeX": 1.2,
+          "sizeY": 0.45,
+          "sizeZ": 0.9,
+          "variant": 2
+        }
       },
       "material": "wood",
       "position": [
-        5.5,
-        1.7,
-        0
+        -1.65,
+        8.35,
+        -0.45
       ],
       "joint": {
         "kind": "fixed",
@@ -756,15 +771,19 @@
         "en": "Regulating fork"
       },
       "geometry": {
-        "type": "link",
-        "length": 0.8,
-        "width": 0.08
+        "type": "custom",
+        "builder": "astroclockEscapementPart",
+        "params": {
+          "length": 0.8,
+          "width": 0.08,
+          "kind": 0
+        }
       },
       "material": "iron",
       "position": [
-        -1.2,
+        -1.05,
         4,
-        2
+        1.35
       ],
       "joint": {
         "kind": "revolute",
@@ -804,15 +823,19 @@
         "en": "Release tongue"
       },
       "geometry": {
-        "type": "link",
-        "length": 0.7,
-        "width": 0.08
+        "type": "custom",
+        "builder": "astroclockEscapementPart",
+        "params": {
+          "length": 0.7,
+          "width": 0.08,
+          "kind": 1
+        }
       },
       "material": "iron",
       "position": [
         0,
-        4,
-        2.3
+        4.1,
+        1.5
       ],
       "joint": {
         "kind": "revolute",
@@ -852,15 +875,19 @@
         "en": "Celestial gate"
       },
       "geometry": {
-        "type": "link",
-        "length": 0.8,
-        "width": 0.08
+        "type": "custom",
+        "builder": "astroclockEscapementPart",
+        "params": {
+          "length": 0.8,
+          "width": 0.08,
+          "kind": 2
+        }
       },
       "material": "iron",
       "position": [
-        1.2,
+        1.05,
         4,
-        2
+        1.35
       ],
       "joint": {
         "kind": "revolute",
@@ -900,15 +927,19 @@
         "en": "Left celestial lock"
       },
       "geometry": {
-        "type": "link",
-        "length": 0.55,
-        "width": 0.08
+        "type": "custom",
+        "builder": "astroclockEscapementPart",
+        "params": {
+          "length": 0.55,
+          "width": 0.08,
+          "kind": 3
+        }
       },
       "material": "iron",
       "position": [
-        -0.7,
-        4.8,
-        2.3
+        -0.58,
+        4.85,
+        1.45
       ],
       "joint": {
         "kind": "revolute",
@@ -948,15 +979,19 @@
         "en": "Right celestial lock"
       },
       "geometry": {
-        "type": "link",
-        "length": 0.55,
-        "width": 0.08
+        "type": "custom",
+        "builder": "astroclockEscapementPart",
+        "params": {
+          "length": 0.55,
+          "width": 0.08,
+          "kind": 4
+        }
       },
       "material": "iron",
       "position": [
-        0.7,
-        4.8,
-        2.3
+        0.58,
+        4.85,
+        1.45
       ],
       "joint": {
         "kind": "revolute",
@@ -1018,8 +1053,8 @@
       "joint": {
         "kind": "fixed",
         "axis": [
-          0,
           1,
+          0,
           0
         ],
         "limits": [
@@ -3589,18 +3624,20 @@
         "en": "Chime tier 1"
       },
       "geometry": {
-        "type": "beam",
-        "size": [
-          2.4,
-          0.08,
-          0.6
-        ]
+        "type": "custom",
+        "builder": "astroclockJackBay",
+        "params": {
+          "width": 2.4,
+          "depth": 0.86,
+          "height": 1.08,
+          "tier": 1
+        }
       },
       "material": "wood",
       "position": [
         0,
         1,
-        5
+        3.65
       ],
       "joint": {
         "kind": "fixed",
@@ -3635,16 +3672,19 @@
         "en": "Tier 1 chime cam"
       },
       "geometry": {
-        "type": "wheel",
-        "radius": 0.16,
-        "width": 0.05,
-        "spokes": 6
+        "type": "custom",
+        "builder": "astroclockReportingCam",
+        "params": {
+          "radius": 0.16,
+          "width": 0.05,
+          "tier": 1
+        }
       },
       "material": "wood",
       "position": [
         -1.55,
         1.3,
-        5
+        3.65
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -3696,7 +3736,7 @@
       "position": [
         1.25,
         1.3,
-        5
+        3.65
       ],
       "joint": {
         "kind": "prismatic",
@@ -3735,18 +3775,19 @@
         "en": "Tier 1 jack figure 1"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        -0.35,
-        0.29,
-        0
+        -0.45,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-1",
       "joint": {
@@ -3770,9 +3811,9 @@
         }
       },
       "explodeVector": [
-        -0.7,
         0,
-        3.25
+        0,
+        0.35
       ],
       "assemblyStep": 55
     },
@@ -3783,18 +3824,19 @@
         "en": "Tier 1 jack figure 2"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        0.35,
-        0.29,
-        0
+        0.45,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-1",
       "joint": {
@@ -3818,9 +3860,9 @@
         }
       },
       "explodeVector": [
-        0.7,
         0,
-        3.25
+        0,
+        0.35
       ],
       "assemblyStep": 56
     },
@@ -3831,18 +3873,20 @@
         "en": "Chime tier 2"
       },
       "geometry": {
-        "type": "beam",
-        "size": [
-          2.4,
-          0.08,
-          0.6
-        ]
+        "type": "custom",
+        "builder": "astroclockJackBay",
+        "params": {
+          "width": 2.4,
+          "depth": 0.86,
+          "height": 1.08,
+          "tier": 2
+        }
       },
       "material": "wood",
       "position": [
         0,
         3,
-        5
+        3.48
       ],
       "joint": {
         "kind": "fixed",
@@ -3877,16 +3921,19 @@
         "en": "Tier 2 chime cam"
       },
       "geometry": {
-        "type": "wheel",
-        "radius": 0.16,
-        "width": 0.05,
-        "spokes": 6
+        "type": "custom",
+        "builder": "astroclockReportingCam",
+        "params": {
+          "radius": 0.16,
+          "width": 0.05,
+          "tier": 2
+        }
       },
       "material": "wood",
       "position": [
         -1.55,
         3.3,
-        5
+        3.48
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -3938,7 +3985,7 @@
       "position": [
         1.25,
         3.3,
-        5
+        3.48
       ],
       "joint": {
         "kind": "prismatic",
@@ -3977,18 +4024,19 @@
         "en": "Tier 2 jack figure 1"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        -0.35,
-        0.29,
-        0
+        -0.45,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-2",
       "joint": {
@@ -4012,9 +4060,9 @@
         }
       },
       "explodeVector": [
-        -0.7,
         0,
-        3.5
+        0,
+        0.35
       ],
       "assemblyStep": 60
     },
@@ -4025,18 +4073,19 @@
         "en": "Tier 2 jack figure 2"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        0.35,
-        0.29,
-        0
+        0.45,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-2",
       "joint": {
@@ -4060,9 +4109,9 @@
         }
       },
       "explodeVector": [
-        0.7,
         0,
-        3.5
+        0,
+        0.35
       ],
       "assemblyStep": 61
     },
@@ -4073,18 +4122,20 @@
         "en": "Chime tier 3"
       },
       "geometry": {
-        "type": "beam",
-        "size": [
-          2.4,
-          0.08,
-          0.6
-        ]
+        "type": "custom",
+        "builder": "astroclockJackBay",
+        "params": {
+          "width": 2.4,
+          "depth": 0.86,
+          "height": 1.08,
+          "tier": 3
+        }
       },
       "material": "wood",
       "position": [
         0,
         5,
-        5
+        3.3
       ],
       "joint": {
         "kind": "fixed",
@@ -4119,16 +4170,19 @@
         "en": "Tier 3 chime cam"
       },
       "geometry": {
-        "type": "wheel",
-        "radius": 0.16,
-        "width": 0.05,
-        "spokes": 6
+        "type": "custom",
+        "builder": "astroclockReportingCam",
+        "params": {
+          "radius": 0.16,
+          "width": 0.05,
+          "tier": 3
+        }
       },
       "material": "wood",
       "position": [
         -1.55,
         5.3,
-        5
+        3.3
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -4180,7 +4234,7 @@
       "position": [
         1.25,
         5.3,
-        5
+        3.3
       ],
       "joint": {
         "kind": "prismatic",
@@ -4219,18 +4273,19 @@
         "en": "Tier 3 jack figure 1"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        -0.35,
-        0.29,
-        0
+        -0.45,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-3",
       "joint": {
@@ -4254,9 +4309,9 @@
         }
       },
       "explodeVector": [
-        -0.7,
         0,
-        3.75
+        0,
+        0.35
       ],
       "assemblyStep": 65
     },
@@ -4267,18 +4322,19 @@
         "en": "Tier 3 jack figure 2"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        0.35,
-        0.29,
-        0
+        0.45,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-3",
       "joint": {
@@ -4302,9 +4358,9 @@
         }
       },
       "explodeVector": [
-        0.7,
         0,
-        3.75
+        0,
+        0.35
       ],
       "assemblyStep": 66
     },
@@ -4315,18 +4371,20 @@
         "en": "Chime tier 4"
       },
       "geometry": {
-        "type": "beam",
-        "size": [
-          2.4,
-          0.08,
-          0.6
-        ]
+        "type": "custom",
+        "builder": "astroclockJackBay",
+        "params": {
+          "width": 2.4,
+          "depth": 0.86,
+          "height": 1.08,
+          "tier": 4
+        }
       },
       "material": "wood",
       "position": [
         0,
         7,
-        5
+        3.12
       ],
       "joint": {
         "kind": "fixed",
@@ -4361,16 +4419,19 @@
         "en": "Tier 4 chime cam"
       },
       "geometry": {
-        "type": "wheel",
-        "radius": 0.16,
-        "width": 0.05,
-        "spokes": 6
+        "type": "custom",
+        "builder": "astroclockReportingCam",
+        "params": {
+          "radius": 0.16,
+          "width": 0.05,
+          "tier": 4
+        }
       },
       "material": "wood",
       "position": [
         -1.55,
         7.3,
-        5
+        3.12
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -4422,7 +4483,7 @@
       "position": [
         1.25,
         7.3,
-        5
+        3.12
       ],
       "joint": {
         "kind": "prismatic",
@@ -4461,18 +4522,19 @@
         "en": "Tier 4 jack figure 1"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        -0.55,
-        0.29,
-        0
+        -0.72,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-4",
       "joint": {
@@ -4496,9 +4558,9 @@
         }
       },
       "explodeVector": [
-        -1.1,
         0,
-        4
+        0,
+        0.35
       ],
       "assemblyStep": 70
     },
@@ -4509,18 +4571,19 @@
         "en": "Tier 4 jack figure 2"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
         0,
-        0.29,
-        0
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-4",
       "joint": {
@@ -4546,7 +4609,7 @@
       "explodeVector": [
         0,
         0,
-        4
+        0.35
       ],
       "assemblyStep": 71
     },
@@ -4557,18 +4620,19 @@
         "en": "Tier 4 jack figure 3"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        0.55,
-        0.29,
-        0
+        0.72,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-4",
       "joint": {
@@ -4592,9 +4656,9 @@
         }
       },
       "explodeVector": [
-        1.1,
         0,
-        4
+        0,
+        0.35
       ],
       "assemblyStep": 72
     },
@@ -4605,18 +4669,20 @@
         "en": "Chime tier 5"
       },
       "geometry": {
-        "type": "beam",
-        "size": [
-          2.4,
-          0.08,
-          0.6
-        ]
+        "type": "custom",
+        "builder": "astroclockJackBay",
+        "params": {
+          "width": 2.4,
+          "depth": 0.86,
+          "height": 1.08,
+          "tier": 5
+        }
       },
       "material": "wood",
       "position": [
         0,
         9,
-        5
+        2.94
       ],
       "joint": {
         "kind": "fixed",
@@ -4651,16 +4717,19 @@
         "en": "Tier 5 chime cam"
       },
       "geometry": {
-        "type": "wheel",
-        "radius": 0.16,
-        "width": 0.05,
-        "spokes": 6
+        "type": "custom",
+        "builder": "astroclockReportingCam",
+        "params": {
+          "radius": 0.16,
+          "width": 0.05,
+          "tier": 5
+        }
       },
       "material": "wood",
       "position": [
         -1.55,
         9.3,
-        5
+        2.94
       ],
       "rotationEuler": [
         1.5707963267948966,
@@ -4712,7 +4781,7 @@
       "position": [
         1.25,
         9.3,
-        5
+        2.94
       ],
       "joint": {
         "kind": "prismatic",
@@ -4751,18 +4820,19 @@
         "en": "Tier 5 jack figure 1"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        -0.55,
-        0.29,
-        0
+        -0.45,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-5",
       "joint": {
@@ -4786,9 +4856,9 @@
         }
       },
       "explodeVector": [
-        -1.1,
         0,
-        4.25
+        0,
+        0.35
       ],
       "assemblyStep": 76
     },
@@ -4799,18 +4869,19 @@
         "en": "Tier 5 jack figure 2"
       },
       "geometry": {
-        "type": "box",
-        "size": [
-          0.22,
-          0.45,
-          0.22
-        ]
+        "type": "custom",
+        "builder": "astroclockJackFigure",
+        "params": {
+          "height": 0.96,
+          "shoulderWidth": 0.54,
+          "depth": 0.24
+        }
       },
       "material": "wood",
       "position": [
-        0,
-        0.29,
-        0
+        0.45,
+        0.43,
+        0.16
       ],
       "parent": "chime-tier-5",
       "joint": {
@@ -4836,9 +4907,344 @@
       "explodeVector": [
         0,
         0,
-        4.25
+        0.35
       ],
       "assemblyStep": 77
+    },
+    {
+      "id": "water-circuit-links",
+      "name": {
+        "zh": "连续水路",
+        "en": "Continuous water circuit"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "astroclockWaterCircuitLinks",
+        "params": {
+          "variant": 0
+        }
+      },
+      "material": "bronze",
+      "position": [
+        0,
+        6,
+        0
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-water",
+        "note": "The source records the continuous regulated-water circuit; the displayed conduit routing is inferred."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "water-circuit-layout",
+          "note": "Conduit diameters and display routing are reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        4,
+        0,
+        0
+      ],
+      "assemblyStep": 78
+    },
+    {
+      "id": "escapement-linkage",
+      "name": {
+        "zh": "擒纵传递连杆",
+        "en": "Escapement handoff linkage"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "astroclockEscapementLinks",
+        "params": {
+          "variant": 0
+        }
+      },
+      "material": "iron",
+      "position": [
+        0,
+        6,
+        0
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-action",
+        "note": "The named escapement handoff is textual; rod offsets expose its causal order."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "astroclock-reconstruction",
+          "note": "Bearing and rod dimensions are illustrative reconstruction geometry."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        3.5
+      ],
+      "assemblyStep": 79
+    },
+    {
+      "id": "celestial-transmission-links",
+      "name": {
+        "zh": "天柱传动接力",
+        "en": "Celestial transmission handoffs"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "astroclockCelestialTransmissionLinks",
+        "params": {
+          "variant": 0
+        }
+      },
+      "material": "bronze",
+      "position": [
+        0,
+        6,
+        0
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "The source records the vertical reporting and celestial train; these visible handoffs expose it."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "celestial-ladder-illustration",
+          "note": "Takeoff and ladder-link dimensions are illustrative."
+        }
+      },
+      "explodeVector": [
+        3.5,
+        0,
+        0
+      ],
+      "assemblyStep": 80
+    },
+    {
+      "id": "reporting-drive-links",
+      "name": {
+        "zh": "五层报时驱动",
+        "en": "Five-tier reporting drive"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "astroclockReportingDriveLinks",
+        "params": {
+          "variant": 0
+        }
+      },
+      "material": "iron",
+      "position": [
+        0,
+        6,
+        0
+      ],
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "wenxian",
+        "ref": "xyxfy-baoshi",
+        "note": "The source records the five-tier reporting display; the exposed camshaft and output rods show its actuation."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "chime-tier-choreography",
+          "note": "Camshaft and output-rod dimensions are representative."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        4.5
+      ],
+      "assemblyStep": 81
+    },
+    {
+      "id": "shulun-phase-marker",
+      "name": {
+        "zh": "枢轮相位标",
+        "en": "Scoop-wheel phase marker"
+      },
+      "geometry": {
+        "type": "box",
+        "size": [
+          0.25,
+          0.1,
+          0.1
+        ]
+      },
+      "material": "bronze",
+      "position": [
+        1.45,
+        -0.055,
+        0.2
+      ],
+      "parent": "shulun",
+      "joint": {
+        "kind": "fixed",
+        "axis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "scoop-mounting",
+        "note": "The phase marker is a visual motion cue, not an asserted historical fitting."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Marker dimensions and position are visual aids."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        0
+      ],
+      "assemblyStep": 82
+    },
+    {
+      "id": "water-flow-indicator",
+      "name": {
+        "zh": "来水脉冲",
+        "en": "Incoming water pulse"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "astroclockWaterIndicator",
+        "params": {
+          "radius": 0.12,
+          "kind": 0
+        }
+      },
+      "material": "bronze",
+      "position": [
+        -1.65,
+        7.9,
+        -0.2
+      ],
+      "joint": {
+        "kind": "prismatic",
+        "axis": [
+          0,
+          -1,
+          0
+        ],
+        "limits": [
+          0,
+          3.2
+        ]
+      },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "water-circuit-layout",
+        "note": "This visible pulse communicates water arrival during the deterministic demonstration."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "water-circuit-layout",
+          "note": "Indicator scale and travel are visual aids."
+        }
+      },
+      "explodeVector": [
+        4,
+        0,
+        0
+      ],
+      "assemblyStep": 83
+    },
+    {
+      "id": "loaded-scoop-indicator",
+      "name": {
+        "zh": "受水壶载水",
+        "en": "Loaded scoop water"
+      },
+      "geometry": {
+        "type": "custom",
+        "builder": "astroclockWaterIndicator",
+        "params": {
+          "radius": 0.09,
+          "kind": 1
+        }
+      },
+      "material": "bronze",
+      "position": [
+        0,
+        -0.08,
+        0
+      ],
+      "parent": "scoop-01",
+      "joint": {
+        "kind": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "limits": [
+          0,
+          0.1
+        ]
+      },
+      "provenance": {
+        "kind": "tuice",
+        "ref": "scoop-mounting",
+        "note": "This water volume communicates the loaded-scoop phase during the demonstration."
+      },
+      "dimensionProvenance": {
+        "@rest": {
+          "kind": "tuice",
+          "ref": "scoop-mounting",
+          "note": "Indicator scale and lift are visual aids."
+        }
+      },
+      "explodeVector": [
+        0,
+        0,
+        0
+      ],
+      "assemblyStep": 84
     }
   ],
   "constraints": [

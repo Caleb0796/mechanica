@@ -1,6 +1,6 @@
 {
   "slug": "astroclock",
-  "when": "2026-07-18T23:22:56.778Z",
+  "when": "2026-07-20T16:13:31.664Z",
   "checks": [
     {
       "id": "base:provenance:part:tower-shell",
@@ -483,6 +483,48 @@
       "sourceRef": "xyxfy-baoshi"
     },
     {
+      "id": "base:provenance:part:water-circuit-links",
+      "status": "pass",
+      "message": "Part water-circuit-links has valid provenance.",
+      "sourceRef": "xyxfy-water"
+    },
+    {
+      "id": "base:provenance:part:escapement-linkage",
+      "status": "pass",
+      "message": "Part escapement-linkage has valid provenance.",
+      "sourceRef": "xyxfy-action"
+    },
+    {
+      "id": "base:provenance:part:celestial-transmission-links",
+      "status": "pass",
+      "message": "Part celestial-transmission-links has valid provenance.",
+      "sourceRef": "xyxfy-baoshi"
+    },
+    {
+      "id": "base:provenance:part:reporting-drive-links",
+      "status": "pass",
+      "message": "Part reporting-drive-links has valid provenance.",
+      "sourceRef": "xyxfy-baoshi"
+    },
+    {
+      "id": "base:provenance:part:shulun-phase-marker",
+      "status": "pass",
+      "message": "Part shulun-phase-marker has valid provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "base:provenance:part:water-flow-indicator",
+      "status": "pass",
+      "message": "Part water-flow-indicator has valid provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "base:provenance:part:loaded-scoop-indicator",
+      "status": "pass",
+      "message": "Part loaded-scoop-indicator has valid provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
       "id": "base:provenance:dimension:tower-shell:params.bottomHalfWidth",
       "status": "pass",
       "message": "tower-shell.params.bottomHalfWidth has dimension provenance.",
@@ -537,15 +579,15 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:celestial-column:length",
+      "id": "base:provenance:dimension:celestial-column:params.length",
       "status": "pass",
-      "message": "celestial-column.length has dimension provenance.",
+      "message": "celestial-column.params.length has dimension provenance.",
       "sourceRef": "xyxfy-taiti"
     },
     {
-      "id": "base:provenance:dimension:celestial-column:radius",
+      "id": "base:provenance:dimension:celestial-column:params.radius",
       "status": "pass",
-      "message": "celestial-column.radius has dimension provenance.",
+      "message": "celestial-column.params.radius has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -567,21 +609,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:day-night-wheel:radius",
+      "id": "base:provenance:dimension:day-night-wheel:params.radius",
       "status": "pass",
-      "message": "day-night-wheel.radius has dimension provenance.",
+      "message": "day-night-wheel.params.radius has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:day-night-wheel:spokes",
+      "id": "base:provenance:dimension:day-night-wheel:params.spokes",
       "status": "pass",
-      "message": "day-night-wheel.spokes has dimension provenance.",
+      "message": "day-night-wheel.params.spokes has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:day-night-wheel:width",
+      "id": "base:provenance:dimension:day-night-wheel:params.width",
       "status": "pass",
-      "message": "day-night-wheel.width has dimension provenance.",
+      "message": "day-night-wheel.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -621,75 +663,93 @@
       "sourceRef": "celestial-ladder-illustration"
     },
     {
-      "id": "base:provenance:dimension:water-lift-wheel:radius",
+      "id": "base:provenance:dimension:water-lift-wheel:params.radius",
       "status": "pass",
-      "message": "water-lift-wheel.radius has dimension provenance.",
+      "message": "water-lift-wheel.params.radius has dimension provenance.",
       "sourceRef": "xyxfy-water"
     },
     {
-      "id": "base:provenance:dimension:water-lift-wheel:spokes",
+      "id": "base:provenance:dimension:water-lift-wheel:params.spokes",
       "status": "pass",
-      "message": "water-lift-wheel.spokes has dimension provenance.",
+      "message": "water-lift-wheel.params.spokes has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:water-lift-wheel:width",
+      "id": "base:provenance:dimension:water-lift-wheel:params.width",
       "status": "pass",
-      "message": "water-lift-wheel.width has dimension provenance.",
+      "message": "water-lift-wheel.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:water-trough:size.0",
+      "id": "base:provenance:dimension:water-trough:params.sizeX",
       "status": "pass",
-      "message": "water-trough.size.0 has dimension provenance.",
+      "message": "water-trough.params.sizeX has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:water-trough:size.1",
+      "id": "base:provenance:dimension:water-trough:params.sizeY",
       "status": "pass",
-      "message": "water-trough.size.1 has dimension provenance.",
+      "message": "water-trough.params.sizeY has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:water-trough:size.2",
+      "id": "base:provenance:dimension:water-trough:params.sizeZ",
       "status": "pass",
-      "message": "water-trough.size.2 has dimension provenance.",
+      "message": "water-trough.params.sizeZ has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:water-reservoir:size.0",
+      "id": "base:provenance:dimension:water-trough:params.variant",
       "status": "pass",
-      "message": "water-reservoir.size.0 has dimension provenance.",
+      "message": "water-trough.params.variant has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:water-reservoir:params.sizeX",
+      "status": "pass",
+      "message": "water-reservoir.params.sizeX has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "base:provenance:dimension:water-reservoir:size.1",
+      "id": "base:provenance:dimension:water-reservoir:params.sizeY",
       "status": "pass",
-      "message": "water-reservoir.size.1 has dimension provenance.",
+      "message": "water-reservoir.params.sizeY has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "base:provenance:dimension:water-reservoir:size.2",
+      "id": "base:provenance:dimension:water-reservoir:params.sizeZ",
       "status": "pass",
-      "message": "water-reservoir.size.2 has dimension provenance.",
+      "message": "water-reservoir.params.sizeZ has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "base:provenance:dimension:constant-level-tank:size.0",
+      "id": "base:provenance:dimension:water-reservoir:params.variant",
       "status": "pass",
-      "message": "constant-level-tank.size.0 has dimension provenance.",
+      "message": "water-reservoir.params.variant has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "base:provenance:dimension:constant-level-tank:size.1",
+      "id": "base:provenance:dimension:constant-level-tank:params.sizeX",
       "status": "pass",
-      "message": "constant-level-tank.size.1 has dimension provenance.",
+      "message": "constant-level-tank.params.sizeX has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "base:provenance:dimension:constant-level-tank:size.2",
+      "id": "base:provenance:dimension:constant-level-tank:params.sizeY",
       "status": "pass",
-      "message": "constant-level-tank.size.2 has dimension provenance.",
+      "message": "constant-level-tank.params.sizeY has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "base:provenance:dimension:constant-level-tank:params.sizeZ",
+      "status": "pass",
+      "message": "constant-level-tank.params.sizeZ has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "base:provenance:dimension:constant-level-tank:params.variant",
+      "status": "pass",
+      "message": "constant-level-tank.params.variant has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
@@ -717,15 +777,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:gecha:length",
+      "id": "base:provenance:dimension:gecha:params.kind",
       "status": "pass",
-      "message": "gecha.length has dimension provenance.",
+      "message": "gecha.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:gecha:width",
+      "id": "base:provenance:dimension:gecha:params.length",
       "status": "pass",
-      "message": "gecha.width has dimension provenance.",
+      "message": "gecha.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gecha:params.width",
+      "status": "pass",
+      "message": "gecha.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -741,15 +807,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:guanshe:length",
+      "id": "base:provenance:dimension:guanshe:params.kind",
       "status": "pass",
-      "message": "guanshe.length has dimension provenance.",
+      "message": "guanshe.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:guanshe:width",
+      "id": "base:provenance:dimension:guanshe:params.length",
       "status": "pass",
-      "message": "guanshe.width has dimension provenance.",
+      "message": "guanshe.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:guanshe:params.width",
+      "status": "pass",
+      "message": "guanshe.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -765,15 +837,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tianguan:length",
+      "id": "base:provenance:dimension:tianguan:params.kind",
       "status": "pass",
-      "message": "tianguan.length has dimension provenance.",
+      "message": "tianguan.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tianguan:width",
+      "id": "base:provenance:dimension:tianguan:params.length",
       "status": "pass",
-      "message": "tianguan.width has dimension provenance.",
+      "message": "tianguan.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:tianguan:params.width",
+      "status": "pass",
+      "message": "tianguan.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -789,15 +867,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tiansuo-l:length",
+      "id": "base:provenance:dimension:tiansuo-l:params.kind",
       "status": "pass",
-      "message": "tiansuo-l.length has dimension provenance.",
+      "message": "tiansuo-l.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tiansuo-l:width",
+      "id": "base:provenance:dimension:tiansuo-l:params.length",
       "status": "pass",
-      "message": "tiansuo-l.width has dimension provenance.",
+      "message": "tiansuo-l.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:tiansuo-l:params.width",
+      "status": "pass",
+      "message": "tiansuo-l.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -813,15 +897,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tiansuo-r:length",
+      "id": "base:provenance:dimension:tiansuo-r:params.kind",
       "status": "pass",
-      "message": "tiansuo-r.length has dimension provenance.",
+      "message": "tiansuo-r.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tiansuo-r:width",
+      "id": "base:provenance:dimension:tiansuo-r:params.length",
       "status": "pass",
-      "message": "tiansuo-r.width has dimension provenance.",
+      "message": "tiansuo-r.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:tiansuo-r:params.width",
+      "status": "pass",
+      "message": "tiansuo-r.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -1905,39 +1995,45 @@
       "sourceRef": "xyxfy-shulun"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-1:size.0",
+      "id": "base:provenance:dimension:chime-tier-1:params.depth",
       "status": "pass",
-      "message": "chime-tier-1.size.0 has dimension provenance.",
+      "message": "chime-tier-1.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-1:size.1",
+      "id": "base:provenance:dimension:chime-tier-1:params.height",
       "status": "pass",
-      "message": "chime-tier-1.size.1 has dimension provenance.",
+      "message": "chime-tier-1.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-1:size.2",
+      "id": "base:provenance:dimension:chime-tier-1:params.tier",
       "status": "pass",
-      "message": "chime-tier-1.size.2 has dimension provenance.",
+      "message": "chime-tier-1.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-1:radius",
+      "id": "base:provenance:dimension:chime-tier-1:params.width",
       "status": "pass",
-      "message": "tier-cam-1.radius has dimension provenance.",
+      "message": "chime-tier-1.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:tier-cam-1:params.radius",
+      "status": "pass",
+      "message": "tier-cam-1.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-1:spokes",
+      "id": "base:provenance:dimension:tier-cam-1:params.tier",
       "status": "pass",
-      "message": "tier-cam-1.spokes has dimension provenance.",
+      "message": "tier-cam-1.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-1:width",
+      "id": "base:provenance:dimension:tier-cam-1:params.width",
       "status": "pass",
-      "message": "tier-cam-1.width has dimension provenance.",
+      "message": "tier-cam-1.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -1971,75 +2067,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:jack-01:size.0",
+      "id": "base:provenance:dimension:jack-01:params.depth",
       "status": "pass",
-      "message": "jack-01.size.0 has dimension provenance.",
+      "message": "jack-01.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-01:size.1",
+      "id": "base:provenance:dimension:jack-01:params.height",
       "status": "pass",
-      "message": "jack-01.size.1 has dimension provenance.",
+      "message": "jack-01.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-01:size.2",
+      "id": "base:provenance:dimension:jack-01:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-01.size.2 has dimension provenance.",
+      "message": "jack-01.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-02:size.0",
+      "id": "base:provenance:dimension:jack-02:params.depth",
       "status": "pass",
-      "message": "jack-02.size.0 has dimension provenance.",
+      "message": "jack-02.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-02:size.1",
+      "id": "base:provenance:dimension:jack-02:params.height",
       "status": "pass",
-      "message": "jack-02.size.1 has dimension provenance.",
+      "message": "jack-02.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-02:size.2",
+      "id": "base:provenance:dimension:jack-02:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-02.size.2 has dimension provenance.",
+      "message": "jack-02.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-2:size.0",
+      "id": "base:provenance:dimension:chime-tier-2:params.depth",
       "status": "pass",
-      "message": "chime-tier-2.size.0 has dimension provenance.",
+      "message": "chime-tier-2.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-2:size.1",
+      "id": "base:provenance:dimension:chime-tier-2:params.height",
       "status": "pass",
-      "message": "chime-tier-2.size.1 has dimension provenance.",
+      "message": "chime-tier-2.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-2:size.2",
+      "id": "base:provenance:dimension:chime-tier-2:params.tier",
       "status": "pass",
-      "message": "chime-tier-2.size.2 has dimension provenance.",
+      "message": "chime-tier-2.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-2:radius",
+      "id": "base:provenance:dimension:chime-tier-2:params.width",
       "status": "pass",
-      "message": "tier-cam-2.radius has dimension provenance.",
+      "message": "chime-tier-2.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:tier-cam-2:params.radius",
+      "status": "pass",
+      "message": "tier-cam-2.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-2:spokes",
+      "id": "base:provenance:dimension:tier-cam-2:params.tier",
       "status": "pass",
-      "message": "tier-cam-2.spokes has dimension provenance.",
+      "message": "tier-cam-2.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-2:width",
+      "id": "base:provenance:dimension:tier-cam-2:params.width",
       "status": "pass",
-      "message": "tier-cam-2.width has dimension provenance.",
+      "message": "tier-cam-2.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -2073,75 +2175,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:jack-03:size.0",
+      "id": "base:provenance:dimension:jack-03:params.depth",
       "status": "pass",
-      "message": "jack-03.size.0 has dimension provenance.",
+      "message": "jack-03.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-03:size.1",
+      "id": "base:provenance:dimension:jack-03:params.height",
       "status": "pass",
-      "message": "jack-03.size.1 has dimension provenance.",
+      "message": "jack-03.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-03:size.2",
+      "id": "base:provenance:dimension:jack-03:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-03.size.2 has dimension provenance.",
+      "message": "jack-03.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-04:size.0",
+      "id": "base:provenance:dimension:jack-04:params.depth",
       "status": "pass",
-      "message": "jack-04.size.0 has dimension provenance.",
+      "message": "jack-04.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-04:size.1",
+      "id": "base:provenance:dimension:jack-04:params.height",
       "status": "pass",
-      "message": "jack-04.size.1 has dimension provenance.",
+      "message": "jack-04.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-04:size.2",
+      "id": "base:provenance:dimension:jack-04:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-04.size.2 has dimension provenance.",
+      "message": "jack-04.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-3:size.0",
+      "id": "base:provenance:dimension:chime-tier-3:params.depth",
       "status": "pass",
-      "message": "chime-tier-3.size.0 has dimension provenance.",
+      "message": "chime-tier-3.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-3:size.1",
+      "id": "base:provenance:dimension:chime-tier-3:params.height",
       "status": "pass",
-      "message": "chime-tier-3.size.1 has dimension provenance.",
+      "message": "chime-tier-3.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-3:size.2",
+      "id": "base:provenance:dimension:chime-tier-3:params.tier",
       "status": "pass",
-      "message": "chime-tier-3.size.2 has dimension provenance.",
+      "message": "chime-tier-3.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-3:radius",
+      "id": "base:provenance:dimension:chime-tier-3:params.width",
       "status": "pass",
-      "message": "tier-cam-3.radius has dimension provenance.",
+      "message": "chime-tier-3.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:tier-cam-3:params.radius",
+      "status": "pass",
+      "message": "tier-cam-3.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-3:spokes",
+      "id": "base:provenance:dimension:tier-cam-3:params.tier",
       "status": "pass",
-      "message": "tier-cam-3.spokes has dimension provenance.",
+      "message": "tier-cam-3.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-3:width",
+      "id": "base:provenance:dimension:tier-cam-3:params.width",
       "status": "pass",
-      "message": "tier-cam-3.width has dimension provenance.",
+      "message": "tier-cam-3.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -2175,75 +2283,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:jack-05:size.0",
+      "id": "base:provenance:dimension:jack-05:params.depth",
       "status": "pass",
-      "message": "jack-05.size.0 has dimension provenance.",
+      "message": "jack-05.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-05:size.1",
+      "id": "base:provenance:dimension:jack-05:params.height",
       "status": "pass",
-      "message": "jack-05.size.1 has dimension provenance.",
+      "message": "jack-05.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-05:size.2",
+      "id": "base:provenance:dimension:jack-05:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-05.size.2 has dimension provenance.",
+      "message": "jack-05.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-06:size.0",
+      "id": "base:provenance:dimension:jack-06:params.depth",
       "status": "pass",
-      "message": "jack-06.size.0 has dimension provenance.",
+      "message": "jack-06.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-06:size.1",
+      "id": "base:provenance:dimension:jack-06:params.height",
       "status": "pass",
-      "message": "jack-06.size.1 has dimension provenance.",
+      "message": "jack-06.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-06:size.2",
+      "id": "base:provenance:dimension:jack-06:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-06.size.2 has dimension provenance.",
+      "message": "jack-06.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-4:size.0",
+      "id": "base:provenance:dimension:chime-tier-4:params.depth",
       "status": "pass",
-      "message": "chime-tier-4.size.0 has dimension provenance.",
+      "message": "chime-tier-4.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-4:size.1",
+      "id": "base:provenance:dimension:chime-tier-4:params.height",
       "status": "pass",
-      "message": "chime-tier-4.size.1 has dimension provenance.",
+      "message": "chime-tier-4.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-4:size.2",
+      "id": "base:provenance:dimension:chime-tier-4:params.tier",
       "status": "pass",
-      "message": "chime-tier-4.size.2 has dimension provenance.",
+      "message": "chime-tier-4.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-4:radius",
+      "id": "base:provenance:dimension:chime-tier-4:params.width",
       "status": "pass",
-      "message": "tier-cam-4.radius has dimension provenance.",
+      "message": "chime-tier-4.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:tier-cam-4:params.radius",
+      "status": "pass",
+      "message": "tier-cam-4.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-4:spokes",
+      "id": "base:provenance:dimension:tier-cam-4:params.tier",
       "status": "pass",
-      "message": "tier-cam-4.spokes has dimension provenance.",
+      "message": "tier-cam-4.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-4:width",
+      "id": "base:provenance:dimension:tier-cam-4:params.width",
       "status": "pass",
-      "message": "tier-cam-4.width has dimension provenance.",
+      "message": "tier-cam-4.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -2277,93 +2391,99 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:jack-07:size.0",
+      "id": "base:provenance:dimension:jack-07:params.depth",
       "status": "pass",
-      "message": "jack-07.size.0 has dimension provenance.",
+      "message": "jack-07.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-07:size.1",
+      "id": "base:provenance:dimension:jack-07:params.height",
       "status": "pass",
-      "message": "jack-07.size.1 has dimension provenance.",
+      "message": "jack-07.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-07:size.2",
+      "id": "base:provenance:dimension:jack-07:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-07.size.2 has dimension provenance.",
+      "message": "jack-07.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-08:size.0",
+      "id": "base:provenance:dimension:jack-08:params.depth",
       "status": "pass",
-      "message": "jack-08.size.0 has dimension provenance.",
+      "message": "jack-08.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-08:size.1",
+      "id": "base:provenance:dimension:jack-08:params.height",
       "status": "pass",
-      "message": "jack-08.size.1 has dimension provenance.",
+      "message": "jack-08.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-08:size.2",
+      "id": "base:provenance:dimension:jack-08:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-08.size.2 has dimension provenance.",
+      "message": "jack-08.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-09:size.0",
+      "id": "base:provenance:dimension:jack-09:params.depth",
       "status": "pass",
-      "message": "jack-09.size.0 has dimension provenance.",
+      "message": "jack-09.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-09:size.1",
+      "id": "base:provenance:dimension:jack-09:params.height",
       "status": "pass",
-      "message": "jack-09.size.1 has dimension provenance.",
+      "message": "jack-09.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-09:size.2",
+      "id": "base:provenance:dimension:jack-09:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-09.size.2 has dimension provenance.",
+      "message": "jack-09.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-5:size.0",
+      "id": "base:provenance:dimension:chime-tier-5:params.depth",
       "status": "pass",
-      "message": "chime-tier-5.size.0 has dimension provenance.",
+      "message": "chime-tier-5.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-5:size.1",
+      "id": "base:provenance:dimension:chime-tier-5:params.height",
       "status": "pass",
-      "message": "chime-tier-5.size.1 has dimension provenance.",
+      "message": "chime-tier-5.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:chime-tier-5:size.2",
+      "id": "base:provenance:dimension:chime-tier-5:params.tier",
       "status": "pass",
-      "message": "chime-tier-5.size.2 has dimension provenance.",
+      "message": "chime-tier-5.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-5:radius",
+      "id": "base:provenance:dimension:chime-tier-5:params.width",
       "status": "pass",
-      "message": "tier-cam-5.radius has dimension provenance.",
+      "message": "chime-tier-5.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:tier-cam-5:params.radius",
+      "status": "pass",
+      "message": "tier-cam-5.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-5:spokes",
+      "id": "base:provenance:dimension:tier-cam-5:params.tier",
       "status": "pass",
-      "message": "tier-cam-5.spokes has dimension provenance.",
+      "message": "tier-cam-5.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:tier-cam-5:width",
+      "id": "base:provenance:dimension:tier-cam-5:params.width",
       "status": "pass",
-      "message": "tier-cam-5.width has dimension provenance.",
+      "message": "tier-cam-5.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -2397,40 +2517,130 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "base:provenance:dimension:jack-10:size.0",
+      "id": "base:provenance:dimension:jack-10:params.depth",
       "status": "pass",
-      "message": "jack-10.size.0 has dimension provenance.",
+      "message": "jack-10.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-10:size.1",
+      "id": "base:provenance:dimension:jack-10:params.height",
       "status": "pass",
-      "message": "jack-10.size.1 has dimension provenance.",
+      "message": "jack-10.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-10:size.2",
+      "id": "base:provenance:dimension:jack-10:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-10.size.2 has dimension provenance.",
+      "message": "jack-10.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-11:size.0",
+      "id": "base:provenance:dimension:jack-11:params.depth",
       "status": "pass",
-      "message": "jack-11.size.0 has dimension provenance.",
+      "message": "jack-11.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-11:size.1",
+      "id": "base:provenance:dimension:jack-11:params.height",
       "status": "pass",
-      "message": "jack-11.size.1 has dimension provenance.",
+      "message": "jack-11.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "base:provenance:dimension:jack-11:size.2",
+      "id": "base:provenance:dimension:jack-11:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-11.size.2 has dimension provenance.",
+      "message": "jack-11.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:water-circuit-links:params.variant",
+      "status": "pass",
+      "message": "water-circuit-links.params.variant has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "base:provenance:dimension:escapement-linkage:params.variant",
+      "status": "pass",
+      "message": "escapement-linkage.params.variant has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:celestial-transmission-links:params.variant",
+      "status": "pass",
+      "message": "celestial-transmission-links.params.variant has dimension provenance.",
+      "sourceRef": "celestial-ladder-illustration"
+    },
+    {
+      "id": "base:provenance:dimension:reporting-drive-links:params.variant",
+      "status": "pass",
+      "message": "reporting-drive-links.params.variant has dimension provenance.",
+      "sourceRef": "chime-tier-choreography"
+    },
+    {
+      "id": "base:provenance:dimension:shulun-phase-marker:size.0",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.0 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "base:provenance:dimension:shulun-phase-marker:size.1",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.1 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "base:provenance:dimension:shulun-phase-marker:size.2",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.2 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "base:provenance:dimension:water-flow-indicator:joint.limits.0",
+      "status": "pass",
+      "message": "water-flow-indicator.joint.limits.0 has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "base:provenance:dimension:water-flow-indicator:joint.limits.1",
+      "status": "pass",
+      "message": "water-flow-indicator.joint.limits.1 has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "base:provenance:dimension:water-flow-indicator:params.kind",
+      "status": "pass",
+      "message": "water-flow-indicator.params.kind has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "base:provenance:dimension:water-flow-indicator:params.radius",
+      "status": "pass",
+      "message": "water-flow-indicator.params.radius has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "base:provenance:dimension:loaded-scoop-indicator:joint.limits.0",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.joint.limits.0 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "base:provenance:dimension:loaded-scoop-indicator:joint.limits.1",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.joint.limits.1 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "base:provenance:dimension:loaded-scoop-indicator:params.kind",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.params.kind has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "base:provenance:dimension:loaded-scoop-indicator:params.radius",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.params.radius has dimension provenance.",
+      "sourceRef": "scoop-mounting"
     },
     {
       "id": "base:provenance:ratio:1",
@@ -3051,9 +3261,104 @@
       "message": "Joint tier-placard-5 remains within [0, 0.08] over the sampled cycle."
     },
     {
-      "id": "base:collision:bvh",
+      "id": "base:range:water-flow-indicator",
       "status": "pass",
-      "message": "No issue found at 0.5° resolution."
+      "message": "Joint water-flow-indicator remains within [0, 3.2] over the sampled cycle."
+    },
+    {
+      "id": "base:range:loaded-scoop-indicator",
+      "status": "pass",
+      "message": "Joint loaded-scoop-indicator remains within [0, 0.1] over the sampled cycle."
+    },
+    {
+      "id": "base:collision:whitelist:tower-shell:chime-tier-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:tower-shell:chime-tier-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:tower-shell:chime-tier-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:tower-shell:chime-tier-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:tower-shell:chime-tier-5",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-5 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:shulun:celestial-column",
+      "status": "pass",
+      "message": "Whitelisted contact pair shulun/celestial-column intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:celestial-column:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair celestial-column/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:hour-drum-wheel:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair hour-drum-wheel/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:day-night-wheel:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair day-night-wheel/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:celestial-globe:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair celestial-globe/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:armillary-sphere:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair armillary-sphere/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:guanshe:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair guanshe/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:tiansuo-l:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair tiansuo-l/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:tiansuo-r:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair tiansuo-r/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:tier-placard-5:reporting-drive-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair tier-placard-5/reporting-drive-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:escapement-linkage:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair escapement-linkage/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:escapement-linkage:reporting-drive-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair escapement-linkage/reporting-drive-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:tier-placard-2:reporting-drive-links",
+      "status": "fail",
+      "message": "Parts tier-placard-2 and reporting-drive-links collide while driving shulun at angle 0 rad."
     },
     {
       "id": "fixed-scoop:provenance:part:tower-shell",
@@ -3536,6 +3841,48 @@
       "sourceRef": "xyxfy-baoshi"
     },
     {
+      "id": "fixed-scoop:provenance:part:water-circuit-links",
+      "status": "pass",
+      "message": "Part water-circuit-links has valid provenance.",
+      "sourceRef": "xyxfy-water"
+    },
+    {
+      "id": "fixed-scoop:provenance:part:escapement-linkage",
+      "status": "pass",
+      "message": "Part escapement-linkage has valid provenance.",
+      "sourceRef": "xyxfy-action"
+    },
+    {
+      "id": "fixed-scoop:provenance:part:celestial-transmission-links",
+      "status": "pass",
+      "message": "Part celestial-transmission-links has valid provenance.",
+      "sourceRef": "xyxfy-baoshi"
+    },
+    {
+      "id": "fixed-scoop:provenance:part:reporting-drive-links",
+      "status": "pass",
+      "message": "Part reporting-drive-links has valid provenance.",
+      "sourceRef": "xyxfy-baoshi"
+    },
+    {
+      "id": "fixed-scoop:provenance:part:shulun-phase-marker",
+      "status": "pass",
+      "message": "Part shulun-phase-marker has valid provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "fixed-scoop:provenance:part:water-flow-indicator",
+      "status": "pass",
+      "message": "Part water-flow-indicator has valid provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "fixed-scoop:provenance:part:loaded-scoop-indicator",
+      "status": "pass",
+      "message": "Part loaded-scoop-indicator has valid provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
       "id": "fixed-scoop:provenance:dimension:tower-shell:params.bottomHalfWidth",
       "status": "pass",
       "message": "tower-shell.params.bottomHalfWidth has dimension provenance.",
@@ -3590,15 +3937,15 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:celestial-column:length",
+      "id": "fixed-scoop:provenance:dimension:celestial-column:params.length",
       "status": "pass",
-      "message": "celestial-column.length has dimension provenance.",
+      "message": "celestial-column.params.length has dimension provenance.",
       "sourceRef": "xyxfy-taiti"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:celestial-column:radius",
+      "id": "fixed-scoop:provenance:dimension:celestial-column:params.radius",
       "status": "pass",
-      "message": "celestial-column.radius has dimension provenance.",
+      "message": "celestial-column.params.radius has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -3620,21 +3967,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:day-night-wheel:radius",
+      "id": "fixed-scoop:provenance:dimension:day-night-wheel:params.radius",
       "status": "pass",
-      "message": "day-night-wheel.radius has dimension provenance.",
+      "message": "day-night-wheel.params.radius has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:day-night-wheel:spokes",
+      "id": "fixed-scoop:provenance:dimension:day-night-wheel:params.spokes",
       "status": "pass",
-      "message": "day-night-wheel.spokes has dimension provenance.",
+      "message": "day-night-wheel.params.spokes has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:day-night-wheel:width",
+      "id": "fixed-scoop:provenance:dimension:day-night-wheel:params.width",
       "status": "pass",
-      "message": "day-night-wheel.width has dimension provenance.",
+      "message": "day-night-wheel.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -3674,75 +4021,93 @@
       "sourceRef": "celestial-ladder-illustration"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-lift-wheel:radius",
+      "id": "fixed-scoop:provenance:dimension:water-lift-wheel:params.radius",
       "status": "pass",
-      "message": "water-lift-wheel.radius has dimension provenance.",
+      "message": "water-lift-wheel.params.radius has dimension provenance.",
       "sourceRef": "xyxfy-water"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-lift-wheel:spokes",
+      "id": "fixed-scoop:provenance:dimension:water-lift-wheel:params.spokes",
       "status": "pass",
-      "message": "water-lift-wheel.spokes has dimension provenance.",
+      "message": "water-lift-wheel.params.spokes has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-lift-wheel:width",
+      "id": "fixed-scoop:provenance:dimension:water-lift-wheel:params.width",
       "status": "pass",
-      "message": "water-lift-wheel.width has dimension provenance.",
+      "message": "water-lift-wheel.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-trough:size.0",
+      "id": "fixed-scoop:provenance:dimension:water-trough:params.sizeX",
       "status": "pass",
-      "message": "water-trough.size.0 has dimension provenance.",
+      "message": "water-trough.params.sizeX has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-trough:size.1",
+      "id": "fixed-scoop:provenance:dimension:water-trough:params.sizeY",
       "status": "pass",
-      "message": "water-trough.size.1 has dimension provenance.",
+      "message": "water-trough.params.sizeY has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-trough:size.2",
+      "id": "fixed-scoop:provenance:dimension:water-trough:params.sizeZ",
       "status": "pass",
-      "message": "water-trough.size.2 has dimension provenance.",
+      "message": "water-trough.params.sizeZ has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-reservoir:size.0",
+      "id": "fixed-scoop:provenance:dimension:water-trough:params.variant",
       "status": "pass",
-      "message": "water-reservoir.size.0 has dimension provenance.",
+      "message": "water-trough.params.variant has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:water-reservoir:params.sizeX",
+      "status": "pass",
+      "message": "water-reservoir.params.sizeX has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-reservoir:size.1",
+      "id": "fixed-scoop:provenance:dimension:water-reservoir:params.sizeY",
       "status": "pass",
-      "message": "water-reservoir.size.1 has dimension provenance.",
+      "message": "water-reservoir.params.sizeY has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:water-reservoir:size.2",
+      "id": "fixed-scoop:provenance:dimension:water-reservoir:params.sizeZ",
       "status": "pass",
-      "message": "water-reservoir.size.2 has dimension provenance.",
+      "message": "water-reservoir.params.sizeZ has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:constant-level-tank:size.0",
+      "id": "fixed-scoop:provenance:dimension:water-reservoir:params.variant",
       "status": "pass",
-      "message": "constant-level-tank.size.0 has dimension provenance.",
+      "message": "water-reservoir.params.variant has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:constant-level-tank:size.1",
+      "id": "fixed-scoop:provenance:dimension:constant-level-tank:params.sizeX",
       "status": "pass",
-      "message": "constant-level-tank.size.1 has dimension provenance.",
+      "message": "constant-level-tank.params.sizeX has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:constant-level-tank:size.2",
+      "id": "fixed-scoop:provenance:dimension:constant-level-tank:params.sizeY",
       "status": "pass",
-      "message": "constant-level-tank.size.2 has dimension provenance.",
+      "message": "constant-level-tank.params.sizeY has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:constant-level-tank:params.sizeZ",
+      "status": "pass",
+      "message": "constant-level-tank.params.sizeZ has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:constant-level-tank:params.variant",
+      "status": "pass",
+      "message": "constant-level-tank.params.variant has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
@@ -3770,15 +4135,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:gecha:length",
+      "id": "fixed-scoop:provenance:dimension:gecha:params.kind",
       "status": "pass",
-      "message": "gecha.length has dimension provenance.",
+      "message": "gecha.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:gecha:width",
+      "id": "fixed-scoop:provenance:dimension:gecha:params.length",
       "status": "pass",
-      "message": "gecha.width has dimension provenance.",
+      "message": "gecha.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:gecha:params.width",
+      "status": "pass",
+      "message": "gecha.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -3794,15 +4165,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:guanshe:length",
+      "id": "fixed-scoop:provenance:dimension:guanshe:params.kind",
       "status": "pass",
-      "message": "guanshe.length has dimension provenance.",
+      "message": "guanshe.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:guanshe:width",
+      "id": "fixed-scoop:provenance:dimension:guanshe:params.length",
       "status": "pass",
-      "message": "guanshe.width has dimension provenance.",
+      "message": "guanshe.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:guanshe:params.width",
+      "status": "pass",
+      "message": "guanshe.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -3818,15 +4195,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tianguan:length",
+      "id": "fixed-scoop:provenance:dimension:tianguan:params.kind",
       "status": "pass",
-      "message": "tianguan.length has dimension provenance.",
+      "message": "tianguan.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tianguan:width",
+      "id": "fixed-scoop:provenance:dimension:tianguan:params.length",
       "status": "pass",
-      "message": "tianguan.width has dimension provenance.",
+      "message": "tianguan.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:tianguan:params.width",
+      "status": "pass",
+      "message": "tianguan.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -3842,15 +4225,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tiansuo-l:length",
+      "id": "fixed-scoop:provenance:dimension:tiansuo-l:params.kind",
       "status": "pass",
-      "message": "tiansuo-l.length has dimension provenance.",
+      "message": "tiansuo-l.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tiansuo-l:width",
+      "id": "fixed-scoop:provenance:dimension:tiansuo-l:params.length",
       "status": "pass",
-      "message": "tiansuo-l.width has dimension provenance.",
+      "message": "tiansuo-l.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:tiansuo-l:params.width",
+      "status": "pass",
+      "message": "tiansuo-l.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -3866,15 +4255,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tiansuo-r:length",
+      "id": "fixed-scoop:provenance:dimension:tiansuo-r:params.kind",
       "status": "pass",
-      "message": "tiansuo-r.length has dimension provenance.",
+      "message": "tiansuo-r.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tiansuo-r:width",
+      "id": "fixed-scoop:provenance:dimension:tiansuo-r:params.length",
       "status": "pass",
-      "message": "tiansuo-r.width has dimension provenance.",
+      "message": "tiansuo-r.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:tiansuo-r:params.width",
+      "status": "pass",
+      "message": "tiansuo-r.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -4958,39 +5353,45 @@
       "sourceRef": "xyxfy-shulun"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-1:size.0",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-1:params.depth",
       "status": "pass",
-      "message": "chime-tier-1.size.0 has dimension provenance.",
+      "message": "chime-tier-1.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-1:size.1",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-1:params.height",
       "status": "pass",
-      "message": "chime-tier-1.size.1 has dimension provenance.",
+      "message": "chime-tier-1.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-1:size.2",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-1:params.tier",
       "status": "pass",
-      "message": "chime-tier-1.size.2 has dimension provenance.",
+      "message": "chime-tier-1.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-1:radius",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-1:params.width",
       "status": "pass",
-      "message": "tier-cam-1.radius has dimension provenance.",
+      "message": "chime-tier-1.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:tier-cam-1:params.radius",
+      "status": "pass",
+      "message": "tier-cam-1.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-1:spokes",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-1:params.tier",
       "status": "pass",
-      "message": "tier-cam-1.spokes has dimension provenance.",
+      "message": "tier-cam-1.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-1:width",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-1:params.width",
       "status": "pass",
-      "message": "tier-cam-1.width has dimension provenance.",
+      "message": "tier-cam-1.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -5024,75 +5425,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-01:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-01:params.depth",
       "status": "pass",
-      "message": "jack-01.size.0 has dimension provenance.",
+      "message": "jack-01.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-01:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-01:params.height",
       "status": "pass",
-      "message": "jack-01.size.1 has dimension provenance.",
+      "message": "jack-01.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-01:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-01:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-01.size.2 has dimension provenance.",
+      "message": "jack-01.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-02:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-02:params.depth",
       "status": "pass",
-      "message": "jack-02.size.0 has dimension provenance.",
+      "message": "jack-02.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-02:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-02:params.height",
       "status": "pass",
-      "message": "jack-02.size.1 has dimension provenance.",
+      "message": "jack-02.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-02:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-02:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-02.size.2 has dimension provenance.",
+      "message": "jack-02.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-2:size.0",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-2:params.depth",
       "status": "pass",
-      "message": "chime-tier-2.size.0 has dimension provenance.",
+      "message": "chime-tier-2.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-2:size.1",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-2:params.height",
       "status": "pass",
-      "message": "chime-tier-2.size.1 has dimension provenance.",
+      "message": "chime-tier-2.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-2:size.2",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-2:params.tier",
       "status": "pass",
-      "message": "chime-tier-2.size.2 has dimension provenance.",
+      "message": "chime-tier-2.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-2:radius",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-2:params.width",
       "status": "pass",
-      "message": "tier-cam-2.radius has dimension provenance.",
+      "message": "chime-tier-2.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:tier-cam-2:params.radius",
+      "status": "pass",
+      "message": "tier-cam-2.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-2:spokes",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-2:params.tier",
       "status": "pass",
-      "message": "tier-cam-2.spokes has dimension provenance.",
+      "message": "tier-cam-2.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-2:width",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-2:params.width",
       "status": "pass",
-      "message": "tier-cam-2.width has dimension provenance.",
+      "message": "tier-cam-2.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -5126,75 +5533,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-03:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-03:params.depth",
       "status": "pass",
-      "message": "jack-03.size.0 has dimension provenance.",
+      "message": "jack-03.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-03:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-03:params.height",
       "status": "pass",
-      "message": "jack-03.size.1 has dimension provenance.",
+      "message": "jack-03.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-03:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-03:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-03.size.2 has dimension provenance.",
+      "message": "jack-03.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-04:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-04:params.depth",
       "status": "pass",
-      "message": "jack-04.size.0 has dimension provenance.",
+      "message": "jack-04.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-04:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-04:params.height",
       "status": "pass",
-      "message": "jack-04.size.1 has dimension provenance.",
+      "message": "jack-04.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-04:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-04:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-04.size.2 has dimension provenance.",
+      "message": "jack-04.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-3:size.0",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-3:params.depth",
       "status": "pass",
-      "message": "chime-tier-3.size.0 has dimension provenance.",
+      "message": "chime-tier-3.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-3:size.1",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-3:params.height",
       "status": "pass",
-      "message": "chime-tier-3.size.1 has dimension provenance.",
+      "message": "chime-tier-3.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-3:size.2",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-3:params.tier",
       "status": "pass",
-      "message": "chime-tier-3.size.2 has dimension provenance.",
+      "message": "chime-tier-3.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-3:radius",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-3:params.width",
       "status": "pass",
-      "message": "tier-cam-3.radius has dimension provenance.",
+      "message": "chime-tier-3.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:tier-cam-3:params.radius",
+      "status": "pass",
+      "message": "tier-cam-3.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-3:spokes",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-3:params.tier",
       "status": "pass",
-      "message": "tier-cam-3.spokes has dimension provenance.",
+      "message": "tier-cam-3.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-3:width",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-3:params.width",
       "status": "pass",
-      "message": "tier-cam-3.width has dimension provenance.",
+      "message": "tier-cam-3.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -5228,75 +5641,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-05:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-05:params.depth",
       "status": "pass",
-      "message": "jack-05.size.0 has dimension provenance.",
+      "message": "jack-05.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-05:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-05:params.height",
       "status": "pass",
-      "message": "jack-05.size.1 has dimension provenance.",
+      "message": "jack-05.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-05:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-05:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-05.size.2 has dimension provenance.",
+      "message": "jack-05.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-06:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-06:params.depth",
       "status": "pass",
-      "message": "jack-06.size.0 has dimension provenance.",
+      "message": "jack-06.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-06:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-06:params.height",
       "status": "pass",
-      "message": "jack-06.size.1 has dimension provenance.",
+      "message": "jack-06.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-06:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-06:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-06.size.2 has dimension provenance.",
+      "message": "jack-06.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-4:size.0",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-4:params.depth",
       "status": "pass",
-      "message": "chime-tier-4.size.0 has dimension provenance.",
+      "message": "chime-tier-4.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-4:size.1",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-4:params.height",
       "status": "pass",
-      "message": "chime-tier-4.size.1 has dimension provenance.",
+      "message": "chime-tier-4.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-4:size.2",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-4:params.tier",
       "status": "pass",
-      "message": "chime-tier-4.size.2 has dimension provenance.",
+      "message": "chime-tier-4.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-4:radius",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-4:params.width",
       "status": "pass",
-      "message": "tier-cam-4.radius has dimension provenance.",
+      "message": "chime-tier-4.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:tier-cam-4:params.radius",
+      "status": "pass",
+      "message": "tier-cam-4.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-4:spokes",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-4:params.tier",
       "status": "pass",
-      "message": "tier-cam-4.spokes has dimension provenance.",
+      "message": "tier-cam-4.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-4:width",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-4:params.width",
       "status": "pass",
-      "message": "tier-cam-4.width has dimension provenance.",
+      "message": "tier-cam-4.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -5330,93 +5749,99 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-07:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-07:params.depth",
       "status": "pass",
-      "message": "jack-07.size.0 has dimension provenance.",
+      "message": "jack-07.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-07:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-07:params.height",
       "status": "pass",
-      "message": "jack-07.size.1 has dimension provenance.",
+      "message": "jack-07.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-07:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-07:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-07.size.2 has dimension provenance.",
+      "message": "jack-07.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-08:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-08:params.depth",
       "status": "pass",
-      "message": "jack-08.size.0 has dimension provenance.",
+      "message": "jack-08.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-08:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-08:params.height",
       "status": "pass",
-      "message": "jack-08.size.1 has dimension provenance.",
+      "message": "jack-08.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-08:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-08:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-08.size.2 has dimension provenance.",
+      "message": "jack-08.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-09:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-09:params.depth",
       "status": "pass",
-      "message": "jack-09.size.0 has dimension provenance.",
+      "message": "jack-09.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-09:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-09:params.height",
       "status": "pass",
-      "message": "jack-09.size.1 has dimension provenance.",
+      "message": "jack-09.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-09:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-09:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-09.size.2 has dimension provenance.",
+      "message": "jack-09.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-5:size.0",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-5:params.depth",
       "status": "pass",
-      "message": "chime-tier-5.size.0 has dimension provenance.",
+      "message": "chime-tier-5.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-5:size.1",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-5:params.height",
       "status": "pass",
-      "message": "chime-tier-5.size.1 has dimension provenance.",
+      "message": "chime-tier-5.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:chime-tier-5:size.2",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-5:params.tier",
       "status": "pass",
-      "message": "chime-tier-5.size.2 has dimension provenance.",
+      "message": "chime-tier-5.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-5:radius",
+      "id": "fixed-scoop:provenance:dimension:chime-tier-5:params.width",
       "status": "pass",
-      "message": "tier-cam-5.radius has dimension provenance.",
+      "message": "chime-tier-5.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:tier-cam-5:params.radius",
+      "status": "pass",
+      "message": "tier-cam-5.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-5:spokes",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-5:params.tier",
       "status": "pass",
-      "message": "tier-cam-5.spokes has dimension provenance.",
+      "message": "tier-cam-5.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:tier-cam-5:width",
+      "id": "fixed-scoop:provenance:dimension:tier-cam-5:params.width",
       "status": "pass",
-      "message": "tier-cam-5.width has dimension provenance.",
+      "message": "tier-cam-5.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -5450,40 +5875,130 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-10:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-10:params.depth",
       "status": "pass",
-      "message": "jack-10.size.0 has dimension provenance.",
+      "message": "jack-10.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-10:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-10:params.height",
       "status": "pass",
-      "message": "jack-10.size.1 has dimension provenance.",
+      "message": "jack-10.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-10:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-10:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-10.size.2 has dimension provenance.",
+      "message": "jack-10.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-11:size.0",
+      "id": "fixed-scoop:provenance:dimension:jack-11:params.depth",
       "status": "pass",
-      "message": "jack-11.size.0 has dimension provenance.",
+      "message": "jack-11.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-11:size.1",
+      "id": "fixed-scoop:provenance:dimension:jack-11:params.height",
       "status": "pass",
-      "message": "jack-11.size.1 has dimension provenance.",
+      "message": "jack-11.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "fixed-scoop:provenance:dimension:jack-11:size.2",
+      "id": "fixed-scoop:provenance:dimension:jack-11:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-11.size.2 has dimension provenance.",
+      "message": "jack-11.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:water-circuit-links:params.variant",
+      "status": "pass",
+      "message": "water-circuit-links.params.variant has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:escapement-linkage:params.variant",
+      "status": "pass",
+      "message": "escapement-linkage.params.variant has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:celestial-transmission-links:params.variant",
+      "status": "pass",
+      "message": "celestial-transmission-links.params.variant has dimension provenance.",
+      "sourceRef": "celestial-ladder-illustration"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:reporting-drive-links:params.variant",
+      "status": "pass",
+      "message": "reporting-drive-links.params.variant has dimension provenance.",
+      "sourceRef": "chime-tier-choreography"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:shulun-phase-marker:size.0",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.0 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:shulun-phase-marker:size.1",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.1 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:shulun-phase-marker:size.2",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.2 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:water-flow-indicator:joint.limits.0",
+      "status": "pass",
+      "message": "water-flow-indicator.joint.limits.0 has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:water-flow-indicator:joint.limits.1",
+      "status": "pass",
+      "message": "water-flow-indicator.joint.limits.1 has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:water-flow-indicator:params.kind",
+      "status": "pass",
+      "message": "water-flow-indicator.params.kind has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:water-flow-indicator:params.radius",
+      "status": "pass",
+      "message": "water-flow-indicator.params.radius has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:loaded-scoop-indicator:joint.limits.0",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.joint.limits.0 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:loaded-scoop-indicator:joint.limits.1",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.joint.limits.1 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:loaded-scoop-indicator:params.kind",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.params.kind has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "fixed-scoop:provenance:dimension:loaded-scoop-indicator:params.radius",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.params.radius has dimension provenance.",
+      "sourceRef": "scoop-mounting"
     },
     {
       "id": "fixed-scoop:provenance:ratio:1",
@@ -6104,9 +6619,104 @@
       "message": "Joint tier-placard-5 remains within [0, 0.08] over the sampled cycle."
     },
     {
-      "id": "fixed-scoop:collision:bvh",
+      "id": "fixed-scoop:range:water-flow-indicator",
       "status": "pass",
-      "message": "No issue found at 0.5° resolution."
+      "message": "Joint water-flow-indicator remains within [0, 3.2] over the sampled cycle."
+    },
+    {
+      "id": "fixed-scoop:range:loaded-scoop-indicator",
+      "status": "pass",
+      "message": "Joint loaded-scoop-indicator remains within [0, 0.1] over the sampled cycle."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:tower-shell:chime-tier-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:tower-shell:chime-tier-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:tower-shell:chime-tier-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:tower-shell:chime-tier-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:tower-shell:chime-tier-5",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-5 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:shulun:celestial-column",
+      "status": "pass",
+      "message": "Whitelisted contact pair shulun/celestial-column intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:celestial-column:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair celestial-column/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:hour-drum-wheel:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair hour-drum-wheel/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:day-night-wheel:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair day-night-wheel/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:celestial-globe:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair celestial-globe/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:armillary-sphere:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair armillary-sphere/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:guanshe:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair guanshe/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:tiansuo-l:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair tiansuo-l/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:tiansuo-r:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair tiansuo-r/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:tier-placard-5:reporting-drive-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair tier-placard-5/reporting-drive-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:escapement-linkage:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair escapement-linkage/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:whitelist:escapement-linkage:reporting-drive-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair escapement-linkage/reporting-drive-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "fixed-scoop:collision:tier-placard-2:reporting-drive-links",
+      "status": "fail",
+      "message": "Parts tier-placard-2 and reporting-drive-links collide while driving shulun at angle 0 rad."
     },
     {
       "id": "combridge-hinged:provenance:part:tower-shell",
@@ -6589,6 +7199,48 @@
       "sourceRef": "xyxfy-baoshi"
     },
     {
+      "id": "combridge-hinged:provenance:part:water-circuit-links",
+      "status": "pass",
+      "message": "Part water-circuit-links has valid provenance.",
+      "sourceRef": "xyxfy-water"
+    },
+    {
+      "id": "combridge-hinged:provenance:part:escapement-linkage",
+      "status": "pass",
+      "message": "Part escapement-linkage has valid provenance.",
+      "sourceRef": "xyxfy-action"
+    },
+    {
+      "id": "combridge-hinged:provenance:part:celestial-transmission-links",
+      "status": "pass",
+      "message": "Part celestial-transmission-links has valid provenance.",
+      "sourceRef": "xyxfy-baoshi"
+    },
+    {
+      "id": "combridge-hinged:provenance:part:reporting-drive-links",
+      "status": "pass",
+      "message": "Part reporting-drive-links has valid provenance.",
+      "sourceRef": "xyxfy-baoshi"
+    },
+    {
+      "id": "combridge-hinged:provenance:part:shulun-phase-marker",
+      "status": "pass",
+      "message": "Part shulun-phase-marker has valid provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "combridge-hinged:provenance:part:water-flow-indicator",
+      "status": "pass",
+      "message": "Part water-flow-indicator has valid provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "combridge-hinged:provenance:part:loaded-scoop-indicator",
+      "status": "pass",
+      "message": "Part loaded-scoop-indicator has valid provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
       "id": "combridge-hinged:provenance:dimension:tower-shell:params.bottomHalfWidth",
       "status": "pass",
       "message": "tower-shell.params.bottomHalfWidth has dimension provenance.",
@@ -6643,15 +7295,15 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:celestial-column:length",
+      "id": "combridge-hinged:provenance:dimension:celestial-column:params.length",
       "status": "pass",
-      "message": "celestial-column.length has dimension provenance.",
+      "message": "celestial-column.params.length has dimension provenance.",
       "sourceRef": "xyxfy-taiti"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:celestial-column:radius",
+      "id": "combridge-hinged:provenance:dimension:celestial-column:params.radius",
       "status": "pass",
-      "message": "celestial-column.radius has dimension provenance.",
+      "message": "celestial-column.params.radius has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -6673,21 +7325,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:day-night-wheel:radius",
+      "id": "combridge-hinged:provenance:dimension:day-night-wheel:params.radius",
       "status": "pass",
-      "message": "day-night-wheel.radius has dimension provenance.",
+      "message": "day-night-wheel.params.radius has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:day-night-wheel:spokes",
+      "id": "combridge-hinged:provenance:dimension:day-night-wheel:params.spokes",
       "status": "pass",
-      "message": "day-night-wheel.spokes has dimension provenance.",
+      "message": "day-night-wheel.params.spokes has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:day-night-wheel:width",
+      "id": "combridge-hinged:provenance:dimension:day-night-wheel:params.width",
       "status": "pass",
-      "message": "day-night-wheel.width has dimension provenance.",
+      "message": "day-night-wheel.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -6727,75 +7379,93 @@
       "sourceRef": "celestial-ladder-illustration"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-lift-wheel:radius",
+      "id": "combridge-hinged:provenance:dimension:water-lift-wheel:params.radius",
       "status": "pass",
-      "message": "water-lift-wheel.radius has dimension provenance.",
+      "message": "water-lift-wheel.params.radius has dimension provenance.",
       "sourceRef": "xyxfy-water"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-lift-wheel:spokes",
+      "id": "combridge-hinged:provenance:dimension:water-lift-wheel:params.spokes",
       "status": "pass",
-      "message": "water-lift-wheel.spokes has dimension provenance.",
+      "message": "water-lift-wheel.params.spokes has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-lift-wheel:width",
+      "id": "combridge-hinged:provenance:dimension:water-lift-wheel:params.width",
       "status": "pass",
-      "message": "water-lift-wheel.width has dimension provenance.",
+      "message": "water-lift-wheel.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-trough:size.0",
+      "id": "combridge-hinged:provenance:dimension:water-trough:params.sizeX",
       "status": "pass",
-      "message": "water-trough.size.0 has dimension provenance.",
+      "message": "water-trough.params.sizeX has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-trough:size.1",
+      "id": "combridge-hinged:provenance:dimension:water-trough:params.sizeY",
       "status": "pass",
-      "message": "water-trough.size.1 has dimension provenance.",
+      "message": "water-trough.params.sizeY has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-trough:size.2",
+      "id": "combridge-hinged:provenance:dimension:water-trough:params.sizeZ",
       "status": "pass",
-      "message": "water-trough.size.2 has dimension provenance.",
+      "message": "water-trough.params.sizeZ has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-reservoir:size.0",
+      "id": "combridge-hinged:provenance:dimension:water-trough:params.variant",
       "status": "pass",
-      "message": "water-reservoir.size.0 has dimension provenance.",
+      "message": "water-trough.params.variant has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:water-reservoir:params.sizeX",
+      "status": "pass",
+      "message": "water-reservoir.params.sizeX has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-reservoir:size.1",
+      "id": "combridge-hinged:provenance:dimension:water-reservoir:params.sizeY",
       "status": "pass",
-      "message": "water-reservoir.size.1 has dimension provenance.",
+      "message": "water-reservoir.params.sizeY has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:water-reservoir:size.2",
+      "id": "combridge-hinged:provenance:dimension:water-reservoir:params.sizeZ",
       "status": "pass",
-      "message": "water-reservoir.size.2 has dimension provenance.",
+      "message": "water-reservoir.params.sizeZ has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:constant-level-tank:size.0",
+      "id": "combridge-hinged:provenance:dimension:water-reservoir:params.variant",
       "status": "pass",
-      "message": "constant-level-tank.size.0 has dimension provenance.",
+      "message": "water-reservoir.params.variant has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:constant-level-tank:size.1",
+      "id": "combridge-hinged:provenance:dimension:constant-level-tank:params.sizeX",
       "status": "pass",
-      "message": "constant-level-tank.size.1 has dimension provenance.",
+      "message": "constant-level-tank.params.sizeX has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:constant-level-tank:size.2",
+      "id": "combridge-hinged:provenance:dimension:constant-level-tank:params.sizeY",
       "status": "pass",
-      "message": "constant-level-tank.size.2 has dimension provenance.",
+      "message": "constant-level-tank.params.sizeY has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:constant-level-tank:params.sizeZ",
+      "status": "pass",
+      "message": "constant-level-tank.params.sizeZ has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:constant-level-tank:params.variant",
+      "status": "pass",
+      "message": "constant-level-tank.params.variant has dimension provenance.",
       "sourceRef": "water-circuit-layout"
     },
     {
@@ -6823,15 +7493,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:gecha:length",
+      "id": "combridge-hinged:provenance:dimension:gecha:params.kind",
       "status": "pass",
-      "message": "gecha.length has dimension provenance.",
+      "message": "gecha.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:gecha:width",
+      "id": "combridge-hinged:provenance:dimension:gecha:params.length",
       "status": "pass",
-      "message": "gecha.width has dimension provenance.",
+      "message": "gecha.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:gecha:params.width",
+      "status": "pass",
+      "message": "gecha.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -6847,15 +7523,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:guanshe:length",
+      "id": "combridge-hinged:provenance:dimension:guanshe:params.kind",
       "status": "pass",
-      "message": "guanshe.length has dimension provenance.",
+      "message": "guanshe.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:guanshe:width",
+      "id": "combridge-hinged:provenance:dimension:guanshe:params.length",
       "status": "pass",
-      "message": "guanshe.width has dimension provenance.",
+      "message": "guanshe.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:guanshe:params.width",
+      "status": "pass",
+      "message": "guanshe.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -6871,15 +7553,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tianguan:length",
+      "id": "combridge-hinged:provenance:dimension:tianguan:params.kind",
       "status": "pass",
-      "message": "tianguan.length has dimension provenance.",
+      "message": "tianguan.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tianguan:width",
+      "id": "combridge-hinged:provenance:dimension:tianguan:params.length",
       "status": "pass",
-      "message": "tianguan.width has dimension provenance.",
+      "message": "tianguan.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:tianguan:params.width",
+      "status": "pass",
+      "message": "tianguan.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -6895,15 +7583,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tiansuo-l:length",
+      "id": "combridge-hinged:provenance:dimension:tiansuo-l:params.kind",
       "status": "pass",
-      "message": "tiansuo-l.length has dimension provenance.",
+      "message": "tiansuo-l.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tiansuo-l:width",
+      "id": "combridge-hinged:provenance:dimension:tiansuo-l:params.length",
       "status": "pass",
-      "message": "tiansuo-l.width has dimension provenance.",
+      "message": "tiansuo-l.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:tiansuo-l:params.width",
+      "status": "pass",
+      "message": "tiansuo-l.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -6919,15 +7613,21 @@
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tiansuo-r:length",
+      "id": "combridge-hinged:provenance:dimension:tiansuo-r:params.kind",
       "status": "pass",
-      "message": "tiansuo-r.length has dimension provenance.",
+      "message": "tiansuo-r.params.kind has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tiansuo-r:width",
+      "id": "combridge-hinged:provenance:dimension:tiansuo-r:params.length",
       "status": "pass",
-      "message": "tiansuo-r.width has dimension provenance.",
+      "message": "tiansuo-r.params.length has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:tiansuo-r:params.width",
+      "status": "pass",
+      "message": "tiansuo-r.params.width has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
@@ -8011,39 +8711,45 @@
       "sourceRef": "xyxfy-shulun"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-1:size.0",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-1:params.depth",
       "status": "pass",
-      "message": "chime-tier-1.size.0 has dimension provenance.",
+      "message": "chime-tier-1.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-1:size.1",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-1:params.height",
       "status": "pass",
-      "message": "chime-tier-1.size.1 has dimension provenance.",
+      "message": "chime-tier-1.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-1:size.2",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-1:params.tier",
       "status": "pass",
-      "message": "chime-tier-1.size.2 has dimension provenance.",
+      "message": "chime-tier-1.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-1:radius",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-1:params.width",
       "status": "pass",
-      "message": "tier-cam-1.radius has dimension provenance.",
+      "message": "chime-tier-1.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:tier-cam-1:params.radius",
+      "status": "pass",
+      "message": "tier-cam-1.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-1:spokes",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-1:params.tier",
       "status": "pass",
-      "message": "tier-cam-1.spokes has dimension provenance.",
+      "message": "tier-cam-1.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-1:width",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-1:params.width",
       "status": "pass",
-      "message": "tier-cam-1.width has dimension provenance.",
+      "message": "tier-cam-1.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -8077,75 +8783,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-01:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-01:params.depth",
       "status": "pass",
-      "message": "jack-01.size.0 has dimension provenance.",
+      "message": "jack-01.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-01:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-01:params.height",
       "status": "pass",
-      "message": "jack-01.size.1 has dimension provenance.",
+      "message": "jack-01.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-01:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-01:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-01.size.2 has dimension provenance.",
+      "message": "jack-01.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-02:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-02:params.depth",
       "status": "pass",
-      "message": "jack-02.size.0 has dimension provenance.",
+      "message": "jack-02.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-02:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-02:params.height",
       "status": "pass",
-      "message": "jack-02.size.1 has dimension provenance.",
+      "message": "jack-02.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-02:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-02:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-02.size.2 has dimension provenance.",
+      "message": "jack-02.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-2:size.0",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-2:params.depth",
       "status": "pass",
-      "message": "chime-tier-2.size.0 has dimension provenance.",
+      "message": "chime-tier-2.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-2:size.1",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-2:params.height",
       "status": "pass",
-      "message": "chime-tier-2.size.1 has dimension provenance.",
+      "message": "chime-tier-2.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-2:size.2",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-2:params.tier",
       "status": "pass",
-      "message": "chime-tier-2.size.2 has dimension provenance.",
+      "message": "chime-tier-2.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-2:radius",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-2:params.width",
       "status": "pass",
-      "message": "tier-cam-2.radius has dimension provenance.",
+      "message": "chime-tier-2.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:tier-cam-2:params.radius",
+      "status": "pass",
+      "message": "tier-cam-2.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-2:spokes",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-2:params.tier",
       "status": "pass",
-      "message": "tier-cam-2.spokes has dimension provenance.",
+      "message": "tier-cam-2.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-2:width",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-2:params.width",
       "status": "pass",
-      "message": "tier-cam-2.width has dimension provenance.",
+      "message": "tier-cam-2.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -8179,75 +8891,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-03:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-03:params.depth",
       "status": "pass",
-      "message": "jack-03.size.0 has dimension provenance.",
+      "message": "jack-03.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-03:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-03:params.height",
       "status": "pass",
-      "message": "jack-03.size.1 has dimension provenance.",
+      "message": "jack-03.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-03:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-03:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-03.size.2 has dimension provenance.",
+      "message": "jack-03.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-04:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-04:params.depth",
       "status": "pass",
-      "message": "jack-04.size.0 has dimension provenance.",
+      "message": "jack-04.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-04:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-04:params.height",
       "status": "pass",
-      "message": "jack-04.size.1 has dimension provenance.",
+      "message": "jack-04.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-04:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-04:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-04.size.2 has dimension provenance.",
+      "message": "jack-04.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-3:size.0",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-3:params.depth",
       "status": "pass",
-      "message": "chime-tier-3.size.0 has dimension provenance.",
+      "message": "chime-tier-3.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-3:size.1",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-3:params.height",
       "status": "pass",
-      "message": "chime-tier-3.size.1 has dimension provenance.",
+      "message": "chime-tier-3.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-3:size.2",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-3:params.tier",
       "status": "pass",
-      "message": "chime-tier-3.size.2 has dimension provenance.",
+      "message": "chime-tier-3.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-3:radius",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-3:params.width",
       "status": "pass",
-      "message": "tier-cam-3.radius has dimension provenance.",
+      "message": "chime-tier-3.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:tier-cam-3:params.radius",
+      "status": "pass",
+      "message": "tier-cam-3.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-3:spokes",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-3:params.tier",
       "status": "pass",
-      "message": "tier-cam-3.spokes has dimension provenance.",
+      "message": "tier-cam-3.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-3:width",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-3:params.width",
       "status": "pass",
-      "message": "tier-cam-3.width has dimension provenance.",
+      "message": "tier-cam-3.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -8281,75 +8999,81 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-05:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-05:params.depth",
       "status": "pass",
-      "message": "jack-05.size.0 has dimension provenance.",
+      "message": "jack-05.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-05:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-05:params.height",
       "status": "pass",
-      "message": "jack-05.size.1 has dimension provenance.",
+      "message": "jack-05.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-05:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-05:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-05.size.2 has dimension provenance.",
+      "message": "jack-05.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-06:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-06:params.depth",
       "status": "pass",
-      "message": "jack-06.size.0 has dimension provenance.",
+      "message": "jack-06.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-06:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-06:params.height",
       "status": "pass",
-      "message": "jack-06.size.1 has dimension provenance.",
+      "message": "jack-06.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-06:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-06:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-06.size.2 has dimension provenance.",
+      "message": "jack-06.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-4:size.0",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-4:params.depth",
       "status": "pass",
-      "message": "chime-tier-4.size.0 has dimension provenance.",
+      "message": "chime-tier-4.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-4:size.1",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-4:params.height",
       "status": "pass",
-      "message": "chime-tier-4.size.1 has dimension provenance.",
+      "message": "chime-tier-4.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-4:size.2",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-4:params.tier",
       "status": "pass",
-      "message": "chime-tier-4.size.2 has dimension provenance.",
+      "message": "chime-tier-4.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-4:radius",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-4:params.width",
       "status": "pass",
-      "message": "tier-cam-4.radius has dimension provenance.",
+      "message": "chime-tier-4.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:tier-cam-4:params.radius",
+      "status": "pass",
+      "message": "tier-cam-4.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-4:spokes",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-4:params.tier",
       "status": "pass",
-      "message": "tier-cam-4.spokes has dimension provenance.",
+      "message": "tier-cam-4.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-4:width",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-4:params.width",
       "status": "pass",
-      "message": "tier-cam-4.width has dimension provenance.",
+      "message": "tier-cam-4.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -8383,93 +9107,99 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-07:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-07:params.depth",
       "status": "pass",
-      "message": "jack-07.size.0 has dimension provenance.",
+      "message": "jack-07.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-07:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-07:params.height",
       "status": "pass",
-      "message": "jack-07.size.1 has dimension provenance.",
+      "message": "jack-07.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-07:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-07:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-07.size.2 has dimension provenance.",
+      "message": "jack-07.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-08:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-08:params.depth",
       "status": "pass",
-      "message": "jack-08.size.0 has dimension provenance.",
+      "message": "jack-08.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-08:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-08:params.height",
       "status": "pass",
-      "message": "jack-08.size.1 has dimension provenance.",
+      "message": "jack-08.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-08:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-08:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-08.size.2 has dimension provenance.",
+      "message": "jack-08.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-09:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-09:params.depth",
       "status": "pass",
-      "message": "jack-09.size.0 has dimension provenance.",
+      "message": "jack-09.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-09:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-09:params.height",
       "status": "pass",
-      "message": "jack-09.size.1 has dimension provenance.",
+      "message": "jack-09.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-09:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-09:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-09.size.2 has dimension provenance.",
+      "message": "jack-09.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-5:size.0",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-5:params.depth",
       "status": "pass",
-      "message": "chime-tier-5.size.0 has dimension provenance.",
+      "message": "chime-tier-5.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-5:size.1",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-5:params.height",
       "status": "pass",
-      "message": "chime-tier-5.size.1 has dimension provenance.",
+      "message": "chime-tier-5.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:chime-tier-5:size.2",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-5:params.tier",
       "status": "pass",
-      "message": "chime-tier-5.size.2 has dimension provenance.",
+      "message": "chime-tier-5.params.tier has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-5:radius",
+      "id": "combridge-hinged:provenance:dimension:chime-tier-5:params.width",
       "status": "pass",
-      "message": "tier-cam-5.radius has dimension provenance.",
+      "message": "chime-tier-5.params.width has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:tier-cam-5:params.radius",
+      "status": "pass",
+      "message": "tier-cam-5.params.radius has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-5:spokes",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-5:params.tier",
       "status": "pass",
-      "message": "tier-cam-5.spokes has dimension provenance.",
+      "message": "tier-cam-5.params.tier has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:tier-cam-5:width",
+      "id": "combridge-hinged:provenance:dimension:tier-cam-5:params.width",
       "status": "pass",
-      "message": "tier-cam-5.width has dimension provenance.",
+      "message": "tier-cam-5.params.width has dimension provenance.",
       "sourceRef": "chime-tier-choreography"
     },
     {
@@ -8503,40 +9233,130 @@
       "sourceRef": "chime-tier-choreography"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-10:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-10:params.depth",
       "status": "pass",
-      "message": "jack-10.size.0 has dimension provenance.",
+      "message": "jack-10.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-10:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-10:params.height",
       "status": "pass",
-      "message": "jack-10.size.1 has dimension provenance.",
+      "message": "jack-10.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-10:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-10:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-10.size.2 has dimension provenance.",
+      "message": "jack-10.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-11:size.0",
+      "id": "combridge-hinged:provenance:dimension:jack-11:params.depth",
       "status": "pass",
-      "message": "jack-11.size.0 has dimension provenance.",
+      "message": "jack-11.params.depth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-11:size.1",
+      "id": "combridge-hinged:provenance:dimension:jack-11:params.height",
       "status": "pass",
-      "message": "jack-11.size.1 has dimension provenance.",
+      "message": "jack-11.params.height has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
     },
     {
-      "id": "combridge-hinged:provenance:dimension:jack-11:size.2",
+      "id": "combridge-hinged:provenance:dimension:jack-11:params.shoulderWidth",
       "status": "pass",
-      "message": "jack-11.size.2 has dimension provenance.",
+      "message": "jack-11.params.shoulderWidth has dimension provenance.",
       "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:water-circuit-links:params.variant",
+      "status": "pass",
+      "message": "water-circuit-links.params.variant has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:escapement-linkage:params.variant",
+      "status": "pass",
+      "message": "escapement-linkage.params.variant has dimension provenance.",
+      "sourceRef": "astroclock-reconstruction"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:celestial-transmission-links:params.variant",
+      "status": "pass",
+      "message": "celestial-transmission-links.params.variant has dimension provenance.",
+      "sourceRef": "celestial-ladder-illustration"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:reporting-drive-links:params.variant",
+      "status": "pass",
+      "message": "reporting-drive-links.params.variant has dimension provenance.",
+      "sourceRef": "chime-tier-choreography"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:shulun-phase-marker:size.0",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.0 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:shulun-phase-marker:size.1",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.1 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:shulun-phase-marker:size.2",
+      "status": "pass",
+      "message": "shulun-phase-marker.size.2 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:water-flow-indicator:joint.limits.0",
+      "status": "pass",
+      "message": "water-flow-indicator.joint.limits.0 has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:water-flow-indicator:joint.limits.1",
+      "status": "pass",
+      "message": "water-flow-indicator.joint.limits.1 has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:water-flow-indicator:params.kind",
+      "status": "pass",
+      "message": "water-flow-indicator.params.kind has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:water-flow-indicator:params.radius",
+      "status": "pass",
+      "message": "water-flow-indicator.params.radius has dimension provenance.",
+      "sourceRef": "water-circuit-layout"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:loaded-scoop-indicator:joint.limits.0",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.joint.limits.0 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:loaded-scoop-indicator:joint.limits.1",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.joint.limits.1 has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:loaded-scoop-indicator:params.kind",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.params.kind has dimension provenance.",
+      "sourceRef": "scoop-mounting"
+    },
+    {
+      "id": "combridge-hinged:provenance:dimension:loaded-scoop-indicator:params.radius",
+      "status": "pass",
+      "message": "loaded-scoop-indicator.params.radius has dimension provenance.",
+      "sourceRef": "scoop-mounting"
     },
     {
       "id": "combridge-hinged:provenance:ratio:1",
@@ -9163,14 +9983,109 @@
       "message": "Joint tier-placard-5 remains within [0, 0.08] over the sampled cycle."
     },
     {
-      "id": "combridge-hinged:collision:bvh",
+      "id": "combridge-hinged:range:water-flow-indicator",
       "status": "pass",
-      "message": "No issue found at 0.5° resolution."
+      "message": "Joint water-flow-indicator remains within [0, 3.2] over the sampled cycle."
+    },
+    {
+      "id": "combridge-hinged:range:loaded-scoop-indicator",
+      "status": "pass",
+      "message": "Joint loaded-scoop-indicator remains within [0, 0.1] over the sampled cycle."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:tower-shell:chime-tier-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:tower-shell:chime-tier-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:tower-shell:chime-tier-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:tower-shell:chime-tier-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:tower-shell:chime-tier-5",
+      "status": "pass",
+      "message": "Whitelisted contact pair tower-shell/chime-tier-5 intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:shulun:celestial-column",
+      "status": "pass",
+      "message": "Whitelisted contact pair shulun/celestial-column intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:celestial-column:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair celestial-column/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:hour-drum-wheel:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair hour-drum-wheel/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:day-night-wheel:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair day-night-wheel/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:celestial-globe:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair celestial-globe/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:armillary-sphere:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair armillary-sphere/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:guanshe:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair guanshe/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:tiansuo-l:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair tiansuo-l/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:tiansuo-r:escapement-linkage",
+      "status": "pass",
+      "message": "Whitelisted contact pair tiansuo-r/escapement-linkage intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:tier-placard-5:reporting-drive-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair tier-placard-5/reporting-drive-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:escapement-linkage:celestial-transmission-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair escapement-linkage/celestial-transmission-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:whitelist:escapement-linkage:reporting-drive-links",
+      "status": "pass",
+      "message": "Whitelisted contact pair escapement-linkage/reporting-drive-links intersects during its complete motion sweep."
+    },
+    {
+      "id": "combridge-hinged:collision:tier-placard-2:reporting-drive-links",
+      "status": "fail",
+      "message": "Parts tier-placard-2 and reporting-drive-links collide while driving shulun at angle 0 rad."
     }
   ],
   "summary": {
-    "pass": 1567,
-    "fail": 0,
+    "pass": 1726,
+    "fail": 3,
     "warn": 0,
     "resolutionDeg": 0.5
   }

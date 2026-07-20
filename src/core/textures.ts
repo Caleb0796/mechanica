@@ -7,6 +7,7 @@ export const MATERIAL_TEXTURE_VARIANTS = [
   "bronze:excavated",
   "bronze:gilded",
   "bronze:openwork",
+  "silver:openwork",
   "iron:cast",
   "lacquer:black",
   "lacquer:red",
@@ -93,6 +94,14 @@ const PALETTES: Record<
     normalScale: 0.3,
     roughness: [0.32, 0.68],
     seed: 4339,
+  },
+  "silver:openwork": {
+    high: [228, 233, 236],
+    low: [126, 139, 146],
+    metalness: 0.88,
+    normalScale: 0.24,
+    roughness: [0.22, 0.46],
+    seed: 4663,
   },
   "iron:cast": {
     high: [78, 84, 88],
@@ -337,7 +346,7 @@ function generateTextureSet(
     ),
     variant,
   };
-  if (variant === "bronze:openwork") {
+  if (variant.endsWith(":openwork")) {
     set.alphaMap = canvasTexture(SURFACE_SIZE, buildOpenworkPixels(), false);
     set.alphaTest = 0.42;
   }
@@ -367,7 +376,7 @@ export function textureShaderFeatureHash(variant: string): string {
   if (!isTextureVariant(variant)) {
     throw new Error(`Unknown material texture variant: ${variant}`);
   }
-  return variant === "bronze:openwork"
+  return variant.endsWith(":openwork")
     ? "map+normal+roughness+alphaTest"
     : "map+normal+roughness";
 }

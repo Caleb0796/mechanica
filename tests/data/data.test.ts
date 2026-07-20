@@ -1,28 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import astroclockJson from '../../src/data/machines/astroclock.json';
-import bellowsJson from '../../src/data/machines/bellows.json';
-import chainpumpJson from '../../src/data/machines/chainpump.json';
-import chariotJson from '../../src/data/machines/chariot.json';
-import gimbalJson from '../../src/data/machines/gimbal.json';
 import loomJson from '../../src/data/machines/loom.json';
 import odometerJson from '../../src/data/machines/odometer.json';
 import seismoscopeJson from '../../src/data/machines/seismoscope.json';
-import typecaseJson from '../../src/data/machines/typecase.json';
-import woodenOxJson from '../../src/data/machines/wooden-ox.json';
 import { assertMachineData, IMAGE_MINIMUMS, SOURCE_MINIMUMS } from '../../src/data/schema';
 import { MACHINE_SLUGS, type MachineData, type MachineSlug } from '../../src/sim/types';
 
 const fixtures: unknown[] = [
   astroclockJson,
   seismoscopeJson,
-  chariotJson,
   odometerJson,
-  woodenOxJson,
   loomJson,
-  typecaseJson,
-  chainpumpJson,
-  bellowsJson,
-  gimbalJson,
 ];
 
 const machines = new Map<MachineSlug, MachineData>();
@@ -47,7 +35,7 @@ function expectBilingual(value: unknown, path = '$'): void {
   Object.entries(item).forEach(([key, child]) => expectBilingual(child, `${path}.${key}`));
 }
 
-describe('ten-machine knowledge base', () => {
+describe('four-machine knowledge base', () => {
   it('contains one valid record for every allowed slug', () => {
     expect([...machines.keys()]).toEqual(MACHINE_SLUGS);
   });
@@ -75,10 +63,8 @@ describe('ten-machine knowledge base', () => {
     expect(machine.ingenuity.echo.en.trim()).not.toBe('');
   });
 
-  it('preserves the tooth-count keyword in the chariot and odometer quotations', () => {
-    for (const slug of ['chariot', 'odometer'] as const) {
-      expect(machines.get(slug)!.sources.some((source) => source.quote.includes('出齒'))).toBe(true);
-    }
+  it('preserves the tooth-count keyword in the odometer quotations', () => {
+    expect(machines.get('odometer')!.sources.some((source) => source.quote.includes('出齒'))).toBe(true);
   });
 
   it('keeps local image attribution consistent before and after the fetch pipeline', () => {
@@ -98,14 +84,14 @@ describe('ten-machine knowledge base', () => {
   });
 
   it('reports the failing field path for unresolved dimension provenance', () => {
-    const corrupted = structuredClone(gimbalJson);
+    const corrupted = structuredClone(astroclockJson);
     corrupted.dimensions[0].sourceId = 'missing-source';
     expect(() => assertMachineData(corrupted)).toThrow('$.dimensions[0].sourceId');
   });
 
   it('rejects a local file on a linkout image with its field path', () => {
-    const corrupted = structuredClone(gimbalJson);
-    (corrupted.images.at(-1)! as (typeof gimbalJson.images)[number] & { file?: string }).file = 'public/forbidden.jpg';
-    expect(() => assertMachineData(corrupted)).toThrow('$.images[4].file');
+    const corrupted = structuredClone(astroclockJson);
+    (corrupted.images.at(-1)! as (typeof astroclockJson.images)[number] & { file?: string }).file = 'public/forbidden.jpg';
+    expect(() => assertMachineData(corrupted)).toThrow('$.images[11].file');
   });
 });

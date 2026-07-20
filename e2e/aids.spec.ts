@@ -32,7 +32,7 @@ type BrowserAid = {
   sequence?: string[];
 };
 
-async function waitForGimbal(page: Page) {
+async function waitForAstroclock(page: Page) {
   await expect
     .poll(() =>
       page.evaluate(() => {
@@ -42,7 +42,7 @@ async function waitForGimbal(page: Page) {
           }
         ).__mechAid;
         return (
-          window.__mech?.spec.slug === "gimbal" &&
+          window.__mech?.spec.slug === "astroclock" &&
           typeof window.__mech.machineReady === "number" &&
           Boolean(hook)
         );
@@ -174,7 +174,7 @@ async function expectCalloutLabelsSeparated(page: Page) {
   }
 }
 
-test("F0-T11: gimbal principle aids remain aligned, bilingual, and responsive", async ({
+test("F0-T11: astroclock principle aids remain aligned, bilingual, and responsive", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -184,8 +184,8 @@ test("F0-T11: gimbal principle aids remain aligned, bilingual, and responsive", 
   page.on("pageerror", (error) => errors.push(error.message));
 
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/#/m/gimbal");
-  await waitForGimbal(page);
+  await page.goto("/#/m/astroclock");
+  await waitForAstroclock(page);
 
   const aids = await aidDefinitions(page);
   const kinds = [...new Set(aids.map((aid) => aid.kind))];
@@ -205,15 +205,11 @@ test("F0-T11: gimbal principle aids remain aligned, bilingual, and responsive", 
   const standardFlowIndex = aids.findIndex(
     (aid) => aid.kind === "flowParticles" && aid.flavor !== "custom",
   );
-  const customFlowIndex = aids.findIndex(
-    (aid) => aid.kind === "flowParticles" && aid.flavor === "custom",
-  );
   const powerPathIndex = aids.findIndex((aid) => aid.kind === "powerPath");
   const subDemoIndex = aids.findIndex((aid) => aid.kind === "subDemo");
   expect(calloutIndex).toBeGreaterThanOrEqual(0);
   expect(cutawayIndex).toBeGreaterThanOrEqual(0);
   expect(standardFlowIndex).toBeGreaterThanOrEqual(0);
-  expect(customFlowIndex).toBeGreaterThanOrEqual(0);
   expect(powerPathIndex).toBeGreaterThanOrEqual(0);
   expect(subDemoIndex).toBeGreaterThanOrEqual(0);
 
@@ -229,7 +225,7 @@ test("F0-T11: gimbal principle aids remain aligned, bilingual, and responsive", 
 
   const canvas = page.locator(".viewer-canvas canvas").first();
   const bounds = await canvas.boundingBox();
-  if (!bounds) throw new Error("Gimbal canvas is unavailable");
+  if (!bounds) throw new Error("Astroclock canvas is unavailable");
   const startX = bounds.x + bounds.width * 0.78;
   const startY = bounds.y + bounds.height * 0.72;
   const checkpoints = [
@@ -315,7 +311,7 @@ test("F0-T11: gimbal principle aids remain aligned, bilingual, and responsive", 
         return hook?.state();
       }),
     )
-    .toMatchObject({ flowMode: "points", flowParticleCount: 28 });
+    .toMatchObject({ flowMode: "points", flowParticleCount: 32 });
   await expect
     .poll(
       () =>
@@ -361,120 +357,12 @@ test("F0-T11: gimbal principle aids remain aligned, bilingual, and responsive", 
       }),
     )
     .toBe(false);
-  await page.waitForTimeout(100);
-  const memoryBaseline = await page.evaluate(
-    () => window.__mech?.memory() ?? { geometries: 0, textures: 0 },
-  );
-  await activateAid(page, customFlowIndex, "flowParticles");
-  await expect
-    .poll(() =>
-      page.evaluate(() => {
-        const hook = (
-          window as unknown as {
-            __mechAid?: AidHook;
-          }
-        ).__mechAid;
-        return hook?.state();
-      }),
-    )
-    .toMatchObject({ flowMode: "custom", flowParticleCount: 20 });
-  const customStart = await page.evaluate(() => {
-    const hook = (
-      window as unknown as {
-        __mechAid?: AidHook;
-      }
-    ).__mechAid;
-    return hook?.projectPart("mechanica-aid-custom-emitter") ?? null;
-  });
-  await page.waitForTimeout(500);
-  const customEnd = await page.evaluate(() => {
-    const hook = (
-      window as unknown as {
-        __mechAid?: AidHook;
-      }
-    ).__mechAid;
-    return hook?.projectPart("mechanica-aid-custom-emitter") ?? null;
-  });
-  expect(customStart).not.toBeNull();
-  expect(customEnd).not.toBeNull();
-  expect(
-    Math.hypot(
-      (customEnd?.x ?? 0) - (customStart?.x ?? 0),
-      (customEnd?.y ?? 0) - (customStart?.y ?? 0),
-    ),
-  ).toBeGreaterThan(0.5);
-  await expect
-    .poll(
-      () =>
-        page.evaluate(() => {
-          const hook = (
-            window as unknown as {
-              __mechAid?: AidHook;
-            }
-          ).__mechAid;
-          return hook?.state().sampledFrames ?? 0;
-        }),
-      { timeout: 10_000 },
-    )
-    .toBeGreaterThanOrEqual(60);
-  expect(
-    await page.evaluate(() => {
-      const hook = (
-        window as unknown as {
-          __mechAid?: AidHook;
-        }
-      ).__mechAid;
-      return hook?.state().averageFrameMs ?? Number.POSITIVE_INFINITY;
-    }),
-  ).toBeLessThanOrEqual(2);
-  await page.evaluate(() => {
-    const hook = (
-      window as unknown as {
-        __mechAid?: AidHook;
-      }
-    ).__mechAid;
-    hook?.deactivate();
-  });
-  await expect
-    .poll(() =>
-      page.evaluate((baseline) => {
-        const memory = window.__mech?.memory();
-        return Boolean(
-          memory &&
-          memory.geometries <= baseline.geometries &&
-          memory.textures <= baseline.textures,
-        );
-      }, memoryBaseline),
-    )
-    .toBe(true);
-  await activateAid(page, customFlowIndex, "flowParticles");
-  await page.waitForTimeout(100);
-  await page.evaluate(() => {
-    const hook = (
-      window as unknown as {
-        __mechAid?: AidHook;
-      }
-    ).__mechAid;
-    hook?.deactivate();
-  });
-  await expect
-    .poll(() =>
-      page.evaluate((baseline) => {
-        const memory = window.__mech?.memory();
-        return Boolean(
-          memory &&
-          memory.geometries <= baseline.geometries &&
-          memory.textures <= baseline.textures,
-        );
-      }, memoryBaseline),
-    )
-    .toBe(true);
 
   await activateAid(page, cutawayIndex, "cutaway");
   await expect
     .poll(() =>
       page.evaluate(
-        () => window.__mech?.partMaterials("outer-shell")[0]?.opacity ?? 1,
+        () => window.__mech?.partMaterials("tower-shell")[0]?.opacity ?? 1,
       ),
     )
     .toBeLessThanOrEqual(0.22);
@@ -484,8 +372,8 @@ test("F0-T11: gimbal principle aids remain aligned, bilingual, and responsive", 
   await activateAid(page, subDemoIndex, "subDemo");
   const subDemo = page.getByTestId("aid-sub-demo");
   await expect(subDemo).toHaveText(aids[subDemoIndex]?.caption?.en ?? "");
-  const attitudeBefore = await page.evaluate(
-    () => window.__mech?.graph.state()["@attitude:outer-shell:y"] ?? 0,
+  const driveBefore = await page.evaluate(
+    () => window.__mech?.graph.state().shulun ?? 0,
   );
   await subDemo.click();
   await expect(page.locator(".viewer-canvas")).toHaveAttribute(
@@ -496,11 +384,11 @@ test("F0-T11: gimbal principle aids remain aligned, bilingual, and responsive", 
     .poll(
       () =>
         page.evaluate(
-          () => window.__mech?.graph.state()["@attitude:outer-shell:y"] ?? 0,
+          () => window.__mech?.graph.state().shulun ?? 0,
         ),
       { timeout: 5_000 },
     )
-    .not.toBeCloseTo(attitudeBefore, 8);
+    .not.toBeCloseTo(driveBefore, 8);
 
   expect(errors).toEqual([]);
 });

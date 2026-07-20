@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import { KinematicGraph } from "../../src/sim/graph";
-import chariot from "../../src/machines/chariot/build";
 import seismoscope from "../../src/machines/seismoscope/build";
 import {
   createSchemeTransition,
@@ -16,9 +15,9 @@ import {
 
 describe("scheme comparison", () => {
   it("identifies changed parts and presents a one-second red/teal handoff", () => {
-    const schemeIds = Object.keys(chariot.schemes ?? {});
+    const schemeIds = Object.keys(seismoscope.schemes ?? {});
     const transition = createSchemeTransition(
-      chariot,
+      seismoscope,
       schemeIds[0],
       schemeIds[1],
       100,
@@ -37,9 +36,9 @@ describe("scheme comparison", () => {
   });
 
   it("drives both reconstruction graphs from the linked control", () => {
-    const [leftSchemeId, rightSchemeId] = Object.keys(chariot.schemes ?? {});
-    const leftSpec = specForScheme(chariot, leftSchemeId);
-    const rightSpec = specForScheme(chariot, rightSchemeId);
+    const [leftSchemeId, rightSchemeId] = Object.keys(seismoscope.schemes ?? {});
+    const leftSpec = specForScheme(seismoscope, leftSchemeId);
+    const rightSpec = specForScheme(seismoscope, rightSchemeId);
     const leftGraph = new KinematicGraph(leftSpec);
     const rightGraph = new KinematicGraph(rightSpec);
     const driveNodes = [
@@ -65,30 +64,6 @@ describe("scheme comparison", () => {
     ).toMatchObject({ color: "#2aa7a1", opacity: 1 });
   });
 
-  it("routes chariot comparison input through both heading mechanisms", () => {
-    const leftSpec = specForScheme(chariot, "yansu-clutch");
-    const rightSpec = specForScheme(chariot, "lanchester-diff");
-    const leftGraph = new KinematicGraph(leftSpec);
-    const rightGraph = new KinematicGraph(rightSpec);
-    const driveNodes = [
-      driveNodeForSpec(leftSpec),
-      driveNodeForSpec(rightSpec),
-    ] as const;
-
-    driveComparedMachineGraphs(
-      chariot,
-      [leftGraph, rightGraph],
-      driveNodes,
-      Math.PI / 12,
-    );
-
-    for (const graph of [leftGraph, rightGraph]) {
-      const state = graph.state();
-      expect(state["chassis-pivot"]).not.toBeCloseTo(0, 8);
-      expect(state["figure-turntable"]).toBeCloseTo(-state["chassis-pivot"], 8);
-    }
-  });
-
   it("routes seismoscope comparison input through the shared quake pulse", () => {
     const leftSpec = specForScheme(seismoscope, "wangzhenduo");
     const rightSpec = specForScheme(seismoscope, "fengrui");
@@ -111,6 +86,6 @@ describe("scheme comparison", () => {
     expect(leftGraph.state()["duzhu"]).toBeCloseTo(0.02, 8);
     expect(leftGraph.state()["ball-0"]).toBeCloseTo(0, 8);
     expect(rightGraph.state()["duzhu"]).toBeCloseTo(0.14, 8);
-    expect(rightGraph.state()["ball-0"]).toBeCloseTo(0.65, 8);
+    expect(rightGraph.state()["ball-0"]).toBeCloseTo(0.61, 8);
   });
 });

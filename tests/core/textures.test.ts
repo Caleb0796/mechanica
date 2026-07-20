@@ -43,10 +43,10 @@ describe("procedural material textures", () => {
     const wood = getMaterialTextureSet("wood:dark");
     const dispose = vi.spyOn(wood!.map, "dispose");
 
-    expect(stats.entries).toBe(10);
-    expect(stats.textures).toBe(31);
+    expect(stats.entries).toBe(11);
+    expect(stats.textures).toBe(35);
     expect(stats.generationMs).toBeGreaterThan(0);
-    expect(disposeMaterialTextureCache()).toBe(31);
+    expect(disposeMaterialTextureCache()).toBe(35);
     expect(dispose).toHaveBeenCalledOnce();
     expect(disposeMaterialTextureCache()).toBe(0);
   });
@@ -91,7 +91,7 @@ describe("procedural material textures", () => {
       metalness: 0.72,
       opacity: 1,
       roughness: 0.38,
-      textureVariant: "bronze:openwork",
+      textureVariant: "silver:openwork",
       transparent: false,
     });
 
@@ -101,7 +101,7 @@ describe("procedural material textures", () => {
     expect(openwork.alphaMap).not.toBeNull();
     expect(openwork.alphaTest).toBeGreaterThan(0);
     expect(openwork.color.getHexString()).toBe("ffffff");
-    expect(openwork.metalness).toBe(0.84);
+    expect(openwork.metalness).toBe(0.88);
     expect(openwork.opacity).toBe(1);
     expect(openwork.roughness).toBe(1);
     expect(openwork.transparent).toBe(false);

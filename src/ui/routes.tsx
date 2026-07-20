@@ -18,14 +18,8 @@ const ScrollStory = lazy(() =>
 export const MACHINE_SLUGS = [
   "astroclock",
   "seismoscope",
-  "chariot",
   "odometer",
-  "wooden-ox",
   "loom",
-  "typecase",
-  "chainpump",
-  "bellows",
-  "gimbal",
 ] as const satisfies readonly MachineSlug[];
 
 interface MachineCardCopy {
@@ -51,14 +45,6 @@ const machineCards: Record<MachineSlug, MachineCardCopy> = {
       zh: "以惯性辨别震向，并触发八方之一落丸。",
     },
   },
-  chariot: {
-    name: { en: "South-Pointing Chariot", zh: "指南车" },
-    era: { en: "Three Kingdoms · c. 235", zh: "三国 · 约 235 年" },
-    principle: {
-      en: "A differential cancels the chassis turn to preserve heading.",
-      zh: "差动齿轮抵消车身转向，使木人恒指南方。",
-    },
-  },
   odometer: {
     name: { en: "Odometer Carriage", zh: "记里鼓车" },
     era: { en: "Northern Song record · 1027", zh: "北宋记载 · 1027 年" },
@@ -67,55 +53,12 @@ const machineCards: Record<MachineSlug, MachineCardCopy> = {
       zh: "十进齿轮减速把行程转化为击鼓报里。",
     },
   },
-  "wooden-ox": {
-    name: { en: "Wooden Ox & Gliding Horse", zh: "木牛流马" },
-    era: { en: "Shu Han · 231–234", zh: "蜀汉 · 231–234 年" },
-    principle: {
-      en: "Competing reconstructions test how one carrier moved grain.",
-      zh: "并列轮式与步行式复原，检验运粮方式之争。",
-    },
-  },
   loom: {
     name: { en: "Pattern Loom", zh: "提花织机" },
     era: { en: "Western Han · c. 157–88 BCE", zh: "西汉 · 约公元前 157–88 年" },
     principle: {
       en: "A heddle-lift sequence stores the woven pattern as a program.",
       zh: "综框升降次序把纹样固化为可执行程序。",
-    },
-  },
-  typecase: {
-    name: { en: "Revolving Typecase", zh: "转轮排字盘" },
-    era: {
-      en: "Northern Song–Yuan · 1041–1298",
-      zh: "北宋至元 · 1041–1298 年",
-    },
-    principle: {
-      en: "Rotating indexed storage brings movable type to the compositor.",
-      zh: "按韵索引的转盘让活字“以字就人”。",
-    },
-  },
-  chainpump: {
-    name: { en: "Chain Pump", zh: "龙骨水车" },
-    era: { en: "Eastern Han–Yuan", zh: "东汉至元" },
-    principle: {
-      en: "Pedals circulate a pallet chain that scrapes water uphill.",
-      zh: "脚踏驱动刮板链循环，将水沿槽提升。",
-    },
-  },
-  bellows: {
-    name: { en: "Water-Powered Bellows", zh: "水排" },
-    era: { en: "Eastern Han · 31", zh: "东汉 · 31 年" },
-    principle: {
-      en: "A crank-and-rod train converts waterwheel rotation to pumping.",
-      zh: "曲柄连杆把水轮旋转转化为风箱往复。",
-    },
-  },
-  gimbal: {
-    name: { en: "Gimbal Censer", zh: "被中香炉" },
-    era: { en: "Western Han–Tang", zh: "西汉至唐" },
-    principle: {
-      en: "Orthogonal rings and a low bowl passively keep incense level.",
-      zh: "正交环与低重心香盂无需动力即可保持水平。",
     },
   },
 };

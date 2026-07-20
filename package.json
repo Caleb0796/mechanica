@@ -17,7 +17,8 @@
     "fetch-images": "node scripts/fetch-images.mjs",
     "render-assets": "node scripts/render-renders.mjs",
     "extract": "node scripts/extract-parts.mjs",
-    "audit": "node scripts/audit-llm.mjs"
+    "audit": "node scripts/audit-llm.mjs",
+    "artifacts:check": "node scripts/check-artifacts.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.4",

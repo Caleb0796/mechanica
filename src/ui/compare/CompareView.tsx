@@ -129,7 +129,7 @@ function CompareFrameCounter({
 }) {
   const invalidate = useThree((state) => state.invalidate);
   const readyFrame = useRef<number | undefined>(undefined);
-  const stableFrames = useRef(0);
+  const renderedFrames = useRef(0);
 
   useEffect(
     () => () => {
@@ -140,12 +140,11 @@ function CompareFrameCounter({
     [],
   );
 
-  useFrame((_, deltaSeconds) => {
+  useFrame(() => {
     onFrame();
     if (!readyEnabled || readyFrame.current !== undefined) return;
-    stableFrames.current =
-      deltaSeconds <= 1 / 20 ? stableFrames.current + 1 : 0;
-    if (stableFrames.current < 12) {
+    renderedFrames.current += 1;
+    if (renderedFrames.current < 2) {
       invalidate();
       return;
     }
@@ -366,6 +365,7 @@ export default function CompareView({
           frameloop="demand"
           gl={{
             alpha: false,
+            antialias: false,
             powerPreference: "high-performance",
             stencil: false,
             toneMapping: ACESFilmicToneMapping,

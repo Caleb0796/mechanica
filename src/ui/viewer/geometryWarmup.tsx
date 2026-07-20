@@ -2,11 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   type GeometryWarmupController,
-  type GeometryWarmupPartOptions,
   warmMachine,
 } from "../../core/geometryWarmup";
-import type { MachineModule, MachineSpec, PartDef } from "../../sim/types";
-import { buildSemanticPartGeometry } from "./visualRecovery";
+import type { MachineModule, MachineSpec } from "../../sim/types";
 
 export type MachineGeometryWarmupStatus =
   "idle" | "warming" | "prepared" | "committed" | "failed";
@@ -37,48 +35,6 @@ interface ActiveWarmup {
 
 interface StoredMachineGeometryWarmupState extends MachineGeometryWarmupState {
   targetSpec: MachineSpec | null;
-}
-
-function semanticVariant(module: MachineModule, part: PartDef): string | null {
-  if (part.geometry.type !== "box" && part.geometry.type !== "beam") {
-    return null;
-  }
-  if (module.data.slug === "astroclock" && part.id.startsWith("jack-")) {
-    return "semantic:jack";
-  }
-  if (
-    module.data.slug === "odometer" &&
-    (part.id === "lower-figure" || part.id === "upper-figure")
-  ) {
-    return "semantic:striking-figure";
-  }
-  if (module.data.slug === "wooden-ox" && part.id === "curved-head") {
-    return "semantic:ox-head";
-  }
-  if (module.data.slug === "bellows" && part.id === "bellows-chest") {
-    return "semantic:bellows-chest";
-  }
-  return null;
-}
-
-export function geometryOptionsForPart(
-  module: MachineModule,
-  part: PartDef,
-): GeometryWarmupPartOptions | undefined {
-  const variant = semanticVariant(module, part);
-  if (!variant) return undefined;
-  return {
-    factory: () => {
-      const geometry = buildSemanticPartGeometry(module.data.slug, part);
-      if (!geometry) {
-        throw new Error(
-          `Semantic geometry builder did not resolve ${module.data.slug}:${part.id}`,
-        );
-      }
-      return geometry;
-    },
-    variant,
-  };
 }
 
 function mark(name: string, key: string): void {
@@ -154,7 +110,6 @@ export function useMachineGeometryWarmup({
       },
       {
         consumerScope,
-        geometryOptions: (part) => geometryOptionsForPart(module, part),
       },
     );
     const run: ActiveWarmup = {

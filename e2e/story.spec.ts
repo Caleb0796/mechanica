@@ -3,11 +3,6 @@ import { expect, test, type Page } from "@playwright/test";
 const stories = [
   { expectedSteps: 9, ingenuityStep: "feedback", slug: "astroclock" },
   {
-    expectedSteps: 7,
-    ingenuityStep: "mechanical-subtraction",
-    slug: "chariot",
-  },
-  {
     expectedSteps: 8,
     ingenuityStep: "west-dragon-interlock",
     slug: "seismoscope",
@@ -177,7 +172,7 @@ test("F0-T5c story scheme handoff latches prepared scenes across jumps", async (
       });
     }, progress);
 
-  await page.goto("/#/story/chariot");
+  await page.goto("/#/story/seismoscope");
   const stage = page.getByTestId("story-machine-stage");
   await expect(stage).toHaveAttribute("data-machine-ready", "true", {
     timeout: 5_000,
@@ -220,14 +215,14 @@ test("F0-T5c story scheme handoff latches prepared scenes across jumps", async (
       })
       .toBe(true);
 
-  await setProgress(5.25 / 6);
+  await setProgress(3.25 / 7);
   await expect(stage).toHaveAttribute("data-scheme-transition", "true");
   await expect(stage).toHaveAttribute(
     "data-requested-geometry-key",
-    "chariot:yansu-clutch:from-active",
+    "seismoscope:wangzhenduo:from-active",
   );
   await expect(stage).toHaveAttribute("data-machine-ready", "true");
-  await setProgress(5.75 / 6);
+  await setProgress(3.75 / 7);
   await expect
     .poll(() =>
       page.evaluate(() => window.__mechStory?.state().segmentProgress),
@@ -235,7 +230,7 @@ test("F0-T5c story scheme handoff latches prepared scenes across jumps", async (
     .toBeGreaterThan(0.5);
   await expect(stage).toHaveAttribute(
     "data-requested-geometry-key",
-    "chariot:lanchester-diff:to-active",
+    "seismoscope:fengrui:to-active",
   );
   await page.evaluate(() => {
     document.body.style.paddingBottom = `${window.innerHeight}px`;
@@ -244,11 +239,11 @@ test("F0-T5c story scheme handoff latches prepared scenes across jumps", async (
   await expect(stage).toHaveAttribute("data-scheme-transition", "false");
   await expectPreparedRequestRendered();
 
-  await setProgress(5.75 / 6);
+  await setProgress(3.75 / 7);
   await expect(stage).toHaveAttribute("data-scheme-transition", "true");
   await expect(stage).toHaveAttribute(
     "data-requested-geometry-key",
-    "chariot:lanchester-diff:to-active",
+    "seismoscope:fengrui:to-active",
   );
   await expectPreparedRequestRendered();
 
@@ -260,7 +255,7 @@ test("F0-T5c story scheme handoff latches prepared scenes across jumps", async (
   await expect(stage).toHaveAttribute("data-scheme-transition", "false");
   await expect(stage).toHaveAttribute(
     "data-requested-geometry-key",
-    "chariot:yansu-clutch:from-active",
+    "seismoscope:wangzhenduo:from-active",
   );
   await expectPreparedRequestRendered();
 
@@ -271,12 +266,12 @@ test("F0-T5c story scheme handoff latches prepared scenes across jumps", async (
 });
 
 test("story copy follows the language switch", async ({ page }) => {
-  await page.goto("/#/story/chariot");
+  await page.goto("/#/story/seismoscope");
   await expect(page.getByTestId("scroll-story")).toBeVisible();
   await page.getByRole("button", { name: "EN", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await expect(page.locator('[data-story-step="ma-jun-trial"]')).toContainText(
-    "Ma Jun",
+  await expect(page.locator('[data-story-step="bronze-vessel"]')).toContainText(
+    "Zhang Heng",
   );
 });
 

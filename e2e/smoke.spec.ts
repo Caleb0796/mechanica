@@ -3,20 +3,20 @@ import { expect, test, type Page } from "@playwright/test";
 const dualSchemeSlugs = [
   "astroclock",
   "seismoscope",
-  "chariot",
-  "wooden-ox",
   "loom",
 ] as const;
 const machineSlugs = [
   "astroclock",
   "seismoscope",
-  "chariot",
   "odometer",
-  "wooden-ox",
   "loom",
+] as const;
+const removedMachineSlugs = [
+  "chariot",
   "typecase",
-  "chainpump",
   "bellows",
+  "wooden-ox",
+  "chainpump",
   "gimbal",
 ] as const;
 
@@ -180,16 +180,16 @@ async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
   return target.id;
 }
 
-test("smoke: homepage presents the ten-machine collection", async ({
+test("smoke: homepage presents the four-machine collection", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.getByTestId("machine-card")).toHaveCount(10);
-  await expect(page.locator(".machine-era")).toHaveCount(10);
-  await expect(page.locator(".machine-principle")).toHaveCount(10);
-  await expect(page.locator(".machine-thumbnail")).toHaveCount(10);
+  await expect(page.getByTestId("machine-card")).toHaveCount(4);
+  await expect(page.locator(".machine-era")).toHaveCount(4);
+  await expect(page.locator(".machine-principle")).toHaveCount(4);
+  await expect(page.locator(".machine-thumbnail")).toHaveCount(4);
   const thumbnails = page.getByTestId("machine-thumbnail-image");
-  await expect(thumbnails).toHaveCount(10);
+  await expect(thumbnails).toHaveCount(4);
   await expect
     .poll(() =>
       thumbnails.evaluateAll((images) =>
@@ -203,7 +203,16 @@ test("smoke: homepage presents the ten-machine collection", async ({
     .toBe(true);
 });
 
-test("smoke: all ten machine routes render without console errors", async ({
+test("smoke: removed machine routes do not resolve", async ({ page }) => {
+  for (const slug of removedMachineSlugs) {
+    await page.goto(`/#/m/${slug}`);
+    await expect(page.locator(".error-page")).toBeVisible();
+    await expect(page.locator(".viewer-page")).toHaveCount(0);
+    expect(await page.evaluate(() => window.__mech)).toBeUndefined();
+  }
+});
+
+test("smoke: all four machine routes render without console errors", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -463,22 +472,6 @@ test("U2 real pointer: dragging the demo gear changes graph state", async ({
   expect(largeDelta).toBeCloseTo(-smallDelta / 2, 8);
 });
 
-test("U2 pointer control: gimbal drive changes shell attitude", async ({
-  page,
-}) => {
-  await page.goto("/#/m/gimbal");
-  await waitForMechanica(page, "gimbal");
-  await page.getByRole("button", { name: "Pause", exact: true }).click();
-  const before = await page.evaluate(
-    () => window.__mech?.graph.state()["@attitude:outer-shell:y"] ?? 0,
-  );
-  await dragDriveGizmo(page, "drive-gizmo-outer-shell");
-  const after = await page.evaluate(
-    () => window.__mech?.graph.state()["@attitude:outer-shell:y"] ?? 0,
-  );
-  expect(after).not.toBeCloseTo(before, 8);
-});
-
 test("U2 pointer control: astroclock reverse lock cannot be bypassed", async ({
   page,
 }) => {
@@ -507,7 +500,7 @@ test("U2 pointer control: astroclock reverse lock cannot be bypassed", async ({
   await page.keyboard.press("ArrowLeft");
 
   await expect(page.getByTestId("event-captions")).toContainText(
-    "blocked · tiansuo-r",
+    "Reverse motion is locked · Right celestial lock",
   );
   expect(
     await page.evaluate(() => window.__mech?.graph.state().shulun ?? 0),
@@ -581,25 +574,25 @@ test("F0-T7: selected drive exposes bilingual arrow-key control", async ({
 test("F0-T7: declared drive nodes expose the toolbar control", async ({
   page,
 }) => {
-  await page.goto("/#/m/chainpump");
+  await page.goto("/#/m/astroclock");
   await page.getByRole("button", { name: "EN", exact: true }).click();
-  await waitForMechanica(page, "chainpump");
+  await waitForMechanica(page, "astroclock");
   expect(
     await page.evaluate(() => {
       const part = window.__mech?.spec.parts.find(
-        (candidate) => candidate.id === "head-sprocket",
+        (candidate) => candidate.id === "shulun",
       );
       return {
-        declared: window.__mech?.spec.driveNodes.includes("head-sprocket"),
-        interactive: part?.interactive ?? null,
+        declared: window.__mech?.spec.driveNodes.includes("shulun"),
+        interactive: part?.interactive ?? false,
       };
     }),
-  ).toEqual({ declared: true, interactive: null });
+  ).toEqual({ declared: true, interactive: true });
 
-  await page.evaluate(() => window.__mechSelect?.("head-sprocket"));
+  await page.evaluate(() => window.__mechSelect?.("shulun"));
   const control = page.getByTestId("drive-keyboard-control");
   await expect(control).toHaveCount(1);
-  await expect(control).toHaveAttribute("data-drive-part-id", "head-sprocket");
+  await expect(control).toHaveAttribute("data-drive-part-id", "shulun");
   await expect(control).toHaveAttribute(
     "aria-label",
     /Drive .+ in reverse \/ Drive .+ forward/,
@@ -657,7 +650,9 @@ test("seismoscope quake is inert in Wang and releases a ball in Feng", async ({
   await waitForMechanica(page, "seismoscope");
 
   await page.getByTestId("mech-trigger-quake").click();
-  await expect(page.getByTestId("event-captions")).toContainText("inert");
+  await expect(page.getByTestId("event-captions")).toContainText(
+    "The latch remains set",
+  );
   expect(
     await page.evaluate(() =>
       Object.entries(window.__mech?.graph.state() ?? {}).some(
@@ -775,8 +770,8 @@ test("U3 compare: linked controls drive both reconstruction graphs", async ({
 test("U3 compare pointer: dragging either canvas broadcasts to both graphs", async ({
   page,
 }) => {
-  await page.goto("/#/m/chariot");
-  await waitForMechanica(page, "chariot");
+  await page.goto("/#/m/seismoscope");
+  await waitForMechanica(page, "seismoscope");
   await page.getByTestId("compare-toggle").click();
   await expect(
     page.locator('.compare-viewport-shell[data-machine-ready="true"]'),
@@ -795,10 +790,10 @@ test("U3 compare pointer: dragging either canvas broadcasts to both graphs", asy
   expect(after?.[1]).not.toBe(before?.[1]);
 });
 
-test("U1: gimbal and odometer reject dependency violations then restore", async ({
+test("U1: odometer rejects dependency violations then restores", async ({
   page,
 }) => {
-  for (const slug of ["gimbal", "odometer"]) {
+  for (const slug of ["odometer"] as const) {
     await page.goto(`/#/m/${slug}`);
     await waitForMechanica(page, slug);
     await page.getByTestId("assembly-reassemble").click();
@@ -919,8 +914,8 @@ test("F0-T8: assembly duration follows runtime part count and captions the Chine
 test("F0-T8: Reassemble stages on the ground, scrub resets explode, and completion settles", async ({
   page,
 }) => {
-  await page.goto("/#/m/gimbal");
-  await waitForMechanica(page, "gimbal");
+  await page.goto("/#/m/odometer");
+  await waitForMechanica(page, "odometer");
   await page.getByTestId("assembly-reassemble").click();
   await expect(page.locator(".viewer-canvas")).toHaveAttribute(
     "data-assembly-mode",
@@ -1020,8 +1015,8 @@ test("F0-T9: wheel tap selects, wheel drag drives, and orbit drag does not selec
   page,
 }) => {
   test.setTimeout(45_000);
-  await page.goto("/#/m/chariot");
-  await waitForMechanica(page, "chariot");
+  await page.goto("/#/m/odometer");
+  await waitForMechanica(page, "odometer");
   await waitForCamera(page);
   const englishToggle = page.getByRole("button", { name: "EN", exact: true });
   if ((await englishToggle.count()) > 0) await englishToggle.click();
@@ -1029,11 +1024,11 @@ test("F0-T9: wheel tap selects, wheel drag drives, and orbit drag does not selec
   await page.evaluate(() => window.__mechSelect?.(null));
 
   const beforeDrive = await page.evaluate(
-    () => window.__mech?.graph.state()["left-road-wheel"] ?? 0,
+    () => window.__mech?.graph.state().zulun ?? 0,
   );
-  await dragDriveGizmo(page, "drive-gizmo-left-road-wheel");
+  await dragDriveGizmo(page, "drive-gizmo-zulun");
   const afterDrive = await page.evaluate(
-    () => window.__mech?.graph.state()["left-road-wheel"] ?? 0,
+    () => window.__mech?.graph.state().zulun ?? 0,
   );
   expect(Math.abs(afterDrive - beforeDrive)).toBeGreaterThan(0.01);
   await expect(page.getByTestId("part-inspector")).toHaveAttribute(
@@ -1041,11 +1036,11 @@ test("F0-T9: wheel tap selects, wheel drag drives, and orbit drag does not selec
     "",
   );
 
-  const wheelPoint = await hoverDriveGizmo(page, "drive-gizmo-left-road-wheel");
+  const wheelPoint = await hoverDriveGizmo(page, "drive-gizmo-zulun");
   await page.mouse.click(wheelPoint.x, wheelPoint.y);
   await expect(page.getByTestId("part-inspector")).toHaveAttribute(
     "data-selected-part-id",
-    "left-road-wheel",
+    "zulun",
   );
   await expect(page.getByTestId("part-inspector")).toContainText(
     "Left road wheel",
@@ -1062,7 +1057,7 @@ test("F0-T9: wheel tap selects, wheel drag drives, and orbit drag does not selec
   const platformPoint = await page.evaluate(() =>
     window.__mech?.partScreenPoint("platform"),
   );
-  if (!platformPoint) throw new Error("The chariot platform is unavailable");
+  if (!platformPoint) throw new Error("The odometer platform is unavailable");
   const cameraBefore = await page.evaluate(() => window.__mech?.cameraState());
   await page.mouse.move(platformPoint.x, platformPoint.y);
   await page.mouse.down();
@@ -1124,9 +1119,12 @@ test("U6: spotlight completes after its ordered highlight sequence", async ({
   const events = await page
     .locator(".viewer-canvas")
     .getAttribute("data-spotlight-events");
-  expect(events).toContain("spotlight:highlight · large-gear");
-  expect(events?.indexOf("spotlight:highlight · large-gear")).toBeLessThan(
-    events?.indexOf("spotlight:done · large-gear") ?? -1,
+  const highlighted =
+    "The mechanism enters its next working state · Large driven gear";
+  const completed = "The demonstration is complete · Large driven gear";
+  expect(events).toContain(highlighted);
+  expect(events?.indexOf(highlighted)).toBeLessThan(
+    events?.indexOf(completed) ?? -1,
   );
 });
 
@@ -1158,30 +1156,21 @@ test("F0-T2: twenty spotlight toggles keep renderer memory flat", async ({
   expect(await page.evaluate(() => window.__mech?.memory())).toEqual(before);
 });
 
-test("F0-T3: procedural textures stay bounded on instanced and openwork paths", async ({
+test("F0-T3: procedural textures stay bounded on retained material paths", async ({
   page,
 }) => {
-  await page.goto("/#/m/typecase");
-  await waitForMechanica(page, "typecase");
-  const typecase = await page.evaluate(() => ({
-    renderer: window.__mech?.memory(),
-    textures: window.__mech?.warmTextures(),
-  }));
-
-  expect(typecase.textures?.entries).toBe(10);
-  expect(typecase.textures?.generationMs).toBeGreaterThan(0);
-  expect(typecase.textures?.generationMs).toBeLessThanOrEqual(200);
-  expect(typecase.textures?.textures).toBe(31);
-  expect(typecase.renderer?.textures).toBeLessThanOrEqual(40);
-
-  await page.goto("/#/m/gimbal");
-  await waitForMechanica(page, "gimbal");
-  await expect
-    .poll(() => page.evaluate(() => window.__mech?.memory().textures ?? 0))
-    .toBeGreaterThan(0);
-  expect(
-    await page.evaluate(() => window.__mech?.memory().textures ?? 0),
-  ).toBeLessThanOrEqual(40);
+  for (const slug of ["loom", "astroclock"] as const) {
+    await page.goto(`/#/m/${slug}`);
+    await waitForMechanica(page, slug);
+    const result = await page.evaluate(() => ({
+      renderer: window.__mech?.memory(),
+      textures: window.__mech?.warmTextures(),
+    }));
+    expect(result.textures?.entries).toBeGreaterThan(0);
+    expect(result.textures?.generationMs).toBeGreaterThan(0);
+    expect(result.textures?.generationMs).toBeLessThanOrEqual(200);
+    expect(result.renderer?.textures).toBeLessThanOrEqual(40);
+  }
 });
 
 test("F0-T4: all authored home cameras pass the framing gate", async ({
@@ -1217,11 +1206,11 @@ test("F0-T4: all authored home cameras pass the framing gate", async ({
   }
 });
 
-test("F0-T4: chariot starts outside its bounds and explode never refits", async ({
+test("F0-T4: exploded state refits the retained model", async ({
   page,
 }) => {
-  await page.goto("/#/m/chariot");
-  await waitForMechanica(page, "chariot");
+  await page.goto("/#/m/odometer");
+  await waitForMechanica(page, "odometer");
   await waitForCamera(page);
   const before = await page.evaluate(() => window.__mech?.cameraState());
   expect(before?.introStartDistance).toBeGreaterThan(
@@ -1231,19 +1220,22 @@ test("F0-T4: chariot starts outside its bounds and explode never refits", async 
   for (const value of ["0.25", "0.65", "1"]) {
     await page.getByTestId("explode-slider").fill(value);
   }
-  await page.waitForTimeout(100);
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.cameraState()?.refitCount))
+    .toBeGreaterThan(before?.refitCount ?? 0);
+  await waitForCamera(page);
   const after = await page.evaluate(() => window.__mech?.cameraState());
 
-  expect(after?.refitCount).toBe(before?.refitCount);
-  expect(after?.position).toEqual(before?.position);
-  expect(after?.target).toEqual(before?.target);
+  expect(after?.position).not.toEqual(before?.position);
+  expect(await page.evaluate(() => window.__mech?.frameFill() ?? 0)).toBeLessThanOrEqual(0.8);
 });
 
 test("F0-T4: spotlight hands its target back before the first orbit", async ({
   page,
 }) => {
-  await page.goto("/#/m/gimbal");
-  await waitForMechanica(page, "gimbal");
+  test.setTimeout(90_000);
+  await page.goto("/#/m/astroclock");
+  await waitForMechanica(page, "astroclock");
   await waitForCamera(page);
   await page.getByTestId("spotlight-play").click();
   await expect(page.locator(".spotlight-done")).toBeVisible({
@@ -1318,10 +1310,10 @@ test("F0-T4: spotlight hands its target back before the first orbit", async ({
   const manualAfter = await page.evaluate(() => window.__mech?.cameraState());
   expect(manualAfter?.refitCount).toBe((manualBefore?.refitCount ?? 0) + 1);
 
-  await page.goto("/#/m/wooden-ox");
-  await waitForMechanica(page, "wooden-ox");
+  await page.goto("/#/m/loom");
+  await waitForMechanica(page, "loom");
   await waitForCamera(page);
-  const woodenOxBefore = await page.evaluate(() =>
+  const loomBefore = await page.evaluate(() =>
     window.__mech?.cameraState(),
   );
   await page.getByTestId("spotlight-play").click();
@@ -1329,11 +1321,11 @@ test("F0-T4: spotlight hands its target back before the first orbit", async ({
     timeout: 10_000,
   });
   await waitForCamera(page);
-  const woodenOxAfter = await page.evaluate(() => window.__mech?.cameraState());
-  expect(woodenOxAfter?.refitCount).toBe(woodenOxBefore?.refitCount);
+  const loomAfter = await page.evaluate(() => window.__mech?.cameraState());
+  expect(loomAfter?.refitCount).toBe(loomBefore?.refitCount);
 });
 
-test("U6: all ten machine spotlights complete within ten seconds", async ({
+test("U6: all four machine spotlights complete within ten seconds", async ({
   page,
 }) => {
   test.setTimeout(120_000);
@@ -1345,19 +1337,10 @@ test("U6: all ten machine spotlights complete within ten seconds", async ({
       timeout: 10_000,
     });
     await expect(page.getByTestId("event-captions")).toContainText(
-      "spotlight:done",
+      "The demonstration is complete",
     );
     if (
-      [
-        "seismoscope",
-        "chariot",
-        "wooden-ox",
-        "loom",
-        "typecase",
-        "chainpump",
-        "bellows",
-        "gimbal",
-      ].includes(slug)
+      ["seismoscope", "loom"].includes(slug)
     ) {
       await expect(
         page.getByTestId("spotlight-semantic-readout"),
@@ -1374,35 +1357,15 @@ test("U6: all ten machine spotlights complete within ten seconds", async ({
         ),
       ).toBe(true);
     }
-    if (slug === "chariot") {
-      await expect(
-        page.getByTestId("spotlight-semantic-readout"),
-      ).toContainText("0.0°");
-    }
     if (slug === "loom") {
       await expect(page.getByTestId("loom-pattern-swatches")).toContainText(
         "▦▦▦ · ◆◇◆",
       );
     }
-    if (slug === "typecase") {
-      const progress = page
-        .getByTestId("typecase-retrieval-race")
-        .locator("progress");
-      await expect(progress).toHaveCount(2);
-      expect(await progress.nth(0).getAttribute("value")).toBe("100");
-      expect(Number(await progress.nth(1).getAttribute("value"))).toBeLessThan(
-        50,
-      );
-    }
-    if (slug === "gimbal") {
-      await expect(
-        page.getByTestId("spotlight-semantic-readout"),
-      ).toContainText("(<0.5°)");
-    }
   }
 });
 
-test("U6 semantics: astroclock stages sourced captions and wooden ox shows force arrows", async ({
+test("U6 semantics: astroclock stages sourced captions", async ({
   page,
 }) => {
   await page.goto("/#/m/astroclock");
@@ -1424,16 +1387,6 @@ test("U6 semantics: astroclock stages sourced captions and wooden ox shows force
     expect(stages.toLowerCase()).toContain(phrase);
   }
   expect(stages).toContain("新儀象法要");
-
-  await page.goto("/#/m/wooden-ox");
-  await waitForMechanica(page, "wooden-ox");
-  await page.getByTestId("spotlight-play").click();
-  await expect(
-    page.getByTestId("wooden-ox-force-marker").first(),
-  ).toBeVisible();
-  await expect(page.locator(".spotlight-done")).toBeVisible({
-    timeout: 10_000,
-  });
 });
 
 test("gallery exposes four layers, attribution, lightbox, and offline fallback", async ({
@@ -1464,7 +1417,7 @@ test("gallery exposes four layers, attribution, lightbox, and offline fallback",
         ),
       )
       .toBe(true);
-    if (!["chariot", "gimbal", "chainpump"].includes(slug)) continue;
+    if (!["astroclock", "seismoscope", "odometer"].includes(slug)) continue;
     for (const layer of [
       "reconstruction",
       "classical",
@@ -1499,8 +1452,8 @@ test("gallery exposes four layers, attribution, lightbox, and offline fallback",
 test("U5 mock: docent streams a grounded answer with a citation chip", async ({
   page,
 }) => {
-  await page.goto("/#/m/gimbal");
-  await waitForMechanica(page);
+  await page.goto("/#/m/odometer");
+  await waitForMechanica(page, "odometer");
   await page.getByRole("button", { name: "Ask the docent" }).click();
   await page.locator(".docent-suggestion").first().click();
   await expect(page.getByTestId("docent-citation")).toBeVisible();
@@ -1510,7 +1463,7 @@ test("U5 mock: docent streams a grounded answer with a citation chip", async ({
 test("English UI has no Chinese leakage across three machines", async ({
   page,
 }) => {
-  for (const slug of ["chariot", "gimbal", "odometer"]) {
+  for (const slug of ["astroclock", "loom", "odometer"] as const) {
     await page.goto(`/#/m/${slug}`);
     await page.getByRole("button", { name: "EN", exact: true }).click();
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
@@ -1544,7 +1497,7 @@ test("G6.3: cold homepage largest-contentful paint stays under three seconds", a
     }).observe({ buffered: true, type: "largest-contentful-paint" });
   });
   await page.goto("/");
-  await expect(page.getByTestId("machine-card")).toHaveCount(10);
+  await expect(page.getByTestId("machine-card")).toHaveCount(4);
   await page.waitForTimeout(750);
   const lcp = await page.evaluate(
     () => (window as Window & { __mechanicaLcp?: number }).__mechanicaLcp ?? 0,
@@ -1640,11 +1593,11 @@ test("F0-T6: all machine scenes stay noninteractive, bounded, and optional", asy
   }
 });
 
-test("F0-T10: chariot comparison renders during interaction and sleeps while idle", async ({
+test("F0-T10: seismoscope comparison renders during interaction and sleeps while idle", async ({
   page,
 }) => {
-  await page.goto("/#/m/chariot");
-  await waitForMechanica(page);
+  await page.goto("/#/m/seismoscope");
+  await waitForMechanica(page, "seismoscope");
   await page.getByTestId("compare-toggle").click();
   const canvases = page.locator(".compare-viewport canvas");
   await expect(canvases).toHaveCount(2);
@@ -1662,13 +1615,27 @@ test("F0-T10: chariot comparison renders during interaction and sleeps while idl
     canvases.nth(0).screenshot(),
     canvases.nth(1).screenshot(),
   ]);
-  expect(afterDrive[0]).not.toEqual(beforeDrive[0]);
   expect(afterDrive[1]).not.toEqual(beforeDrive[1]);
+  const schemeResponse = await page.evaluate(() =>
+    (window.__mechCompare?.graphs ?? []).map((graph) => {
+      const state = graph.state();
+      return {
+        duzhu: state.duzhu,
+        releasedBalls: Object.entries(state).filter(
+          ([partId, value]) => partId.startsWith("ball-") && value > 0,
+        ).length,
+      };
+    }),
+  );
+  expect(schemeResponse).toEqual([
+    { duzhu: 0.02, releasedBalls: 0 },
+    { duzhu: 0.14, releasedBalls: 1 },
+  ]);
   const frameRates = await sampleCompareInteractionFrameRates(page, 3);
   expect(frameRates).toHaveLength(2);
   test.info().annotations.push({
     description: frameRates.map((rate) => rate.toFixed(1)).join(" / "),
-    type: "chariot compare fps left / right",
+    type: "seismoscope compare fps left / right",
   });
   expect(Math.min(...frameRates)).toBeGreaterThanOrEqual(40);
   expect(await sampleCompareIdleFrames(page)).toEqual([0, 0]);
@@ -1703,8 +1670,8 @@ test("F0-T10: astroclock comparison is full resolution, interactive, and idle on
 test("F0-T10: the main viewer idles on demand, resumes, and budgets shadows", async ({
   page,
 }) => {
-  await page.goto("/#/m/typecase");
-  await waitForMechanica(page, "typecase");
+  await page.goto("/#/m/loom");
+  await waitForMechanica(page, "loom");
   await waitForCamera(page);
   const refitCount = await page.evaluate(
     () => window.__mech?.cameraState()?.refitCount ?? 0,
@@ -1765,8 +1732,8 @@ test("F0-T10: the main viewer idles on demand, resumes, and budgets shadows", as
     .poll(() => page.evaluate(() => window.__mech?.idleState().paused))
     .toBe(true);
   await page.goto("/");
-  await page.goto("/#/m/typecase");
-  await waitForMechanica(page, "typecase");
+  await page.goto("/#/m/loom");
+  await waitForMechanica(page, "loom");
   expect(await page.evaluate(() => window.__mech?.idleState())).toMatchObject({
     autoPaused: false,
     demand: false,
@@ -1774,10 +1741,10 @@ test("F0-T10: the main viewer idles on demand, resumes, and budgets shadows", as
   });
 });
 
-test("F0-T10: chainpump and typecase render-rate samples stay live", async ({
+test("F0-T10: astroclock and loom render-rate samples stay live", async ({
   page,
 }) => {
-  for (const slug of ["chainpump", "typecase"] as const) {
+  for (const slug of ["astroclock", "loom"] as const) {
     await page.goto(`/#/m/${slug}`);
     await waitForMechanica(page, slug);
     const frameRate = await sampleMachineRenderRate(page, 2);

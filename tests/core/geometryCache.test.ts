@@ -9,11 +9,33 @@ import {
   partGeometryEntries,
   singlePartGeometry,
 } from "../../src/core/primitives";
-import bellows from "../../src/machines/bellows/build";
+import type { GeometryDef, MachineModule } from "../../src/sim/types";
+import demo from "../../src/ui/demo";
 import {
   CompareGeometryCache,
   compareGeometryCache,
 } from "../../src/ui/compare/geometryCache";
+
+const statefulGeometry = {
+  type: "custom",
+  builder: "statefulFixture",
+  params: {},
+} as const satisfies GeometryDef;
+const fixtureModule: MachineModule = {
+  ...demo,
+  customBuilders: {
+    ...demo.customBuilders,
+    statefulFixture: () => {
+      const geometry = new BoxGeometry(1, 1, 1);
+      geometry.userData.mechanicaUpdate = () => undefined;
+      return geometry;
+    },
+  },
+};
+const shaftPart = fixtureModule.spec.parts.find(
+  (candidate) => candidate.geometry.type === "shaft",
+);
+if (!shaftPart) throw new Error("Shaft fixture is missing");
 
 describe("machine geometry cache", () => {
   beforeEach(() => {
@@ -26,17 +48,12 @@ describe("machine geometry cache", () => {
 
   it("retains immutable geometry across sequential rendering modes", () => {
     const cache = new MachineGeometryCache();
-    const part = bellows.spec.parts.find(
-      (candidate) => candidate.geometry.type === "shaft",
-    );
-    if (!part) throw new Error("Bellows shaft fixture is missing");
-
-    const viewer = cache.prepare(bellows, part.geometry);
+    const viewer = cache.prepare(fixtureModule, shaftPart.geometry);
     const viewerRelease = viewer.retain();
     const dispose = vi.spyOn(singlePartGeometry(viewer.geometry), "dispose");
     viewerRelease();
 
-    const story = cache.prepare(bellows, part.geometry);
+    const story = cache.prepare(fixtureModule, shaftPart.geometry);
     const storyRelease = story.retain();
 
     expect(story.geometry).toBe(viewer.geometry);
@@ -58,13 +75,8 @@ describe("machine geometry cache", () => {
 
   it("keeps abandoned StrictMode preparations idle and sweepable", () => {
     const cache = new MachineGeometryCache();
-    const part = bellows.spec.parts.find(
-      (candidate) => candidate.geometry.type === "shaft",
-    );
-    if (!part) throw new Error("Bellows shaft fixture is missing");
-
-    const abandoned = cache.prepare(bellows, part.geometry);
-    const committed = cache.prepare(bellows, part.geometry);
+    const abandoned = cache.prepare(fixtureModule, shaftPart.geometry);
+    const committed = cache.prepare(fixtureModule, shaftPart.geometry);
     const dispose = vi.spyOn(singlePartGeometry(abandoned.geometry), "dispose");
     const release = committed.retain();
 
@@ -84,15 +96,10 @@ describe("machine geometry cache", () => {
 
   it("keeps stateful mechanicaUpdate geometry private to each consumer", () => {
     const cache = new MachineGeometryCache();
-    const part = bellows.spec.parts.find(
-      (candidate) => candidate.id === "rocker",
-    );
-    if (!part) throw new Error("Bellows rocker fixture is missing");
-
-    const first = cache.prepare(bellows, part.geometry, {
+    const first = cache.prepare(fixtureModule, statefulGeometry, {
       consumerKey: "viewer",
     });
-    const second = cache.prepare(bellows, part.geometry, {
+    const second = cache.prepare(fixtureModule, statefulGeometry, {
       consumerKey: "compare",
     });
     const firstGeometry = singlePartGeometry(first.geometry);
@@ -119,13 +126,8 @@ describe("machine geometry cache", () => {
 
   it("reuses stateful geometry when a stable consumer remounts", () => {
     const cache = new MachineGeometryCache();
-    const part = bellows.spec.parts.find(
-      (candidate) => candidate.id === "rocker",
-    );
-    if (!part) throw new Error("Bellows rocker fixture is missing");
-
     for (let mount = 0; mount < 1_000; mount += 1) {
-      const resource = cache.prepare(bellows, part.geometry, {
+      const resource = cache.prepare(fixtureModule, statefulGeometry, {
         consumerKey: "viewer:rocker",
       });
       resource.retain()();
@@ -140,12 +142,7 @@ describe("machine geometry cache", () => {
 
   it("rejects stateful geometry without a stable consumer key", () => {
     const cache = new MachineGeometryCache();
-    const part = bellows.spec.parts.find(
-      (candidate) => candidate.id === "rocker",
-    );
-    if (!part) throw new Error("Bellows rocker fixture is missing");
-
-    expect(() => cache.prepare(bellows, part.geometry)).toThrow(
+    expect(() => cache.prepare(fixtureModule, statefulGeometry)).toThrow(
       "Stateful geometry requires a stable consumer key",
     );
     expect(cache.stats()).toEqual({
@@ -157,14 +154,10 @@ describe("machine geometry cache", () => {
 
   it("does not alias separate module instances with the same slug", () => {
     const cache = new MachineGeometryCache();
-    const part = bellows.spec.parts.find(
-      (candidate) => candidate.geometry.type === "shaft",
-    );
-    if (!part) throw new Error("Bellows shaft fixture is missing");
-    const replacementModule = { ...bellows };
+    const replacementModule = { ...fixtureModule };
 
-    const first = cache.prepare(bellows, part.geometry);
-    const second = cache.prepare(replacementModule, part.geometry);
+    const first = cache.prepare(fixtureModule, shaftPart.geometry);
+    const second = cache.prepare(replacementModule, shaftPart.geometry);
 
     expect(second.geometry).not.toBe(first.geometry);
     expect(cache.stats().entries).toBe(2);
@@ -173,18 +166,13 @@ describe("machine geometry cache", () => {
 
   it("keeps semantic variants separate while sharing each variant", () => {
     const cache = new MachineGeometryCache();
-    const part = bellows.spec.parts.find(
-      (candidate) => candidate.geometry.type === "shaft",
-    );
-    if (!part) throw new Error("Bellows shaft fixture is missing");
-
-    const primitive = cache.prepare(bellows, part.geometry);
+    const primitive = cache.prepare(fixtureModule, shaftPart.geometry);
     const primitiveGeometry = singlePartGeometry(primitive.geometry);
-    const semantic = cache.prepare(bellows, part.geometry, {
+    const semantic = cache.prepare(fixtureModule, shaftPart.geometry, {
       factory: () => primitiveGeometry.clone(),
       variant: "semantic:fixture",
     });
-    const repeated = cache.prepare(bellows, part.geometry, {
+    const repeated = cache.prepare(fixtureModule, shaftPart.geometry, {
       factory: () => primitiveGeometry.clone(),
       variant: "semantic:fixture",
     });
@@ -197,8 +185,8 @@ describe("machine geometry cache", () => {
 
   it("only sweeps idle entries", () => {
     const cache = new MachineGeometryCache();
-    const idle = cache.prepare(bellows, { type: "box", size: [1, 1, 1] });
-    const active = cache.prepare(bellows, { type: "box", size: [2, 1, 1] });
+    const idle = cache.prepare(fixtureModule, { type: "box", size: [1, 1, 1] });
+    const active = cache.prepare(fixtureModule, { type: "box", size: [2, 1, 1] });
     const idleDispose = vi.spyOn(singlePartGeometry(idle.geometry), "dispose");
     const activeDispose = vi.spyOn(
       singlePartGeometry(active.geometry),
@@ -217,9 +205,9 @@ describe("machine geometry cache", () => {
   it("retains and disposes a composite as one cache resource", () => {
     const cache = new MachineGeometryCache();
     const compositeModule = {
-      ...bellows,
+      ...fixtureModule,
       customBuilders: {
-        ...bellows.customBuilders,
+        ...fixtureModule.customBuilders,
         cacheComposite: () => [
           new BoxGeometry(1, 1, 1),
           new BoxGeometry(0.5, 0.5, 0.5),

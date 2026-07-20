@@ -17,7 +17,7 @@ import {
   partGeometryEntries,
 } from "../core/primitives";
 import { planarCrankRodPose } from "../sim/edges";
-import { attitudeQuaternion } from "../sim/graph";
+import { attitudeQuaternion, KinematicGraph } from "../sim/graph";
 import type {
   IKinematicGraph,
   MachineModule,
@@ -140,6 +140,7 @@ function createWorldTransforms(spec: MachineSpec): WorldTransforms {
       node.parentIndex === null ? false : nodes[node.parentIndex].moving;
     node.moving =
       parentMoves ||
+      node.crankRod !== null ||
       (node.part.joint !== undefined && node.part.joint.kind !== "fixed");
   }
 
@@ -233,6 +234,9 @@ function updateWorldBounds(
       collisionPart.boundingRadius * world.getMaxScaleOnAxis();
     bounds[index].box.copy(collisionPart.localBoundingBox).applyMatrix4(world);
     bounds[index].obb.copy(collisionPart.localBoundingObb).applyMatrix4(world);
+    bounds[index].obb.center
+      .copy(collisionPart.localBoundingObb.center)
+      .applyMatrix4(world);
   }
 }
 
@@ -446,25 +450,56 @@ function reachableRatio(
   drive: string,
   part: string,
 ): number {
-  const direct = graph.ratioBetween(drive, part);
-  if (direct !== null) return Math.abs(direct);
+  const hasTrigger = module.mechanism?.triggers.some(
+    (candidate) => candidate.id === `drive:${drive}`,
+  );
+  if (!hasTrigger) {
+    const direct = graph.ratioBetween(drive, part);
+    if (direct !== null) return Math.abs(direct);
+  }
 
   graph.setInput(drive, 0);
   const atZero = graph.state()[part] ?? 0;
+  setDriveAngle(module, graph, drive, 0, 1);
+  const atUnit = graph.state()[part] ?? 0;
+  setDriveAngle(module, graph, drive, 1, 0);
+  return Math.abs(atUnit - atZero);
+}
+
+function setDriveAngle(
+  module: MachineModule,
+  graph: GraphLike,
+  drive: string,
+  current: number,
+  target: number,
+): void {
   const trigger = module.mechanism?.triggers.find(
     (candidate) => candidate.id === `drive:${drive}`,
   );
-  if (trigger) trigger.run(graph, () => undefined, 1);
-  else graph.setInput(drive, 1);
-  const atUnit = graph.state()[part] ?? 0;
-  if (trigger) trigger.run(graph, () => undefined, -1);
-  else graph.setInput(drive, 0);
-  return Math.abs(atUnit - atZero);
+  if (trigger) trigger.run(graph, () => undefined, target - current);
+  else graph.setInput(drive, target);
+}
+
+function collisionDriveIds(module: MachineModule): string[] {
+  const triggerIds = new Set(
+    (module.mechanism?.triggers ?? []).map((trigger) => trigger.id),
+  );
+  const primary = primaryDriveId(module.spec);
+  const graph = new KinematicGraph(module.spec);
+  return [
+    ...new Set([
+      primary,
+      ...module.spec.driveNodes.filter(
+        (drive) =>
+          triggerIds.has(`drive:${drive}`) ||
+          graph.ratioBetween(primary, drive) === null,
+      ),
+    ]),
+  ];
 }
 
 function validateWhitelistedPairs(
   module: MachineModule,
-  graph: GraphLike,
   whitelist: Array<[string, string]>,
   collisionParts: CollisionPart[],
   plan: SamplingPlan,
@@ -490,6 +525,7 @@ function validateWhitelistedPairs(
     b: PartDef;
     bCollision: CollisionPart;
     bIndex: number;
+    drive: string;
     faster: PartDef;
     ratio: number;
   }> = [];
@@ -534,15 +570,43 @@ function validateWhitelistedPairs(
 
     try {
       if (gearPair) {
-        const ratioA = reachableRatio(module, graph, drive, aId);
-        const ratioB = reachableRatio(module, graph, drive, bId);
+        let selected:
+          | { coverage: number; drive: string; ratioA: number; ratioB: number }
+          | undefined;
+        for (const candidate of new Set([drive, ...module.spec.driveNodes])) {
+          const ratioA = reachableRatio(
+            module,
+            new KinematicGraph(module.spec),
+            candidate,
+            aId,
+          );
+          const ratioB = reachableRatio(
+            module,
+            new KinematicGraph(module.spec),
+            candidate,
+            bId,
+          );
+          const coverage = Number(ratioA > 0) + Number(ratioB > 0);
+          if (
+            !selected ||
+            coverage > selected.coverage ||
+            (coverage === selected.coverage &&
+              Math.min(ratioA, ratioB) >
+                Math.min(selected.ratioA, selected.ratioB))
+          ) {
+            selected = { coverage, drive: candidate, ratioA, ratioB };
+          }
+        }
+        const ratioA = selected?.ratioA ?? 0;
+        const ratioB = selected?.ratioB ?? 0;
         const faster =
           ratioA >= ratioB
             ? { part: a, ratio: ratioA }
             : { part: b, ratio: ratioB };
         if (faster.ratio <= 0) {
           results.set(key, {
-            failure: "whitelisted pair is not reachable from the primary drive",
+            failure:
+              "whitelisted pair is not reachable from any declared drive",
             failureAngle: 0,
             gearPair,
           });
@@ -555,6 +619,7 @@ function validateWhitelistedPairs(
           b,
           bCollision: collisionB,
           bIndex: collisionBIndex,
+          drive: selected?.drive ?? drive,
           faster: faster.part,
           ratio: faster.ratio,
         });
@@ -573,19 +638,7 @@ function validateWhitelistedPairs(
         failureAngle: 0,
         gearPair,
       });
-    } finally {
-      try {
-        graph.setInput(drive, 0);
-      } catch {
-        // The emitted check preserves the useful validation failure.
-      }
     }
-  }
-
-  if (gearPairs.length > 0) {
-    graph.setInput(drive, 0);
-    const worlds = updateWorldTransforms(transforms, graph.state());
-    updateWorldBounds(collisionParts, worlds, bounds);
   }
 
   for (const pair of gearPairs) {
@@ -593,7 +646,11 @@ function validateWhitelistedPairs(
     let failure: string | null = null;
     let failureAngle = 0;
     let contactSeen = false;
+    let currentAngle = 0;
+    const pairGraph = new KinematicGraph(module.spec);
     try {
+      let worlds = updateWorldTransforms(transforms, pairGraph.state());
+      updateWorldBounds(collisionParts, worlds, bounds);
       const gearSamples = Math.max(
         4,
         (pair.faster.geometry.type === "gear"
@@ -602,8 +659,9 @@ function validateWhitelistedPairs(
       );
       for (let sample = 0; sample < gearSamples; sample += 1) {
         const angle = (((Math.PI * 2) / pair.ratio) * sample) / gearSamples;
-        graph.setInput(drive, angle);
-        const worlds = updateWorldTransforms(transforms, graph.state());
+        setDriveAngle(module, pairGraph, pair.drive, currentAngle, angle);
+        currentAngle = angle;
+        worlds = updateWorldTransforms(transforms, pairGraph.state());
         updateWorldBounds(
           collisionParts,
           worlds,
@@ -638,7 +696,7 @@ function validateWhitelistedPairs(
       failure = error instanceof Error ? error.message : String(error);
     } finally {
       try {
-        graph.setInput(drive, 0);
+        setDriveAngle(module, pairGraph, pair.drive, currentAngle, 0);
       } catch {
         // The emitted check preserves the useful validation failure.
       }
@@ -648,43 +706,54 @@ function validateWhitelistedPairs(
 
   if (contactPairs.length > 0) {
     let sweepFailure: string | null = null;
-    try {
-      graph.setInput(drive, 0);
-      let worlds = updateWorldTransforms(transforms, graph.state());
-      updateWorldBounds(collisionParts, worlds, bounds);
-      for (const angle of sampleAngles(plan)) {
-        graph.setInput(drive, angle);
-        worlds = updateWorldTransforms(transforms, graph.state());
-        updateWorldBounds(
-          collisionParts,
-          worlds,
-          bounds,
-          transforms.movingIndices,
-        );
-        for (const pair of contactPairs) {
-          if (pair.contactSeen) continue;
-          if (
-            bvhIntersects(
-              pair.a,
-              pair.b,
-              worlds.get(pair.a.part.id)!,
-              worlds.get(pair.b.part.id)!,
-              bounds[pair.aIndex],
-              bounds[pair.bIndex],
-            )
-          )
-            pair.contactSeen = true;
-        }
-        if (contactPairs.every((pair) => pair.contactSeen)) break;
-      }
-    } catch (error) {
-      sweepFailure = error instanceof Error ? error.message : String(error);
-    } finally {
+    for (const contactDrive of collisionDriveIds(module)) {
+      const contactGraph = new KinematicGraph(module.spec);
+      let currentAngle = 0;
       try {
-        graph.setInput(drive, 0);
-      } catch {
-        // The emitted check preserves the useful validation failure.
+        let worlds = updateWorldTransforms(transforms, contactGraph.state());
+        updateWorldBounds(collisionParts, worlds, bounds);
+        for (const angle of sampleAngles(plan)) {
+          setDriveAngle(
+            module,
+            contactGraph,
+            contactDrive,
+            currentAngle,
+            angle,
+          );
+          currentAngle = angle;
+          worlds = updateWorldTransforms(transforms, contactGraph.state());
+          updateWorldBounds(
+            collisionParts,
+            worlds,
+            bounds,
+            transforms.movingIndices,
+          );
+          for (const pair of contactPairs) {
+            if (pair.contactSeen) continue;
+            if (
+              bvhIntersects(
+                pair.a,
+                pair.b,
+                worlds.get(pair.a.part.id)!,
+                worlds.get(pair.b.part.id)!,
+                bounds[pair.aIndex],
+                bounds[pair.bIndex],
+              )
+            )
+              pair.contactSeen = true;
+          }
+          if (contactPairs.every((pair) => pair.contactSeen)) break;
+        }
+      } catch (error) {
+        sweepFailure = error instanceof Error ? error.message : String(error);
+      } finally {
+        try {
+          setDriveAngle(module, contactGraph, contactDrive, currentAngle, 0);
+        } catch {
+          // The emitted check preserves the useful validation failure.
+        }
       }
+      if (sweepFailure || contactPairs.every((pair) => pair.contactSeen)) break;
     }
     for (const pair of contactPairs) {
       results.set(pairKey(pair.a.part.id, pair.b.part.id), {
@@ -741,58 +810,91 @@ export function validateCollisions(
   const transforms = createWorldTransforms(module.spec);
   const checks = validateWhitelistedPairs(
     module,
-    graph,
     whitelist,
     collisionParts,
     plan,
     transforms,
   );
-  const bounds = createWorldBounds(collisionParts);
-  graph.setInput(drive, 0);
-  let worlds = updateWorldTransforms(transforms, graph.state());
-  updateWorldBounds(collisionParts, worlds, bounds);
-
-  let failure: { a: string; b: string; angle: number } | null = null;
+  let failure: { a: string; b: string; angle: number; drive: string } | null =
+    null;
   try {
-    for (const angle of sampleAngles(plan)) {
-      graph.setInput(drive, angle);
-      worlds = updateWorldTransforms(transforms, graph.state());
-      updateWorldBounds(
-        collisionParts,
-        worlds,
-        bounds,
-        transforms.movingIndices,
-      );
-      for (
-        let aIndex = 0;
-        aIndex < collisionParts.length && !failure;
-        aIndex += 1
-      ) {
-        const a = collisionParts[aIndex];
-        for (
-          let bIndex = aIndex + 1;
-          bIndex < collisionParts.length;
-          bIndex += 1
-        ) {
-          const b = collisionParts[bIndex];
-          if (
-            whitelisted.has(pairKey(a.part.id, b.part.id)) ||
-            directlyFixed(a.part, b.part)
-          )
-            continue;
-          if (
-            bvhIntersects(
-              a,
-              b,
-              worlds.get(a.part.id)!,
-              worlds.get(b.part.id)!,
-              bounds[aIndex],
-              bounds[bIndex],
-            )
+    for (const collisionDrive of collisionDriveIds(module)) {
+      const collisionGraph =
+        collisionDrive === drive ? graph : new KinematicGraph(module.spec);
+      const bounds = createWorldBounds(collisionParts);
+      let currentAngle = collisionGraph.state()[collisionDrive] ?? 0;
+      try {
+        setDriveAngle(module, collisionGraph, collisionDrive, currentAngle, 0);
+        currentAngle = 0;
+        let worlds = updateWorldTransforms(transforms, collisionGraph.state());
+        updateWorldBounds(collisionParts, worlds, bounds);
+
+        for (const angle of sampleAngles(plan)) {
+          setDriveAngle(
+            module,
+            collisionGraph,
+            collisionDrive,
+            currentAngle,
+            angle,
+          );
+          currentAngle = angle;
+          worlds = updateWorldTransforms(transforms, collisionGraph.state());
+          updateWorldBounds(
+            collisionParts,
+            worlds,
+            bounds,
+            transforms.movingIndices,
+          );
+          for (
+            let aIndex = 0;
+            aIndex < collisionParts.length && !failure;
+            aIndex += 1
           ) {
-            failure = { a: a.part.id, b: b.part.id, angle };
-            break;
+            const a = collisionParts[aIndex];
+            for (
+              let bIndex = aIndex + 1;
+              bIndex < collisionParts.length;
+              bIndex += 1
+            ) {
+              const b = collisionParts[bIndex];
+              if (
+                whitelisted.has(pairKey(a.part.id, b.part.id)) ||
+                directlyFixed(a.part, b.part)
+              )
+                continue;
+              if (
+                bvhIntersects(
+                  a,
+                  b,
+                  worlds.get(a.part.id)!,
+                  worlds.get(b.part.id)!,
+                  bounds[aIndex],
+                  bounds[bIndex],
+                )
+              ) {
+                failure = {
+                  a: a.part.id,
+                  b: b.part.id,
+                  angle,
+                  drive: collisionDrive,
+                };
+                break;
+              }
+            }
           }
+          if (failure) break;
+        }
+      } finally {
+        try {
+          setDriveAngle(
+            module,
+            collisionGraph,
+            collisionDrive,
+            currentAngle,
+            0,
+          );
+        } catch {
+          // The emitted check preserves the useful validation failure.
         }
       }
       if (failure) break;
@@ -804,19 +906,13 @@ export function validateCollisions(
       message: `BVH collision sampling failed: ${error instanceof Error ? error.message : String(error)}`,
     });
     return checks;
-  } finally {
-    try {
-      graph.setInput(drive, 0);
-    } catch {
-      // The emitted check preserves the useful validation failure.
-    }
   }
 
   checks.push({
     id: failure ? `collision:${failure.a}:${failure.b}` : "collision:bvh",
     status: failure ? "fail" : "pass",
     message: failure
-      ? `Parts ${failure.a} and ${failure.b} collide at drive angle ${failure.angle} rad.`
+      ? `Parts ${failure.a} and ${failure.b} collide while driving ${failure.drive} at angle ${failure.angle} rad.`
       : plan.capped
         ? `No issue found at ${plan.resolutionDeg}° resolution; the sampling cap prevents an exact collision-free claim.`
         : `No issue found at ${plan.resolutionDeg}° resolution.`,
@@ -835,7 +931,8 @@ export function collisionPairsAtAngle(
   );
   const collisionParts = buildCollisionParts(module);
   const transforms = createWorldTransforms(module.spec);
-  graph.setInput(drive, angle);
+  const currentAngle = graph.state()[drive] ?? 0;
+  setDriveAngle(module, graph, drive, currentAngle, angle);
   const worlds = updateWorldTransforms(transforms, graph.state());
   const bounds = createWorldBounds(collisionParts);
   updateWorldBounds(collisionParts, worlds, bounds);

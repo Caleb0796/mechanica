@@ -8,14 +8,8 @@ import { chromium } from "playwright";
 const slugs = [
   "astroclock",
   "seismoscope",
-  "chariot",
   "odometer",
-  "wooden-ox",
   "loom",
-  "typecase",
-  "chainpump",
-  "bellows",
-  "gimbal",
 ];
 const angles = ["overall", "cutaway", "mechanism-close-up", "exploded"];
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -139,7 +133,6 @@ async function capture(canvas, outputPath) {
 async function captureMachine(page, slug) {
   const outputDirectory = join(renderRoot, slug);
   let canvas = await waitForModel(page, slug, "overall");
-  if (slug === "bellows") await zoomCanvas(page, canvas, 4);
   await hideCaptureChrome(page);
   await capture(canvas, join(outputDirectory, "overall.jpg"));
 
@@ -153,7 +146,6 @@ async function captureMachine(page, slug) {
   });
   await page.mouse.up();
   await page.waitForTimeout(500);
-  if (slug === "bellows") await zoomCanvas(page, canvas, 4);
   await hideCaptureChrome(page);
   await capture(canvas, join(outputDirectory, "cutaway.jpg"));
 
@@ -173,14 +165,8 @@ async function captureMachine(page, slug) {
     );
     await page.mouse.up();
     await zoomCanvas(page, canvas, 4);
-  } else if (slug === "chariot") {
-    await panCanvas(page, canvas, 0, -0.13);
-    await zoomCanvas(page, canvas, 4);
   } else if (slug === "odometer") {
     await panCanvas(page, canvas, 0, -0.24);
-    await zoomCanvas(page, canvas, 5);
-  } else if (slug === "chainpump") {
-    await panCanvas(page, canvas, -0.25, 0);
     await zoomCanvas(page, canvas, 5);
   } else {
     await page.getByTestId("spotlight-play").click();
@@ -192,8 +178,6 @@ async function captureMachine(page, slug) {
   canvas = await waitForModel(page, slug, "exploded");
   await page.getByTestId("explode-slider").fill("1");
   await page.waitForTimeout(1300);
-  if (slug === "bellows") await zoomCanvas(page, canvas, 4);
-  if (slug === "gimbal") await zoomCanvas(page, canvas, 3);
   await hideCaptureChrome(page);
   await capture(canvas, join(outputDirectory, "exploded.jpg"));
 }
@@ -236,4 +220,4 @@ for (const slug of slugs) {
 if (totalBytes > maxTotalBytes) {
   throw new Error(`Render total ${totalBytes} exceeds ${maxTotalBytes} bytes`);
 }
-console.log(`40 renders complete: ${totalBytes} bytes`);
+console.log(`16 renders complete: ${totalBytes} bytes`);

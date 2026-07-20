@@ -2,7 +2,7 @@ name: ci
 on: [push, pull_request]
 env:
   # "--partial" until wave-3 completes (machine dirs may be missing);
-  # the LAST step of P3 acceptance flips this to "" (strict ten-machine manifest)
+  # the LAST step of P3 acceptance flips this to "" (strict four-machine manifest)
   # and commits — this is the only sanctioned relaxation switch
   VALIDATE_FLAGS: ""
 jobs:

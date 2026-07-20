@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import gimbal from "../../src/machines/gimbal/build";
+import astroclock from "../../src/machines/astroclock/build";
+import loom from "../../src/machines/loom/build";
 import odometer from "../../src/machines/odometer/build";
 import type { PartDef } from "../../src/sim/types";
 import {
@@ -59,8 +60,8 @@ function exerciseDependencyRecovery(parts: readonly PartDef[]) {
 }
 
 describe("assembly controller", () => {
-  it("rejects out-of-order parts and restores gimbal transmission", () => {
-    exerciseDependencyRecovery(gimbal.spec.parts);
+  it("rejects out-of-order parts and restores astroclock transmission", () => {
+    exerciseDependencyRecovery(astroclock.spec.parts);
   });
 
   it("rejects out-of-order parts and restores odometer transmission", () => {
@@ -68,7 +69,7 @@ describe("assembly controller", () => {
   });
 
   it("snaps only within fifteen percent of the part radius", () => {
-    const plan = createAssemblyPlan([gimbal.spec.parts[0]]);
+    const plan = createAssemblyPlan([loom.spec.parts[0]]);
     let state = reduceAssembly(plan, createAssemblyState(plan), {
       type: "enter-exploded",
     });
@@ -89,7 +90,7 @@ describe("assembly controller", () => {
   });
 
   it("uses ordered part progress for visibility across sparse repeated steps", () => {
-    const parts = gimbal.spec.parts.slice(0, 4).map((part, index) => ({
+    const parts = loom.spec.parts.slice(0, 4).map((part, index) => ({
       ...part,
       assemblyStep: [0, 4, 4, 9][index],
       parent: undefined,
@@ -127,7 +128,7 @@ describe("assembly controller", () => {
   });
 
   it("staggers local progress by ordered part index", () => {
-    const parts = gimbal.spec.parts.slice(0, 3).map((part) => ({
+    const parts = loom.spec.parts.slice(0, 3).map((part) => ({
       ...part,
       parent: undefined,
     }));
@@ -148,7 +149,7 @@ describe("assembly controller", () => {
 
   it("eases each part flight and fades its first fifteen percent", () => {
     const part = {
-      ...gimbal.spec.parts[0],
+      ...loom.spec.parts[0],
       explodeVector: [1, 0, 0] as [number, number, number],
     };
 
@@ -161,7 +162,7 @@ describe("assembly controller", () => {
   });
 
   it("grounds and scale-spaces every staging part on the machine plane", () => {
-    const plan = createAssemblyPlan(gimbal.spec.parts);
+    const plan = createAssemblyPlan(loom.spec.parts);
     expect(plan.stagingByPartId.size).toBe(plan.orderedPartIds.length);
     for (const slot of plan.stagingByPartId.values()) {
       expect(slot.position[1] - slot.groundOffset).toBeCloseTo(
@@ -174,13 +175,36 @@ describe("assembly controller", () => {
         [...plan.stagingByPartId.values()].map((slot) => slot.position[0]),
       ),
     ].sort((a, b) => a - b);
-    expect(xPositions[1] - xPositions[0]).toBeLessThan(0.2);
-    expect(plan.stagingByPartId.get("outer-shell")?.radius).toBeCloseTo(
-      0.0225,
+    const maximumRadius = Math.max(
+      ...[...plan.stagingByPartId.values()].map((slot) => slot.radius),
+    );
+    expect(xPositions[1] - xPositions[0]).toBeCloseTo(maximumRadius * 2.4, 10);
+  });
+
+  it("computes staging radii from explicit primitive dimensions", () => {
+    const parts: PartDef[] = [
+      {
+        ...loom.spec.parts[0],
+        id: "box-fixture",
+        geometry: { type: "box", size: [2, 4, 6] },
+        parent: undefined,
+        position: [0, 0, 0],
+      },
+      {
+        ...loom.spec.parts[1],
+        id: "shaft-fixture",
+        geometry: { type: "shaft", radius: 0.5, length: 2 },
+        parent: undefined,
+        position: [1, 0, 0],
+      },
+    ];
+    const plan = createAssemblyPlan(parts);
+    expect(plan.stagingByPartId.get("box-fixture")?.radius).toBeCloseTo(
+      Math.hypot(2, 4, 6) / 2,
       10,
     );
-    expect(plan.stagingByPartId.get("inner-ring")?.radius).toBeCloseTo(
-      0.0168,
+    expect(plan.stagingByPartId.get("shaft-fixture")?.radius).toBeCloseTo(
+      Math.hypot(0.5, 1),
       10,
     );
   });

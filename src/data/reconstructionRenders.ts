@@ -1,4 +1,4 @@
-import type { MachineSlug } from "../sim/types";
+import type { ExhibitData } from "../sim/types";
 
 export const RECONSTRUCTION_RENDER_LICENSE = {
   attributionText: "Mechanica contributors, MIT License",
@@ -26,7 +26,8 @@ export const RECONSTRUCTION_RENDER_VIEWS = [
   },
 ] as const;
 
-export function reconstructionRenderAssets(slug: MachineSlug) {
+export function reconstructionRenderAssets(slug: ExhibitData["slug"]) {
+  if (slug === "demo") return [];
   return RECONSTRUCTION_RENDER_VIEWS.map((view) => ({
     ...RECONSTRUCTION_RENDER_LICENSE,
     ...view,

@@ -4,27 +4,15 @@ import { MACHINE_SLUGS, type MachineData, type MachineModule, type MachineSlug, 
 export const SOURCE_MINIMUMS: Readonly<Record<MachineSlug, number>> = {
   astroclock: 6,
   seismoscope: 1,
-  chariot: 4,
   odometer: 2,
-  'wooden-ox': 4,
   loom: 3,
-  typecase: 3,
-  chainpump: 3,
-  bellows: 3,
-  gimbal: 1,
 };
 
 export const IMAGE_MINIMUMS: Readonly<Record<MachineSlug, number>> = {
   astroclock: 5,
   seismoscope: 5,
-  chariot: 4,
   odometer: 0,
-  'wooden-ox': 5,
   loom: 1,
-  typecase: 4,
-  chainpump: 4,
-  bellows: 2,
-  gimbal: 4,
 };
 
 type UnknownRecord = Record<string, unknown>;

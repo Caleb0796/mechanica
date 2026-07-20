@@ -45,15 +45,19 @@
           "provenance": { "kind": "wenwu", "ref": "kaogu-laoguanshan" }
         }
       ],
-      "explodeVector": [0, 0, -0.25],
+      "explodeVector": [0, -0.12, 0],
       "assemblyStep": 0
     },
     {
       "id": "warp-beam",
       "name": { "zh": "经轴", "en": "Warp beam" },
-      "geometry": { "type": "shaft", "radius": 0.02, "length": 0.15 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomBeam",
+        "params": { "radius": 0.02, "length": 0.15 }
+      },
       "material": "wood",
-      "position": [-0.25, 0.105, 0],
+      "position": [-0.25, 0.285, 0],
       "rotationEuler": [1.5707963267948966, 0, 0],
       "provenance": { "kind": "wenwu", "ref": "kaogu-laoguanshan" },
       "dimensionProvenance": {
@@ -63,15 +67,19 @@
           "note": "The surviving models establish a warp beam, but these display dimensions are inferred."
         }
       },
-      "explodeVector": [-0.2, 0, 0],
+      "explodeVector": [0, 0.2, 0],
       "assemblyStep": 1
     },
     {
       "id": "cloth-beam",
       "name": { "zh": "卷布轴", "en": "Cloth beam" },
-      "geometry": { "type": "shaft", "radius": 0.02, "length": 0.15 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomBeam",
+        "params": { "radius": 0.02, "length": 0.15 }
+      },
       "material": "wood",
-      "position": [0.25, 0.105, 0],
+      "position": [0.25, 0.285, 0],
       "rotationEuler": [1.5707963267948966, 0, 0],
       "provenance": { "kind": "wenwu", "ref": "kaogu-laoguanshan" },
       "dimensionProvenance": {
@@ -81,7 +89,7 @@
           "note": "The surviving models establish a cloth beam, but these display dimensions are inferred."
         }
       },
-      "explodeVector": [0.2, 0, 0],
+      "explodeVector": [0, -0.2, 0],
       "assemblyStep": 1
     },
     {
@@ -95,12 +103,12 @@
           "length": 0.24,
           "width": 0.007,
           "depth": 0.007,
-          "spread": 0.13
+          "spread": 0.13,
+          "cordHeightRatio": 1.25
         }
       },
       "material": "wood",
-      "position": [0, -0.03, 0],
-      "joint": { "kind": "revolute", "axis": [0, 0, 1] },
+      "position": [-0.2, 0.035, 0],
       "provenance": { "kind": "wenxian", "ref": "sgz-majun-loom" },
       "dimensionProvenance": {
         "params.count": {
@@ -122,7 +130,7 @@
           "provenance": { "kind": "wenxian", "ref": "sgz-majun-loom" }
         }
       ],
-      "explodeVector": [0, -0.18, 0],
+      "explodeVector": [-0.08, -0.16, 0],
       "assemblyStep": 2,
       "interactive": true
     },
@@ -153,7 +161,7 @@
           "note": "Forty-eight threads stand in for the surviving silk traces; count, radius, and span are display choices."
         }
       },
-      "explodeVector": [0, 0.16, 0],
+      "explodeVector": [-0.12, 0.1, 0],
       "assemblyStep": 3
     },
     {
@@ -187,13 +195,17 @@
           "note": "Twenty-four interleaved threads form the opposing half of the animated shed; count, radius, span, and lift are display choices."
         }
       },
-      "explodeVector": [0, -0.16, 0],
+      "explodeVector": [-0.08, 0.12, 0],
       "assemblyStep": 3
     },
     {
       "id": "woven-cloth",
       "name": { "zh": "已织锦面", "en": "Woven brocade panel" },
-      "geometry": { "type": "box", "size": [0.18, 0.004, 0.14] },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCloth",
+        "params": { "length": 0.18, "thickness": 0.004, "width": 0.14 }
+      },
       "material": "silk",
       "position": [0.15, 0.3, 0],
       "provenance": { "kind": "wenxian", "ref": "xijingzaji-loom" },
@@ -204,15 +216,19 @@
           "note": "The texts record brocade production, not this representative panel's dimensions."
         }
       },
-      "explodeVector": [0.2, 0.14, 0],
+      "explodeVector": [0.18, 0.1, 0],
       "assemblyStep": 6
     },
     {
       "id": "beater",
       "name": { "zh": "打纬筘框", "en": "Beat-up reed frame" },
-      "geometry": { "type": "link", "length": 0.12, "width": 0.005 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomBeater",
+        "params": { "length": 0.12, "width": 0.005 }
+      },
       "material": "wood",
-      "position": [0.275, 0.22, 0],
+      "position": [0.045, 0.315, 0],
       "rotationEuler": [0, 0, 1.5707963267948966],
       "joint": { "kind": "revolute", "axis": [0, 0, 1], "limits": [0, 0.15] },
       "provenance": {
@@ -227,19 +243,23 @@
           "note": "Display-scale reed dimensions."
         }
       },
-      "explodeVector": [0.18, 0.1, 0],
+      "explodeVector": [0.14, 0.08, 0],
       "assemblyStep": 5
     },
     {
       "id": "shuttle",
       "name": { "zh": "引纬梭", "en": "Weft shuttle" },
-      "geometry": { "type": "box", "size": [0.1, 0.012, 0.025] },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomShuttle",
+        "params": { "length": 0.1, "height": 0.012, "width": 0.025 }
+      },
       "material": "wood",
-      "position": [0.03, 0.32, 0],
+      "position": [0.027, 0.32, -0.12],
       "joint": {
         "kind": "prismatic",
         "axis": [0, 0, 1],
-        "limits": [-0.12, 0.12]
+        "limits": [0, 0.24]
       },
       "provenance": {
         "kind": "tuice",
@@ -253,15 +273,19 @@
           "note": "Display-scale shuttle dimensions."
         }
       },
-      "explodeVector": [0, 0.2, 0.16],
+      "explodeVector": [-0.13, -0.06, -0.14],
       "assemblyStep": 5
     },
     {
       "id": "single-hook",
       "name": { "zh": "一勾", "en": "Single selector hook" },
-      "geometry": { "type": "link", "length": 0.05, "width": 0.006 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHook",
+        "params": { "length": 0.05, "width": 0.006 }
+      },
       "material": "bronze",
-      "position": [-0.14, 0.22, 0.085],
+      "position": [-0.14, 0.35, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.02] },
       "provenance": { "kind": "wenwu", "ref": "kaogu-laoguanshan" },
       "dimensionProvenance": {
@@ -271,16 +295,20 @@
           "note": "The single-hook principle is evidenced; display dimensions are inferred."
         }
       },
-      "explodeVector": [-0.14, 0.12, 0.1],
+      "explodeVector": [-0.14, 0.12, 0],
       "assemblyStep": 4
     },
     {
       "id": "selector-carriage",
       "name": { "zh": "滑框选综架", "en": "Sliding heddle-selector carriage" },
-      "geometry": { "type": "box", "size": [0.02, 0.012, 0.15] },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCarriage",
+        "params": { "length": 0.02, "height": 0.012, "width": 0.15 }
+      },
       "material": "wood",
-      "position": [-0.18, 0.155, 0],
-      "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
+      "position": [-0.16, 0.38, 0],
+      "joint": { "kind": "prismatic", "axis": [1, 0, 0], "limits": [0, 0.05] },
       "provenance": { "kind": "wenwu", "ref": "kaogu-laoguanshan" },
       "dimensionProvenance": {
         "@rest": {
@@ -289,7 +317,7 @@
           "note": "The no. 186 sliding-frame arrangement is evidenced; section and lift are inferred."
         }
       },
-      "explodeVector": [-0.16, 0, 0],
+      "explodeVector": [-0.18, 0.08, 0],
       "assemblyStep": 4,
       "schemeTags": ["sliding-frame"]
     },
@@ -298,7 +326,7 @@
       "name": { "zh": "纬次计数轮", "en": "Weft counter wheel" },
       "geometry": { "type": "shaft", "radius": 0.012, "length": 0.025 },
       "material": "bronze",
-      "position": [0.29, 0.08, 0],
+      "position": [0.29, 0.285, 0],
       "joint": { "kind": "revolute", "axis": [0, 0, 1] },
       "provenance": {
         "kind": "tuice",
@@ -312,15 +340,19 @@
           "note": "Display counter dimensions."
         }
       },
-      "explodeVector": [0.16, -0.05, 0],
+      "explodeVector": [0.22, -0.04, 0],
       "assemblyStep": 6
     },
     {
       "id": "selector-cam-0",
       "name": { "zh": "第一选综凸轮", "en": "Selector cam 1" },
-      "geometry": { "type": "shaft", "radius": 0.007, "length": 0.008 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCam",
+        "params": { "radius": 0.007, "length": 0.008 }
+      },
       "material": "wood",
-      "position": [-0.2, 0.105, -0.07],
+      "position": [-0.2, 0.18, -0.07],
       "joint": { "kind": "revolute", "axis": [0, 1, 0] },
       "provenance": {
         "kind": "tuice",
@@ -334,15 +366,19 @@
           "note": "Display cam dimensions."
         }
       },
-      "explodeVector": [-0.12, -0.02, -0.12],
+      "explodeVector": [-0.18, 0.02, 0],
       "assemblyStep": 3
     },
     {
       "id": "selector-cam-1",
       "name": { "zh": "第二选综凸轮", "en": "Selector cam 2" },
-      "geometry": { "type": "shaft", "radius": 0.007, "length": 0.008 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCam",
+        "params": { "radius": 0.007, "length": 0.008 }
+      },
       "material": "wood",
-      "position": [-0.2, 0.105, -0.05],
+      "position": [-0.2, 0.18, -0.05],
       "joint": { "kind": "revolute", "axis": [0, 1, 0] },
       "provenance": {
         "kind": "tuice",
@@ -356,15 +392,19 @@
           "note": "Display cam dimensions."
         }
       },
-      "explodeVector": [-0.12, -0.02, -0.08],
+      "explodeVector": [-0.17, 0.04, 0],
       "assemblyStep": 3
     },
     {
       "id": "selector-cam-2",
       "name": { "zh": "第三选综凸轮", "en": "Selector cam 3" },
-      "geometry": { "type": "shaft", "radius": 0.007, "length": 0.008 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCam",
+        "params": { "radius": 0.007, "length": 0.008 }
+      },
       "material": "wood",
-      "position": [-0.2, 0.105, -0.03],
+      "position": [-0.2, 0.18, -0.03],
       "joint": { "kind": "revolute", "axis": [0, 1, 0] },
       "provenance": {
         "kind": "tuice",
@@ -378,15 +418,19 @@
           "note": "Display cam dimensions."
         }
       },
-      "explodeVector": [-0.12, -0.02, -0.04],
+      "explodeVector": [-0.16, 0.06, 0],
       "assemblyStep": 3
     },
     {
       "id": "selector-cam-3",
       "name": { "zh": "第四选综凸轮", "en": "Selector cam 4" },
-      "geometry": { "type": "shaft", "radius": 0.007, "length": 0.008 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCam",
+        "params": { "radius": 0.007, "length": 0.008 }
+      },
       "material": "wood",
-      "position": [-0.2, 0.105, -0.01],
+      "position": [-0.2, 0.18, -0.01],
       "joint": { "kind": "revolute", "axis": [0, 1, 0] },
       "provenance": {
         "kind": "tuice",
@@ -400,15 +444,19 @@
           "note": "Display cam dimensions."
         }
       },
-      "explodeVector": [-0.12, -0.02, -0.01],
+      "explodeVector": [-0.15, 0.08, 0],
       "assemblyStep": 3
     },
     {
       "id": "selector-cam-4",
       "name": { "zh": "第五选综凸轮", "en": "Selector cam 5" },
-      "geometry": { "type": "shaft", "radius": 0.007, "length": 0.008 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCam",
+        "params": { "radius": 0.007, "length": 0.008 }
+      },
       "material": "wood",
-      "position": [-0.2, 0.105, 0.01],
+      "position": [-0.2, 0.18, 0.01],
       "joint": { "kind": "revolute", "axis": [0, 1, 0] },
       "provenance": {
         "kind": "tuice",
@@ -422,15 +470,19 @@
           "note": "Display cam dimensions."
         }
       },
-      "explodeVector": [-0.12, -0.02, 0.01],
+      "explodeVector": [-0.14, 0.1, 0],
       "assemblyStep": 3
     },
     {
       "id": "selector-cam-5",
       "name": { "zh": "第六选综凸轮", "en": "Selector cam 6" },
-      "geometry": { "type": "shaft", "radius": 0.007, "length": 0.008 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCam",
+        "params": { "radius": 0.007, "length": 0.008 }
+      },
       "material": "wood",
-      "position": [-0.2, 0.105, 0.03],
+      "position": [-0.2, 0.18, 0.03],
       "joint": { "kind": "revolute", "axis": [0, 1, 0] },
       "provenance": {
         "kind": "tuice",
@@ -444,15 +496,19 @@
           "note": "Display cam dimensions."
         }
       },
-      "explodeVector": [-0.12, -0.02, 0.04],
+      "explodeVector": [-0.13, 0.12, 0],
       "assemblyStep": 3
     },
     {
       "id": "selector-cam-6",
       "name": { "zh": "第七选综凸轮", "en": "Selector cam 7" },
-      "geometry": { "type": "shaft", "radius": 0.007, "length": 0.008 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCam",
+        "params": { "radius": 0.007, "length": 0.008 }
+      },
       "material": "wood",
-      "position": [-0.2, 0.105, 0.05],
+      "position": [-0.2, 0.18, 0.05],
       "joint": { "kind": "revolute", "axis": [0, 1, 0] },
       "provenance": {
         "kind": "tuice",
@@ -466,15 +522,19 @@
           "note": "Display cam dimensions."
         }
       },
-      "explodeVector": [-0.12, -0.02, 0.08],
+      "explodeVector": [-0.12, 0.14, 0],
       "assemblyStep": 3
     },
     {
       "id": "selector-cam-7",
       "name": { "zh": "第八选综凸轮", "en": "Selector cam 8" },
-      "geometry": { "type": "shaft", "radius": 0.007, "length": 0.008 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomCam",
+        "params": { "radius": 0.007, "length": 0.008 }
+      },
       "material": "wood",
-      "position": [-0.2, 0.105, 0.07],
+      "position": [-0.2, 0.18, 0.07],
       "joint": { "kind": "revolute", "axis": [0, 1, 0] },
       "provenance": {
         "kind": "tuice",
@@ -488,16 +548,19 @@
           "note": "Display cam dimensions."
         }
       },
-      "explodeVector": [-0.12, -0.02, 0.12],
+      "explodeVector": [-0.1, 0.16, 0],
       "assemblyStep": 3
     },
     {
       "id": "heddle-0",
       "name": { "zh": "第一代表综片", "en": "Representative heddle 1" },
-      "geometry": { "type": "link", "length": 0.1, "width": 0.004 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHeddle",
+        "params": { "length": 0.1, "width": 0.004 }
+      },
       "material": "wood",
-      "position": [-0.08, 0.16, -0.07],
-      "rotationEuler": [0, 0, 1.5707963267948966],
+      "position": [-0.115, 0.335, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
       "provenance": {
         "kind": "tuice",
@@ -511,16 +574,19 @@
           "note": "Representative heddle dimensions and lift limit."
         }
       },
-      "explodeVector": [-0.05, 0.12, -0.16],
+      "explodeVector": [-0.08, 0.18, 0],
       "assemblyStep": 4
     },
     {
       "id": "heddle-1",
       "name": { "zh": "第二代表综片", "en": "Representative heddle 2" },
-      "geometry": { "type": "link", "length": 0.1, "width": 0.004 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHeddle",
+        "params": { "length": 0.1, "width": 0.004 }
+      },
       "material": "wood",
-      "position": [-0.08, 0.16, -0.05],
-      "rotationEuler": [0, 0, 1.5707963267948966],
+      "position": [-0.103, 0.335, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
       "provenance": {
         "kind": "tuice",
@@ -534,16 +600,19 @@
           "note": "Representative heddle dimensions and lift limit."
         }
       },
-      "explodeVector": [-0.05, 0.12, -0.11],
+      "explodeVector": [-0.06, 0.19, 0],
       "assemblyStep": 4
     },
     {
       "id": "heddle-2",
       "name": { "zh": "第三代表综片", "en": "Representative heddle 3" },
-      "geometry": { "type": "link", "length": 0.1, "width": 0.004 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHeddle",
+        "params": { "length": 0.1, "width": 0.004 }
+      },
       "material": "wood",
-      "position": [-0.08, 0.16, -0.03],
-      "rotationEuler": [0, 0, 1.5707963267948966],
+      "position": [-0.091, 0.335, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
       "provenance": {
         "kind": "tuice",
@@ -557,16 +626,19 @@
           "note": "Representative heddle dimensions and lift limit."
         }
       },
-      "explodeVector": [-0.05, 0.12, -0.07],
+      "explodeVector": [-0.04, 0.2, 0],
       "assemblyStep": 4
     },
     {
       "id": "heddle-3",
       "name": { "zh": "第四代表综片", "en": "Representative heddle 4" },
-      "geometry": { "type": "link", "length": 0.1, "width": 0.004 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHeddle",
+        "params": { "length": 0.1, "width": 0.004 }
+      },
       "material": "wood",
-      "position": [-0.08, 0.16, -0.01],
-      "rotationEuler": [0, 0, 1.5707963267948966],
+      "position": [-0.079, 0.335, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
       "provenance": {
         "kind": "tuice",
@@ -580,16 +652,19 @@
           "note": "Representative heddle dimensions and lift limit."
         }
       },
-      "explodeVector": [-0.05, 0.12, -0.02],
+      "explodeVector": [-0.02, 0.21, 0],
       "assemblyStep": 4
     },
     {
       "id": "heddle-4",
       "name": { "zh": "第五代表综片", "en": "Representative heddle 5" },
-      "geometry": { "type": "link", "length": 0.1, "width": 0.004 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHeddle",
+        "params": { "length": 0.1, "width": 0.004 }
+      },
       "material": "wood",
-      "position": [-0.08, 0.16, 0.01],
-      "rotationEuler": [0, 0, 1.5707963267948966],
+      "position": [-0.067, 0.335, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
       "provenance": {
         "kind": "tuice",
@@ -603,16 +678,19 @@
           "note": "Representative heddle dimensions and lift limit."
         }
       },
-      "explodeVector": [-0.05, 0.12, 0.02],
+      "explodeVector": [0.02, 0.21, 0],
       "assemblyStep": 4
     },
     {
       "id": "heddle-5",
       "name": { "zh": "第六代表综片", "en": "Representative heddle 6" },
-      "geometry": { "type": "link", "length": 0.1, "width": 0.004 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHeddle",
+        "params": { "length": 0.1, "width": 0.004 }
+      },
       "material": "wood",
-      "position": [-0.08, 0.16, 0.03],
-      "rotationEuler": [0, 0, 1.5707963267948966],
+      "position": [-0.055, 0.335, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
       "provenance": {
         "kind": "tuice",
@@ -626,16 +704,19 @@
           "note": "Representative heddle dimensions and lift limit."
         }
       },
-      "explodeVector": [-0.05, 0.12, 0.07],
+      "explodeVector": [0.04, 0.2, 0],
       "assemblyStep": 4
     },
     {
       "id": "heddle-6",
       "name": { "zh": "第七代表综片", "en": "Representative heddle 7" },
-      "geometry": { "type": "link", "length": 0.1, "width": 0.004 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHeddle",
+        "params": { "length": 0.1, "width": 0.004 }
+      },
       "material": "wood",
-      "position": [-0.08, 0.16, 0.05],
-      "rotationEuler": [0, 0, 1.5707963267948966],
+      "position": [-0.043, 0.335, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
       "provenance": {
         "kind": "tuice",
@@ -649,16 +730,19 @@
           "note": "Representative heddle dimensions and lift limit."
         }
       },
-      "explodeVector": [-0.05, 0.12, 0.11],
+      "explodeVector": [0.06, 0.19, 0],
       "assemblyStep": 4
     },
     {
       "id": "heddle-7",
       "name": { "zh": "第八代表综片", "en": "Representative heddle 8" },
-      "geometry": { "type": "link", "length": 0.1, "width": 0.004 },
+      "geometry": {
+        "type": "custom",
+        "builder": "loomHeddle",
+        "params": { "length": 0.1, "width": 0.004 }
+      },
       "material": "wood",
-      "position": [-0.08, 0.16, 0.07],
-      "rotationEuler": [0, 0, 1.5707963267948966],
+      "position": [-0.031, 0.335, 0],
       "joint": { "kind": "prismatic", "axis": [0, 1, 0], "limits": [0, 0.05] },
       "provenance": {
         "kind": "tuice",
@@ -672,16 +756,39 @@
           "note": "Representative heddle dimensions and lift limit."
         }
       },
-      "explodeVector": [-0.05, 0.12, 0.16],
+      "explodeVector": [0.08, 0.18, 0],
       "assemblyStep": 4
     }
   ],
   "constraints": [
     {
+      "type": "cam",
+      "cam": "treadle-bank",
+      "follower": "selector-carriage",
+      "profile": "lift",
+      "liftHeight": 0.05,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "sliding-frame selector",
+        "note": "The treadle produces the sliding selector's bounded 0.05 m display stroke."
+      }
+    },
+    {
       "type": "lockstep",
-      "a": "treadle-bank",
+      "a": "selector-carriage",
+      "b": "single-hook",
+      "ratio": 0.4,
+      "provenance": {
+        "kind": "tuice",
+        "ref": "single-hook selector",
+        "note": "The sliding frame transmits its bounded stroke into the representative 0.02 m hook travel."
+      }
+    },
+    {
+      "type": "lockstep",
+      "a": "single-hook",
       "b": "selector-cam-0",
-      "ratio": 1,
+      "ratio": 314.1592653589793,
       "provenance": {
         "kind": "tuice",
         "ref": "sliding-frame program",
@@ -690,7 +797,7 @@
     },
     {
       "type": "lockstep",
-      "a": "treadle-bank",
+      "a": "selector-cam-0",
       "b": "selector-cam-1",
       "ratio": 3,
       "provenance": {
@@ -701,7 +808,7 @@
     },
     {
       "type": "lockstep",
-      "a": "treadle-bank",
+      "a": "selector-cam-0",
       "b": "selector-cam-2",
       "ratio": 5,
       "provenance": {
@@ -712,7 +819,7 @@
     },
     {
       "type": "lockstep",
-      "a": "treadle-bank",
+      "a": "selector-cam-0",
       "b": "selector-cam-3",
       "ratio": 7,
       "provenance": {
@@ -723,7 +830,7 @@
     },
     {
       "type": "lockstep",
-      "a": "treadle-bank",
+      "a": "selector-cam-0",
       "b": "selector-cam-4",
       "ratio": 2,
       "provenance": {
@@ -734,7 +841,7 @@
     },
     {
       "type": "lockstep",
-      "a": "treadle-bank",
+      "a": "selector-cam-0",
       "b": "selector-cam-5",
       "ratio": 4,
       "provenance": {
@@ -745,7 +852,7 @@
     },
     {
       "type": "lockstep",
-      "a": "treadle-bank",
+      "a": "selector-cam-0",
       "b": "selector-cam-6",
       "ratio": 6,
       "provenance": {
@@ -756,7 +863,7 @@
     },
     {
       "type": "lockstep",
-      "a": "treadle-bank",
+      "a": "selector-cam-0",
       "b": "selector-cam-7",
       "ratio": 8,
       "provenance": {
@@ -862,63 +969,25 @@
       }
     },
     {
-      "type": "cam",
-      "cam": "selector-cam-0",
-      "follower": "selector-carriage",
-      "profile": "lift",
-      "liftHeight": 0.05,
-      "provenance": {
-        "kind": "tuice",
-        "ref": "sliding-frame selector",
-        "note": "The cam lift visualizes the sliding selector's bounded travel."
-      }
-    },
-    {
-      "type": "cam",
-      "cam": "selector-cam-0",
-      "follower": "single-hook",
-      "profile": "lift",
-      "liftHeight": 0.02,
-      "provenance": {
-        "kind": "tuice",
-        "ref": "single-hook selector",
-        "note": "A bounded lift makes the selector hook visibly engage the heddle program."
-      }
-    },
-    {
-      "type": "cam",
-      "cam": "selector-cam-0",
-      "follower": "beater",
-      "profile": "lift",
-      "liftHeight": 0.15,
-      "provenance": {
-        "kind": "tuice",
-        "ref": "weaving sequence",
-        "note": "A bounded exhibit cam visualizes the beat-up stroke after treadling."
-      }
-    },
-    {
-      "type": "cam",
-      "cam": "selector-cam-0",
-      "follower": "warp-shed",
-      "profile": "heddle",
-      "liftHeight": 0.025,
+      "type": "lockstep",
+      "a": "heddle-0",
+      "b": "warp-shed",
+      "ratio": 0.5,
       "provenance": {
         "kind": "tuice",
         "ref": "weaving shed",
-        "note": "Half of the representative warp rises to open the shed."
+        "note": "The first representative heddle transmits half its lift into one warp layer."
       }
     },
     {
-      "type": "cam",
-      "cam": "selector-cam-4",
-      "follower": "warp-shed-odd",
-      "profile": "heddle",
-      "liftHeight": 0.025,
+      "type": "lockstep",
+      "a": "heddle-4",
+      "b": "warp-shed-odd",
+      "ratio": 0.5,
       "provenance": {
         "kind": "tuice",
         "ref": "weaving shed",
-        "note": "The interleaved warp layer moves on the opposing joint axis to open the shed."
+        "note": "The fifth representative heddle transmits half its lift into the opposing warp layer."
       }
     }
   ],
@@ -927,10 +996,34 @@
   "cycleRad": 6.283185307179586,
   "expectedRatios": [],
   "collisionWhitelist": [
-    ["warp-shed", "woven-cloth"],
+    ["warp-beam", "warp-shed"],
+    ["warp-beam", "warp-shed-odd"],
+    ["cloth-beam", "woven-cloth"],
+    ["treadle-bank", "selector-cam-0"],
+    ["treadle-bank", "selector-cam-1"],
+    ["treadle-bank", "selector-cam-2"],
+    ["treadle-bank", "selector-cam-3"],
+    ["treadle-bank", "selector-cam-4"],
+    ["treadle-bank", "selector-cam-5"],
+    ["treadle-bank", "selector-cam-6"],
+    ["treadle-bank", "selector-cam-7"],
+    ["warp-shed", "beater"],
+    ["warp-shed-odd", "beater"],
+    ["warp-shed", "heddle-0"],
+    ["warp-shed", "heddle-1"],
+    ["warp-shed", "heddle-2"],
+    ["warp-shed", "heddle-3"],
+    ["warp-shed", "heddle-4"],
+    ["warp-shed", "heddle-5"],
+    ["warp-shed", "heddle-6"],
+    ["warp-shed", "heddle-7"],
+    ["warp-shed-odd", "heddle-0"],
+    ["warp-shed-odd", "heddle-1"],
     ["warp-shed-odd", "heddle-2"],
     ["warp-shed-odd", "heddle-3"],
     ["warp-shed-odd", "heddle-4"],
+    ["warp-shed-odd", "heddle-5"],
+    ["warp-shed-odd", "heddle-6"],
     ["warp-shed-odd", "heddle-7"]
   ]
 }

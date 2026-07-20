@@ -284,7 +284,6 @@ const SPECIFIC_TRIGGER_SLUGS = new Set([
   "seismoscope",
   "odometer",
   "loom",
-  "typecase",
 ]);
 
 function checkMechanismAndIngenuity(module: MachineModule): ValidationCheck[] {
@@ -445,33 +444,6 @@ function checkMechanismExecution(
       message:
         failure ??
         "Seismoscope pulse response matches its active scheme and latch.",
-    });
-  }
-
-  if (module.spec.slug === "chariot") {
-    let failure: string | null = null;
-    try {
-      const state = runMechanism(
-        module,
-        opts,
-        "spotlight",
-        Math.PI / 2,
-      ).graph.state();
-      if (
-        Math.abs(
-          (state["chassis-pivot"] ?? 0) + (state["figure-turntable"] ?? 0),
-        ) > 1e-6
-      ) {
-        failure = "figure world heading does not close to zero during the turn";
-      }
-    } catch (error) {
-      failure = error instanceof Error ? error.message : String(error);
-    }
-    checks.push({
-      id: "integrity:mechanism:chariot-heading",
-      status: failure ? "fail" : "pass",
-      message:
-        failure ?? "Chariot spotlight preserves the figure world heading.",
     });
   }
 

@@ -9,14 +9,8 @@ const apiKey = process.env.OPENAI_API_KEY?.trim()
 const machineSlugs = new Set([
   'astroclock',
   'seismoscope',
-  'chariot',
   'odometer',
-  'wooden-ox',
   'loom',
-  'typecase',
-  'chainpump',
-  'bellows',
-  'gimbal',
 ])
 
 const EXTRACTION_PROMPT = `你是古代机械复原工程师。仅根据以下古籍原文（不得使用原文之外的数字），
@@ -27,7 +21,7 @@ constraints: [{type,a,b,teeth_a?,teeth_b?,evidence_quote}], uncertainties: [...]
 
 function machineFiles() {
   const files = readdirSync(dataDirectory).filter((name) => name.endsWith('.json')).sort()
-  if (files.length !== 10) throw new Error(`expected 10 machine data JSONs, found ${files.length}`)
+  if (files.length !== 4) throw new Error(`expected 4 machine data JSONs, found ${files.length}`)
   return files
 }
 

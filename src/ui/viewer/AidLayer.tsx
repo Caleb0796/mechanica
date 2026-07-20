@@ -2,6 +2,7 @@ import { Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import {
   BufferGeometry,
+  type Camera,
   Float32BufferAttribute,
   type Group,
   type Material,
@@ -82,6 +83,14 @@ const particleColors: Record<
   water: "#6fc7d9",
 };
 
+function calculateFullscreenPosition(
+  _object: Object3D,
+  _camera: Camera,
+  size: { height: number; width: number },
+): [number, number] {
+  return [size.width / 2, size.height / 2];
+}
+
 function isObject3D(value: unknown): value is Object3D {
   return Boolean(
     value &&
@@ -142,13 +151,23 @@ function Callouts({
   language: Language;
   recordFrame: (durationMs: number) => void;
 }) {
+  const camera = useThree((state) => state.camera);
   const scene = useThree((state) => state.scene);
+  const size = useThree((state) => state.size);
   const anchors = useRef(new Map<string, Group>());
+  const labels = useRef(new Map<string, HTMLSpanElement>());
+  const projectedPosition = useMemo(() => new Vector3(), []);
   const worldPosition = useMemo(() => new Vector3(), []);
 
   useFrame(() => {
     const startedAt = performance.now();
-    for (const anchor of aid.anchors) {
+    const placedLabels: Array<{
+      bottom: number;
+      left: number;
+      right: number;
+      top: number;
+    }> = [];
+    for (const [index, anchor] of aid.anchors.entries()) {
       const part = scene.getObjectByName(anchor.partId);
       const marker = anchors.current.get(anchor.partId);
       if (!marker) continue;
@@ -156,6 +175,58 @@ function Callouts({
       if (!part) continue;
       part.getWorldPosition(worldPosition);
       marker.position.copy(worldPosition);
+
+      const label = labels.current.get(anchor.partId);
+      if (!label || label.offsetWidth === 0 || label.offsetHeight === 0) {
+        continue;
+      }
+      projectedPosition.copy(worldPosition).project(camera);
+      const anchorX = ((projectedPosition.x + 1) * size.width) / 2;
+      const anchorY = ((1 - projectedPosition.y) * size.height) / 2;
+      const angle = -Math.PI / 2 + (index * Math.PI * 2) / aid.anchors.length;
+      const preferredX = anchorX + Math.cos(angle) * 76;
+      const preferredY = anchorY + Math.sin(angle) * 34;
+      const halfWidth = label.offsetWidth / 2;
+      const halfHeight = label.offsetHeight / 2;
+      const centerX = Math.min(
+        size.width - halfWidth - 6,
+        Math.max(halfWidth + 6, preferredX),
+      );
+      const verticalStep = label.offsetHeight + 6;
+      let centerY = Math.min(
+        size.height - halfHeight - 6,
+        Math.max(halfHeight + 6, preferredY),
+      );
+      const candidate = {
+        bottom: centerY + halfHeight,
+        left: centerX - halfWidth,
+        right: centerX + halfWidth,
+        top: centerY - halfHeight,
+      };
+      const maximumSearchRing = Math.ceil(size.height / verticalStep);
+      for (let attempt = 0; attempt <= maximumSearchRing * 2; attempt += 1) {
+        const ring =
+          attempt === 0
+            ? 0
+            : Math.ceil(attempt / 2) * (attempt % 2 === 1 ? -1 : 1);
+        centerY = Math.min(
+          size.height - halfHeight - 6,
+          Math.max(halfHeight + 6, preferredY + ring * verticalStep),
+        );
+        candidate.bottom = centerY + halfHeight;
+        candidate.top = centerY - halfHeight;
+        const overlaps = placedLabels.some(
+          (placed) =>
+            candidate.left < placed.right + 4 &&
+            candidate.right + 4 > placed.left &&
+            candidate.top < placed.bottom + 4 &&
+            candidate.bottom + 4 > placed.top,
+        );
+        if (!overlaps) break;
+      }
+      label.style.left = `${centerX - anchorX}px`;
+      label.style.top = `${centerY - anchorY}px`;
+      placedLabels.push({ ...candidate });
     }
     recordFrame(performance.now() - startedAt);
   });
@@ -199,6 +270,10 @@ function Callouts({
             <span
               data-part-id={anchor.partId}
               data-testid="aid-callout"
+              ref={(label) => {
+                if (label) labels.current.set(anchor.partId, label);
+                else labels.current.delete(anchor.partId);
+              }}
               style={{
                 background: "rgba(10, 12, 12, 0.9)",
                 border: "1px solid rgba(219, 181, 102, 0.72)",
@@ -529,7 +604,12 @@ export default function AidLayer({
           recordFrame={recordFrame}
         />
       ) : null}
-      <Html fullscreen style={{ pointerEvents: "none" }} zIndexRange={[40, 31]}>
+      <Html
+        calculatePosition={calculateFullscreenPosition}
+        fullscreen
+        style={{ pointerEvents: "none" }}
+        zIndexRange={[40, 31]}
+      >
         <div
           data-active-aid-kind={activeAid?.kind ?? "none"}
           data-testid="aid-layer"
@@ -543,16 +623,19 @@ export default function AidLayer({
             aria-label={language === "zh" ? "原理辅助" : "Principle aids"}
             role="toolbar"
             style={{
+              alignItems: "flex-start",
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
               flexWrap: "wrap",
               gap: "6px",
-              maxHeight: "calc(100% - 24px)",
-              maxWidth: "min(260px, calc(100% - 24px))",
+              justifyContent: "flex-end",
+              left: "12px",
+              maxHeight: "128px",
+              maxWidth: "calc(100% - 24px)",
               pointerEvents: "auto",
               position: "absolute",
               right: "12px",
-              top: "12px",
+              top: "132px",
             }}
           >
             {aids.map((aid, index) => (

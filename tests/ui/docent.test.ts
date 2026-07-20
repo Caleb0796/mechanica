@@ -83,7 +83,7 @@ class FakeResponse {
 }
 
 function requestBody(messages: unknown[] = []) {
-  return JSON.stringify({ slug: "gimbal", lang: "en", messages });
+  return JSON.stringify({ slug: "odometer", lang: "en", messages });
 }
 
 async function invoke(body: string, headers = {}) {
@@ -136,9 +136,9 @@ describe.sequential("docent boundaries", () => {
     delete runtimeProcess.env.OPENAI_API_KEY;
     const response = await invoke(
       JSON.stringify({
-        slug: "chariot",
-        partId: "differential-carrier",
-        schemeId: "lanchester-diff",
+        slug: "seismoscope",
+        partId: "feng-track-0",
+        schemeId: "fengrui",
         lang: "en",
         messages: [],
       }),

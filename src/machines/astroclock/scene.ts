@@ -4,7 +4,7 @@ const scene: SceneSpec = {
   ground: { kind: "courtyard-stone", radius: 3.4 },
   backdrop: {
     kind: "gradient-cyclorama",
-    colors: ["#090b0d", "#2d2015"],
+    colors: ["#0b0e11", "#49301f"],
   },
   lightRig: "courtyard",
   props: [

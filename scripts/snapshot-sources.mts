@@ -42,14 +42,8 @@ const userAgent = 'MechanicaBot/1.0 (educational)'
 const machineSlugs = new Set([
   'astroclock',
   'seismoscope',
-  'chariot',
   'odometer',
-  'wooden-ox',
   'loom',
-  'typecase',
-  'chainpump',
-  'bellows',
-  'gimbal',
 ])
 const ignoredMatchCharacter = /[\s.,;:!?，。；：！？、（）()\[\]{}《》〈〉「」『』【】〔〕“”‘’'"·]/u
 
@@ -149,7 +143,7 @@ function normalizeWithOffsets(value: string): {
 
 function readMachines(): MachineData[] {
   const files = readdirSync(dataDirectory).filter((name) => name.endsWith('.json')).sort()
-  if (files.length !== 10) throw new Error(`expected 10 machine data JSONs, found ${files.length}`)
+  if (files.length !== 4) throw new Error(`expected 4 machine data JSONs, found ${files.length}`)
   const seen = new Set<string>()
   return files.map((file) => {
     const machine = JSON.parse(readFileSync(`${dataDirectory}/${file}`, 'utf8')) as MachineData

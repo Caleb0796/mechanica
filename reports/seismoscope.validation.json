@@ -1,11 +1,131 @@
 {
   "slug": "seismoscope",
-  "when": "2026-07-18T23:22:59.737Z",
+  "when": "2026-07-20T16:19:12.858Z",
   "checks": [
     {
       "id": "base:provenance:part:vessel",
       "status": "pass",
       "message": "Part vessel has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lid",
+      "status": "pass",
+      "message": "Part lid has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:plinth",
+      "status": "pass",
+      "message": "Part plinth has valid provenance.",
+      "sourceRef": "Museum-reconstruction support convention"
+    },
+    {
+      "id": "base:provenance:part:floor-plate",
+      "status": "pass",
+      "message": "Part floor-plate has valid provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "base:provenance:part:linkage-crown",
+      "status": "pass",
+      "message": "Part linkage-crown has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:gate-0",
+      "status": "pass",
+      "message": "Part gate-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:gate-1",
+      "status": "pass",
+      "message": "Part gate-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:gate-2",
+      "status": "pass",
+      "message": "Part gate-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:gate-3",
+      "status": "pass",
+      "message": "Part gate-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:gate-4",
+      "status": "pass",
+      "message": "Part gate-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:gate-5",
+      "status": "pass",
+      "message": "Part gate-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:gate-6",
+      "status": "pass",
+      "message": "Part gate-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:gate-7",
+      "status": "pass",
+      "message": "Part gate-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lock-0",
+      "status": "pass",
+      "message": "Part lock-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lock-1",
+      "status": "pass",
+      "message": "Part lock-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lock-2",
+      "status": "pass",
+      "message": "Part lock-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lock-3",
+      "status": "pass",
+      "message": "Part lock-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lock-4",
+      "status": "pass",
+      "message": "Part lock-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lock-5",
+      "status": "pass",
+      "message": "Part lock-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lock-6",
+      "status": "pass",
+      "message": "Part lock-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:part:lock-7",
+      "status": "pass",
+      "message": "Part lock-7 has valid provenance.",
       "sourceRef": "houfeng-196"
     },
     {
@@ -153,15 +273,885 @@
       "sourceRef": "houfeng-196"
     },
     {
-      "id": "base:provenance:dimension:vessel:radius",
+      "id": "base:provenance:dimension:vessel:params.radius",
       "status": "pass",
-      "message": "vessel.radius has dimension provenance.",
+      "message": "vessel.params.radius has dimension provenance.",
       "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "base:provenance:dimension:vessel:params.wallThickness",
+      "status": "pass",
+      "message": "vessel.params.wallThickness has dimension provenance.",
+      "sourceRef": "Zun silhouette reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lid:params.apertureRadius",
+      "status": "pass",
+      "message": "lid.params.apertureRadius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lid:params.height",
+      "status": "pass",
+      "message": "lid.params.height has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lid:params.knobRadius",
+      "status": "pass",
+      "message": "lid.params.knobRadius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lid:params.radius",
+      "status": "pass",
+      "message": "lid.params.radius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:plinth:params.boreRadius",
+      "status": "pass",
+      "message": "plinth.params.boreRadius has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:plinth:params.height",
+      "status": "pass",
+      "message": "plinth.params.height has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:plinth:params.radius",
+      "status": "pass",
+      "message": "plinth.params.radius has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:floor-plate:params.boreRadius",
+      "status": "pass",
+      "message": "floor-plate.params.boreRadius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:floor-plate:params.bossRadius",
+      "status": "pass",
+      "message": "floor-plate.params.bossRadius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:floor-plate:params.radius",
+      "status": "pass",
+      "message": "floor-plate.params.radius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:floor-plate:params.thickness",
+      "status": "pass",
+      "message": "floor-plate.params.thickness has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:joint.limits.0",
+      "status": "pass",
+      "message": "linkage-crown.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:joint.limits.1",
+      "status": "pass",
+      "message": "linkage-crown.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:params.baseHeight",
+      "status": "pass",
+      "message": "linkage-crown.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:params.gateRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:params.gateRise",
+      "status": "pass",
+      "message": "linkage-crown.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:params.innerRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:params.pushrodTop",
+      "status": "pass",
+      "message": "linkage-crown.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:params.rodRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:linkage-crown:params.wallRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:joint.limits.0",
+      "status": "pass",
+      "message": "gate-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:joint.limits.1",
+      "status": "pass",
+      "message": "gate-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:params.baseHeight",
+      "status": "pass",
+      "message": "gate-0.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:params.gateRadius",
+      "status": "pass",
+      "message": "gate-0.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:params.gateRise",
+      "status": "pass",
+      "message": "gate-0.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:params.innerRadius",
+      "status": "pass",
+      "message": "gate-0.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-0.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:params.rodRadius",
+      "status": "pass",
+      "message": "gate-0.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-0:params.wallRadius",
+      "status": "pass",
+      "message": "gate-0.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:joint.limits.0",
+      "status": "pass",
+      "message": "gate-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:joint.limits.1",
+      "status": "pass",
+      "message": "gate-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:params.baseHeight",
+      "status": "pass",
+      "message": "gate-1.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:params.gateRadius",
+      "status": "pass",
+      "message": "gate-1.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:params.gateRise",
+      "status": "pass",
+      "message": "gate-1.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:params.innerRadius",
+      "status": "pass",
+      "message": "gate-1.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-1.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:params.rodRadius",
+      "status": "pass",
+      "message": "gate-1.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-1:params.wallRadius",
+      "status": "pass",
+      "message": "gate-1.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:joint.limits.0",
+      "status": "pass",
+      "message": "gate-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:joint.limits.1",
+      "status": "pass",
+      "message": "gate-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:params.baseHeight",
+      "status": "pass",
+      "message": "gate-2.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:params.gateRadius",
+      "status": "pass",
+      "message": "gate-2.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:params.gateRise",
+      "status": "pass",
+      "message": "gate-2.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:params.innerRadius",
+      "status": "pass",
+      "message": "gate-2.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-2.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:params.rodRadius",
+      "status": "pass",
+      "message": "gate-2.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-2:params.wallRadius",
+      "status": "pass",
+      "message": "gate-2.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:joint.limits.0",
+      "status": "pass",
+      "message": "gate-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:joint.limits.1",
+      "status": "pass",
+      "message": "gate-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:params.baseHeight",
+      "status": "pass",
+      "message": "gate-3.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:params.gateRadius",
+      "status": "pass",
+      "message": "gate-3.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:params.gateRise",
+      "status": "pass",
+      "message": "gate-3.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:params.innerRadius",
+      "status": "pass",
+      "message": "gate-3.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-3.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:params.rodRadius",
+      "status": "pass",
+      "message": "gate-3.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-3:params.wallRadius",
+      "status": "pass",
+      "message": "gate-3.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:joint.limits.0",
+      "status": "pass",
+      "message": "gate-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:joint.limits.1",
+      "status": "pass",
+      "message": "gate-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:params.baseHeight",
+      "status": "pass",
+      "message": "gate-4.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:params.gateRadius",
+      "status": "pass",
+      "message": "gate-4.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:params.gateRise",
+      "status": "pass",
+      "message": "gate-4.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:params.innerRadius",
+      "status": "pass",
+      "message": "gate-4.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-4.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:params.rodRadius",
+      "status": "pass",
+      "message": "gate-4.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-4:params.wallRadius",
+      "status": "pass",
+      "message": "gate-4.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:joint.limits.0",
+      "status": "pass",
+      "message": "gate-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:joint.limits.1",
+      "status": "pass",
+      "message": "gate-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:params.baseHeight",
+      "status": "pass",
+      "message": "gate-5.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:params.gateRadius",
+      "status": "pass",
+      "message": "gate-5.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:params.gateRise",
+      "status": "pass",
+      "message": "gate-5.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:params.innerRadius",
+      "status": "pass",
+      "message": "gate-5.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-5.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:params.rodRadius",
+      "status": "pass",
+      "message": "gate-5.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-5:params.wallRadius",
+      "status": "pass",
+      "message": "gate-5.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:joint.limits.0",
+      "status": "pass",
+      "message": "gate-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:joint.limits.1",
+      "status": "pass",
+      "message": "gate-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:params.baseHeight",
+      "status": "pass",
+      "message": "gate-6.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:params.gateRadius",
+      "status": "pass",
+      "message": "gate-6.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:params.gateRise",
+      "status": "pass",
+      "message": "gate-6.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:params.innerRadius",
+      "status": "pass",
+      "message": "gate-6.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-6.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:params.rodRadius",
+      "status": "pass",
+      "message": "gate-6.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-6:params.wallRadius",
+      "status": "pass",
+      "message": "gate-6.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:joint.limits.0",
+      "status": "pass",
+      "message": "gate-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:joint.limits.1",
+      "status": "pass",
+      "message": "gate-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:params.baseHeight",
+      "status": "pass",
+      "message": "gate-7.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:params.gateRadius",
+      "status": "pass",
+      "message": "gate-7.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:params.gateRise",
+      "status": "pass",
+      "message": "gate-7.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:params.innerRadius",
+      "status": "pass",
+      "message": "gate-7.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-7.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:params.rodRadius",
+      "status": "pass",
+      "message": "gate-7.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:gate-7:params.wallRadius",
+      "status": "pass",
+      "message": "gate-7.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-0:joint.limits.0",
+      "status": "pass",
+      "message": "lock-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-0:joint.limits.1",
+      "status": "pass",
+      "message": "lock-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-0:params.depth",
+      "status": "pass",
+      "message": "lock-0.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-0:params.height",
+      "status": "pass",
+      "message": "lock-0.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-0:params.pinRadius",
+      "status": "pass",
+      "message": "lock-0.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-0:params.width",
+      "status": "pass",
+      "message": "lock-0.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-1:joint.limits.0",
+      "status": "pass",
+      "message": "lock-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-1:joint.limits.1",
+      "status": "pass",
+      "message": "lock-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-1:params.depth",
+      "status": "pass",
+      "message": "lock-1.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-1:params.height",
+      "status": "pass",
+      "message": "lock-1.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-1:params.pinRadius",
+      "status": "pass",
+      "message": "lock-1.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-1:params.width",
+      "status": "pass",
+      "message": "lock-1.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-2:joint.limits.0",
+      "status": "pass",
+      "message": "lock-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-2:joint.limits.1",
+      "status": "pass",
+      "message": "lock-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-2:params.depth",
+      "status": "pass",
+      "message": "lock-2.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-2:params.height",
+      "status": "pass",
+      "message": "lock-2.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-2:params.pinRadius",
+      "status": "pass",
+      "message": "lock-2.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-2:params.width",
+      "status": "pass",
+      "message": "lock-2.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-3:joint.limits.0",
+      "status": "pass",
+      "message": "lock-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-3:joint.limits.1",
+      "status": "pass",
+      "message": "lock-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-3:params.depth",
+      "status": "pass",
+      "message": "lock-3.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-3:params.height",
+      "status": "pass",
+      "message": "lock-3.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-3:params.pinRadius",
+      "status": "pass",
+      "message": "lock-3.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-3:params.width",
+      "status": "pass",
+      "message": "lock-3.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-4:joint.limits.0",
+      "status": "pass",
+      "message": "lock-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-4:joint.limits.1",
+      "status": "pass",
+      "message": "lock-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-4:params.depth",
+      "status": "pass",
+      "message": "lock-4.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-4:params.height",
+      "status": "pass",
+      "message": "lock-4.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-4:params.pinRadius",
+      "status": "pass",
+      "message": "lock-4.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-4:params.width",
+      "status": "pass",
+      "message": "lock-4.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-5:joint.limits.0",
+      "status": "pass",
+      "message": "lock-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-5:joint.limits.1",
+      "status": "pass",
+      "message": "lock-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-5:params.depth",
+      "status": "pass",
+      "message": "lock-5.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-5:params.height",
+      "status": "pass",
+      "message": "lock-5.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-5:params.pinRadius",
+      "status": "pass",
+      "message": "lock-5.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-5:params.width",
+      "status": "pass",
+      "message": "lock-5.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-6:joint.limits.0",
+      "status": "pass",
+      "message": "lock-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-6:joint.limits.1",
+      "status": "pass",
+      "message": "lock-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-6:params.depth",
+      "status": "pass",
+      "message": "lock-6.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-6:params.height",
+      "status": "pass",
+      "message": "lock-6.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-6:params.pinRadius",
+      "status": "pass",
+      "message": "lock-6.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-6:params.width",
+      "status": "pass",
+      "message": "lock-6.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-7:joint.limits.0",
+      "status": "pass",
+      "message": "lock-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-7:joint.limits.1",
+      "status": "pass",
+      "message": "lock-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-7:params.depth",
+      "status": "pass",
+      "message": "lock-7.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-7:params.height",
+      "status": "pass",
+      "message": "lock-7.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-7:params.pinRadius",
+      "status": "pass",
+      "message": "lock-7.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:lock-7:params.width",
+      "status": "pass",
+      "message": "lock-7.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-0:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-0:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
     },
     {
       "id": "base:provenance:dimension:dragon-0:params.radius",
       "status": "pass",
       "message": "dragon-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-1:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-1:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-1.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -171,9 +1161,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "base:provenance:dimension:dragon-2:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-2:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "base:provenance:dimension:dragon-2:params.radius",
       "status": "pass",
       "message": "dragon-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-3:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-3:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-3.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -183,9 +1197,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "base:provenance:dimension:dragon-4:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-4:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "base:provenance:dimension:dragon-4:params.radius",
       "status": "pass",
       "message": "dragon-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-5:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-5:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-5.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -195,9 +1233,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "base:provenance:dimension:dragon-6:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-6:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "base:provenance:dimension:dragon-6:params.radius",
       "status": "pass",
       "message": "dragon-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-7:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:dragon-7:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-7.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -207,9 +1269,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "base:provenance:dimension:toad-0:joint.limits.0",
+      "status": "pass",
+      "message": "toad-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-0:joint.limits.1",
+      "status": "pass",
+      "message": "toad-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "base:provenance:dimension:toad-0:params.radius",
       "status": "pass",
       "message": "toad-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-1:joint.limits.0",
+      "status": "pass",
+      "message": "toad-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-1:joint.limits.1",
+      "status": "pass",
+      "message": "toad-1.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -219,9 +1305,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "base:provenance:dimension:toad-2:joint.limits.0",
+      "status": "pass",
+      "message": "toad-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-2:joint.limits.1",
+      "status": "pass",
+      "message": "toad-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "base:provenance:dimension:toad-2:params.radius",
       "status": "pass",
       "message": "toad-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-3:joint.limits.0",
+      "status": "pass",
+      "message": "toad-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-3:joint.limits.1",
+      "status": "pass",
+      "message": "toad-3.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -231,9 +1341,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "base:provenance:dimension:toad-4:joint.limits.0",
+      "status": "pass",
+      "message": "toad-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-4:joint.limits.1",
+      "status": "pass",
+      "message": "toad-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "base:provenance:dimension:toad-4:params.radius",
       "status": "pass",
       "message": "toad-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-5:joint.limits.0",
+      "status": "pass",
+      "message": "toad-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-5:joint.limits.1",
+      "status": "pass",
+      "message": "toad-5.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -243,9 +1377,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "base:provenance:dimension:toad-6:joint.limits.0",
+      "status": "pass",
+      "message": "toad-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-6:joint.limits.1",
+      "status": "pass",
+      "message": "toad-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "base:provenance:dimension:toad-6:params.radius",
       "status": "pass",
       "message": "toad-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-7:joint.limits.0",
+      "status": "pass",
+      "message": "toad-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "base:provenance:dimension:toad-7:joint.limits.1",
+      "status": "pass",
+      "message": "toad-7.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -458,6 +1616,16 @@
       "message": "Trigger quake runs on a fresh graph."
     },
     {
+      "id": "base:integrity:mechanism:trigger:quake:arm",
+      "status": "pass",
+      "message": "Trigger quake:arm runs on a fresh graph."
+    },
+    {
+      "id": "base:integrity:mechanism:trigger:quake:reset",
+      "status": "pass",
+      "message": "Trigger quake:reset runs on a fresh graph."
+    },
+    {
       "id": "base:integrity:mechanism:seismoscope-latch",
       "status": "pass",
       "message": "Seismoscope pulse response matches its active scheme and latch."
@@ -549,44 +1717,249 @@
       "sourceRef": "houfeng-196"
     },
     {
+      "id": "base:range:linkage-crown",
+      "status": "pass",
+      "message": "Joint linkage-crown remains within [0, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "base:range:gate-0",
+      "status": "pass",
+      "message": "Joint gate-0 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "base:range:gate-1",
+      "status": "pass",
+      "message": "Joint gate-1 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "base:range:gate-2",
+      "status": "pass",
+      "message": "Joint gate-2 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "base:range:gate-3",
+      "status": "pass",
+      "message": "Joint gate-3 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "base:range:gate-4",
+      "status": "pass",
+      "message": "Joint gate-4 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "base:range:gate-5",
+      "status": "pass",
+      "message": "Joint gate-5 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "base:range:gate-6",
+      "status": "pass",
+      "message": "Joint gate-6 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "base:range:gate-7",
+      "status": "pass",
+      "message": "Joint gate-7 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lock-0",
+      "status": "pass",
+      "message": "Joint lock-0 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lock-1",
+      "status": "pass",
+      "message": "Joint lock-1 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lock-2",
+      "status": "pass",
+      "message": "Joint lock-2 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lock-3",
+      "status": "pass",
+      "message": "Joint lock-3 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lock-4",
+      "status": "pass",
+      "message": "Joint lock-4 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lock-5",
+      "status": "pass",
+      "message": "Joint lock-5 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lock-6",
+      "status": "pass",
+      "message": "Joint lock-6 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "base:range:lock-7",
+      "status": "pass",
+      "message": "Joint lock-7 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "base:range:dragon-0",
+      "status": "pass",
+      "message": "Joint dragon-0 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:dragon-1",
+      "status": "pass",
+      "message": "Joint dragon-1 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:dragon-2",
+      "status": "pass",
+      "message": "Joint dragon-2 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:dragon-3",
+      "status": "pass",
+      "message": "Joint dragon-3 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:dragon-4",
+      "status": "pass",
+      "message": "Joint dragon-4 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:dragon-5",
+      "status": "pass",
+      "message": "Joint dragon-5 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:dragon-6",
+      "status": "pass",
+      "message": "Joint dragon-6 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:dragon-7",
+      "status": "pass",
+      "message": "Joint dragon-7 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "base:range:toad-0",
+      "status": "pass",
+      "message": "Joint toad-0 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "base:range:toad-1",
+      "status": "pass",
+      "message": "Joint toad-1 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "base:range:toad-2",
+      "status": "pass",
+      "message": "Joint toad-2 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "base:range:toad-3",
+      "status": "pass",
+      "message": "Joint toad-3 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "base:range:toad-4",
+      "status": "pass",
+      "message": "Joint toad-4 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "base:range:toad-5",
+      "status": "pass",
+      "message": "Joint toad-5 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "base:range:toad-6",
+      "status": "pass",
+      "message": "Joint toad-6 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "base:range:toad-7",
+      "status": "pass",
+      "message": "Joint toad-7 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
       "id": "base:range:ball-0",
       "status": "pass",
-      "message": "Joint ball-0 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-0 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "base:range:ball-1",
       "status": "pass",
-      "message": "Joint ball-1 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-1 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "base:range:ball-2",
       "status": "pass",
-      "message": "Joint ball-2 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-2 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "base:range:ball-3",
       "status": "pass",
-      "message": "Joint ball-3 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-3 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "base:range:ball-4",
       "status": "pass",
-      "message": "Joint ball-4 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-4 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "base:range:ball-5",
       "status": "pass",
-      "message": "Joint ball-5 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-5 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "base:range:ball-6",
       "status": "pass",
-      "message": "Joint ball-6 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-6 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "base:range:ball-7",
       "status": "pass",
-      "message": "Joint ball-7 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-7 remains within [0, 0.61] over the sampled cycle."
+    },
+    {
+      "id": "base:collision:whitelist:dragon-0:ball-0",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-0/ball-0 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:dragon-1:ball-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-1/ball-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:dragon-2:ball-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-2/ball-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:dragon-3:ball-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-3/ball-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:dragon-4:ball-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-4/ball-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:dragon-5:ball-5",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-5/ball-5 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:dragon-6:ball-6",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-6/ball-6 intersects during its complete motion sweep."
+    },
+    {
+      "id": "base:collision:whitelist:dragon-7:ball-7",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-7/ball-7 intersects during its complete motion sweep."
     },
     {
       "id": "base:collision:bvh",
@@ -597,6 +1970,126 @@
       "id": "wangzhenduo:provenance:part:vessel",
       "status": "pass",
       "message": "Part vessel has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lid",
+      "status": "pass",
+      "message": "Part lid has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:plinth",
+      "status": "pass",
+      "message": "Part plinth has valid provenance.",
+      "sourceRef": "Museum-reconstruction support convention"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:floor-plate",
+      "status": "pass",
+      "message": "Part floor-plate has valid provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:linkage-crown",
+      "status": "pass",
+      "message": "Part linkage-crown has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:gate-0",
+      "status": "pass",
+      "message": "Part gate-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:gate-1",
+      "status": "pass",
+      "message": "Part gate-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:gate-2",
+      "status": "pass",
+      "message": "Part gate-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:gate-3",
+      "status": "pass",
+      "message": "Part gate-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:gate-4",
+      "status": "pass",
+      "message": "Part gate-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:gate-5",
+      "status": "pass",
+      "message": "Part gate-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:gate-6",
+      "status": "pass",
+      "message": "Part gate-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:gate-7",
+      "status": "pass",
+      "message": "Part gate-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lock-0",
+      "status": "pass",
+      "message": "Part lock-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lock-1",
+      "status": "pass",
+      "message": "Part lock-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lock-2",
+      "status": "pass",
+      "message": "Part lock-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lock-3",
+      "status": "pass",
+      "message": "Part lock-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lock-4",
+      "status": "pass",
+      "message": "Part lock-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lock-5",
+      "status": "pass",
+      "message": "Part lock-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lock-6",
+      "status": "pass",
+      "message": "Part lock-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:part:lock-7",
+      "status": "pass",
+      "message": "Part lock-7 has valid provenance.",
       "sourceRef": "houfeng-196"
     },
     {
@@ -798,15 +2291,885 @@
       "sourceRef": "Wang Zhenduo 1951 reconstruction"
     },
     {
-      "id": "wangzhenduo:provenance:dimension:vessel:radius",
+      "id": "wangzhenduo:provenance:dimension:vessel:params.radius",
       "status": "pass",
-      "message": "vessel.radius has dimension provenance.",
+      "message": "vessel.params.radius has dimension provenance.",
       "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:vessel:params.wallThickness",
+      "status": "pass",
+      "message": "vessel.params.wallThickness has dimension provenance.",
+      "sourceRef": "Zun silhouette reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lid:params.apertureRadius",
+      "status": "pass",
+      "message": "lid.params.apertureRadius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lid:params.height",
+      "status": "pass",
+      "message": "lid.params.height has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lid:params.knobRadius",
+      "status": "pass",
+      "message": "lid.params.knobRadius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lid:params.radius",
+      "status": "pass",
+      "message": "lid.params.radius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:plinth:params.boreRadius",
+      "status": "pass",
+      "message": "plinth.params.boreRadius has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:plinth:params.height",
+      "status": "pass",
+      "message": "plinth.params.height has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:plinth:params.radius",
+      "status": "pass",
+      "message": "plinth.params.radius has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:floor-plate:params.boreRadius",
+      "status": "pass",
+      "message": "floor-plate.params.boreRadius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:floor-plate:params.bossRadius",
+      "status": "pass",
+      "message": "floor-plate.params.bossRadius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:floor-plate:params.radius",
+      "status": "pass",
+      "message": "floor-plate.params.radius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:floor-plate:params.thickness",
+      "status": "pass",
+      "message": "floor-plate.params.thickness has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:joint.limits.0",
+      "status": "pass",
+      "message": "linkage-crown.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:joint.limits.1",
+      "status": "pass",
+      "message": "linkage-crown.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:params.baseHeight",
+      "status": "pass",
+      "message": "linkage-crown.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:params.gateRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:params.gateRise",
+      "status": "pass",
+      "message": "linkage-crown.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:params.innerRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:params.pushrodTop",
+      "status": "pass",
+      "message": "linkage-crown.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:params.rodRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:linkage-crown:params.wallRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:joint.limits.0",
+      "status": "pass",
+      "message": "gate-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:joint.limits.1",
+      "status": "pass",
+      "message": "gate-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:params.baseHeight",
+      "status": "pass",
+      "message": "gate-0.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:params.gateRadius",
+      "status": "pass",
+      "message": "gate-0.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:params.gateRise",
+      "status": "pass",
+      "message": "gate-0.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:params.innerRadius",
+      "status": "pass",
+      "message": "gate-0.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-0.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:params.rodRadius",
+      "status": "pass",
+      "message": "gate-0.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-0:params.wallRadius",
+      "status": "pass",
+      "message": "gate-0.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:joint.limits.0",
+      "status": "pass",
+      "message": "gate-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:joint.limits.1",
+      "status": "pass",
+      "message": "gate-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:params.baseHeight",
+      "status": "pass",
+      "message": "gate-1.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:params.gateRadius",
+      "status": "pass",
+      "message": "gate-1.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:params.gateRise",
+      "status": "pass",
+      "message": "gate-1.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:params.innerRadius",
+      "status": "pass",
+      "message": "gate-1.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-1.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:params.rodRadius",
+      "status": "pass",
+      "message": "gate-1.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-1:params.wallRadius",
+      "status": "pass",
+      "message": "gate-1.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:joint.limits.0",
+      "status": "pass",
+      "message": "gate-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:joint.limits.1",
+      "status": "pass",
+      "message": "gate-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:params.baseHeight",
+      "status": "pass",
+      "message": "gate-2.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:params.gateRadius",
+      "status": "pass",
+      "message": "gate-2.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:params.gateRise",
+      "status": "pass",
+      "message": "gate-2.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:params.innerRadius",
+      "status": "pass",
+      "message": "gate-2.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-2.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:params.rodRadius",
+      "status": "pass",
+      "message": "gate-2.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-2:params.wallRadius",
+      "status": "pass",
+      "message": "gate-2.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:joint.limits.0",
+      "status": "pass",
+      "message": "gate-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:joint.limits.1",
+      "status": "pass",
+      "message": "gate-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:params.baseHeight",
+      "status": "pass",
+      "message": "gate-3.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:params.gateRadius",
+      "status": "pass",
+      "message": "gate-3.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:params.gateRise",
+      "status": "pass",
+      "message": "gate-3.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:params.innerRadius",
+      "status": "pass",
+      "message": "gate-3.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-3.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:params.rodRadius",
+      "status": "pass",
+      "message": "gate-3.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-3:params.wallRadius",
+      "status": "pass",
+      "message": "gate-3.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:joint.limits.0",
+      "status": "pass",
+      "message": "gate-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:joint.limits.1",
+      "status": "pass",
+      "message": "gate-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:params.baseHeight",
+      "status": "pass",
+      "message": "gate-4.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:params.gateRadius",
+      "status": "pass",
+      "message": "gate-4.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:params.gateRise",
+      "status": "pass",
+      "message": "gate-4.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:params.innerRadius",
+      "status": "pass",
+      "message": "gate-4.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-4.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:params.rodRadius",
+      "status": "pass",
+      "message": "gate-4.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-4:params.wallRadius",
+      "status": "pass",
+      "message": "gate-4.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:joint.limits.0",
+      "status": "pass",
+      "message": "gate-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:joint.limits.1",
+      "status": "pass",
+      "message": "gate-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:params.baseHeight",
+      "status": "pass",
+      "message": "gate-5.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:params.gateRadius",
+      "status": "pass",
+      "message": "gate-5.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:params.gateRise",
+      "status": "pass",
+      "message": "gate-5.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:params.innerRadius",
+      "status": "pass",
+      "message": "gate-5.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-5.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:params.rodRadius",
+      "status": "pass",
+      "message": "gate-5.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-5:params.wallRadius",
+      "status": "pass",
+      "message": "gate-5.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:joint.limits.0",
+      "status": "pass",
+      "message": "gate-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:joint.limits.1",
+      "status": "pass",
+      "message": "gate-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:params.baseHeight",
+      "status": "pass",
+      "message": "gate-6.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:params.gateRadius",
+      "status": "pass",
+      "message": "gate-6.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:params.gateRise",
+      "status": "pass",
+      "message": "gate-6.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:params.innerRadius",
+      "status": "pass",
+      "message": "gate-6.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-6.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:params.rodRadius",
+      "status": "pass",
+      "message": "gate-6.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-6:params.wallRadius",
+      "status": "pass",
+      "message": "gate-6.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:joint.limits.0",
+      "status": "pass",
+      "message": "gate-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:joint.limits.1",
+      "status": "pass",
+      "message": "gate-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:params.baseHeight",
+      "status": "pass",
+      "message": "gate-7.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:params.gateRadius",
+      "status": "pass",
+      "message": "gate-7.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:params.gateRise",
+      "status": "pass",
+      "message": "gate-7.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:params.innerRadius",
+      "status": "pass",
+      "message": "gate-7.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-7.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:params.rodRadius",
+      "status": "pass",
+      "message": "gate-7.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:gate-7:params.wallRadius",
+      "status": "pass",
+      "message": "gate-7.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-0:joint.limits.0",
+      "status": "pass",
+      "message": "lock-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-0:joint.limits.1",
+      "status": "pass",
+      "message": "lock-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-0:params.depth",
+      "status": "pass",
+      "message": "lock-0.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-0:params.height",
+      "status": "pass",
+      "message": "lock-0.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-0:params.pinRadius",
+      "status": "pass",
+      "message": "lock-0.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-0:params.width",
+      "status": "pass",
+      "message": "lock-0.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-1:joint.limits.0",
+      "status": "pass",
+      "message": "lock-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-1:joint.limits.1",
+      "status": "pass",
+      "message": "lock-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-1:params.depth",
+      "status": "pass",
+      "message": "lock-1.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-1:params.height",
+      "status": "pass",
+      "message": "lock-1.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-1:params.pinRadius",
+      "status": "pass",
+      "message": "lock-1.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-1:params.width",
+      "status": "pass",
+      "message": "lock-1.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-2:joint.limits.0",
+      "status": "pass",
+      "message": "lock-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-2:joint.limits.1",
+      "status": "pass",
+      "message": "lock-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-2:params.depth",
+      "status": "pass",
+      "message": "lock-2.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-2:params.height",
+      "status": "pass",
+      "message": "lock-2.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-2:params.pinRadius",
+      "status": "pass",
+      "message": "lock-2.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-2:params.width",
+      "status": "pass",
+      "message": "lock-2.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-3:joint.limits.0",
+      "status": "pass",
+      "message": "lock-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-3:joint.limits.1",
+      "status": "pass",
+      "message": "lock-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-3:params.depth",
+      "status": "pass",
+      "message": "lock-3.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-3:params.height",
+      "status": "pass",
+      "message": "lock-3.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-3:params.pinRadius",
+      "status": "pass",
+      "message": "lock-3.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-3:params.width",
+      "status": "pass",
+      "message": "lock-3.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-4:joint.limits.0",
+      "status": "pass",
+      "message": "lock-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-4:joint.limits.1",
+      "status": "pass",
+      "message": "lock-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-4:params.depth",
+      "status": "pass",
+      "message": "lock-4.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-4:params.height",
+      "status": "pass",
+      "message": "lock-4.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-4:params.pinRadius",
+      "status": "pass",
+      "message": "lock-4.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-4:params.width",
+      "status": "pass",
+      "message": "lock-4.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-5:joint.limits.0",
+      "status": "pass",
+      "message": "lock-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-5:joint.limits.1",
+      "status": "pass",
+      "message": "lock-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-5:params.depth",
+      "status": "pass",
+      "message": "lock-5.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-5:params.height",
+      "status": "pass",
+      "message": "lock-5.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-5:params.pinRadius",
+      "status": "pass",
+      "message": "lock-5.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-5:params.width",
+      "status": "pass",
+      "message": "lock-5.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-6:joint.limits.0",
+      "status": "pass",
+      "message": "lock-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-6:joint.limits.1",
+      "status": "pass",
+      "message": "lock-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-6:params.depth",
+      "status": "pass",
+      "message": "lock-6.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-6:params.height",
+      "status": "pass",
+      "message": "lock-6.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-6:params.pinRadius",
+      "status": "pass",
+      "message": "lock-6.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-6:params.width",
+      "status": "pass",
+      "message": "lock-6.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-7:joint.limits.0",
+      "status": "pass",
+      "message": "lock-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-7:joint.limits.1",
+      "status": "pass",
+      "message": "lock-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-7:params.depth",
+      "status": "pass",
+      "message": "lock-7.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-7:params.height",
+      "status": "pass",
+      "message": "lock-7.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-7:params.pinRadius",
+      "status": "pass",
+      "message": "lock-7.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:lock-7:params.width",
+      "status": "pass",
+      "message": "lock-7.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-0:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-0:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
     },
     {
       "id": "wangzhenduo:provenance:dimension:dragon-0:params.radius",
       "status": "pass",
       "message": "dragon-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-1:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-1:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-1.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -816,9 +3179,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "wangzhenduo:provenance:dimension:dragon-2:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-2:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "wangzhenduo:provenance:dimension:dragon-2:params.radius",
       "status": "pass",
       "message": "dragon-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-3:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-3:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-3.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -828,9 +3215,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "wangzhenduo:provenance:dimension:dragon-4:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-4:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "wangzhenduo:provenance:dimension:dragon-4:params.radius",
       "status": "pass",
       "message": "dragon-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-5:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-5:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-5.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -840,9 +3251,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "wangzhenduo:provenance:dimension:dragon-6:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-6:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "wangzhenduo:provenance:dimension:dragon-6:params.radius",
       "status": "pass",
       "message": "dragon-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-7:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:dragon-7:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-7.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -852,9 +3287,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "wangzhenduo:provenance:dimension:toad-0:joint.limits.0",
+      "status": "pass",
+      "message": "toad-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-0:joint.limits.1",
+      "status": "pass",
+      "message": "toad-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "wangzhenduo:provenance:dimension:toad-0:params.radius",
       "status": "pass",
       "message": "toad-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-1:joint.limits.0",
+      "status": "pass",
+      "message": "toad-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-1:joint.limits.1",
+      "status": "pass",
+      "message": "toad-1.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -864,9 +3323,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "wangzhenduo:provenance:dimension:toad-2:joint.limits.0",
+      "status": "pass",
+      "message": "toad-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-2:joint.limits.1",
+      "status": "pass",
+      "message": "toad-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "wangzhenduo:provenance:dimension:toad-2:params.radius",
       "status": "pass",
       "message": "toad-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-3:joint.limits.0",
+      "status": "pass",
+      "message": "toad-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-3:joint.limits.1",
+      "status": "pass",
+      "message": "toad-3.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -876,9 +3359,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "wangzhenduo:provenance:dimension:toad-4:joint.limits.0",
+      "status": "pass",
+      "message": "toad-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-4:joint.limits.1",
+      "status": "pass",
+      "message": "toad-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "wangzhenduo:provenance:dimension:toad-4:params.radius",
       "status": "pass",
       "message": "toad-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-5:joint.limits.0",
+      "status": "pass",
+      "message": "toad-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-5:joint.limits.1",
+      "status": "pass",
+      "message": "toad-5.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -888,9 +3395,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "wangzhenduo:provenance:dimension:toad-6:joint.limits.0",
+      "status": "pass",
+      "message": "toad-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-6:joint.limits.1",
+      "status": "pass",
+      "message": "toad-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "wangzhenduo:provenance:dimension:toad-6:params.radius",
       "status": "pass",
       "message": "toad-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-7:joint.limits.0",
+      "status": "pass",
+      "message": "toad-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:toad-7:joint.limits.1",
+      "status": "pass",
+      "message": "toad-7.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1056,15 +3587,21 @@
       "sourceRef": "Wang Zhenduo 1951 reconstruction"
     },
     {
-      "id": "wangzhenduo:provenance:dimension:duzhu:length",
+      "id": "wangzhenduo:provenance:dimension:duzhu:params.capitalRadius",
       "status": "pass",
-      "message": "duzhu.length has dimension provenance.",
+      "message": "duzhu.params.capitalRadius has dimension provenance.",
+      "sourceRef": "Wang Zhenduo 1951 reconstruction"
+    },
+    {
+      "id": "wangzhenduo:provenance:dimension:duzhu:params.length",
+      "status": "pass",
+      "message": "duzhu.params.length has dimension provenance.",
       "sourceRef": "Feng Rui height inference"
     },
     {
-      "id": "wangzhenduo:provenance:dimension:duzhu:radius",
+      "id": "wangzhenduo:provenance:dimension:duzhu:params.radius",
       "status": "pass",
-      "message": "duzhu.radius has dimension provenance.",
+      "message": "duzhu.params.radius has dimension provenance.",
       "sourceRef": "Wang Zhenduo 1951 reconstruction"
     },
     {
@@ -1271,6 +3808,16 @@
       "message": "Trigger quake runs on a fresh graph."
     },
     {
+      "id": "wangzhenduo:integrity:mechanism:trigger:quake:arm",
+      "status": "pass",
+      "message": "Trigger quake:arm runs on a fresh graph."
+    },
+    {
+      "id": "wangzhenduo:integrity:mechanism:trigger:quake:reset",
+      "status": "pass",
+      "message": "Trigger quake:reset runs on a fresh graph."
+    },
+    {
       "id": "wangzhenduo:integrity:mechanism:seismoscope-latch",
       "status": "pass",
       "message": "Seismoscope pulse response matches its active scheme and latch."
@@ -1362,49 +3909,294 @@
       "sourceRef": "houfeng-196"
     },
     {
+      "id": "wangzhenduo:range:linkage-crown",
+      "status": "pass",
+      "message": "Joint linkage-crown remains within [0, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:gate-0",
+      "status": "pass",
+      "message": "Joint gate-0 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:gate-1",
+      "status": "pass",
+      "message": "Joint gate-1 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:gate-2",
+      "status": "pass",
+      "message": "Joint gate-2 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:gate-3",
+      "status": "pass",
+      "message": "Joint gate-3 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:gate-4",
+      "status": "pass",
+      "message": "Joint gate-4 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:gate-5",
+      "status": "pass",
+      "message": "Joint gate-5 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:gate-6",
+      "status": "pass",
+      "message": "Joint gate-6 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:gate-7",
+      "status": "pass",
+      "message": "Joint gate-7 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:lock-0",
+      "status": "pass",
+      "message": "Joint lock-0 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:lock-1",
+      "status": "pass",
+      "message": "Joint lock-1 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:lock-2",
+      "status": "pass",
+      "message": "Joint lock-2 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:lock-3",
+      "status": "pass",
+      "message": "Joint lock-3 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:lock-4",
+      "status": "pass",
+      "message": "Joint lock-4 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:lock-5",
+      "status": "pass",
+      "message": "Joint lock-5 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:lock-6",
+      "status": "pass",
+      "message": "Joint lock-6 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:lock-7",
+      "status": "pass",
+      "message": "Joint lock-7 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:dragon-0",
+      "status": "pass",
+      "message": "Joint dragon-0 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:dragon-1",
+      "status": "pass",
+      "message": "Joint dragon-1 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:dragon-2",
+      "status": "pass",
+      "message": "Joint dragon-2 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:dragon-3",
+      "status": "pass",
+      "message": "Joint dragon-3 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:dragon-4",
+      "status": "pass",
+      "message": "Joint dragon-4 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:dragon-5",
+      "status": "pass",
+      "message": "Joint dragon-5 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:dragon-6",
+      "status": "pass",
+      "message": "Joint dragon-6 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:dragon-7",
+      "status": "pass",
+      "message": "Joint dragon-7 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:toad-0",
+      "status": "pass",
+      "message": "Joint toad-0 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:toad-1",
+      "status": "pass",
+      "message": "Joint toad-1 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:toad-2",
+      "status": "pass",
+      "message": "Joint toad-2 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:toad-3",
+      "status": "pass",
+      "message": "Joint toad-3 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:toad-4",
+      "status": "pass",
+      "message": "Joint toad-4 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:toad-5",
+      "status": "pass",
+      "message": "Joint toad-5 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:toad-6",
+      "status": "pass",
+      "message": "Joint toad-6 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:range:toad-7",
+      "status": "pass",
+      "message": "Joint toad-7 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
       "id": "wangzhenduo:range:ball-0",
       "status": "pass",
-      "message": "Joint ball-0 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-0 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "wangzhenduo:range:ball-1",
       "status": "pass",
-      "message": "Joint ball-1 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-1 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "wangzhenduo:range:ball-2",
       "status": "pass",
-      "message": "Joint ball-2 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-2 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "wangzhenduo:range:ball-3",
       "status": "pass",
-      "message": "Joint ball-3 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-3 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "wangzhenduo:range:ball-4",
       "status": "pass",
-      "message": "Joint ball-4 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-4 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "wangzhenduo:range:ball-5",
       "status": "pass",
-      "message": "Joint ball-5 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-5 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "wangzhenduo:range:ball-6",
       "status": "pass",
-      "message": "Joint ball-6 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-6 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "wangzhenduo:range:ball-7",
       "status": "pass",
-      "message": "Joint ball-7 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-7 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "wangzhenduo:range:duzhu",
       "status": "pass",
       "message": "Joint duzhu remains within [-0.12, 0.12] over the sampled cycle."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:dragon-0:ball-0",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-0/ball-0 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:dragon-1:ball-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-1/ball-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:dragon-2:ball-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-2/ball-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:dragon-3:ball-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-3/ball-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:dragon-4:ball-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-4/ball-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:dragon-5:ball-5",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-5/ball-5 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:dragon-6:ball-6",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-6/ball-6 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:dragon-7:ball-7",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-7/ball-7 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:gate-0:wang-chute-0",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-0/wang-chute-0 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:gate-1:wang-chute-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-1/wang-chute-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:gate-2:wang-chute-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-2/wang-chute-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:gate-3:wang-chute-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-3/wang-chute-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:gate-4:wang-chute-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-4/wang-chute-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:gate-5:wang-chute-5",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-5/wang-chute-5 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:gate-6:wang-chute-6",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-6/wang-chute-6 intersects during its complete motion sweep."
+    },
+    {
+      "id": "wangzhenduo:collision:whitelist:gate-7:wang-chute-7",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-7/wang-chute-7 intersects during its complete motion sweep."
     },
     {
       "id": "wangzhenduo:collision:bvh",
@@ -1415,6 +4207,126 @@
       "id": "fengrui:provenance:part:vessel",
       "status": "pass",
       "message": "Part vessel has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lid",
+      "status": "pass",
+      "message": "Part lid has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:plinth",
+      "status": "pass",
+      "message": "Part plinth has valid provenance.",
+      "sourceRef": "Museum-reconstruction support convention"
+    },
+    {
+      "id": "fengrui:provenance:part:floor-plate",
+      "status": "pass",
+      "message": "Part floor-plate has valid provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:part:linkage-crown",
+      "status": "pass",
+      "message": "Part linkage-crown has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:gate-0",
+      "status": "pass",
+      "message": "Part gate-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:gate-1",
+      "status": "pass",
+      "message": "Part gate-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:gate-2",
+      "status": "pass",
+      "message": "Part gate-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:gate-3",
+      "status": "pass",
+      "message": "Part gate-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:gate-4",
+      "status": "pass",
+      "message": "Part gate-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:gate-5",
+      "status": "pass",
+      "message": "Part gate-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:gate-6",
+      "status": "pass",
+      "message": "Part gate-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:gate-7",
+      "status": "pass",
+      "message": "Part gate-7 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lock-0",
+      "status": "pass",
+      "message": "Part lock-0 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lock-1",
+      "status": "pass",
+      "message": "Part lock-1 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lock-2",
+      "status": "pass",
+      "message": "Part lock-2 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lock-3",
+      "status": "pass",
+      "message": "Part lock-3 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lock-4",
+      "status": "pass",
+      "message": "Part lock-4 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lock-5",
+      "status": "pass",
+      "message": "Part lock-5 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lock-6",
+      "status": "pass",
+      "message": "Part lock-6 has valid provenance.",
+      "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:part:lock-7",
+      "status": "pass",
+      "message": "Part lock-7 has valid provenance.",
       "sourceRef": "houfeng-196"
     },
     {
@@ -1616,15 +4528,885 @@
       "sourceRef": "Feng Rui 2005 reconstruction"
     },
     {
-      "id": "fengrui:provenance:dimension:vessel:radius",
+      "id": "fengrui:provenance:dimension:vessel:params.radius",
       "status": "pass",
-      "message": "vessel.radius has dimension provenance.",
+      "message": "vessel.params.radius has dimension provenance.",
       "sourceRef": "houfeng-196"
+    },
+    {
+      "id": "fengrui:provenance:dimension:vessel:params.wallThickness",
+      "status": "pass",
+      "message": "vessel.params.wallThickness has dimension provenance.",
+      "sourceRef": "Zun silhouette reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lid:params.apertureRadius",
+      "status": "pass",
+      "message": "lid.params.apertureRadius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lid:params.height",
+      "status": "pass",
+      "message": "lid.params.height has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lid:params.knobRadius",
+      "status": "pass",
+      "message": "lid.params.knobRadius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lid:params.radius",
+      "status": "pass",
+      "message": "lid.params.radius has dimension provenance.",
+      "sourceRef": "Domed-lid display reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:plinth:params.boreRadius",
+      "status": "pass",
+      "message": "plinth.params.boreRadius has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:plinth:params.height",
+      "status": "pass",
+      "message": "plinth.params.height has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:plinth:params.radius",
+      "status": "pass",
+      "message": "plinth.params.radius has dimension provenance.",
+      "sourceRef": "Compact display reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:floor-plate:params.boreRadius",
+      "status": "pass",
+      "message": "floor-plate.params.boreRadius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:floor-plate:params.bossRadius",
+      "status": "pass",
+      "message": "floor-plate.params.bossRadius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:floor-plate:params.radius",
+      "status": "pass",
+      "message": "floor-plate.params.radius has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:floor-plate:params.thickness",
+      "status": "pass",
+      "message": "floor-plate.params.thickness has dimension provenance.",
+      "sourceRef": "Internal support reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:joint.limits.0",
+      "status": "pass",
+      "message": "linkage-crown.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:joint.limits.1",
+      "status": "pass",
+      "message": "linkage-crown.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:params.baseHeight",
+      "status": "pass",
+      "message": "linkage-crown.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:params.gateRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:params.gateRise",
+      "status": "pass",
+      "message": "linkage-crown.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:params.innerRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:params.pushrodTop",
+      "status": "pass",
+      "message": "linkage-crown.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:params.rodRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:linkage-crown:params.wallRadius",
+      "status": "pass",
+      "message": "linkage-crown.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:joint.limits.0",
+      "status": "pass",
+      "message": "gate-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:joint.limits.1",
+      "status": "pass",
+      "message": "gate-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:params.baseHeight",
+      "status": "pass",
+      "message": "gate-0.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:params.gateRadius",
+      "status": "pass",
+      "message": "gate-0.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:params.gateRise",
+      "status": "pass",
+      "message": "gate-0.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:params.innerRadius",
+      "status": "pass",
+      "message": "gate-0.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-0.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:params.rodRadius",
+      "status": "pass",
+      "message": "gate-0.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-0:params.wallRadius",
+      "status": "pass",
+      "message": "gate-0.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:joint.limits.0",
+      "status": "pass",
+      "message": "gate-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:joint.limits.1",
+      "status": "pass",
+      "message": "gate-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:params.baseHeight",
+      "status": "pass",
+      "message": "gate-1.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:params.gateRadius",
+      "status": "pass",
+      "message": "gate-1.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:params.gateRise",
+      "status": "pass",
+      "message": "gate-1.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:params.innerRadius",
+      "status": "pass",
+      "message": "gate-1.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-1.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:params.rodRadius",
+      "status": "pass",
+      "message": "gate-1.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-1:params.wallRadius",
+      "status": "pass",
+      "message": "gate-1.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:joint.limits.0",
+      "status": "pass",
+      "message": "gate-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:joint.limits.1",
+      "status": "pass",
+      "message": "gate-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:params.baseHeight",
+      "status": "pass",
+      "message": "gate-2.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:params.gateRadius",
+      "status": "pass",
+      "message": "gate-2.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:params.gateRise",
+      "status": "pass",
+      "message": "gate-2.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:params.innerRadius",
+      "status": "pass",
+      "message": "gate-2.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-2.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:params.rodRadius",
+      "status": "pass",
+      "message": "gate-2.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-2:params.wallRadius",
+      "status": "pass",
+      "message": "gate-2.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:joint.limits.0",
+      "status": "pass",
+      "message": "gate-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:joint.limits.1",
+      "status": "pass",
+      "message": "gate-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:params.baseHeight",
+      "status": "pass",
+      "message": "gate-3.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:params.gateRadius",
+      "status": "pass",
+      "message": "gate-3.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:params.gateRise",
+      "status": "pass",
+      "message": "gate-3.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:params.innerRadius",
+      "status": "pass",
+      "message": "gate-3.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-3.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:params.rodRadius",
+      "status": "pass",
+      "message": "gate-3.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-3:params.wallRadius",
+      "status": "pass",
+      "message": "gate-3.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:joint.limits.0",
+      "status": "pass",
+      "message": "gate-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:joint.limits.1",
+      "status": "pass",
+      "message": "gate-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:params.baseHeight",
+      "status": "pass",
+      "message": "gate-4.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:params.gateRadius",
+      "status": "pass",
+      "message": "gate-4.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:params.gateRise",
+      "status": "pass",
+      "message": "gate-4.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:params.innerRadius",
+      "status": "pass",
+      "message": "gate-4.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-4.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:params.rodRadius",
+      "status": "pass",
+      "message": "gate-4.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-4:params.wallRadius",
+      "status": "pass",
+      "message": "gate-4.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:joint.limits.0",
+      "status": "pass",
+      "message": "gate-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:joint.limits.1",
+      "status": "pass",
+      "message": "gate-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:params.baseHeight",
+      "status": "pass",
+      "message": "gate-5.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:params.gateRadius",
+      "status": "pass",
+      "message": "gate-5.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:params.gateRise",
+      "status": "pass",
+      "message": "gate-5.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:params.innerRadius",
+      "status": "pass",
+      "message": "gate-5.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-5.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:params.rodRadius",
+      "status": "pass",
+      "message": "gate-5.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-5:params.wallRadius",
+      "status": "pass",
+      "message": "gate-5.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:joint.limits.0",
+      "status": "pass",
+      "message": "gate-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:joint.limits.1",
+      "status": "pass",
+      "message": "gate-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:params.baseHeight",
+      "status": "pass",
+      "message": "gate-6.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:params.gateRadius",
+      "status": "pass",
+      "message": "gate-6.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:params.gateRise",
+      "status": "pass",
+      "message": "gate-6.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:params.innerRadius",
+      "status": "pass",
+      "message": "gate-6.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-6.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:params.rodRadius",
+      "status": "pass",
+      "message": "gate-6.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-6:params.wallRadius",
+      "status": "pass",
+      "message": "gate-6.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:joint.limits.0",
+      "status": "pass",
+      "message": "gate-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:joint.limits.1",
+      "status": "pass",
+      "message": "gate-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:params.baseHeight",
+      "status": "pass",
+      "message": "gate-7.params.baseHeight has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:params.gateRadius",
+      "status": "pass",
+      "message": "gate-7.params.gateRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:params.gateRise",
+      "status": "pass",
+      "message": "gate-7.params.gateRise has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:params.innerRadius",
+      "status": "pass",
+      "message": "gate-7.params.innerRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:params.pushrodTop",
+      "status": "pass",
+      "message": "gate-7.params.pushrodTop has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:params.rodRadius",
+      "status": "pass",
+      "message": "gate-7.params.rodRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:gate-7:params.wallRadius",
+      "status": "pass",
+      "message": "gate-7.params.wallRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-0:joint.limits.0",
+      "status": "pass",
+      "message": "lock-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-0:joint.limits.1",
+      "status": "pass",
+      "message": "lock-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-0:params.depth",
+      "status": "pass",
+      "message": "lock-0.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-0:params.height",
+      "status": "pass",
+      "message": "lock-0.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-0:params.pinRadius",
+      "status": "pass",
+      "message": "lock-0.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-0:params.width",
+      "status": "pass",
+      "message": "lock-0.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-1:joint.limits.0",
+      "status": "pass",
+      "message": "lock-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-1:joint.limits.1",
+      "status": "pass",
+      "message": "lock-1.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-1:params.depth",
+      "status": "pass",
+      "message": "lock-1.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-1:params.height",
+      "status": "pass",
+      "message": "lock-1.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-1:params.pinRadius",
+      "status": "pass",
+      "message": "lock-1.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-1:params.width",
+      "status": "pass",
+      "message": "lock-1.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-2:joint.limits.0",
+      "status": "pass",
+      "message": "lock-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-2:joint.limits.1",
+      "status": "pass",
+      "message": "lock-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-2:params.depth",
+      "status": "pass",
+      "message": "lock-2.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-2:params.height",
+      "status": "pass",
+      "message": "lock-2.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-2:params.pinRadius",
+      "status": "pass",
+      "message": "lock-2.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-2:params.width",
+      "status": "pass",
+      "message": "lock-2.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-3:joint.limits.0",
+      "status": "pass",
+      "message": "lock-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-3:joint.limits.1",
+      "status": "pass",
+      "message": "lock-3.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-3:params.depth",
+      "status": "pass",
+      "message": "lock-3.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-3:params.height",
+      "status": "pass",
+      "message": "lock-3.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-3:params.pinRadius",
+      "status": "pass",
+      "message": "lock-3.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-3:params.width",
+      "status": "pass",
+      "message": "lock-3.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-4:joint.limits.0",
+      "status": "pass",
+      "message": "lock-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-4:joint.limits.1",
+      "status": "pass",
+      "message": "lock-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-4:params.depth",
+      "status": "pass",
+      "message": "lock-4.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-4:params.height",
+      "status": "pass",
+      "message": "lock-4.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-4:params.pinRadius",
+      "status": "pass",
+      "message": "lock-4.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-4:params.width",
+      "status": "pass",
+      "message": "lock-4.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-5:joint.limits.0",
+      "status": "pass",
+      "message": "lock-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-5:joint.limits.1",
+      "status": "pass",
+      "message": "lock-5.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-5:params.depth",
+      "status": "pass",
+      "message": "lock-5.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-5:params.height",
+      "status": "pass",
+      "message": "lock-5.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-5:params.pinRadius",
+      "status": "pass",
+      "message": "lock-5.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-5:params.width",
+      "status": "pass",
+      "message": "lock-5.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-6:joint.limits.0",
+      "status": "pass",
+      "message": "lock-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-6:joint.limits.1",
+      "status": "pass",
+      "message": "lock-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-6:params.depth",
+      "status": "pass",
+      "message": "lock-6.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-6:params.height",
+      "status": "pass",
+      "message": "lock-6.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-6:params.pinRadius",
+      "status": "pass",
+      "message": "lock-6.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-6:params.width",
+      "status": "pass",
+      "message": "lock-6.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-7:joint.limits.0",
+      "status": "pass",
+      "message": "lock-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-7:joint.limits.1",
+      "status": "pass",
+      "message": "lock-7.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-7:params.depth",
+      "status": "pass",
+      "message": "lock-7.params.depth has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-7:params.height",
+      "status": "pass",
+      "message": "lock-7.params.height has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-7:params.pinRadius",
+      "status": "pass",
+      "message": "lock-7.params.pinRadius has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:lock-7:params.width",
+      "status": "pass",
+      "message": "lock-7.params.width has dimension provenance.",
+      "sourceRef": "Eight-path causal-link reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-0:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-0:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
     },
     {
       "id": "fengrui:provenance:dimension:dragon-0:params.radius",
       "status": "pass",
       "message": "dragon-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-1:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-1:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-1.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1634,9 +5416,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "fengrui:provenance:dimension:dragon-2:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-2:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "fengrui:provenance:dimension:dragon-2:params.radius",
       "status": "pass",
       "message": "dragon-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-3:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-3:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-3.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1646,9 +5452,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "fengrui:provenance:dimension:dragon-4:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-4:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "fengrui:provenance:dimension:dragon-4:params.radius",
       "status": "pass",
       "message": "dragon-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-5:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-5:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-5.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1658,9 +5488,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "fengrui:provenance:dimension:dragon-6:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-6:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "fengrui:provenance:dimension:dragon-6:params.radius",
       "status": "pass",
       "message": "dragon-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-7:joint.limits.0",
+      "status": "pass",
+      "message": "dragon-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:dragon-7:joint.limits.1",
+      "status": "pass",
+      "message": "dragon-7.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1670,9 +5524,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "fengrui:provenance:dimension:toad-0:joint.limits.0",
+      "status": "pass",
+      "message": "toad-0.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-0:joint.limits.1",
+      "status": "pass",
+      "message": "toad-0.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "fengrui:provenance:dimension:toad-0:params.radius",
       "status": "pass",
       "message": "toad-0.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-1:joint.limits.0",
+      "status": "pass",
+      "message": "toad-1.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-1:joint.limits.1",
+      "status": "pass",
+      "message": "toad-1.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1682,9 +5560,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "fengrui:provenance:dimension:toad-2:joint.limits.0",
+      "status": "pass",
+      "message": "toad-2.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-2:joint.limits.1",
+      "status": "pass",
+      "message": "toad-2.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "fengrui:provenance:dimension:toad-2:params.radius",
       "status": "pass",
       "message": "toad-2.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-3:joint.limits.0",
+      "status": "pass",
+      "message": "toad-3.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-3:joint.limits.1",
+      "status": "pass",
+      "message": "toad-3.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1694,9 +5596,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "fengrui:provenance:dimension:toad-4:joint.limits.0",
+      "status": "pass",
+      "message": "toad-4.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-4:joint.limits.1",
+      "status": "pass",
+      "message": "toad-4.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "fengrui:provenance:dimension:toad-4:params.radius",
       "status": "pass",
       "message": "toad-4.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-5:joint.limits.0",
+      "status": "pass",
+      "message": "toad-5.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-5:joint.limits.1",
+      "status": "pass",
+      "message": "toad-5.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1706,9 +5632,33 @@
       "sourceRef": "Display-scale reconstruction"
     },
     {
+      "id": "fengrui:provenance:dimension:toad-6:joint.limits.0",
+      "status": "pass",
+      "message": "toad-6.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-6:joint.limits.1",
+      "status": "pass",
+      "message": "toad-6.joint.limits.1 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
       "id": "fengrui:provenance:dimension:toad-6:params.radius",
       "status": "pass",
       "message": "toad-6.params.radius has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-7:joint.limits.0",
+      "status": "pass",
+      "message": "toad-7.joint.limits.0 has dimension provenance.",
+      "sourceRef": "Display-scale reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:toad-7:joint.limits.1",
+      "status": "pass",
+      "message": "toad-7.joint.limits.1 has dimension provenance.",
       "sourceRef": "Display-scale reconstruction"
     },
     {
@@ -1874,15 +5824,33 @@
       "sourceRef": "Feng Rui 2005 reconstruction"
     },
     {
-      "id": "fengrui:provenance:dimension:duzhu:length",
+      "id": "fengrui:provenance:dimension:duzhu:params.beamLift",
       "status": "pass",
-      "message": "duzhu.length has dimension provenance.",
+      "message": "duzhu.params.beamLift has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:duzhu:params.beamWidth",
+      "status": "pass",
+      "message": "duzhu.params.beamWidth has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:duzhu:params.bobRadius",
+      "status": "pass",
+      "message": "duzhu.params.bobRadius has dimension provenance.",
+      "sourceRef": "Feng Rui 2005 reconstruction"
+    },
+    {
+      "id": "fengrui:provenance:dimension:duzhu:params.length",
+      "status": "pass",
+      "message": "duzhu.params.length has dimension provenance.",
       "sourceRef": "Feng Rui height inference"
     },
     {
-      "id": "fengrui:provenance:dimension:duzhu:radius",
+      "id": "fengrui:provenance:dimension:duzhu:params.radius",
       "status": "pass",
-      "message": "duzhu.radius has dimension provenance.",
+      "message": "duzhu.params.radius has dimension provenance.",
       "sourceRef": "Feng Rui 2005 reconstruction"
     },
     {
@@ -2089,6 +6057,16 @@
       "message": "Trigger quake runs on a fresh graph."
     },
     {
+      "id": "fengrui:integrity:mechanism:trigger:quake:arm",
+      "status": "pass",
+      "message": "Trigger quake:arm runs on a fresh graph."
+    },
+    {
+      "id": "fengrui:integrity:mechanism:trigger:quake:reset",
+      "status": "pass",
+      "message": "Trigger quake:reset runs on a fresh graph."
+    },
+    {
       "id": "fengrui:integrity:mechanism:seismoscope-latch",
       "status": "pass",
       "message": "Seismoscope pulse response matches its active scheme and latch."
@@ -2180,49 +6158,294 @@
       "sourceRef": "houfeng-196"
     },
     {
+      "id": "fengrui:range:linkage-crown",
+      "status": "pass",
+      "message": "Joint linkage-crown remains within [0, 0.08] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:gate-0",
+      "status": "pass",
+      "message": "Joint gate-0 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:gate-1",
+      "status": "pass",
+      "message": "Joint gate-1 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:gate-2",
+      "status": "pass",
+      "message": "Joint gate-2 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:gate-3",
+      "status": "pass",
+      "message": "Joint gate-3 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:gate-4",
+      "status": "pass",
+      "message": "Joint gate-4 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:gate-5",
+      "status": "pass",
+      "message": "Joint gate-5 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:gate-6",
+      "status": "pass",
+      "message": "Joint gate-6 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:gate-7",
+      "status": "pass",
+      "message": "Joint gate-7 remains within [-0.1, 0.18] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:lock-0",
+      "status": "pass",
+      "message": "Joint lock-0 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:lock-1",
+      "status": "pass",
+      "message": "Joint lock-1 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:lock-2",
+      "status": "pass",
+      "message": "Joint lock-2 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:lock-3",
+      "status": "pass",
+      "message": "Joint lock-3 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:lock-4",
+      "status": "pass",
+      "message": "Joint lock-4 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:lock-5",
+      "status": "pass",
+      "message": "Joint lock-5 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:lock-6",
+      "status": "pass",
+      "message": "Joint lock-6 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:lock-7",
+      "status": "pass",
+      "message": "Joint lock-7 remains within [-0.18, 0.32] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:dragon-0",
+      "status": "pass",
+      "message": "Joint dragon-0 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:dragon-1",
+      "status": "pass",
+      "message": "Joint dragon-1 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:dragon-2",
+      "status": "pass",
+      "message": "Joint dragon-2 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:dragon-3",
+      "status": "pass",
+      "message": "Joint dragon-3 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:dragon-4",
+      "status": "pass",
+      "message": "Joint dragon-4 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:dragon-5",
+      "status": "pass",
+      "message": "Joint dragon-5 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:dragon-6",
+      "status": "pass",
+      "message": "Joint dragon-6 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:dragon-7",
+      "status": "pass",
+      "message": "Joint dragon-7 remains within [-0.18, 0.24] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:toad-0",
+      "status": "pass",
+      "message": "Joint toad-0 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:toad-1",
+      "status": "pass",
+      "message": "Joint toad-1 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:toad-2",
+      "status": "pass",
+      "message": "Joint toad-2 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:toad-3",
+      "status": "pass",
+      "message": "Joint toad-3 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:toad-4",
+      "status": "pass",
+      "message": "Joint toad-4 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:toad-5",
+      "status": "pass",
+      "message": "Joint toad-5 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:toad-6",
+      "status": "pass",
+      "message": "Joint toad-6 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:range:toad-7",
+      "status": "pass",
+      "message": "Joint toad-7 remains within [0, 0.44] over the sampled cycle."
+    },
+    {
       "id": "fengrui:range:ball-0",
       "status": "pass",
-      "message": "Joint ball-0 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-0 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "fengrui:range:ball-1",
       "status": "pass",
-      "message": "Joint ball-1 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-1 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "fengrui:range:ball-2",
       "status": "pass",
-      "message": "Joint ball-2 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-2 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "fengrui:range:ball-3",
       "status": "pass",
-      "message": "Joint ball-3 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-3 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "fengrui:range:ball-4",
       "status": "pass",
-      "message": "Joint ball-4 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-4 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "fengrui:range:ball-5",
       "status": "pass",
-      "message": "Joint ball-5 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-5 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "fengrui:range:ball-6",
       "status": "pass",
-      "message": "Joint ball-6 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-6 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "fengrui:range:ball-7",
       "status": "pass",
-      "message": "Joint ball-7 remains within [0, 0.65] over the sampled cycle."
+      "message": "Joint ball-7 remains within [0, 0.61] over the sampled cycle."
     },
     {
       "id": "fengrui:range:duzhu",
       "status": "pass",
       "message": "Joint duzhu remains within [-0.2, 0.2] over the sampled cycle."
+    },
+    {
+      "id": "fengrui:collision:whitelist:dragon-0:ball-0",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-0/ball-0 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:dragon-1:ball-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-1/ball-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:dragon-2:ball-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-2/ball-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:dragon-3:ball-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-3/ball-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:dragon-4:ball-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-4/ball-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:dragon-5:ball-5",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-5/ball-5 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:dragon-6:ball-6",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-6/ball-6 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:dragon-7:ball-7",
+      "status": "pass",
+      "message": "Whitelisted contact pair dragon-7/ball-7 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:gate-0:feng-track-0",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-0/feng-track-0 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:gate-1:feng-track-1",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-1/feng-track-1 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:gate-2:feng-track-2",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-2/feng-track-2 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:gate-3:feng-track-3",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-3/feng-track-3 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:gate-4:feng-track-4",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-4/feng-track-4 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:gate-5:feng-track-5",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-5/feng-track-5 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:gate-6:feng-track-6",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-6/feng-track-6 intersects during its complete motion sweep."
+    },
+    {
+      "id": "fengrui:collision:whitelist:gate-7:feng-track-7",
+      "status": "pass",
+      "message": "Whitelisted contact pair gate-7/feng-track-7 intersects during its complete motion sweep."
     },
     {
       "id": "fengrui:collision:bvh",
@@ -2231,7 +6454,7 @@
     }
   ],
   "summary": {
-    "pass": 388,
+    "pass": 1116,
     "fail": 0,
     "warn": 0,
     "resolutionDeg": 0.5

@@ -8,10 +8,10 @@ import {
 import { useTranslation } from "react-i18next";
 
 import { reconstructionRenderAssets } from "../../data/reconstructionRenders";
-import type { MachineData } from "../../sim/types";
+import type { ExhibitData, MachineData } from "../../sim/types";
 
 interface GalleryPanelProps {
-  data: MachineData;
+  data: ExhibitData;
 }
 
 type DataGalleryImage = MachineData["images"][number];
@@ -82,7 +82,7 @@ function localImageUrl(image: GalleryImage): string | undefined {
 }
 
 function reconstructionRenders(
-  data: MachineData,
+  data: ExhibitData,
   language: "en" | "zh",
 ): GalleryImage[] {
   return reconstructionRenderAssets(data.slug).map((render) => ({

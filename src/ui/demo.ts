@@ -156,7 +156,7 @@ const demoModule: MachineModule = {
     },
   },
   data: {
-    slug: 'gimbal',
+    slug: 'demo',
     names: { zh: '齿轮传动演示', en: 'Gear train demonstration' },
     era: { zh: '交互标本', en: 'Interactive specimen' },
     inventors: [{ zh: '格物机械志团队', en: 'Mechanica team' }],

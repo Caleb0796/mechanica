@@ -22,6 +22,7 @@
     "idlePaused": "Auto-paused · move to resume",
     "resume": "Resume",
     "resetView": "Reset view",
+    "moreControls": "More controls",
     "rotateHint": "Drag a gold part to drive the machine",
     "driveForward": "Drive {{part}} forward",
     "driveReverse": "Drive {{part}} in reverse",

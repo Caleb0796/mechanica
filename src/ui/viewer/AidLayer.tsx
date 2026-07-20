@@ -748,22 +748,8 @@ export default function AidLayer({
         >
           <div
             aria-label={language === "zh" ? "原理辅助" : "Principle aids"}
+            className="aid-chip-toolbar"
             role="toolbar"
-            style={{
-              alignItems: "flex-start",
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              gap: "6px",
-              justifyContent: "flex-end",
-              left: "12px",
-              maxHeight: "128px",
-              maxWidth: "calc(100% - 24px)",
-              pointerEvents: "auto",
-              position: "absolute",
-              right: "12px",
-              top: "132px",
-            }}
           >
             {aids.map((aid, index) => (
               <button

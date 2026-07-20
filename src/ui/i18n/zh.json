@@ -22,6 +22,7 @@
     "idlePaused": "已自动暂停 · 移动鼠标继续",
     "resume": "继续",
     "resetView": "复位视角",
+    "moreControls": "更多控制",
     "rotateHint": "拖动金色部件驱动机械",
     "driveForward": "{{part}}：正向驱动",
     "driveReverse": "{{part}}：反向驱动",

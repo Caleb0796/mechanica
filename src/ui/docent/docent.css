@@ -12,6 +12,20 @@
   cursor: pointer;
 }
 
+@media (min-width: 821px) {
+  .docent-entry {
+    right: calc(min(400px, 33vw) + 24px);
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 820px) {
+  .docent-entry {
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
 .docent-entry:disabled,
 .docent-send:disabled {
   cursor: wait;

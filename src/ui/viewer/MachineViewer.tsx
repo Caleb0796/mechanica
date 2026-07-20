@@ -271,6 +271,7 @@ interface PartNodeProps {
   compareContext?: CompareSceneContext;
   crankByRod: Map<string, CrankConstraint>;
   displayState: { current: Record<string, number> | null };
+  driveCoachVisible?: boolean;
   drivePartIds: ReadonlySet<string>;
   explode: number;
   geometryScope: string;
@@ -1056,6 +1057,7 @@ const PartNode = memo(function PartNode({
   compareContext,
   crankByRod,
   displayState,
+  driveCoachVisible,
   drivePartIds,
   explode,
   geometryScope,
@@ -1458,6 +1460,7 @@ const PartNode = memo(function PartNode({
           compareContext={compareContext}
           crankByRod={crankByRod}
           displayState={displayState}
+          driveCoachVisible={driveCoachVisible}
           drivePartIds={drivePartIds}
           explode={explode}
           geometryScope={geometryScope}
@@ -1525,7 +1528,11 @@ const PartNode = memo(function PartNode({
       (!compareContext || compareContext.driveNode === part.id) ? (
         <DriveHandle
           active={hovered || selected}
-          coachTarget={!compareContext && part.id === module.spec.primaryDrive}
+          coachTarget={
+            driveCoachVisible &&
+            !compareContext &&
+            part.id === module.spec.primaryDrive
+          }
           drive={(delta) => onDrivePart(part.id, delta)}
           gizmoTestId={`drive-gizmo-${compareContext ? `${compareContext.side}-` : ""}${part.id}`}
           onDraggingChange={onDraggingChange}
@@ -1553,6 +1560,7 @@ interface MachineSceneProps {
   cameraDiagnostics?: MutableRefObject<CameraDiagnostics | null>;
   compareContext?: CompareSceneContext;
   displayState: { current: Record<string, number> | null };
+  driveCoachVisible?: boolean;
   explode: number;
   geometryReadyAt: number | null;
   graph: IKinematicGraph;
@@ -1940,6 +1948,7 @@ function MachineScene({
   cameraDiagnostics,
   compareContext,
   displayState,
+  driveCoachVisible,
   explode,
   geometryReadyAt,
   graph,
@@ -2221,6 +2230,7 @@ function MachineScene({
             compareContext={compareContext}
             crankByRod={crankByRod}
             displayState={frameState}
+            driveCoachVisible={driveCoachVisible}
             drivePartIds={drivePartIds}
             explode={explode}
             geometryScope={geometryScope}
@@ -3881,22 +3891,24 @@ export default function MachineViewer({
     >
       <section className="viewer-stage">
         {compareActive ? null : (
-          <div className="viewer-title">
-            <h1>{module.data.names[language]}</h1>
-            <p>
-              {module.data.oneLiner[language]} · {t("viewer.rotateHint")}
-            </p>
+          <div className="viewer-title-row">
+            <div className="viewer-title">
+              <h1>{module.data.names[language]}</h1>
+              <p>
+                {module.data.oneLiner[language]} · {t("viewer.rotateHint")}
+              </p>
+            </div>
+            {storyAvailable ? (
+              <a
+                className="story-launch-button"
+                data-testid="story-launch"
+                href={`#/story/${module.data.slug}`}
+              >
+                {language === "zh" ? "进入叙事" : "Enter story"}
+              </a>
+            ) : null}
           </div>
         )}
-        {!compareActive && storyAvailable ? (
-          <a
-            className="story-launch-button"
-            data-testid="story-launch"
-            href={`#/story/${module.data.slug}`}
-          >
-            {language === "zh" ? "进入叙事" : "Enter story"}
-          </a>
-        ) : null}
         <div
           className="viewer-canvas"
           data-assembly-complete={assembly.state.complete ? "true" : "false"}
@@ -3918,6 +3930,7 @@ export default function MachineViewer({
           }
           data-scheme-transition={schemeTransition ? "true" : "false"}
           data-spotlight-active={spotlightActive ? "true" : "false"}
+          onWheel={(event) => event.stopPropagation()}
         >
           {compareActive && compareSchemeIds[0] && compareSchemeIds[1] ? (
             <CompareView
@@ -3970,6 +3983,7 @@ export default function MachineViewer({
                     blockedFitKeyToConsume={spotlightAutoFitKey ?? undefined}
                     cameraDiagnostics={cameraDiagnostics}
                     displayState={displayState}
+                    driveCoachVisible={driveCoachVisible}
                     explode={explode}
                     geometryReadyAt={viewerGeometryReadyAt}
                     graph={graph}
@@ -4027,6 +4041,7 @@ export default function MachineViewer({
           viewerGeometryPrepared &&
           assembly.state.mode === "idle" ? (
             <div
+              className="drive-coach"
               data-testid="drive-coach"
               style={{
                 alignItems: "center",
@@ -4072,248 +4087,258 @@ export default function MachineViewer({
           ) : null}
         </div>
         <div
-          className="viewer-toolbar"
+          className="viewer-controls viewer-toolbar"
           data-completion-effect={assembly.state.completionEffectToken}
           hidden={compareActive}
         >
-          {assembly.state.mode !== "reassemble" ? (
+          <div className="primary-row">
+            {assembly.state.mode !== "reassemble" ? (
+              <button
+                aria-pressed={paused}
+                className="ghost-button"
+                disabled={compareActive || !assembly.state.transmissionEnabled}
+                onClick={() => setPaused(!paused)}
+                type="button"
+              >
+                {paused ? t("viewer.resume") : t("viewer.pause")}
+              </button>
+            ) : null}
+            {idleAutoPaused ? (
+              <span className="idle-chip" data-testid="idle-chip">
+                {t("viewer.idlePaused")}
+              </span>
+            ) : null}
             <button
-              aria-pressed={paused}
               className="ghost-button"
-              disabled={compareActive || !assembly.state.transmissionEnabled}
-              onClick={() => setPaused(!paused)}
+              data-testid="reset-view"
+              onClick={() => setDemoFocusPartId("tower-shell")}
               type="button"
             >
-              {paused ? t("viewer.resume") : t("viewer.pause")}
+              {t("viewer.resetView")}
             </button>
-          ) : null}
-          {idleAutoPaused ? (
-            <span className="idle-chip" data-testid="idle-chip">
-              {t("viewer.idlePaused")}
-            </span>
-          ) : null}
-          <button
-            className="ghost-button"
-            data-testid="reset-view"
-            onClick={() => setDemoFocusPartId("tower-shell")}
-            type="button"
-          >
-            {t("viewer.resetView")}
-          </button>
-          {selectedDrivePart ? (
-            <>
+            {selectedDrivePart ? (
+              <>
+                <button
+                  aria-keyshortcuts="ArrowLeft ArrowDown"
+                  aria-label={t("viewer.driveReverse", {
+                    part: selectedDrivePart.name[language],
+                  })}
+                  data-drive-part-id={selectedDrivePart.id}
+                  data-testid="drive-keyboard-reverse"
+                  onKeyDown={(event) =>
+                    handleDriveKeyDown(
+                      event,
+                      (delta) => drivePart(selectedDrivePart.id, delta),
+                      dismissDriveCoach,
+                    )
+                  }
+                  style={{
+                    border: 0,
+                    clip: "rect(0, 0, 0, 0)",
+                    height: 1,
+                    margin: -1,
+                    overflow: "hidden",
+                    padding: 0,
+                    position: "absolute",
+                    whiteSpace: "nowrap",
+                    width: 1,
+                  }}
+                  type="button"
+                >
+                  {t("viewer.driveReverse", {
+                    part: selectedDrivePart.name[language],
+                  })}
+                </button>
+                <button
+                  aria-keyshortcuts="ArrowRight ArrowUp"
+                  aria-label={t("viewer.driveForward", {
+                    part: selectedDrivePart.name[language],
+                  })}
+                  data-drive-part-id={selectedDrivePart.id}
+                  data-testid="drive-keyboard-forward"
+                  onKeyDown={(event) =>
+                    handleDriveKeyDown(
+                      event,
+                      (delta) => drivePart(selectedDrivePart.id, delta),
+                      dismissDriveCoach,
+                    )
+                  }
+                  style={{
+                    border: 0,
+                    clip: "rect(0, 0, 0, 0)",
+                    height: 1,
+                    margin: -1,
+                    overflow: "hidden",
+                    padding: 0,
+                    position: "absolute",
+                    whiteSpace: "nowrap",
+                    width: 1,
+                  }}
+                  type="button"
+                >
+                  {t("viewer.driveForward", {
+                    part: selectedDrivePart.name[language],
+                  })}
+                </button>
+              </>
+            ) : null}
+            {module.scene && assembly.state.mode !== "reassemble" ? (
               <button
-                aria-keyshortcuts="ArrowLeft ArrowDown"
-                aria-label={t("viewer.driveReverse", {
-                  part: selectedDrivePart.name[language],
-                })}
-                data-drive-part-id={selectedDrivePart.id}
-                data-testid="drive-keyboard-reverse"
-                onKeyDown={(event) =>
-                  handleDriveKeyDown(
-                    event,
-                    (delta) => drivePart(selectedDrivePart.id, delta),
-                    dismissDriveCoach,
-                  )
-                }
-                style={{
-                  border: 0,
-                  clip: "rect(0, 0, 0, 0)",
-                  height: 1,
-                  margin: -1,
-                  overflow: "hidden",
-                  padding: 0,
-                  position: "absolute",
-                  whiteSpace: "nowrap",
-                  width: 1,
-                }}
-                type="button"
-              >
-                {t("viewer.driveReverse", {
-                  part: selectedDrivePart.name[language],
-                })}
-              </button>
-              <button
-                aria-keyshortcuts="ArrowRight ArrowUp"
-                aria-label={t("viewer.driveForward", {
-                  part: selectedDrivePart.name[language],
-                })}
-                data-drive-part-id={selectedDrivePart.id}
-                data-testid="drive-keyboard-forward"
-                onKeyDown={(event) =>
-                  handleDriveKeyDown(
-                    event,
-                    (delta) => drivePart(selectedDrivePart.id, delta),
-                    dismissDriveCoach,
-                  )
-                }
-                style={{
-                  border: 0,
-                  clip: "rect(0, 0, 0, 0)",
-                  height: 1,
-                  margin: -1,
-                  overflow: "hidden",
-                  padding: 0,
-                  position: "absolute",
-                  whiteSpace: "nowrap",
-                  width: 1,
-                }}
-                type="button"
-              >
-                {t("viewer.driveForward", {
-                  part: selectedDrivePart.name[language],
-                })}
-              </button>
-            </>
-          ) : null}
-          {module.scene && assembly.state.mode !== "reassemble" ? (
-            <button
-              aria-pressed={!showScene}
-              className="ghost-button"
-              data-testid="scene-toggle"
-              disabled={assembly.state.mode !== "idle"}
-              onClick={() => setShowScene(!showScene)}
-              type="button"
-            >
-              {showScene
-                ? language === "zh"
-                  ? "素色背景"
-                  : "Plain background"
-                : language === "zh"
-                  ? "显示场景"
-                  : "Show scene"}
-            </button>
-          ) : null}
-          <label className="range-control">
-            <span>{t("viewer.assembly")}</span>
-            <input
-              aria-label={t("viewer.assembly")}
-              max="1"
-              min="0"
-              onChange={(event) => {
-                setAssemblyPlaying(false);
-                assembly.enterStepMode();
-                setExplode(0);
-                setAssemblyProgress(Number(event.currentTarget.value));
-              }}
-              step="0.01"
-              type="range"
-              value={assemblyProgress}
-            />
-          </label>
-          {assembly.state.mode !== "reassemble" ? (
-            <>
-              <button
+                aria-pressed={!showScene}
                 className="ghost-button"
-                data-testid="assembly-play"
-                onClick={() => {
-                  assembly.enterStepMode();
-                  setExplode(0);
-                  setAssemblyProgress(0);
-                  setAssemblyPlaying(true);
-                }}
+                data-testid="scene-toggle"
+                disabled={assembly.state.mode !== "idle"}
+                onClick={() => setShowScene(!showScene)}
                 type="button"
               >
-                {t("assembly.play")}
+                {showScene
+                  ? language === "zh"
+                    ? "素色背景"
+                    : "Plain background"
+                  : language === "zh"
+                    ? "显示场景"
+                    : "Show scene"}
               </button>
-              <button
-                className="ghost-button"
-                data-testid="assembly-reassemble"
-                onClick={() => {
-                  setAssemblyPlaying(false);
-                  setAssemblyProgress(1);
-                  setExplode(0);
-                  assembly.enterExplodedMode();
-                }}
-                type="button"
-              >
-                {language === "zh" ? "拖拽复原" : "Reassemble"}
-              </button>
-            </>
-          ) : null}
-          {assembly.state.mode === "step" ? (
-            <div className="assembly-step-controls">
-              <button
-                className="ghost-button"
-                data-testid="assembly-previous"
-                disabled={assembly.state.stepIndex === 0}
-                onClick={() => {
-                  setAssemblyPlaying(false);
-                  assembly.previousStep();
-                  setAssemblyProgress(
-                    Math.max(0, assembly.state.stepIndex - 1) /
-                      Math.max(assembly.plan.orderedPartIds.length, 1),
-                  );
-                }}
-                type="button"
-              >
-                {t("assembly.previous")}
-              </button>
-              <button
-                className="ghost-button"
-                data-testid="assembly-next"
-                disabled={assembly.state.complete}
-                onClick={() => {
-                  setAssemblyPlaying(false);
-                  assembly.advanceStep();
-                  setAssemblyProgress(
-                    Math.min(
-                      1,
-                      (assembly.state.stepIndex + 1) /
-                        Math.max(assembly.plan.orderedPartIds.length, 1),
-                    ),
-                  );
-                }}
-                type="button"
-              >
-                {t("assembly.next")}
-              </button>
+            ) : null}
+          </div>
+          <details className="controls-advanced">
+            <summary>{t("viewer.moreControls")}</summary>
+            <div className="controls-advanced-body">
+              <label className="range-control">
+                <span>{t("viewer.assembly")}</span>
+                <input
+                  aria-label={t("viewer.assembly")}
+                  max="1"
+                  min="0"
+                  onChange={(event) => {
+                    setAssemblyPlaying(false);
+                    assembly.enterStepMode();
+                    setExplode(0);
+                    setAssemblyProgress(Number(event.currentTarget.value));
+                  }}
+                  step="0.01"
+                  type="range"
+                  value={assemblyProgress}
+                />
+              </label>
+              {assembly.state.mode !== "reassemble" ? (
+                <>
+                  <button
+                    className="ghost-button"
+                    data-testid="assembly-play"
+                    onClick={() => {
+                      assembly.enterStepMode();
+                      setExplode(0);
+                      setAssemblyProgress(0);
+                      setAssemblyPlaying(true);
+                    }}
+                    type="button"
+                  >
+                    {t("assembly.play")}
+                  </button>
+                  <button
+                    className="ghost-button"
+                    data-testid="assembly-reassemble"
+                    onClick={() => {
+                      setAssemblyPlaying(false);
+                      setAssemblyProgress(1);
+                      setExplode(0);
+                      assembly.enterExplodedMode();
+                    }}
+                    type="button"
+                  >
+                    {language === "zh" ? "拖拽复原" : "Reassemble"}
+                  </button>
+                </>
+              ) : null}
+              {assembly.state.mode === "step" ? (
+                <div className="assembly-step-controls">
+                  <button
+                    className="ghost-button"
+                    data-testid="assembly-previous"
+                    disabled={assembly.state.stepIndex === 0}
+                    onClick={() => {
+                      setAssemblyPlaying(false);
+                      assembly.previousStep();
+                      setAssemblyProgress(
+                        Math.max(0, assembly.state.stepIndex - 1) /
+                          Math.max(assembly.plan.orderedPartIds.length, 1),
+                      );
+                    }}
+                    type="button"
+                  >
+                    {t("assembly.previous")}
+                  </button>
+                  <button
+                    className="ghost-button"
+                    data-testid="assembly-next"
+                    disabled={assembly.state.complete}
+                    onClick={() => {
+                      setAssemblyPlaying(false);
+                      assembly.advanceStep();
+                      setAssemblyProgress(
+                        Math.min(
+                          1,
+                          (assembly.state.stepIndex + 1) /
+                            Math.max(assembly.plan.orderedPartIds.length, 1),
+                        ),
+                      );
+                    }}
+                    type="button"
+                  >
+                    {t("assembly.next")}
+                  </button>
+                </div>
+              ) : null}
+              {assembly.state.mode === "reassemble" &&
+              assembly.state.selectedPartId ? (
+                <button
+                  className="assembly-target-slot"
+                  data-testid="assembly-seat-target"
+                  onClick={() => assembly.attemptSeatSelected(0, 1)}
+                  type="button"
+                >
+                  {language === "zh" ? "点按目标槽位" : "Tap target slot"}
+                </button>
+              ) : null}
+              {assembly.currentPartName ? (
+                <p
+                  className="assembly-current"
+                  data-testid="assembly-current-part"
+                >
+                  {assembly.currentPartName[language]}
+                  {assembly.currentPartCaption
+                    ? ` · ${assembly.currentPartCaption[language]}`
+                    : null}
+                </p>
+              ) : null}
+              {assemblyHint ? (
+                <p
+                  className="assembly-hint"
+                  data-testid="assembly-hint"
+                  role="alert"
+                >
+                  {assemblyHint}
+                </p>
+              ) : null}
+              {assembly.state.mode !== "idle" ? (
+                <button
+                  className="ghost-button"
+                  data-testid="assembly-reset"
+                  onClick={() => {
+                    setAssemblyPlaying(false);
+                    assembly.exitAssembly();
+                    setAssemblyProgress(1);
+                    setExplode(0);
+                  }}
+                  type="button"
+                >
+                  {t("assembly.showAll")}
+                </button>
+              ) : null}
+              <ExplodedControl />
             </div>
-          ) : null}
-          {assembly.state.mode === "reassemble" &&
-          assembly.state.selectedPartId ? (
-            <button
-              className="assembly-target-slot"
-              data-testid="assembly-seat-target"
-              onClick={() => assembly.attemptSeatSelected(0, 1)}
-              type="button"
-            >
-              {language === "zh" ? "点按目标槽位" : "Tap target slot"}
-            </button>
-          ) : null}
-          {assembly.currentPartName ? (
-            <p className="assembly-current" data-testid="assembly-current-part">
-              {assembly.currentPartName[language]}
-              {assembly.currentPartCaption
-                ? ` · ${assembly.currentPartCaption[language]}`
-                : null}
-            </p>
-          ) : null}
-          {assemblyHint ? (
-            <p
-              className="assembly-hint"
-              data-testid="assembly-hint"
-              role="alert"
-            >
-              {assemblyHint}
-            </p>
-          ) : null}
-          {assembly.state.mode !== "idle" ? (
-            <button
-              className="ghost-button"
-              data-testid="assembly-reset"
-              onClick={() => {
-                setAssemblyPlaying(false);
-                assembly.exitAssembly();
-                setAssemblyProgress(1);
-                setExplode(0);
-              }}
-              type="button"
-            >
-              {t("assembly.showAll")}
-            </button>
-          ) : null}
-          <ExplodedControl />
+          </details>
         </div>
       </section>
 

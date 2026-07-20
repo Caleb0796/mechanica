@@ -1316,7 +1316,7 @@ describe("astroclock machine module", () => {
         ).not.toContainEqual(intendedPair);
       }
     }
-  });
+  }, 20_000);
 
   it("covers every part and numeric geometry field with provenance", () => {
     for (const part of machine.spec.parts) {

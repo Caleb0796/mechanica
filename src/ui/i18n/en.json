@@ -20,6 +20,7 @@
   "viewer": {
     "pause": "Pause",
     "resume": "Resume",
+    "resetView": "Reset view",
     "rotateHint": "Drag a gold part to drive the machine",
     "driveForward": "Drive {{part}} forward",
     "driveReverse": "Drive {{part}} in reverse",

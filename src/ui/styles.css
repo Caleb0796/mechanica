@@ -1088,8 +1088,51 @@ a {
   }
 
   .viewer-stage {
-    height: 70vh;
-    min-height: 32rem;
+    height: 52vh;
+    min-height: 340px;
+  }
+
+  .aid-chip-toolbar {
+    position: static;
+    width: 100%;
+    max-width: none;
+    padding: 0.4rem 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+  }
+
+  .aid-chip-toolbar > button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .viewer-controls {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    max-width: none;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    border-radius: 12px 12px 0 0;
+  }
+
+  .viewer-title-row {
+    top: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .viewer-title {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .story-launch-button {
+    width: 100%;
+    order: 3;
+    margin-left: 0;
+    text-align: center;
   }
 
   .viewer-sidebar {
@@ -1110,10 +1153,15 @@ a {
 @media (max-width: 520px) {
   .museum-header {
     min-height: 4rem;
+    padding: 0.5rem 1rem;
   }
 
   .brand-mark {
     font-size: 1rem;
+  }
+
+  body .docent-entry {
+    bottom: calc(72px + env(safe-area-inset-bottom));
   }
 
   .demo-callout {
@@ -1135,13 +1183,18 @@ a {
   }
 
   .viewer-title-row {
-    top: 1rem;
+    top: 4rem;
     right: 1rem;
     left: 1rem;
   }
 
   .viewer-title {
-    max-width: calc(100% - 9rem);
+    max-width: 100%;
+  }
+
+  .viewer-title h1 {
+    font-size: 1.35rem;
+    line-height: 1.2;
   }
 }
 

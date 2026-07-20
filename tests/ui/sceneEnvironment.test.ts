@@ -34,6 +34,9 @@ import {
   mountSceneEnvironment,
   prepareSceneEnvironment,
 } from "../../src/ui/viewer/SceneEnvironment";
+import loomScene from "../../src/machines/loom/scene";
+import odometerScene from "../../src/machines/odometer/scene";
+import seismoscopeScene from "../../src/machines/seismoscope/scene";
 
 function scene() {
   return { environment: null, environmentIntensity: 1 } as Scene;
@@ -114,5 +117,47 @@ describe("scene environment", () => {
     for (const dispose of cycleDisposals) {
       expect(dispose).toHaveBeenCalledOnce();
     }
+  });
+});
+
+describe("usage scene specifications", () => {
+  it("sets the seismoscope on a dusk terrace with braziers and a quake ring", () => {
+    expect(seismoscopeScene.ground?.radius).toBeGreaterThanOrEqual(4.5);
+    expect(seismoscopeScene.lightRig).toBe("dusk-west");
+    expect(
+      seismoscopeScene.props?.filter((prop) => prop.kind === "brazier"),
+    ).toHaveLength(2);
+    expect(
+      seismoscopeScene.props?.some((prop) => prop.kind === "balustrade-arc"),
+    ).toBe(true);
+    expect(
+      seismoscopeScene.ambientMotion?.some(
+        (motion) => motion.kind === "quake-shockwave",
+      ),
+    ).toBe(true);
+  });
+
+  it("gives the odometer a rutted procession road and three milestones", () => {
+    expect(
+      odometerScene.props?.some((prop) => prop.kind === "road-strip"),
+    ).toBe(true);
+    expect(
+      odometerScene.props?.filter((prop) => prop.kind === "milestone"),
+    ).toHaveLength(3);
+    expect(
+      odometerScene.props?.some((prop) => prop.kind === "banner-pole"),
+    ).toBe(true);
+  });
+
+  it("places the loom in a dusty workshop with spools and a silk swatch", () => {
+    expect(loomScene.props?.some((prop) => prop.kind === "workbench")).toBe(
+      true,
+    );
+    expect(loomScene.props?.some((prop) => prop.kind === "silk-swatch")).toBe(
+      true,
+    );
+    expect(
+      loomScene.ambientMotion?.some((motion) => motion.kind === "dust"),
+    ).toBe(true);
   });
 });

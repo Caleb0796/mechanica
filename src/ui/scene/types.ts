@@ -1,13 +1,27 @@
 export type SceneGroundKind =
   "courtyard-stone" | "timber-floor" | "rammed-earth" | "water";
 
-export type SceneLightRig = "hall" | "courtyard" | "night";
+export const QUAKE_PAYOFF_EVENT = "mechanica:quake-payoff";
+
+export type SceneLightRig = "hall" | "courtyard" | "night" | "dusk-west";
 
 export type SceneVector3 = [number, number, number];
 
 export interface SceneProp {
   builder?: string;
-  kind: "column" | "lantern" | "plinth" | "water-channel" | "custom";
+  kind:
+    | "balustrade-arc"
+    | "banner-pole"
+    | "brazier"
+    | "column"
+    | "custom"
+    | "lantern"
+    | "milestone"
+    | "plinth"
+    | "road-strip"
+    | "silk-swatch"
+    | "water-channel"
+    | "workbench";
   params?: Record<string, number>;
   position: SceneVector3;
   scale?: number;
@@ -15,7 +29,8 @@ export interface SceneProp {
 
 export interface SceneAmbientMotion {
   emitter?: string;
-  kind: "dust" | "water-ripple" | "lantern-flicker" | "custom";
+  kind:
+    "custom" | "dust" | "lantern-flicker" | "quake-shockwave" | "water-ripple";
   params?: Record<string, number>;
 }
 

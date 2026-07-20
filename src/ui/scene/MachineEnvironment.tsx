@@ -7,6 +7,7 @@ import {
   Fog,
   SRGBColorSpace,
   type Material,
+  type Group,
   type Mesh,
   type Object3D,
   type Points,
@@ -14,6 +15,7 @@ import {
 } from "three";
 
 import type { MachineModule } from "../../sim/types";
+import { QUAKE_PAYOFF_EVENT } from "./types";
 import type {
   SceneAmbientMotion,
   SceneGroundKind,
@@ -108,6 +110,335 @@ function Ground({
   );
 }
 
+function BalustradeArc({
+  position,
+  scale,
+  params,
+}: {
+  position: [number, number, number];
+  scale: number;
+  params: Record<string, number>;
+}) {
+  const radius = params.radius ?? 3.8;
+  const posts = Math.min(18, Math.max(7, Math.round(params.posts ?? 13)));
+  const arc = Math.PI * 1.15;
+  return (
+    <group position={position} scale={scale} userData={sceneryUserData()}>
+      {Array.from({ length: posts }, (_, index) => {
+        const angle = -arc / 2 + (arc * index) / (posts - 1);
+        return (
+          <mesh
+            key={index}
+            position={[
+              Math.sin(angle) * radius,
+              0.42,
+              -Math.cos(angle) * radius,
+            ]}
+            raycast={SCENERY_RAYCAST_DISABLED}
+            userData={sceneryUserData()}
+          >
+            <cylinderGeometry args={[0.055, 0.065, 0.84, 8]} />
+            <meshStandardMaterial color="#493328" roughness={0.86} />
+          </mesh>
+        );
+      })}
+      {[0.3, 0.72].map((height) => (
+        <mesh
+          key={height}
+          position={[0, height, 0]}
+          raycast={SCENERY_RAYCAST_DISABLED}
+          rotation={[Math.PI / 2, 0, 0]}
+          userData={sceneryUserData()}
+        >
+          <torusGeometry args={[radius, 0.035, 6, 32, arc]} />
+          <meshStandardMaterial color="#573a2b" roughness={0.82} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function Brazier({
+  position,
+  scale,
+  phase,
+}: {
+  position: [number, number, number];
+  scale: number;
+  phase: number;
+}) {
+  const light = useRef<PointLight>(null);
+  useFrame((state) => {
+    if (light.current) {
+      light.current.intensity =
+        0.7 + Math.sin(state.clock.elapsedTime * 6.1 + phase) * 0.12;
+    }
+  });
+  return (
+    <group position={position} scale={scale} userData={sceneryUserData()}>
+      <mesh
+        position={[0, 0.56, 0]}
+        raycast={SCENERY_RAYCAST_DISABLED}
+        userData={sceneryUserData()}
+      >
+        <cylinderGeometry args={[0.25, 0.16, 0.14, 12, 1, true]} />
+        <meshStandardMaterial
+          color="#6c4228"
+          metalness={0.72}
+          roughness={0.4}
+        />
+      </mesh>
+      {[-1, 0, 1].map((leg) => {
+        const angle = (leg * Math.PI * 2) / 3;
+        return (
+          <mesh
+            key={leg}
+            position={[Math.sin(angle) * 0.13, 0.27, Math.cos(angle) * 0.13]}
+            raycast={SCENERY_RAYCAST_DISABLED}
+            rotation={[Math.sin(angle) * 0.18, 0, Math.cos(angle) * 0.18]}
+            userData={sceneryUserData()}
+          >
+            <cylinderGeometry args={[0.025, 0.035, 0.5, 6]} />
+            <meshStandardMaterial
+              color="#4a3024"
+              metalness={0.55}
+              roughness={0.5}
+            />
+          </mesh>
+        );
+      })}
+      {[-0.09, 0, 0.09].map((offset, index) => (
+        <mesh
+          key={offset}
+          position={[offset, 0.61 + (index % 2) * 0.025, 0]}
+          raycast={SCENERY_RAYCAST_DISABLED}
+          userData={sceneryUserData()}
+        >
+          <sphereGeometry args={[0.075, 8, 6]} />
+          <meshStandardMaterial
+            color="#db6b2d"
+            emissive="#a8380f"
+            emissiveIntensity={1.2}
+            roughness={0.72}
+          />
+        </mesh>
+      ))}
+      <pointLight
+        color="#ff9a45"
+        distance={4.5}
+        intensity={0.7}
+        position={[0, 0.82, 0]}
+        ref={light}
+      />
+    </group>
+  );
+}
+
+function RoadStrip({
+  position,
+  scale,
+  params,
+}: {
+  position: [number, number, number];
+  scale: number;
+  params: Record<string, number>;
+}) {
+  const length = params.length ?? 12;
+  const width = params.width ?? 4.6;
+  const rutOffset = params.rutOffset ?? 1.15;
+  return (
+    <group position={position} scale={scale} userData={sceneryUserData()}>
+      <mesh
+        position={[0, 0.01, 0]}
+        raycast={SCENERY_RAYCAST_DISABLED}
+        receiveShadow
+        userData={sceneryUserData()}
+      >
+        <boxGeometry args={[width, 0.025, length]} />
+        <meshStandardMaterial color="#806346" roughness={0.96} />
+      </mesh>
+      {[-rutOffset, rutOffset].map((x) => (
+        <mesh
+          key={x}
+          position={[x, 0.026, 0]}
+          raycast={SCENERY_RAYCAST_DISABLED}
+          userData={sceneryUserData()}
+        >
+          <boxGeometry args={[0.18, 0.018, length * 0.95]} />
+          <meshBasicMaterial color="#4b392b" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function Milestone({
+  position,
+  scale,
+}: {
+  position: [number, number, number];
+  scale: number;
+}) {
+  return (
+    <group position={position} scale={scale} userData={sceneryUserData()}>
+      <mesh
+        position={[0, 0.45, 0]}
+        raycast={SCENERY_RAYCAST_DISABLED}
+        userData={sceneryUserData()}
+      >
+        <boxGeometry args={[0.35, 0.9, 0.3]} />
+        <meshStandardMaterial color="#777169" roughness={0.92} />
+      </mesh>
+      <mesh
+        position={[0, 0.98, 0]}
+        raycast={SCENERY_RAYCAST_DISABLED}
+        rotation={[0, Math.PI / 4, 0]}
+        userData={sceneryUserData()}
+      >
+        <coneGeometry args={[0.27, 0.2, 4]} />
+        <meshStandardMaterial color="#625d57" roughness={0.94} />
+      </mesh>
+    </group>
+  );
+}
+
+function BannerPole({
+  position,
+  scale,
+  phase,
+}: {
+  position: [number, number, number];
+  scale: number;
+  phase: number;
+}) {
+  const pennant = useRef<Group>(null);
+  useFrame((state) => {
+    if (pennant.current) {
+      pennant.current.rotation.y =
+        Math.sin(state.clock.elapsedTime * 0.8 + phase) * 0.035;
+    }
+  });
+  return (
+    <group position={position} scale={scale} userData={sceneryUserData()}>
+      <mesh
+        position={[0, 1.6, 0]}
+        raycast={SCENERY_RAYCAST_DISABLED}
+        userData={sceneryUserData()}
+      >
+        <cylinderGeometry args={[0.035, 0.045, 3.2, 8]} />
+        <meshStandardMaterial color="#4b3024" roughness={0.8} />
+      </mesh>
+      <group position={[0, 2.55, 0]} ref={pennant} userData={sceneryUserData()}>
+        <mesh
+          position={[0.52, 0, 0]}
+          raycast={SCENERY_RAYCAST_DISABLED}
+          userData={sceneryUserData()}
+        >
+          <planeGeometry args={[1.05, 0.62, 4, 2]} />
+          <meshStandardMaterial
+            color="#8f2f27"
+            metalness={0.02}
+            roughness={0.74}
+            side={2}
+          />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
+function Workbench({
+  position,
+  scale,
+}: {
+  position: [number, number, number];
+  scale: number;
+}) {
+  return (
+    <group position={position} scale={scale} userData={sceneryUserData()}>
+      <mesh
+        position={[0, 0.72, 0]}
+        raycast={SCENERY_RAYCAST_DISABLED}
+        userData={sceneryUserData()}
+      >
+        <boxGeometry args={[1.45, 0.12, 0.55]} />
+        <meshStandardMaterial color="#503425" roughness={0.82} />
+      </mesh>
+      {[-0.58, 0.58].flatMap((x) =>
+        [-0.18, 0.18].map((z) => (
+          <mesh
+            key={`${x}:${z}`}
+            position={[x, 0.35, z]}
+            raycast={SCENERY_RAYCAST_DISABLED}
+            userData={sceneryUserData()}
+          >
+            <boxGeometry args={[0.1, 0.7, 0.1]} />
+            <meshStandardMaterial color="#432b20" roughness={0.86} />
+          </mesh>
+        )),
+      )}
+      {[-0.42, -0.14, 0.16, 0.43].map((x, index) => (
+        <mesh
+          key={x}
+          position={[x, 0.89, 0]}
+          raycast={SCENERY_RAYCAST_DISABLED}
+          rotation={[Math.PI / 2, 0, 0]}
+          userData={sceneryUserData()}
+        >
+          <cylinderGeometry args={[0.09, 0.09, 0.24, 10]} />
+          <meshStandardMaterial
+            color={index % 2 === 0 ? "#a33e32" : "#c89a4e"}
+            roughness={0.58}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function SilkSwatch({
+  position,
+  scale,
+}: {
+  position: [number, number, number];
+  scale: number;
+}) {
+  const hanging = useRef<Group>(null);
+  useFrame((state) => {
+    if (hanging.current) {
+      hanging.current.rotation.z =
+        Math.sin(state.clock.elapsedTime * 0.45) * 0.01;
+    }
+  });
+  return (
+    <group position={position} scale={scale} userData={sceneryUserData()}>
+      <mesh
+        raycast={SCENERY_RAYCAST_DISABLED}
+        rotation={[0, 0, Math.PI / 2]}
+        userData={sceneryUserData()}
+      >
+        <cylinderGeometry args={[0.055, 0.055, 1.35, 10]} />
+        <meshStandardMaterial color="#513427" roughness={0.84} />
+      </mesh>
+      <group
+        position={[0, -0.55, 0]}
+        ref={hanging}
+        userData={sceneryUserData()}
+      >
+        <mesh raycast={SCENERY_RAYCAST_DISABLED} userData={sceneryUserData()}>
+          <planeGeometry args={[1.25, 1.1, 8, 4]} />
+          <meshStandardMaterial
+            color="#9c332d"
+            metalness={0.02}
+            roughness={0.5}
+            side={2}
+          />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
 function BuiltInProp({ floorY, prop }: { floorY: number; prop: SceneProp }) {
   const params = prop.params ?? {};
   const position: [number, number, number] = [
@@ -116,6 +447,38 @@ function BuiltInProp({ floorY, prop }: { floorY: number; prop: SceneProp }) {
     prop.position[2],
   ];
   const scale = prop.scale ?? 1;
+
+  if (prop.kind === "balustrade-arc") {
+    return <BalustradeArc params={params} position={position} scale={scale} />;
+  }
+
+  if (prop.kind === "brazier") {
+    return (
+      <Brazier phase={params.phase ?? 0} position={position} scale={scale} />
+    );
+  }
+
+  if (prop.kind === "road-strip") {
+    return <RoadStrip params={params} position={position} scale={scale} />;
+  }
+
+  if (prop.kind === "milestone") {
+    return <Milestone position={position} scale={scale} />;
+  }
+
+  if (prop.kind === "banner-pole") {
+    return (
+      <BannerPole phase={params.phase ?? 0} position={position} scale={scale} />
+    );
+  }
+
+  if (prop.kind === "workbench") {
+    return <Workbench position={position} scale={scale} />;
+  }
+
+  if (prop.kind === "silk-swatch") {
+    return <SilkSwatch position={position} scale={scale} />;
+  }
 
   if (prop.kind === "column") {
     const height = params.height ?? 2.3;
@@ -322,6 +685,60 @@ function WaterRipple({
   );
 }
 
+function QuakeShockwave({ floorY }: { floorY: number }) {
+  const group = useRef<Group>(null);
+  const startedAt = useRef<number | null>(null);
+
+  useEffect(() => {
+    const pulse = (event: Event) => {
+      if (!group.current) return;
+      const bearing =
+        (event as CustomEvent<{ bearing?: number }>).detail?.bearing ?? 6;
+      const angle = (bearing * Math.PI) / 4;
+      group.current.position.set(
+        Math.sin(angle) * 3.1,
+        floorY + 0.018,
+        -Math.cos(angle) * 3.1,
+      );
+      group.current.visible = true;
+      startedAt.current = performance.now();
+    };
+    window.addEventListener(QUAKE_PAYOFF_EVENT, pulse);
+    return () => window.removeEventListener(QUAKE_PAYOFF_EVENT, pulse);
+  }, [floorY]);
+
+  useFrame(() => {
+    if (!group.current || startedAt.current === null) return;
+    const progress = Math.min(1, (performance.now() - startedAt.current) / 950);
+    group.current.scale.setScalar(0.35 + progress * 3.6);
+    const ring = group.current.children[0] as Mesh;
+    const material = ring.material as Material & { opacity: number };
+    material.opacity = 0.72 * (1 - progress);
+    if (progress === 1) {
+      group.current.visible = false;
+      startedAt.current = null;
+    }
+  });
+
+  return (
+    <group ref={group} userData={sceneryUserData()} visible={false}>
+      <mesh
+        raycast={SCENERY_RAYCAST_DISABLED}
+        rotation={[-Math.PI / 2, 0, 0]}
+        userData={sceneryUserData()}
+      >
+        <ringGeometry args={[0.34, 0.42, 48]} />
+        <meshBasicMaterial
+          color="#d59e4c"
+          depthWrite={false}
+          opacity={0}
+          transparent
+        />
+      </mesh>
+    </group>
+  );
+}
+
 function LanternFlicker({ floorY }: { floorY: number }) {
   const light = useRef<PointLight>(null);
   useFrame((state) => {
@@ -359,6 +776,9 @@ function AmbientMotion({
   if (motion.kind === "lantern-flicker") {
     return <LanternFlicker floorY={floorY} />;
   }
+  if (motion.kind === "quake-shockwave") {
+    return <QuakeShockwave floorY={floorY} />;
+  }
   if (!motion.emitter) return null;
   const prop: SceneProp = {
     builder: motion.emitter,
@@ -372,25 +792,26 @@ function AmbientMotion({
 function LightRig({ floorY, rig }: { floorY: number; rig: SceneLightRig }) {
   const hall = rig === "hall";
   const night = rig === "night";
+  const duskWest = rig === "dusk-west";
   return (
     <>
       <hemisphereLight
         args={[
-          night ? "#9fb9cc" : "#d7e3ef",
+          night || duskWest ? "#9fb9cc" : "#d7e3ef",
           hall ? "#271c17" : "#35271c",
-          night ? 0.2 : hall ? 0.3 : 0.42,
+          night ? 0.2 : duskWest ? 0.28 : hall ? 0.3 : 0.42,
         ]}
         position={[0, floorY + 3, 0]}
       />
       <directionalLight
         castShadow
-        color={night ? "#ffd09a" : "#ffe1b6"}
-        intensity={night ? 1.75 : hall ? 2.05 : 2.35}
-        position={[3, floorY + 5, 4]}
+        color={night || duskWest ? "#ffbd74" : "#ffe1b6"}
+        intensity={night ? 1.75 : duskWest ? 2.1 : hall ? 2.05 : 2.35}
+        position={duskWest ? [-4.5, floorY + 2.4, 1.5] : [3, floorY + 5, 4]}
       />
       <directionalLight
         color={night ? "#729bbb" : "#9fc7da"}
-        intensity={night ? 1.05 : 0.68}
+        intensity={night ? 1.05 : duskWest ? 0.9 : 0.68}
         position={[-4, floorY + 2, -3]}
       />
     </>

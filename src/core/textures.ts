@@ -172,8 +172,12 @@ function surfaceHeight(
   const broad = smoothNoise(x, y, seed, 32);
   const fine = smoothNoise(x, y, seed + 97, 8);
   if (variant.startsWith("wood:")) {
-    const rings = 0.5 + 0.5 * Math.sin(x * 0.27 + broad * 8 + y * 0.025);
-    return THREE.MathUtils.clamp(rings * 0.72 + fine * 0.28, 0, 1);
+    const rings = 0.5 + 0.5 * Math.sin(x * 0.085 + broad * 3.2 + y * 0.012);
+    return THREE.MathUtils.clamp(
+      rings * 0.34 + fine * 0.24 + broad * 0.42,
+      0,
+      1,
+    );
   }
   if (variant.startsWith("lacquer:")) {
     const stroke = 0.5 + 0.5 * Math.sin(y * 0.34 + broad * 3.2);

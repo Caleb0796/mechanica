@@ -611,14 +611,18 @@ a {
 }
 
 .panel {
-  padding: 1.4rem;
+  padding: 0.9rem 1rem;
   border-bottom: 1px solid #27251f;
 }
 
+.panel + .panel {
+  margin-top: 0.75rem;
+}
+
 .panel h2 {
-  margin: 0 0 1rem;
+  margin: 0 0 0.55rem;
   color: #d6c9ae;
-  font-size: 1rem;
+  font-size: 1.02rem;
   font-weight: 500;
   letter-spacing: 0.05em;
 }
@@ -714,7 +718,7 @@ a {
 }
 
 .spotlight-card {
-  margin-top: 1rem;
+  margin-top: 0;
   padding: 1rem;
   border: 1px solid rgba(217, 184, 109, 0.25);
   background: rgba(198, 151, 63, 0.06);

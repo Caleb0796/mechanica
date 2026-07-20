@@ -1,5 +1,6 @@
 import {
   type FormEvent,
+  type KeyboardEvent,
   type ReactElement,
   useEffect,
   useMemo,
@@ -242,7 +243,10 @@ export function DocentChat({
   const [retryAvailable, setRetryAvailable] = useState(false);
   const retryMessages = useRef<ApiMessage[] | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const launcherRef = useRef<HTMLButtonElement | null>(null);
   const nextMessageId = useRef(1);
+  const previousFocus = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     abortRef.current?.abort();
@@ -262,7 +266,50 @@ export function DocentChat({
     [],
   );
 
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      if (open) inputRef.current?.focus();
+      else if (previousFocus.current) {
+        (launcherRef.current ?? previousFocus.current).focus();
+        previousFocus.current = null;
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [open]);
+
+  const closeDocent = (): void => setOpen(false);
+
+  const handleDrawerKeyDown = (event: KeyboardEvent<HTMLElement>): void => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeDocent();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(
+      event.currentTarget.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((element) => element.getClientRects().length > 0);
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (!first || !last) {
+      event.preventDefault();
+      return;
+    }
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
   const probe = async (): Promise<void> => {
+    if (document.activeElement instanceof HTMLElement) {
+      previousFocus.current = document.activeElement;
+    }
     if (availability === "available") {
       setOpen(true);
       return;
@@ -399,6 +446,10 @@ export function DocentChat({
     setRetryAvailable(false);
     void streamAnswer(retryMessages.current, true);
   };
+  const newestAssistantMessageId = messages.reduce<number | null>(
+    (id, message) => (message.role === "assistant" ? message.id : id),
+    null,
+  );
 
   if (availability === "hidden") return null;
 
@@ -409,25 +460,32 @@ export function DocentChat({
           className="docent-entry"
           disabled={availability === "checking"}
           onClick={() => void probe()}
+          ref={launcherRef}
           type="button"
         >
           {availability === "checking" ? labels.checking : labels.entry}
         </button>
       ) : null}
       {open ? (
-        <aside aria-label={labels.title} className="docent-drawer">
+        <aside
+          aria-labelledby="docent-title"
+          aria-modal="true"
+          className="docent-drawer"
+          onKeyDown={handleDrawerKeyDown}
+          role="dialog"
+        >
           <header className="docent-header">
-            <strong>{labels.title}</strong>
+            <strong id="docent-title">{labels.title}</strong>
             <button
               aria-label={labels.close}
               className="docent-close"
-              onClick={() => setOpen(false)}
+              onClick={closeDocent}
               type="button"
             >
               ×
             </button>
           </header>
-          <div aria-live="polite" className="docent-scroll">
+          <div className="docent-scroll">
             {messages.length === 0 && !failure ? (
               <div className="docent-suggestions">
                 {suggestions.map((question) => (
@@ -444,6 +502,12 @@ export function DocentChat({
             ) : null}
             {messages.map((message) => (
               <p
+                aria-live={
+                  message.role === "assistant" &&
+                  message.id === newestAssistantMessageId
+                    ? "polite"
+                    : undefined
+                }
                 className={`docent-message docent-message-${message.role}`}
                 key={message.id}
               >
@@ -482,6 +546,7 @@ export function DocentChat({
               maxLength={500}
               onChange={(event) => setInput(event.target.value)}
               placeholder={labels.placeholder}
+              ref={inputRef}
               value={input}
             />
             <button

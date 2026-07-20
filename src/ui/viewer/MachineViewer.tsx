@@ -4343,73 +4343,7 @@ export default function MachineViewer({
       </section>
 
       <aside className="viewer-sidebar">
-        <PartInspector module={module} spec={activeSpec} />
-        <SchemeSwitcher
-          compareActive={compareActive}
-          compareSchemeIds={compareSchemeIds}
-          module={module}
-          onChange={(nextSchemeId) => {
-            assembly.exitAssembly();
-            setSpotlightAutoFitKey(null);
-            setActiveSchemeId(nextSchemeId);
-            if (nextSchemeId) {
-              useUiStore
-                .getState()
-                .setMachineScheme(module.data.slug, nextSchemeId);
-            }
-          }}
-          onCompareChange={(active) => {
-            setCompareActive(active);
-            if (active) {
-              setPaused(true);
-              assembly.exitAssembly();
-              setExplode(0);
-            }
-          }}
-          onCompareSchemesChange={setCompareSchemeIds}
-          onTransition={setSchemeTransition}
-          schemeId={activeSchemeId}
-        />
         <section className="panel">
-          <h2>{t("viewer.mechanisms")}</h2>
-          <div className="mechanism-list">
-            {module.mechanism?.triggers.some(
-              (trigger) => !trigger.id.startsWith("drive:"),
-            ) ? (
-              module.mechanism.triggers
-                .filter((trigger) => !trigger.id.startsWith("drive:"))
-                .map((trigger) => (
-                  <button
-                    className="mechanism-button"
-                    data-testid={`mech-trigger-${trigger.id}`}
-                    disabled={spotlightActive}
-                    key={trigger.id}
-                    onClick={() => runTrigger(trigger.id)}
-                    type="button"
-                  >
-                    {trigger.label[language]}
-                  </button>
-                ))
-            ) : (
-              <p className="panel-empty">{t("viewer.noMechanisms")}</p>
-            )}
-          </div>
-          {odometerReadout !== null ? (
-            <p aria-live="polite" className="event-caption">
-              <strong>{language === "zh" ? "里程" : "Distance"}</strong>{" "}
-              <output data-testid="odometer-readout">
-                {odometerReadout} li
-              </output>
-            </p>
-          ) : null}
-          <p
-            aria-live="polite"
-            className="event-caption"
-            data-testid="event-captions"
-          >
-            {caption}
-          </p>
-
           <article className="spotlight-card">
             <strong>{t("viewer.spotlight")}</strong>
             <p className="panel-copy">{module.data.ingenuity.hook[language]}</p>
@@ -4448,6 +4382,69 @@ export default function MachineViewer({
             ) : null}
           </article>
         </section>
+        <section className="panel">
+          <h2>{t("viewer.mechanisms")}</h2>
+          <div className="mechanism-list">
+            {module.mechanism?.triggers.some(
+              (trigger) => !trigger.id.startsWith("drive:"),
+            ) ? (
+              module.mechanism.triggers
+                .filter((trigger) => !trigger.id.startsWith("drive:"))
+                .map((trigger) => (
+                  <button
+                    className="mechanism-button"
+                    data-testid={`mech-trigger-${trigger.id}`}
+                    disabled={spotlightActive}
+                    key={trigger.id}
+                    onClick={() => runTrigger(trigger.id)}
+                    type="button"
+                  >
+                    {trigger.label[language]}
+                  </button>
+                ))
+            ) : (
+              <p className="panel-empty">{t("viewer.noMechanisms")}</p>
+            )}
+          </div>
+          {odometerReadout !== null ? (
+            <p aria-live="polite" className="event-caption">
+              <strong>{language === "zh" ? "里程" : "Distance"}</strong>{" "}
+              <output data-testid="odometer-readout">
+                {odometerReadout} li
+              </output>
+            </p>
+          ) : null}
+          <div aria-live="polite" data-testid="event-captions">
+            {caption !== "" ? <p className="event-caption">{caption}</p> : null}
+          </div>
+        </section>
+        <SchemeSwitcher
+          compareActive={compareActive}
+          compareSchemeIds={compareSchemeIds}
+          module={module}
+          onChange={(nextSchemeId) => {
+            assembly.exitAssembly();
+            setSpotlightAutoFitKey(null);
+            setActiveSchemeId(nextSchemeId);
+            if (nextSchemeId) {
+              useUiStore
+                .getState()
+                .setMachineScheme(module.data.slug, nextSchemeId);
+            }
+          }}
+          onCompareChange={(active) => {
+            setCompareActive(active);
+            if (active) {
+              setPaused(true);
+              assembly.exitAssembly();
+              setExplode(0);
+            }
+          }}
+          onCompareSchemesChange={setCompareSchemeIds}
+          onTransition={setSchemeTransition}
+          schemeId={activeSchemeId}
+        />
+        <PartInspector module={module} spec={activeSpec} />
         <GalleryPanel data={module.data} />
       </aside>
       <DocentChat

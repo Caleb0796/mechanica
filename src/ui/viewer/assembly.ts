@@ -4,9 +4,9 @@ import { Box3, Sphere, Vector3 } from "three";
 import type { PartDef } from "../../sim/types";
 
 export const ASSEMBLY_SNAP_RATIO = 0.15;
-export const ASSEMBLY_PART_DURATION_MS = 280;
-export const ASSEMBLY_MIN_DURATION_MS = 2_500;
-export const ASSEMBLY_MAX_DURATION_MS = 20_000;
+export const ASSEMBLY_PART_DURATION_MS = 320;
+export const ASSEMBLY_MIN_DURATION_MS = 9_000;
+export const ASSEMBLY_MAX_DURATION_MS = 45_000;
 export const ASSEMBLY_COMPLETION_DURATION_MS = 600;
 
 export type AssemblyMode = "idle" | "step" | "reassemble";
@@ -301,7 +301,7 @@ export function createAssemblyPlan(parts: readonly PartDef[]): AssemblyPlan {
   );
 
   return {
-    durationMs: assemblyDurationMs(orderedPartIds.length),
+    durationMs: assemblyDurationMs(copiedParts.length),
     parts: copiedParts,
     orderedPartIds,
     orderIndexByPartId,

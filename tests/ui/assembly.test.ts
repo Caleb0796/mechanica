@@ -5,8 +5,6 @@ import loom from "../../src/machines/loom/build";
 import odometer from "../../src/machines/odometer/build";
 import type { PartDef } from "../../src/sim/types";
 import {
-  ASSEMBLY_MAX_DURATION_MS,
-  ASSEMBLY_MIN_DURATION_MS,
   ASSEMBLY_SNAP_RATIO,
   assemblyCurrentPartId,
   assemblyDurationMs,
@@ -122,9 +120,10 @@ describe("assembly controller", () => {
   });
 
   it("clamps assembly duration from the runtime part count", () => {
-    expect(assemblyDurationMs(1)).toBe(ASSEMBLY_MIN_DURATION_MS);
-    expect(assemblyDurationMs(20)).toBe(5_600);
-    expect(assemblyDurationMs(100)).toBe(ASSEMBLY_MAX_DURATION_MS);
+    expect(assemblyDurationMs(1)).toBe(9_000);
+    expect(assemblyDurationMs(20)).toBe(9_000);
+    expect(assemblyDurationMs(100)).toBe(32_000);
+    expect(assemblyDurationMs(200)).toBe(45_000);
   });
 
   it("staggers local progress by ordered part index", () => {

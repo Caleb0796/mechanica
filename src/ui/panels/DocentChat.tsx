@@ -7,18 +7,10 @@ import {
   useState,
 } from "react";
 
-import { applySchemePatch } from "../../sim/graph";
 import type { MachineModule } from "../../sim/types";
-import {
-  partIdForDocentSource,
-  parseDocentCitations,
-  type DocentCitationSegment,
-  type DocentTextSegment,
-} from "../docent/citations";
 import "../docent/docent.css";
 import { classifyDocentProbeResponse } from "../docent/runtime";
 import { consumeDocentSse } from "../docent/sse";
-import { useUiStore } from "../store";
 
 const DEV_MOCK = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
 
@@ -142,10 +134,56 @@ function boundedContent(content: string): string {
   return [...content].slice(0, 500).join("");
 }
 
-function mockDocentReply(sourceId: string, lang: Lang): string {
+export function mockDocentReply(
+  question: string,
+  module: MachineModule,
+  lang: Lang,
+): string {
+  const data = module.data;
+  const hit = data.controversies?.find(
+    (controversy) =>
+      question.includes(controversy.topic[lang]) ||
+      question.includes(controversy.topic.zh) ||
+      question.includes(controversy.topic.en),
+  );
+  if (hit) {
+    const cite = hit.sourceIds[0] ?? data.sources[0].id;
+    return `${hit.detail[lang]} [来源:${cite}]`;
+  }
+  const principle = data.principle[lang];
+  const cite = data.sources[0].id;
   return lang === "zh"
-    ? `这是基于当前机械馆藏资料的开发环境讲解。[来源:${sourceId}]`
-    : `This development response is grounded in the current machine record. [来源:${sourceId}]`;
+    ? `${principle} 想深入了解，可以点开整机证据档案查看原文与尺寸。[来源:${cite}]`
+    : `${principle} For depth, open the machine evidence register for quotes and dimensions. [来源:${cite}]`;
+}
+
+export type DocentSegment =
+  | { kind: "text"; text: string }
+  | { kind: "cite"; id: string; book: string };
+
+export function renderDocentSegments(
+  reply: string,
+  sources: { id: string; book: string }[],
+): DocentSegment[] {
+  const segments: DocentSegment[] = [];
+  const pattern = /\[来源:([a-z0-9-]+)\]/g;
+  let cursor = 0;
+  for (const match of reply.matchAll(pattern)) {
+    if (match.index! > cursor) {
+      segments.push({ kind: "text", text: reply.slice(cursor, match.index) });
+    }
+    const id = match[1];
+    segments.push({
+      kind: "cite",
+      id,
+      book: sources.find((source) => source.id === id)?.book ?? id,
+    });
+    cursor = match.index! + match[0].length;
+  }
+  if (cursor < reply.length) {
+    segments.push({ kind: "text", text: reply.slice(cursor) });
+  }
+  return segments;
 }
 
 function requestMessages(messages: readonly UiMessage[]): ApiMessage[] {
@@ -158,83 +196,28 @@ function requestMessages(messages: readonly UiMessage[]): ApiMessage[] {
 function GroundedAnswer({
   text,
   module,
-  schemeId,
 }: {
   text: string;
   module: MachineModule;
-  schemeId?: string;
 }): ReactElement {
-  const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
-  const activeParts = useMemo(
-    () =>
-      applySchemePatch(
-        module.spec,
-        schemeId ? module.schemes?.[schemeId] : undefined,
-      ).parts,
-    [module, schemeId],
-  );
-  const sourceById = useMemo(
-    () => new Map(module.data.sources.map((source) => [source.id, source])),
-    [module],
-  );
-  const parsed = useMemo(
-    () => parseDocentCitations(text, new Set(sourceById.keys())),
-    [sourceById, text],
-  );
-  const warned = useRef(new Set<string>());
-
-  useEffect(() => {
-    for (const sourceId of parsed.unknownSourceIds) {
-      const key = `${module.spec.slug}:${sourceId}`;
-      if (!warned.current.has(key)) {
-        warned.current.add(key);
-        console.warn(`Docent returned unknown source id: ${sourceId}`);
-      }
-    }
-  }, [module.spec.slug, parsed.unknownSourceIds]);
-
-  const navigateToSource = (sourceId: string): void => {
-    const sourcePartId = partIdForDocentSource(activeParts, sourceId);
-    if (!sourcePartId) return;
-    setSelectedPartId(sourcePartId);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const target = document.getElementById(
-          `part-inspector-source-${sourceId}`,
-        );
-        target?.scrollIntoView({ behavior: "smooth", block: "start" });
-        target?.focus({ preventScroll: true });
-      });
-    });
-  };
+  const segments = renderDocentSegments(text, module.data.sources);
 
   return (
     <>
-      {parsed.segments.map(
-        (segment: DocentTextSegment | DocentCitationSegment, index: number) => {
-          if (segment.kind === "text") {
-            return <span key={`${index}:text`}>{segment.text}</span>;
-          }
-          const source = sourceById.get(segment.sourceId);
-          return (
-            <a
-              className="docent-citation"
-              data-testid="docent-citation"
-              href={`#part-inspector-source-${segment.sourceId}`}
-              key={`${index}:${segment.sourceId}`}
-              onClick={(event) => {
-                event.preventDefault();
-                navigateToSource(segment.sourceId);
-              }}
-              title={`${source?.book ?? segment.sourceId}${
-                source?.chapter ? ` · ${source.chapter}` : ""
-              }`}
-            >
-              {segment.marker}
-            </a>
-          );
-        },
-      )}
+      {segments.map((segment, index) => {
+        if (segment.kind === "text") {
+          return <span key={`${index}:text`}>{segment.text}</span>;
+        }
+        return (
+          <sup
+            className="docent-cite"
+            key={`${index}:${segment.id}`}
+            title={segment.book}
+          >
+            {segment.book}
+          </sup>
+        );
+      })}
     </>
   );
 }
@@ -352,9 +335,8 @@ export function DocentChat({
 
     try {
       if (DEV_MOCK) {
-        const sourceId = module.data.sources[0]?.id;
-        if (!sourceId) throw new Error("docent_source_missing");
-        const reply = mockDocentReply(sourceId, lang);
+        const question = conversation.at(-1)?.content ?? "";
+        const reply = mockDocentReply(question, module, lang);
         for (let offset = 0; offset < reply.length; offset += 8) {
           await Promise.resolve();
           if (controller.signal.aborted) return;
@@ -466,11 +448,7 @@ export function DocentChat({
                 key={message.id}
               >
                 {message.role === "assistant" ? (
-                  <GroundedAnswer
-                    module={module}
-                    schemeId={schemeId}
-                    text={message.content}
-                  />
+                  <GroundedAnswer module={module} text={message.content} />
                 ) : (
                   message.content
                 )}

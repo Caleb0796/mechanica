@@ -4,6 +4,7 @@ import handler, {
   DOCENT_PROMPT_CORE,
   estimateInputTokens,
 } from "../../api/docent";
+import astroclockModule from "../../src/machines/astroclock/build";
 import type { PartDef } from "../../src/sim/types";
 import {
   partIdForDocentSource,
@@ -15,6 +16,10 @@ import {
   docentMockEnabled,
 } from "../../src/ui/docent/runtime";
 import { parseDocentSseBlock } from "../../src/ui/docent/sse";
+import {
+  mockDocentReply,
+  renderDocentSegments,
+} from "../../src/ui/panels/DocentChat";
 
 const runtimeProcess = (
   globalThis as unknown as {
@@ -118,6 +123,27 @@ afterEach(() => {
 });
 
 describe.sequential("docent boundaries", () => {
+  it("mock reply answers a controversy question with its detail text", () => {
+    const reply = mockDocentReply(
+      'How does the collection frame the "Scoop count" controversy?',
+      astroclockModule,
+      "en",
+    );
+    expect(reply).toContain("36 scoops");
+    expect(reply).toMatch(/\[来源:[a-z0-9-]+\]/);
+  });
+
+  it("renderDocentSegments splits citation tokens and resolves book titles", () => {
+    const segments = renderDocentSegments(
+      "Both readings must remain visible. [来源:xyxfy-shulun]",
+      astroclockModule.data.sources,
+    );
+    expect(segments).toEqual([
+      { kind: "text", text: "Both readings must remain visible. " },
+      { kind: "cite", id: "xyxfy-shulun", book: "新儀象法要" },
+    ]);
+  });
+
   it("rejects a declared body larger than eight kilobytes", async () => {
     const response = await invoke("{}", { "content-length": "8193" });
     expect(response.statusCode).toBe(400);

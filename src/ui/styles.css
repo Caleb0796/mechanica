@@ -595,11 +595,25 @@ a {
   text-transform: uppercase;
 }
 
+.record-list dt:lang(zh) {
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
 .record-list dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
   margin: 0;
   color: #c2bdb3;
   font-size: 0.78rem;
   line-height: 1.5;
+}
+
+.record-list .dim-note {
+  font-size: 0.72rem;
+  opacity: 0.75;
 }
 
 .panel-link {

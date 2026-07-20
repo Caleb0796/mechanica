@@ -8,6 +8,9 @@ import type {
   Quantity,
 } from "../../sim/types";
 import { useUiStore } from "../store";
+import { humanizeDimLabel } from "./partDimLabels";
+
+type Lang = "zh" | "en";
 
 interface PartInspectorProps {
   module: MachineModule;
@@ -45,7 +48,7 @@ function dimensionUnit(part: PartDef, path: string): string {
   return "m";
 }
 
-function geometryDimensions(part: PartDef) {
+function geometryDimensions(part: PartDef, language: Lang) {
   const numbers = geometryNumbers(part.geometry);
   if (part.joint?.limits) {
     numbers.push(
@@ -56,11 +59,44 @@ function geometryDimensions(part: PartDef) {
   return numbers
     .filter(({ path }) => path !== "")
     .map(({ path, value }) => ({
-      label: path.startsWith("joint.") ? path : `${part.geometry.type}.${path}`,
+      label: humanizeDimLabel(part.geometry.type, path, language),
       value: `${Number.isInteger(value) ? value : value.toFixed(3)} ${dimensionUnit(part, path)}`,
       provenance:
         part.dimensionProvenance[path] ?? part.dimensionProvenance["@rest"],
     }));
+}
+
+const NOTE_ZH: Record<string, string> = {
+  "Geometry is an illustrative reconstruction where the classical text gives no measurement.":
+    "古籍未记载此尺寸，几何为示意复原参数。",
+  "Derived from the recorded 2.090 m diameter and 600 tooth slots.":
+    "由记载的 2.090 m 直径与六百牙推算。",
+  "Half of the recorded 3.432 m diameter.": "取记载直径 3.432 m 之半。",
+  "The main reading records seventy-two spokes paired into thirty-six receiving cells.":
+    "主流读法为七十二辐，两辐夹持一壶，共三十六壶。",
+  "Variant reading retained alongside the main thirty-six-scoop reconstruction.":
+    "异文读法，与三十六壶主方案并存展示。",
+};
+
+const BOOK_EN: Record<string, string> = {
+  新儀象法要: "Xin Yi Xiang Fa Yao",
+};
+
+const localizedNote = (note: string, language: Lang) =>
+  language === "zh" ? (NOTE_ZH[note] ?? note) : note;
+
+function sourceBook(
+  module: MachineModule,
+  reference: string,
+  language: Lang,
+): string {
+  return referenceIds(reference)
+    .map((id) => {
+      const book = module.data.sources.find((source) => source.id === id)?.book;
+      if (!book) return id;
+      return language === "en" ? (BOOK_EN[book] ?? book) : book;
+    })
+    .join(" + ");
 }
 
 function referenceIds(reference: string): string[] {
@@ -122,7 +158,7 @@ function MachineEvidenceRecord({
       <p className="panel-copy">{module.data.principle[language]}</p>
 
       <h3>{copy.dimensions}</h3>
-      <dl className="record-list">
+      <dl className="record-list" lang={language}>
         {module.data.dimensions.map((dimension) => {
           const metric = Array.isArray(dimension.meters)
             ? `${dimension.meters[0]}–${dimension.meters[1]} m`
@@ -137,14 +173,18 @@ function MachineEvidenceRecord({
             >
               <dt>{dimension.label[language]}</dt>
               <dd>
-                {dimension.ancient} · {metric}
-                <small>
-                  {t(`inspector.${dimension.confidence}`)} · {copy.basis}:{" "}
-                  <span data-evidence-text lang="zh">
-                    {dimension.basis}
-                  </span>
-                  {source ? <> · {source.book}</> : null}
-                </small>
+                <span className="dim-value">
+                  {dimension.ancient} · {metric}
+                </span>
+                <span className="dim-note">
+                  {t(`inspector.${dimension.confidence}`)} ·{" "}
+                  {source
+                    ? language === "en"
+                      ? (BOOK_EN[source.book] ?? source.book)
+                      : source.book
+                    : dimension.sourceId}{" "}
+                  · {copy.basis}: {dimension.basis}
+                </span>
               </dd>
             </div>
           );
@@ -202,7 +242,10 @@ function MachineEvidenceRecord({
                         {constraint.provenance.ref}
                         {constraint.provenance.note ? (
                           <small data-evidence-text>
-                            {constraint.provenance.note}
+                            {localizedNote(
+                              constraint.provenance.note,
+                              language,
+                            )}
                           </small>
                         ) : null}
                       </dd>
@@ -315,7 +358,7 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
   const sources = module.data.sources.filter((candidate) =>
     sourceRefs.has(candidate.id),
   );
-  const dimensions = geometryDimensions(part);
+  const dimensions = geometryDimensions(part, language);
   const hasDirectDimensionEvidence = dimensions.some(
     (dimension) =>
       dimension.provenance && dimension.provenance.kind !== "tuice",
@@ -337,32 +380,41 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
       <h2>{t("inspector.title")}</h2>
       <h3 className="part-name">{part.name[language]}</h3>
       <span className="provenance-badge">
-        {t(`inspector.${part.provenance.kind}`)} · {part.provenance.ref}
+        {t(`inspector.${part.provenance.kind}`)} ·{" "}
+        {sourceBook(module, part.provenance.ref, language)}
       </span>
       {part.provenance.note ? (
         <p className="panel-copy" data-evidence-text>
-          {part.provenance.note}
+          {localizedNote(part.provenance.note, language)}
         </p>
       ) : null}
 
       {dimensions.length > 0 ? (
-        <dl className="record-list">
+        <dl className="record-list" lang={language}>
           {dimensions.map((dimension) => (
             <div key={dimension.label}>
               <dt>{dimension.label}</dt>
               <dd>
-                {dimension.value}
+                <span className="dim-value">{dimension.value}</span>
                 {dimension.provenance ? (
-                  <small>
+                  <span className="dim-note">
                     {t(`inspector.${dimension.provenance.kind}`)} ·{" "}
-                    {dimension.provenance.ref}
+                    {sourceBook(
+                      module,
+                      dimension.provenance.ref,
+                      language,
+                    )}
                     {dimension.provenance.note ? (
                       <span data-evidence-text>
                         {" "}
-                        · {dimension.provenance.note}
+                        ·{" "}
+                        {localizedNote(
+                          dimension.provenance.note,
+                          language,
+                        )}
                       </span>
                     ) : null}
-                  </small>
+                  </span>
                 ) : null}
               </dd>
             </div>
@@ -371,25 +423,25 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
       ) : null}
 
       {part.dimensionNotes && part.dimensionNotes.length > 0 ? (
-        <dl className="record-list">
+        <dl className="record-list" lang={language}>
           {part.dimensionNotes.map((quantity, index) => (
             <div key={`${quantity.provenance.ref}-${index}`}>
-              <dt>{t("inspector.dimensions")}</dt>
+              <dt>
+                {t("inspector.dimensions")} · {quantity.ancient}
+              </dt>
               <dd>
-                {language === "zh" && quantity.ancient
-                  ? `${quantity.ancient} · `
-                  : ""}
-                {metricLabel(quantity)}
-                <small>
+                <span className="dim-value">{metricLabel(quantity)}</span>
+                <span className="dim-note">
                   {t(`inspector.${quantity.provenance.kind}`)} ·{" "}
-                  {quantity.provenance.ref}
+                  {sourceBook(module, quantity.provenance.ref, language)}
                   {quantity.provenance.note ? (
                     <span data-evidence-text>
                       {" "}
-                      · {quantity.provenance.note}
+                      ·{" "}
+                      {localizedNote(quantity.provenance.note, language)}
                     </span>
                   ) : null}
-                </small>
+                </span>
               </dd>
             </div>
           ))}

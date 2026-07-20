@@ -695,6 +695,12 @@ a {
   gap: 0.45rem;
 }
 
+.compare-scheme-pickers select {
+  width: 100%;
+  max-width: none;
+  text-overflow: ellipsis;
+}
+
 .assembly-current,
 .assembly-hint {
   margin: 0;
@@ -748,11 +754,21 @@ a {
 
 .compare-view {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto minmax(8rem, 28vh);
+  grid-template-rows: auto minmax(0, 1fr) auto minmax(8rem, 28vh);
   width: 100%;
   height: 100%;
-  padding-top: 5.5rem;
   background: #090a0a;
+}
+
+.compare-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 0.75rem;
+}
+
+.compare-header button {
+  margin-left: auto;
 }
 
 .compare-viewports {
@@ -792,6 +808,7 @@ a {
   position: relative;
   z-index: 2;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.45rem;
@@ -799,18 +816,46 @@ a {
 }
 
 .compare-drive-controls button {
-  min-width: 3.5rem;
+  min-width: 44px;
+  min-height: 36px;
   border: 1px solid #9b7a3e;
   color: #211a0d;
   background: #d9b86d;
   cursor: pointer;
 }
 
+.compare-drive-controls .event-caption {
+  flex-basis: 100%;
+  min-height: 1em;
+  margin: 0;
+  text-align: center;
+}
+
+.compare-table-wrap {
+  min-height: 0;
+  overflow-x: auto;
+}
+
+.compare-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.compare-table-wrap tbody tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.compare-table-wrap th,
+.compare-table-wrap td {
+  padding: 0.45rem 0.6rem;
+  vertical-align: top;
+  text-align: left;
+}
+
 .compare-table {
-  display: block;
   min-height: 0;
   width: 100%;
-  overflow: auto;
   border-collapse: collapse;
   color: #bbb3a4;
   background: #0d0e0e;
@@ -921,7 +966,7 @@ a {
   }
 
   .compare-view {
-    grid-template-rows: minmax(0, 1fr) auto minmax(7rem, 22vh);
+    grid-template-rows: auto minmax(0, 1fr) auto minmax(7rem, 22vh);
   }
 
   .compare-viewports {

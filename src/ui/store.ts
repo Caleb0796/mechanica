@@ -13,6 +13,7 @@ interface UiState {
   idleAutoPaused: boolean;
   language: UiLanguage;
   paused: boolean;
+  schemeByMachine: Record<string, string>;
   selectedPartId: string | null;
   showScene: boolean;
   setAssemblyProgress: (progress: number) => void;
@@ -21,6 +22,7 @@ interface UiState {
   setIdleAutoPaused: (idleAutoPaused: boolean) => void;
   setLanguage: (language: UiLanguage) => void;
   setPaused: (paused: boolean) => void;
+  setMachineScheme: (slug: string, schemeId: string) => void;
   setSelectedPartId: (partId: string | null) => void;
   setShowScene: (showScene: boolean) => void;
 }
@@ -33,6 +35,7 @@ export const useUiStore = create<UiState>((set) => ({
   idleAutoPaused: false,
   language: initialLanguage,
   paused: false,
+  schemeByMachine: {},
   selectedPartId: null,
   showScene: true,
   setAssemblyProgress: (assemblyProgress) => set({ assemblyProgress }),
@@ -41,6 +44,10 @@ export const useUiStore = create<UiState>((set) => ({
   setIdleAutoPaused: (idleAutoPaused) => set({ idleAutoPaused }),
   setLanguage: (language) => set({ language }),
   setPaused: (paused) => set({ paused }),
+  setMachineScheme: (slug, schemeId) =>
+    set((state) => ({
+      schemeByMachine: { ...state.schemeByMachine, [slug]: schemeId },
+    })),
   setSelectedPartId: (selectedPartId) => set({ selectedPartId }),
   setShowScene: (showScene) => set({ showScene }),
 }));

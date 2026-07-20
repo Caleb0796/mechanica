@@ -32,9 +32,11 @@ function differs(a: readonly number[], b: readonly number[]): boolean {
 export const useCompareStore = create<CompareState>((set, get) => ({
   cameraOwner: "left",
   camera: {
-    position: [0, 0, 5],
-    quaternion: [0, 0, 0, 1],
-    target: [0, 0, 0],
+    position: [11, 6.5, 13],
+    quaternion: [
+      -0.054856419736, 0.343370171864, 0.020094337252, 0.937381414312,
+    ],
+    target: [0, 4.5, 0],
     zoom: 1,
     revision: 0,
   },

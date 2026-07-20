@@ -3005,7 +3005,12 @@ export default function MachineViewer({
         }
       : VIEWER_PROFILES[module.data.slug];
   const graph = useMemo(() => new KinematicGraph(module.spec), [module.spec]);
-  const [activeSchemeId, setActiveSchemeId] = useState(schemeId);
+  const storedScheme = useUiStore(
+    (state) => state.schemeByMachine[module.data.slug],
+  );
+  const [activeSchemeId, setActiveSchemeId] = useState(
+    storedScheme ?? schemeId,
+  );
   const activeSpec = useMemo(
     () =>
       applySchemePatch(
@@ -3317,7 +3322,9 @@ export default function MachineViewer({
     setSpotlightTranscript([]);
     setHoveredPartId(null);
     setSelectedPartId(null);
-    setActiveSchemeId(schemeId);
+    setActiveSchemeId(
+      useUiStore.getState().schemeByMachine[module.data.slug] ?? schemeId,
+    );
     setSchemeTransition(null);
     setCompareActive(false);
     setCompareSchemeIds(defaultCompareSchemeIds);
@@ -3689,6 +3696,7 @@ export default function MachineViewer({
         cameraFitKey(module.data.slug, part, "default", explode),
       );
       setActiveSchemeId(part);
+      useUiStore.getState().setMachineScheme(module.data.slug, part);
     }
     if (type === "spotlight:done") setSpotlightDone(true);
   };
@@ -3714,6 +3722,7 @@ export default function MachineViewer({
     ) {
       graph.setScheme(module.schemes.fengrui);
       setActiveSchemeId("fengrui");
+      useUiStore.getState().setMachineScheme(module.data.slug, "fengrui");
       setSpotlightAutoFitKey(
         cameraFitKey("seismoscope", "fengrui", "default", explode),
       );
@@ -3871,13 +3880,15 @@ export default function MachineViewer({
       onWheelCapture={registerViewerInteraction}
     >
       <section className="viewer-stage">
-        <div className="viewer-title">
-          <h1>{module.data.names[language]}</h1>
-          <p>
-            {module.data.oneLiner[language]} · {t("viewer.rotateHint")}
-          </p>
-        </div>
-        {storyAvailable ? (
+        {compareActive ? null : (
+          <div className="viewer-title">
+            <h1>{module.data.names[language]}</h1>
+            <p>
+              {module.data.oneLiner[language]} · {t("viewer.rotateHint")}
+            </p>
+          </div>
+        )}
+        {!compareActive && storyAvailable ? (
           <a
             className="story-launch-button"
             data-testid="story-launch"
@@ -3912,6 +3923,7 @@ export default function MachineViewer({
             <CompareView
               leftSchemeId={compareSchemeIds[0]}
               module={module}
+              onClose={() => setCompareActive(false)}
               renderScene={(context) => (
                 <CompareSceneAdapter context={context} module={module} />
               )}
@@ -4315,6 +4327,11 @@ export default function MachineViewer({
             assembly.exitAssembly();
             setSpotlightAutoFitKey(null);
             setActiveSchemeId(nextSchemeId);
+            if (nextSchemeId) {
+              useUiStore
+                .getState()
+                .setMachineScheme(module.data.slug, nextSchemeId);
+            }
           }}
           onCompareChange={(active) => {
             setCompareActive(active);

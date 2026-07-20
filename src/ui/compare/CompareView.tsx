@@ -59,6 +59,7 @@ export interface CompareSceneContext {
 interface CompareViewProps {
   leftSchemeId: string;
   module: MachineModule;
+  onClose: () => void;
   renderScene: (context: CompareSceneContext) => ReactNode;
   rightSchemeId: string;
 }
@@ -192,6 +193,7 @@ function compareGraph(module: MachineModule, schemeId: string): KinematicGraph {
 export default function CompareView({
   leftSchemeId,
   module,
+  onClose,
   renderScene,
   rightSchemeId,
 }: CompareViewProps) {
@@ -209,6 +211,9 @@ export default function CompareView({
   const [readySchemes, setReadySchemes] = useState<
     Partial<Record<CompareSide, string>>
   >({});
+  const [driveCaption, setDriveCaption] = useState("");
+  const driveCaptionTimeout = useRef<number | null>(null);
+  const driveRepeatInterval = useRef<number | null>(null);
   const frameCounts = useRef<[number, number]>([0, 0]);
   const viewportInvalidators = useRef<
     Partial<Record<CompareSide, () => void>>
@@ -271,6 +276,49 @@ export default function CompareView({
     },
     [driveNodes, invalidateViewports, leftGraph, module, rightGraph],
   );
+  const flashDriveCaption = useCallback(
+    (deltaRad: number) => {
+      setDriveCaption(
+        language === "zh"
+          ? deltaRad < 0
+            ? "两侧同步后退一格"
+            : "两侧同步前进一格"
+          : deltaRad < 0
+            ? "Both models move back one step"
+            : "Both models advance one step",
+      );
+      if (driveCaptionTimeout.current !== null) {
+        window.clearTimeout(driveCaptionTimeout.current);
+      }
+      driveCaptionTimeout.current = window.setTimeout(
+        () => setDriveCaption(""),
+        1200,
+      );
+    },
+    [language],
+  );
+  const fireDrive = useCallback(
+    (deltaRad: number) => {
+      drive(deltaRad);
+      flashDriveCaption(deltaRad);
+    },
+    [drive, flashDriveCaption],
+  );
+  const stopDriveRepeat = useCallback(() => {
+    if (driveRepeatInterval.current === null) return;
+    window.clearInterval(driveRepeatInterval.current);
+    driveRepeatInterval.current = null;
+  }, []);
+  const startDriveRepeat = useCallback(
+    (deltaRad: number) => {
+      stopDriveRepeat();
+      driveRepeatInterval.current = window.setInterval(
+        () => fireDrive(deltaRad),
+        160,
+      );
+    },
+    [fireDrive, stopDriveRepeat],
+  );
   const handleHoverPart = useCallback(
     (partId?: string) => {
       setHoveredPartId(partId);
@@ -314,6 +362,16 @@ export default function CompareView({
       delete window.__mechCompare;
     };
   }, [drive, leftGraph, rightGraph]);
+
+  useEffect(
+    () => () => {
+      stopDriveRepeat();
+      if (driveCaptionTimeout.current !== null) {
+        window.clearTimeout(driveCaptionTimeout.current);
+      }
+    },
+    [stopDriveRepeat],
+  );
 
   const viewport = (
     side: CompareSide,
@@ -361,6 +419,7 @@ export default function CompareView({
           {schemeLabel(module, schemeId, language)}
         </header>
         <Canvas
+          camera={{ position: useCompareStore.getState().camera.position }}
           dpr={[1, 2]}
           frameloop="demand"
           gl={{
@@ -406,31 +465,59 @@ export default function CompareView({
 
   return (
     <section className="compare-view" data-testid="compare-view">
+      <header className="compare-header">
+        <strong>{module.data.names[language]}</strong>
+        <span>{schemeLabel(module, leftSchemeId, language)}</span>
+        <span>{schemeLabel(module, rightSchemeId, language)}</span>
+        <button
+          className="ghost-button"
+          data-testid="compare-close"
+          onClick={onClose}
+          type="button"
+        >
+          {t("compare.close")}
+        </button>
+      </header>
       <div className="compare-viewports">
         {viewport("left", leftSchemeId, leftSpec, leftGraph)}
         {viewport("right", rightSchemeId, rightSpec, rightGraph)}
       </div>
       <div className="compare-drive-controls">
         <button
+          aria-label={t("compare.driveReverse")}
           data-testid="compare-drive-backward"
-          onClick={() => drive(-Math.PI / 12)}
+          onClick={() => fireDrive(-Math.PI / 12)}
+          onPointerCancel={stopDriveRepeat}
+          onPointerDown={() => startDriveRepeat(-Math.PI / 12)}
+          onPointerLeave={stopDriveRepeat}
+          onPointerUp={stopDriveRepeat}
           type="button"
         >
           −
         </button>
         <button
+          aria-label={t("compare.driveForward")}
           data-testid="compare-drive-forward"
-          onClick={() => drive(Math.PI / 12)}
+          onClick={() => fireDrive(Math.PI / 12)}
+          onPointerCancel={stopDriveRepeat}
+          onPointerDown={() => startDriveRepeat(Math.PI / 12)}
+          onPointerLeave={stopDriveRepeat}
+          onPointerUp={stopDriveRepeat}
           type="button"
         >
           +
         </button>
+        <p aria-live="polite" className="event-caption">
+          {driveCaption}
+        </p>
       </div>
-      <ComparisonTable
-        leftSchemeId={leftSchemeId}
-        module={module}
-        rightSchemeId={rightSchemeId}
-      />
+      <div className="compare-table-wrap">
+        <ComparisonTable
+          leftSchemeId={leftSchemeId}
+          module={module}
+          rightSchemeId={rightSchemeId}
+        />
+      </div>
     </section>
   );
 }

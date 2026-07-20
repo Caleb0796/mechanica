@@ -36,6 +36,7 @@
     "spotlight": "Ingenuity spotlight",
     "spotlightPlay": "Play spotlight",
     "spotlightDone": "Demo complete",
+    "contextLost": "The graphics context was lost — trying to recover…",
     "noMechanisms": "No separate mechanism demo"
   },
   "assembly": {

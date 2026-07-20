@@ -354,6 +354,24 @@ a {
   opacity: 0;
 }
 
+.context-lost-overlay {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: 2rem;
+  color: #eee8da;
+  background: rgba(9, 10, 10, 0.92);
+  text-align: center;
+}
+
+.context-lost-overlay p {
+  max-width: 28rem;
+  margin: 0 0 1rem;
+}
+
 .poster-fallback {
   position: absolute;
   inset: 0;

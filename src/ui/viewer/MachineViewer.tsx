@@ -1,6 +1,7 @@
 import { ContactShadows, OrbitControls } from "@react-three/drei";
 import {
   Canvas,
+  type RootState,
   type ThreeEvent,
   useFrame,
   useThree,
@@ -261,6 +262,26 @@ export interface MachineViewerProps {
 }
 
 const EMPTY_PART_IDS: string[] = [];
+
+function registerContextLossHandlers(
+  { gl, invalidate }: Pick<RootState, "gl" | "invalidate">,
+  onChange: (lost: boolean) => void,
+): () => void {
+  const handleLost = (event: Event) => {
+    event.preventDefault();
+    onChange(true);
+  };
+  const handleRestored = () => {
+    onChange(false);
+    invalidate();
+  };
+  gl.domElement.addEventListener("webglcontextlost", handleLost);
+  gl.domElement.addEventListener("webglcontextrestored", handleRestored);
+  return () => {
+    gl.domElement.removeEventListener("webglcontextlost", handleLost);
+    gl.domElement.removeEventListener("webglcontextrestored", handleRestored);
+  };
+}
 
 interface PartNodeProps {
   aidCutawayPartIds?: readonly string[];
@@ -2436,6 +2457,8 @@ export function MachineStoryStage({
 }) {
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
+  const [contextLost, setContextLost] = useState(false);
+  const contextLossCleanup = useRef<(() => void) | null>(null);
   const [storedStoryReady, setStoredStoryReady] = useState<{
     at: number;
     key: string;
@@ -2610,6 +2633,13 @@ export function MachineStoryStage({
       graph.drive(partId, delta);
     },
     [graph],
+  );
+
+  useEffect(
+    () => () => {
+      contextLossCleanup.current?.();
+    },
+    [],
   );
 
   useLayoutEffect(() => {
@@ -2806,7 +2836,15 @@ export function MachineStoryStage({
           toneMapping: ACESFilmicToneMapping,
           toneMappingExposure: 1.05,
         }}
-        onCreated={prepareSceneEnvironment}
+        onCreated={(rootState) => {
+          prepareSceneEnvironment(rootState);
+          contextLossCleanup.current?.();
+          setContextLost(false);
+          contextLossCleanup.current = registerContextLossHandlers(
+            rootState,
+            setContextLost,
+          );
+        }}
       >
         <SceneEnvironment />
         {geometryPrepared ? (
@@ -2834,6 +2872,18 @@ export function MachineStoryStage({
         ) : null}
         <AspectAwareStoryCamera pose={state.camera} />
       </Canvas>
+      {contextLost ? (
+        <div className="context-lost-overlay" role="alert">
+          <p>{t("viewer.contextLost")}</p>
+          <button
+            className="gold-button"
+            onClick={() => window.location.reload()}
+            type="button"
+          >
+            {t("app.retry")}
+          </button>
+        </div>
+      ) : null}
       <div
         className="poster-overlay"
         data-ready={storyReadyAt !== null ? "true" : "false"}
@@ -3119,6 +3169,8 @@ export default function MachineViewer({
   const [completionProgress, setCompletionProgress] = useState(1);
   const [driveCoachVisible, setDriveCoachVisible] = useState(false);
   const [idleDemand, setIdleDemand] = useState(false);
+  const [contextLost, setContextLost] = useState(false);
+  const contextLossCleanup = useRef<(() => void) | null>(null);
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
@@ -3342,6 +3394,7 @@ export default function MachineViewer({
 
   useEffect(
     () => () => {
+      contextLossCleanup.current?.();
       clearViewerIdleTimer();
       if (viewerIdleAutoPaused.current) setPaused(false);
       viewerIdleAutoPaused.current = false;
@@ -3992,7 +4045,15 @@ export default function MachineViewer({
                 toneMapping: ACESFilmicToneMapping,
                 toneMappingExposure: 1.05,
               }}
-              onCreated={prepareSceneEnvironment}
+              onCreated={(rootState) => {
+                prepareSceneEnvironment(rootState);
+                contextLossCleanup.current?.();
+                setContextLost(false);
+                contextLossCleanup.current = registerContextLossHandlers(
+                  rootState,
+                  setContextLost,
+                );
+              }}
               shadows
             >
               <SceneEnvironment />
@@ -4063,6 +4124,18 @@ export default function MachineViewer({
               ) : null}
             </Canvas>
           )}
+          {!compareActive && contextLost ? (
+            <div className="context-lost-overlay" role="alert">
+              <p>{t("viewer.contextLost")}</p>
+              <button
+                className="gold-button"
+                onClick={() => window.location.reload()}
+                type="button"
+              >
+                {t("app.retry")}
+              </button>
+            </div>
+          ) : null}
           {!compareActive ? (
             <div
               className="poster-overlay"

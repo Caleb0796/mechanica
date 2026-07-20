@@ -36,6 +36,7 @@
     "spotlight": "巧思聚焦",
     "spotlightPlay": "播放巧思",
     "spotlightDone": "演示完成",
+    "contextLost": "图形上下文已丢失，正在尝试恢复…",
     "noMechanisms": "暂无独立机构演示"
   },
   "assembly": {

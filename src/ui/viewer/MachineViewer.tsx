@@ -4349,7 +4349,7 @@ export default function MachineViewer({
             <p aria-live="polite" className="event-caption">
               <strong>{language === "zh" ? "里程" : "Distance"}</strong>{" "}
               <output data-testid="odometer-readout">
-                {odometerReadout} li
+                {odometerReadout} {language === "zh" ? "里" : "li"}
               </output>
             </p>
           ) : null}

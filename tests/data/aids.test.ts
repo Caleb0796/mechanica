@@ -6,6 +6,16 @@ import {
 } from "../../src/data/schema";
 import astroclock from "../../src/machines/astroclock/build";
 import loom from "../../src/machines/loom/build";
+import odometer from "../../src/machines/odometer/build";
+import seismoscope from "../../src/machines/seismoscope/build";
+
+const kindNames = {
+  callouts: "Part callouts",
+  cutaway: "Cutaway",
+  flowParticles: "Flow path",
+  powerPath: "Power path",
+  subDemo: "Principle demo",
+};
 
 describe("principle aid schema", () => {
   it("accepts all five declared aid shapes", () => {
@@ -107,6 +117,21 @@ describe("principle aid schema", () => {
   it("validates astroclock aid references and its five-kind template", () => {
     expect(() => assertMachineModuleAids(astroclock)).not.toThrow();
     expect(new Set(astroclock.aids?.map((aid) => aid.kind) ?? []).size).toBe(5);
+  });
+
+  it("gives same-kind aid chips distinct resolved labels", () => {
+    for (const machine of [astroclock, seismoscope, odometer, loom]) {
+      const labels = new Set<string>();
+      for (const aid of machine.aids ?? []) {
+        const label =
+          ("label" in aid ? aid.label?.en : undefined) ?? kindNames[aid.kind];
+        const key = `${aid.kind}:${label}`;
+        expect(labels.has(key), `${machine.spec.slug} repeats ${key}`).toBe(
+          false,
+        );
+        labels.add(key);
+      }
+    }
   });
 
   it("rejects unresolved part, trigger, and custom-emitter references", () => {

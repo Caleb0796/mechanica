@@ -187,6 +187,7 @@ export type PrincipleAid =
       kind: "powerPath";
       sequence: string[];
       dwellMs?: number;
+      label?: { zh: string; en: string };
     }
   | {
       kind: "callouts";
@@ -215,6 +216,7 @@ export type PrincipleAid =
       kind: "subDemo";
       triggerId: string;
       caption: { zh: string; en: string };
+      label?: { zh: string; en: string };
     };
 
 export interface MachineData {

@@ -99,9 +99,10 @@ export function assertPrincipleAids(value: unknown, path = '$.aids'): asserts va
     const aid = object(value, aidPath);
     const kind = string(aid.kind, `${aidPath}.kind`);
     if (kind === 'powerPath') {
-      exactKeys(aid, ['kind', 'sequence', 'dwellMs'], aidPath);
+      exactKeys(aid, ['kind', 'sequence', 'dwellMs', 'label'], aidPath);
       nonEmptyStringArray(aid.sequence, `${aidPath}.sequence`);
       if (aid.dwellMs !== undefined) positiveNumber(aid.dwellMs, `${aidPath}.dwellMs`);
+      if (aid.label !== undefined) aidBilingual(aid.label, `${aidPath}.label`);
       return;
     }
     if (kind === 'callouts') {
@@ -140,9 +141,10 @@ export function assertPrincipleAids(value: unknown, path = '$.aids'): asserts va
       return;
     }
     if (kind === 'subDemo') {
-      exactKeys(aid, ['kind', 'triggerId', 'caption'], aidPath);
+      exactKeys(aid, ['kind', 'triggerId', 'caption', 'label'], aidPath);
       string(aid.triggerId, `${aidPath}.triggerId`);
       aidBilingual(aid.caption, `${aidPath}.caption`);
+      if (aid.label !== undefined) aidBilingual(aid.label, `${aidPath}.label`);
       return;
     }
     fail(`${aidPath}.kind`, 'expected powerPath, callouts, flowParticles, cutaway, or subDemo');

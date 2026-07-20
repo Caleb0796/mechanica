@@ -665,7 +665,8 @@ export default function AidLayer({
                 }}
                 type="button"
               >
-                {aidNames[aid.kind][language]}
+                {("label" in aid ? aid.label?.[language] : undefined) ??
+                  aidNames[aid.kind][language]}
               </button>
             ))}
             {activeAid?.kind === "subDemo" ? (

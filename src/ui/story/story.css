@@ -73,7 +73,7 @@
 .scroll-story__index,
 .scroll-story__source-label {
   color: #c7a660;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -82,7 +82,7 @@
 .scroll-story__card h2 {
   margin: 0.6rem 0 0.8rem;
   color: #f0e6d3;
-  font-family: "Noto Serif CJK SC", "Songti SC", STSong, Georgia, serif;
+  font-family: var(--font-display);
   font-size: clamp(1.45rem, 3vw, 2.2rem);
   font-weight: 500;
   line-height: 1.12;
@@ -124,7 +124,7 @@
   padding-left: 1rem;
   border-left: 2px solid #8b754a;
   color: #d5cbbb;
-  font-family: "Noto Serif CJK SC", "Songti SC", STSong, Georgia, serif;
+  font-family: var(--font-display);
   font-size: 0.9rem;
   line-height: 1.7;
 }

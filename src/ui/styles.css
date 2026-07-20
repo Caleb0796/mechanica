@@ -1,4 +1,6 @@
 :root {
+  --font-display: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
+    "SimSun", Georgia, serif;
   color: #eee8da;
   background: #090a0a;
   font-family:
@@ -86,7 +88,7 @@ a {
 .machine-card h2,
 .panel h2,
 .viewer-title h1 {
-  font-family: "Noto Serif CJK SC", "Songti SC", STSong, Georgia, serif;
+  font-family: var(--font-display);
 }
 
 .brand-mark {
@@ -97,7 +99,7 @@ a {
 
 .brand-subtitle {
   color: #8d8c86;
-  font-size: 0.73rem;
+  font-size: 0.75rem;
 }
 
 .language-switch {
@@ -137,7 +139,7 @@ a {
 .eyebrow {
   margin: 0 0 1rem;
   color: #c7a660;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -200,7 +202,7 @@ a {
   border: 1px solid #806634;
   color: #e7d3a6;
   background: rgba(12, 13, 12, 0.86);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-decoration: none;
   text-transform: uppercase;
@@ -274,9 +276,9 @@ a {
 }
 
 .machine-index {
-  color: #8b754a;
+  color: #a98f5e;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 
 .machine-thumbnail {
@@ -468,7 +470,7 @@ a {
     rgba(136, 110, 58, 0.14),
     transparent 18rem
   );
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   pointer-events: none;
   text-transform: uppercase;
@@ -490,7 +492,7 @@ a {
   grid-row: 1;
   color: #7f796d;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   text-align: right;
 }
 
@@ -542,7 +544,7 @@ a {
   border: 1px solid #9b7a3e;
   border-radius: 999px;
   color: #d9b86d;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 
 .viewer-controls {
@@ -568,7 +570,7 @@ a {
 .controls-advanced summary {
   color: #cdb985;
   cursor: pointer;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 
 .controls-advanced[open] {
@@ -675,7 +677,7 @@ a {
   gap: 0.8rem;
   align-items: center;
   color: #aaa69d;
-  font-size: 0.73rem;
+  font-size: 0.75rem;
 }
 
 .range-control input {
@@ -735,7 +737,7 @@ a {
   display: block;
   margin-top: 0.2rem;
   color: #85837d;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 400;
 }
 
@@ -745,7 +747,7 @@ a {
   padding: 0.3rem 0.48rem;
   border: 1px solid #605139;
   color: #c8aa6a;
-  font-size: 0.67rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -762,9 +764,9 @@ a {
 }
 
 .record-list dt {
-  color: #77746d;
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
+  color: #9a968c;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -785,8 +787,12 @@ a {
 }
 
 .record-list .dim-note {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   opacity: 0.75;
+}
+
+.record-list small {
+  font-size: 0.75rem;
 }
 
 .panel-link {
@@ -803,7 +809,7 @@ a {
   min-height: 2rem;
   margin: 0.8rem 0 0;
   color: #d9c79e;
-  font-family: "Noto Serif CJK SC", "Songti SC", serif;
+  font-family: var(--font-display);
   font-size: 0.8rem;
   line-height: 1.55;
 }
@@ -819,14 +825,14 @@ a {
   display: block;
   margin-bottom: 0.35rem;
   color: #d9c08a;
-  font-family: "Noto Serif CJK SC", "Songti SC", serif;
+  font-family: var(--font-display);
 }
 
 .spotlight-done {
   display: inline-block;
   margin-top: 0.7rem;
   color: #e4c87f;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 
 .scheme-select {
@@ -858,7 +864,7 @@ a {
 .gallery-item p {
   margin: 0.6rem 0;
   color: #aaa69d;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 
 .assembly-step-controls,
@@ -880,7 +886,7 @@ a {
   padding: 0.45rem 0.6rem;
   color: #d9c79e;
   background: rgba(217, 184, 109, 0.08);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 
 .assembly-hint {
@@ -1022,7 +1028,7 @@ a {
   padding: 0.35rem 0.55rem;
   color: #e0d3ba;
   background: rgba(8, 9, 9, 0.78);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   pointer-events: none;
   transform: translateX(-50%);
   white-space: nowrap;
@@ -1083,7 +1089,7 @@ a {
   border-collapse: collapse;
   color: #bbb3a4;
   background: #0d0e0e;
-  font-size: 0.68rem;
+  font-size: 0.8rem;
 }
 
 .compare-table caption {
@@ -1115,7 +1121,7 @@ a {
   color: #aaa69d;
   background: #121311;
   cursor: pointer;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
 }
 
 .gallery-tab[aria-selected="true"] {
@@ -1128,7 +1134,7 @@ a {
 .gallery-attribution,
 .gallery-attribution-text {
   color: #85837d;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   line-height: 1.5;
 }
 

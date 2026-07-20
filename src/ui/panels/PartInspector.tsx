@@ -128,7 +128,11 @@ function MachineEvidenceRecord({
 
   return (
     <details data-testid="machine-evidence-register">
-      <summary className="panel-link">{copy.title}</summary>
+      <summary className="panel-link">
+        <span aria-level={3} role="heading">
+          {copy.title}
+        </span>
+      </summary>
       <p className="panel-copy">
         {module.data.era[language]} · {copy.inventors}:{" "}
         {module.data.inventors
@@ -137,7 +141,7 @@ function MachineEvidenceRecord({
       </p>
       <p className="panel-copy">{module.data.principle[language]}</p>
 
-      <h3>{copy.dimensions}</h3>
+      <h4>{copy.dimensions}</h4>
       <dl className="record-list" lang={language}>
         {module.data.dimensions.map((dimension) => {
           const metric = Array.isArray(dimension.meters)
@@ -173,7 +177,7 @@ function MachineEvidenceRecord({
 
       {module.data.schemes.length > 0 ? (
         <div>
-          <h3>{copy.schemes}</h3>
+          <h4>{copy.schemes}</h4>
           {module.data.schemes.map((scheme) => (
             <div
               className="panel-copy"
@@ -199,7 +203,7 @@ function MachineEvidenceRecord({
           "provenance" in constraint && Boolean(constraint.provenance),
       ) ? (
         <div>
-          <h3>{copy.engineering}</h3>
+          <h4>{copy.engineering}</h4>
           <dl className="record-list">
             {spec.expectedRatios?.map((ratio) => (
               <div key={`${ratio.from}-${ratio.to}`}>
@@ -237,7 +241,7 @@ function MachineEvidenceRecord({
         </div>
       ) : null}
 
-      <h3>{copy.sources}</h3>
+      <h4>{copy.sources}</h4>
       {module.data.sources.map((source) => (
         <details data-machine-source={source.id} key={source.id}>
           <summary>
@@ -263,7 +267,7 @@ function MachineEvidenceRecord({
 
       {module.data.controversies.length > 0 ? (
         <div>
-          <h3>{copy.controversies}</h3>
+          <h4>{copy.controversies}</h4>
           {module.data.controversies.map((controversy) => (
             <div
               className="panel-copy"
@@ -434,7 +438,7 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
 
       {sources.length > 0 ? (
         <div>
-          <h2>{t("inspector.source")}</h2>
+          <h4>{t("inspector.source")}</h4>
           {sources.map((source) => (
             <div
               data-source-id={source.id}
@@ -462,7 +466,7 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
 
       {partSchemes.length > 0 ? (
         <div>
-          <h2>{t("inspector.reconstructionEvidence")}</h2>
+          <h4>{t("inspector.reconstructionEvidence")}</h4>
           {partSchemes.map((scheme) => (
             <div
               className="panel-copy"
@@ -480,7 +484,7 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
       ) : null}
 
       <div>
-        <h2>{t("inspector.controversies")}</h2>
+        <h4>{t("inspector.controversies")}</h4>
         {controversies.length > 0 ? (
           controversies.map((controversy) => (
             <div className="panel-copy" key={controversy.topic.en}>

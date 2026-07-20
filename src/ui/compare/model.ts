@@ -202,6 +202,6 @@ export function tintForDifference(
   return {
     color: different ? color : undefined,
     emissive: linkedHover ? color : undefined,
-    opacity: different ? 0.72 : 1,
+    opacity: 1,
   };
 }

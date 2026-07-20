@@ -3,6 +3,7 @@ import { useThree } from "@react-three/fiber";
 import {
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -153,6 +154,7 @@ export default function DriveHandle({
 }: DriveHandleProps) {
   const camera = useThree((state) => state.camera);
   const gl = useThree((state) => state.gl);
+  const invalidate = useThree((state) => state.invalidate);
   const group = useRef<Group>(null);
   const activePointer = useRef<number | null>(null);
   const pointerIntent = useRef<PointerIntent | null>(null);
@@ -170,6 +172,8 @@ export default function DriveHandle({
   const worldQuaternion = useRef(new Quaternion());
   const axis: [number, number, number] = part.joint?.axis ?? [0, 0, 1];
   const radius = useMemo(() => gizmoRadius(part), [part]);
+
+  useEffect(() => invalidate(), [dragging, invalidate]);
 
   const updateProjectedCenter = () => {
     const rect = gl.domElement.getBoundingClientRect();

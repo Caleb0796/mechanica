@@ -13,6 +13,16 @@ export type CustomBuilderRegistry = Record<
 
 const MAX_COMPOSITE_GEOMETRIES = 4;
 
+interface MechanicaInstanceBounds {
+  box: THREE.Box3;
+  sphere: THREE.Sphere;
+}
+
+interface MechanicaInstancePayload {
+  bounds?: MechanicaInstanceBounds;
+  matrices?: unknown;
+}
+
 export function partGeometryEntries(
   geometry: PartGeometry,
 ): readonly THREE.BufferGeometry[] {
@@ -36,7 +46,8 @@ export function getMechanicaInstanceMatrices(
   geometry: THREE.BufferGeometry,
 ): readonly number[][] | null {
   const payload = geometry.userData.mechanicaInstances as
-    { matrices?: unknown } | undefined;
+    | MechanicaInstancePayload
+    | undefined;
   if (payload === undefined) return null;
   if (
     !Array.isArray(payload.matrices) ||
@@ -57,6 +68,34 @@ export function getMechanicaInstanceMatrices(
   return payload.matrices as number[][];
 }
 
+function prepareMechanicaInstanceBounds(
+  geometry: THREE.BufferGeometry,
+): MechanicaInstanceBounds | null {
+  const payload = geometry.userData.mechanicaInstances as
+    | MechanicaInstancePayload
+    | undefined;
+  if (!payload) return null;
+  if (payload.bounds) return payload.bounds;
+  const matrices = getMechanicaInstanceMatrices(geometry);
+  if (!matrices) return null;
+  if (!geometry.boundingBox) geometry.computeBoundingBox();
+  if (!geometry.boundingBox) {
+    throw new Error("Instanced geometry must provide finite position bounds");
+  }
+  const box = new THREE.Box3();
+  const matrix = new THREE.Matrix4();
+  for (const values of matrices) {
+    box.union(
+      geometry.boundingBox.clone().applyMatrix4(matrix.fromArray(values)),
+    );
+  }
+  payload.bounds = {
+    box,
+    sphere: box.getBoundingSphere(new THREE.Sphere()),
+  };
+  return payload.bounds;
+}
+
 export function applyMechanicaInstanceMatrices(
   mesh: THREE.InstancedMesh,
   matrices: readonly number[][],
@@ -71,8 +110,13 @@ export function applyMechanicaInstanceMatrices(
     mesh.setMatrixAt(index, matrix.fromArray(values));
   });
   mesh.instanceMatrix.needsUpdate = true;
-  mesh.computeBoundingBox();
-  mesh.computeBoundingSphere();
+  const bounds = prepareMechanicaInstanceBounds(mesh.geometry);
+  if (!mesh.boundingBox && bounds) mesh.boundingBox = bounds.box.clone();
+  if (!mesh.boundingSphere && bounds) {
+    mesh.boundingSphere = bounds.sphere.clone();
+  }
+  mesh.frustumCulled =
+    typeof mesh.geometry.userData.mechanicaUpdate !== "function";
 }
 
 function assertPositive(value: number, label: string): void {
@@ -293,6 +337,9 @@ export function buildPartGeometry(
         if (entry !== geometry) geometry.dispose();
         bufferGeometries[index] = entry;
       });
+      for (const geometry of bufferGeometries) {
+        prepareMechanicaInstanceBounds(geometry);
+      }
       return composite ? bufferGeometries : bufferGeometries[0];
     }
     default: {

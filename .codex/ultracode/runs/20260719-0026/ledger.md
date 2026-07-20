@@ -279,3 +279,49 @@ Concerns:
 - Validator-generated timestamp-only report changes and protected Phase 4/F1 work remain parked in named stashes pending post-commit restoration.
 
 Next: F0-T10 performance guardrails.
+
+## F0-T10 — PASS
+
+Files:
+- `src/core/primitives.ts`
+- `src/ui/compare/CompareView.tsx`
+- `src/ui/compare/model.ts`
+- `src/ui/viewer/DriveHandle.tsx`
+- `src/ui/viewer/MachineViewer.tsx`
+- `src/ui/styles.css`
+- `tests/core/primitives.test.ts`
+- `tests/ui/compare.test.ts`
+- `e2e/smoke.spec.ts`
+- `e2e/shoot.spec.ts`
+
+Verification:
+- `pnpm test` — 30 files, 254/254 tests passed.
+- `pnpm validate` — exit 0; all ten strict validations completed without error.
+- `pnpm e2e` — final full run: 48 passed, the requested-only screenshot runner skipped, zero failed in 8.6 minutes.
+- `pnpm i18n:check` — 0 issues.
+- `pnpm build` — exit 0; TypeScript and the production Vite build passed.
+- Browser guards prove full-resolution Astroclock compare at at least 25 FPS per viewport, Chariot compare at at least 40 FPS per viewport, one synchronized frame per button drive, zero idle compare frames, main-view sleep/resume, one 1024 px shadow map, and at least 25 FPS for Chain Pump and Typecase.
+- No authoritative machine data, dimensions, transmission ratios, or provenance changed.
+
+Evidence:
+- `artifacts/visual-gate-2/F0-T10/compare-astroclock-full-resolution.png`
+- `artifacts/visual-gate-2/F0-T10/compare-chariot-demand.png`
+- `artifacts/visual-gate-2/F0-T10/story-astroclock-retina.png`
+- `artifacts/visual-gate-2/F0-T10/shadow-typecase.png`
+- Root review confirmed complete compare silhouettes, full-resolution rendering without the former apology notice, readable opaque difference tints, and an unclipped Chariot lower shaft.
+- Independent read-only skeptic `/root/f0_t10_visual_skeptic` returned `SURVIVES` after reviewing the final evidence and implementation boundaries.
+
+Repairs during verification:
+- Replaced continuous compare rendering with explicit two-root invalidation for drive, hover, drag feedback, and linked-camera updates; kept both canvases at device resolution.
+- Removed per-drive React rerenders and translucent live-difference overdraw while preserving the red/teal semantic hierarchy and ghost-transition opacity.
+- Cached instanced-geometry bounds once, disabled frustum culling only for animated instances, memoized diagnostic triangle counts, and skipped redundant static compare transforms.
+- Added a 30-second main-view idle governor, pointer resume, unmount cleanup, viewport-aware refitting, bounded shadow cameras, and suppression of negligible shadow casters.
+- Restored governor-owned pause state when compare mode takes over, preventing an idle transition from leaving the main viewer latched paused.
+- Added compare-only whole-model fitting so the complete model remains visible without changing assembly, machine data, or authored home-camera behavior.
+
+Concerns:
+- Two post-gate JSON-only annotation extraction attempts timed out at the shared 5-second geometry-ready helper before sampling; the preceding authoritative full suite passed the same tests, and no application assertion failed. Exact FPS annotations were therefore not retained, only the enforced thresholds and pass result.
+- Vite reports the existing non-blocking three-vendor chunk-size warning.
+- Validator-generated timestamp-only report changes and protected Phase 4/F1 work remain parked in named stashes pending post-commit restoration.
+
+Next: restore the protected Phase 4/F1 workspace, complete the remaining functionality, and run the inserted all-ten visual remediation before final render generation.

@@ -67,13 +67,52 @@ async function sampleFrameRate(page: Page, seconds: number) {
   );
 }
 
-async function sampleCompareFrameRates(page: Page, seconds: number) {
-  await page.evaluate(() => window.__mechCompare?.resetFrameCounts());
-  await page.waitForTimeout(seconds * 1000);
+async function sampleCompareInteractionFrameRates(
+  page: Page,
+  seconds: number,
+) {
   return page.evaluate(
     (sampleSeconds) =>
-      window.__mechCompare?.frameCounts.map((count) => count / sampleSeconds) ??
-      [],
+      new Promise<number[]>((resolve, reject) => {
+        const compare = window.__mechCompare;
+        if (!compare) {
+          reject(new Error("Comparison performance hook is unavailable"));
+          return;
+        }
+        compare.resetFrameCounts();
+        let startedAt: number | undefined;
+        const sample = (timestamp: number) => {
+          startedAt ??= timestamp;
+          const elapsedSeconds = (timestamp - startedAt) / 1000;
+          if (elapsedSeconds >= sampleSeconds) {
+            requestAnimationFrame(() =>
+              resolve(
+                compare.frameCounts.map((count) => count / elapsedSeconds),
+              ),
+            );
+            return;
+          }
+          compare.drive(Math.PI / 720);
+          requestAnimationFrame(sample);
+        };
+        requestAnimationFrame(sample);
+      }),
+    seconds,
+  );
+}
+
+async function sampleCompareIdleFrames(page: Page) {
+  await page.waitForTimeout(250);
+  await page.evaluate(() => window.__mechCompare?.resetFrameCounts());
+  await page.waitForTimeout(500);
+  return page.evaluate(() => window.__mechCompare?.frameCounts ?? []);
+}
+
+async function sampleMachineRenderRate(page: Page, seconds: number) {
+  await page.evaluate(() => window.__mech?.resetFrameCount());
+  await page.waitForTimeout(seconds * 1000);
+  return page.evaluate(
+    (sampleSeconds) => (window.__mech?.frameCount() ?? 0) / sampleSeconds,
     seconds,
   );
 }
@@ -120,20 +159,18 @@ async function hoverDriveGizmo(page: Page, testIdPrefix: string) {
 async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
   const target = await hoverDriveGizmo(page, testIdPrefix);
   await page.mouse.down();
-  expect(
-    await page.evaluate(
-      (id) =>
-        new Promise<boolean>((resolve) =>
-          requestAnimationFrame(() =>
-            requestAnimationFrame(() =>
-              resolve(window.__mechDriveGizmos?.[id]?.dragging ?? false),
-            ),
-          ),
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          (id) => window.__mechDriveGizmos?.[id]?.dragging ?? false,
+          target.id,
         ),
-      target.id,
-    ),
-    `Drive gizmo ${target.id} did not capture a real pointer drag`,
-  ).toBe(true);
+      {
+        message: `Drive gizmo ${target.id} did not capture a real pointer drag`,
+      },
+    )
+    .toBe(true);
   await page.mouse.move(
     target.x + target.dragX * distance,
     target.y + target.dragY * distance,
@@ -1603,30 +1640,153 @@ test("F0-T6: all machine scenes stay noninteractive, bounded, and optional", asy
   }
 });
 
-test("chariot comparison sustains forty frames per second", async ({
+test("F0-T10: chariot comparison renders during interaction and sleeps while idle", async ({
   page,
 }) => {
   await page.goto("/#/m/chariot");
   await waitForMechanica(page);
   await page.getByTestId("compare-toggle").click();
-  await expect(page.locator(".compare-viewport canvas")).toHaveCount(2);
-  const frameRates = await sampleCompareFrameRates(page, 3);
+  const canvases = page.locator(".compare-viewport canvas");
+  await expect(canvases).toHaveCount(2);
+  expect(await sampleCompareIdleFrames(page)).toEqual([0, 0]);
+  const beforeDrive = await Promise.all([
+    canvases.nth(0).screenshot(),
+    canvases.nth(1).screenshot(),
+  ]);
+  await page.evaluate(() => window.__mechCompare?.resetFrameCounts());
+  await page.getByTestId("compare-drive-forward").click();
+  await expect
+    .poll(() => page.evaluate(() => window.__mechCompare?.frameCounts ?? []))
+    .toEqual([1, 1]);
+  const afterDrive = await Promise.all([
+    canvases.nth(0).screenshot(),
+    canvases.nth(1).screenshot(),
+  ]);
+  expect(afterDrive[0]).not.toEqual(beforeDrive[0]);
+  expect(afterDrive[1]).not.toEqual(beforeDrive[1]);
+  const frameRates = await sampleCompareInteractionFrameRates(page, 3);
   expect(frameRates).toHaveLength(2);
+  test.info().annotations.push({
+    description: frameRates.map((rate) => rate.toFixed(1)).join(" / "),
+    type: "chariot compare fps left / right",
+  });
   expect(Math.min(...frameRates)).toBeGreaterThanOrEqual(40);
+  expect(await sampleCompareIdleFrames(page)).toEqual([0, 0]);
 });
 
-test("astroclock comparison uses half resolution and sustains twenty-five fps", async ({
+test("F0-T10: astroclock comparison is full resolution, interactive, and idle on demand", async ({
   page,
 }) => {
   await page.goto("/#/m/astroclock");
   await waitForMechanica(page);
   await page.getByTestId("compare-toggle").click();
-  await expect(page.locator(".compare-resolution-notice")).toContainText(
-    "half-resolution",
+  const canvases = page.locator(".compare-viewport canvas");
+  await expect(canvases).toHaveCount(2);
+  await expect(page.locator(".compare-resolution-notice")).toHaveCount(0);
+  const renderScales = await canvases.evaluateAll((elements) =>
+    elements.map((element) => {
+      const canvas = element as HTMLCanvasElement;
+      return canvas.width / canvas.getBoundingClientRect().width;
+    }),
   );
-  const frameRates = await sampleCompareFrameRates(page, 3);
+  expect(Math.min(...renderScales)).toBeGreaterThanOrEqual(1);
+  const frameRates = await sampleCompareInteractionFrameRates(page, 3);
   expect(frameRates).toHaveLength(2);
+  test.info().annotations.push({
+    description: frameRates.map((rate) => rate.toFixed(1)).join(" / "),
+    type: "astroclock compare fps left / right",
+  });
   expect(Math.min(...frameRates)).toBeGreaterThanOrEqual(25);
+  expect(await sampleCompareIdleFrames(page)).toEqual([0, 0]);
+});
+
+test("F0-T10: the main viewer idles on demand, resumes, and budgets shadows", async ({
+  page,
+}) => {
+  await page.goto("/#/m/typecase");
+  await waitForMechanica(page, "typecase");
+  await waitForCamera(page);
+  const refitCount = await page.evaluate(
+    () => window.__mech?.cameraState()?.refitCount ?? 0,
+  );
+  await page.setViewportSize({ height: 900, width: 1_600 });
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.cameraState()?.refitCount))
+    .toBeGreaterThan(refitCount);
+  expect(
+    await page.evaluate(() => window.__mech?.frameFill()),
+  ).toBeLessThanOrEqual(0.8);
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.shadowState().configured))
+    .toBe(true);
+  expect(await page.evaluate(() => window.__mech?.shadowState())).toMatchObject(
+    {
+      castingLights: 1,
+      configured: true,
+      mapSize: 1024,
+    },
+  );
+  expect(
+    await page.evaluate(() => window.__mech?.shadowState().casters ?? 0),
+  ).toBeGreaterThan(0);
+  expect(
+    await page.evaluate(() => window.__mech?.shadowState().suppressed ?? 0),
+  ).toBeGreaterThan(0);
+  expect(await page.evaluate(() => window.__mech?.idleState().timeoutMs)).toBe(
+    30_000,
+  );
+
+  await page.evaluate(() => window.__mech?.forceIdle());
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.idleState()))
+    .toMatchObject({ autoPaused: true, demand: true, paused: true });
+  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+    "data-frameloop",
+    "demand",
+  );
+  await page.waitForTimeout(250);
+  await page.evaluate(() => window.__mech?.resetFrameCount());
+  await page.waitForTimeout(500);
+  expect(await page.evaluate(() => window.__mech?.frameCount())).toBe(0);
+
+  const viewer = await page.locator(".viewer-page").boundingBox();
+  if (!viewer) throw new Error("Viewer interaction surface is unavailable");
+  await page.mouse.move(viewer.x + 8, viewer.y + 8);
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.idleState()))
+    .toMatchObject({ autoPaused: false, demand: false, paused: false });
+  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+    "data-frameloop",
+    "always",
+  );
+
+  await page.evaluate(() => window.__mech?.forceIdle());
+  await expect
+    .poll(() => page.evaluate(() => window.__mech?.idleState().paused))
+    .toBe(true);
+  await page.goto("/");
+  await page.goto("/#/m/typecase");
+  await waitForMechanica(page, "typecase");
+  expect(await page.evaluate(() => window.__mech?.idleState())).toMatchObject({
+    autoPaused: false,
+    demand: false,
+    paused: false,
+  });
+});
+
+test("F0-T10: chainpump and typecase render-rate samples stay live", async ({
+  page,
+}) => {
+  for (const slug of ["chainpump", "typecase"] as const) {
+    await page.goto(`/#/m/${slug}`);
+    await waitForMechanica(page, slug);
+    const frameRate = await sampleMachineRenderRate(page, 2);
+    test.info().annotations.push({
+      description: `${frameRate.toFixed(1)} fps`,
+      type: `${slug} R3F render rate`,
+    });
+    expect(frameRate, slug).toBeGreaterThanOrEqual(25);
+  }
 });
 
 test("demo animation sustains fifty frames per second for ten seconds", async ({

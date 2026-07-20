@@ -1,9 +1,11 @@
 import * as THREE from "three";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { ensureBoxProjectedUvs } from "../../src/core/geometryUvs";
 import {
+  applyMechanicaInstanceMatrices,
   buildPartGeometry,
+  getMechanicaInstanceMatrices,
   singlePartGeometry,
 } from "../../src/core/primitives";
 
@@ -72,5 +74,72 @@ describe("geometry UV preparation", () => {
 
     expectFiniteUnitUvs(geometry);
     expect(geometry.userData.fixture).toBe("uvless");
+  });
+});
+
+describe("instanced geometry bounds", () => {
+  const matrices = [
+    new THREE.Matrix4().makeTranslation(-2, 0, 0).toArray(),
+    new THREE.Matrix4().makeTranslation(2, 0, 0).toArray(),
+  ];
+
+  function instancedGeometry(animated: boolean): THREE.BufferGeometry {
+    return singlePartGeometry(
+      buildPartGeometry(
+        { builder: "instances", params: {}, type: "custom" },
+        {
+          instances: () => {
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            geometry.userData.mechanicaInstances = { matrices };
+            if (animated) geometry.userData.mechanicaUpdate = () => undefined;
+            return geometry;
+          },
+        },
+      ),
+    );
+  }
+
+  it("reuses build-time bounds without mesh recomputation", () => {
+    const geometry = instancedGeometry(false);
+    const material = new THREE.MeshBasicMaterial();
+    const mesh = new THREE.InstancedMesh(geometry, material, matrices.length);
+    const boxSpy = vi.spyOn(mesh, "computeBoundingBox");
+    const sphereSpy = vi.spyOn(mesh, "computeBoundingSphere");
+
+    applyMechanicaInstanceMatrices(
+      mesh,
+      getMechanicaInstanceMatrices(geometry)!,
+    );
+    const appliedBox = mesh.boundingBox;
+    const appliedSphere = mesh.boundingSphere;
+    applyMechanicaInstanceMatrices(
+      mesh,
+      getMechanicaInstanceMatrices(geometry)!,
+    );
+
+    expect(boxSpy).not.toHaveBeenCalled();
+    expect(sphereSpy).not.toHaveBeenCalled();
+    expect(mesh.boundingBox).toBe(appliedBox);
+    expect(mesh.boundingSphere).toBe(appliedSphere);
+    expect(mesh.boundingBox?.min.x).toBeCloseTo(-2.5);
+    expect(mesh.boundingBox?.max.x).toBeCloseTo(2.5);
+    expect(mesh.frustumCulled).toBe(true);
+    geometry.dispose();
+    material.dispose();
+  });
+
+  it("disables frustum culling for animated instance matrices", () => {
+    const geometry = instancedGeometry(true);
+    const material = new THREE.MeshBasicMaterial();
+    const mesh = new THREE.InstancedMesh(geometry, material, matrices.length);
+
+    applyMechanicaInstanceMatrices(
+      mesh,
+      getMechanicaInstanceMatrices(geometry)!,
+    );
+
+    expect(mesh.frustumCulled).toBe(false);
+    geometry.dispose();
+    material.dispose();
   });
 });

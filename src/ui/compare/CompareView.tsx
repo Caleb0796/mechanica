@@ -39,7 +39,6 @@ export interface CompareSceneContext {
   differencePartIds: ReadonlySet<string>;
   driveDelta: (deltaRad: number) => void;
   driveNode: string;
-  driveRevision: number;
   geometryReadyAt: number | null;
   graph: IKinematicGraph;
   hoveredPartId?: string;
@@ -79,7 +78,13 @@ declare global {
 
 function LinkedCamera({ side }: { side: CompareSide }) {
   const { camera } = useThree();
+  const invalidate = useThree((state) => state.invalidate);
+  const cameraRevision = useCompareStore((state) => state.camera.revision);
   const appliedRevision = useRef(-1);
+
+  useEffect(() => {
+    if (useCompareStore.getState().cameraOwner !== side) invalidate();
+  }, [cameraRevision, invalidate, side]);
 
   useFrame(() => {
     const state = useCompareStore.getState();
@@ -122,6 +127,7 @@ function CompareFrameCounter({
   onReady: () => void;
   readyEnabled: boolean;
 }) {
+  const invalidate = useThree((state) => state.invalidate);
   const readyFrame = useRef<number | undefined>(undefined);
   const stableFrames = useRef(0);
 
@@ -138,10 +144,33 @@ function CompareFrameCounter({
     onFrame();
     if (!readyEnabled || readyFrame.current !== undefined) return;
     stableFrames.current =
-      deltaSeconds <= 1 / 35 ? stableFrames.current + 1 : 0;
-    if (stableFrames.current < 12) return;
+      deltaSeconds <= 1 / 20 ? stableFrames.current + 1 : 0;
+    if (stableFrames.current < 12) {
+      invalidate();
+      return;
+    }
     readyFrame.current = requestAnimationFrame(onReady);
   });
+  return null;
+}
+
+function CompareInvalidator({
+  register,
+  revision,
+  side,
+}: {
+  register: (side: CompareSide, invalidate?: () => void) => void;
+  revision: string;
+  side: CompareSide;
+}) {
+  const invalidate = useThree((state) => state.invalidate);
+
+  useEffect(() => {
+    register(side, invalidate);
+    return () => register(side, undefined);
+  }, [invalidate, register, side]);
+
+  useEffect(() => invalidate(), [invalidate, revision]);
   return null;
 }
 
@@ -175,7 +204,6 @@ export default function CompareView({
   const setCameraOwner = useCompareStore((state) => state.setCameraOwner);
   const setHoveredPartId = useCompareStore((state) => state.setHoveredPartId);
   const setCameraTarget = useCompareStore((state) => state.setCameraTarget);
-  const [driveRevision, setDriveRevision] = useState(0);
   const [compiledSchemes, setCompiledSchemes] = useState<
     Partial<Record<CompareSide, string>>
   >({});
@@ -183,6 +211,19 @@ export default function CompareView({
     Partial<Record<CompareSide, string>>
   >({});
   const frameCounts = useRef<[number, number]>([0, 0]);
+  const viewportInvalidators = useRef<
+    Partial<Record<CompareSide, () => void>>
+  >({});
+  const invalidateViewports = useCallback(() => {
+    viewportInvalidators.current.left?.();
+    viewportInvalidators.current.right?.();
+  }, []);
+  const registerInvalidator = useCallback(
+    (side: CompareSide, invalidate?: () => void) => {
+      viewportInvalidators.current[side] = invalidate;
+    },
+    [],
+  );
   const leftSpec = useMemo(
     () => specForScheme(module, leftSchemeId),
     [leftSchemeId, module],
@@ -227,9 +268,16 @@ export default function CompareView({
         driveNodes,
         deltaRad,
       );
-      setDriveRevision((revision) => revision + 1);
+      invalidateViewports();
     },
-    [driveNodes, leftGraph, module, rightGraph],
+    [driveNodes, invalidateViewports, leftGraph, module, rightGraph],
+  );
+  const handleHoverPart = useCallback(
+    (partId?: string) => {
+      setHoveredPartId(partId);
+      invalidateViewports();
+    },
+    [invalidateViewports, setHoveredPartId],
   );
   const markViewportReady = useCallback(
     (side: CompareSide, schemeId: string) => {
@@ -280,12 +328,11 @@ export default function CompareView({
       differencePartIds: differences,
       driveDelta: drive,
       driveNode: driveNodes[side === "left" ? 0 : 1],
-      driveRevision,
       geometryReadyAt: geometryWarmup.committedAt,
       graph,
       hoveredPartId,
       idleAutoRotationPaused: true,
-      onHoverPart: setHoveredPartId,
+      onHoverPart: handleHoverPart,
       onCameraTargetChange: setCameraTarget,
       onGeometryCommitted: geometryWarmup.commit,
       schemeId,
@@ -315,16 +362,22 @@ export default function CompareView({
           {schemeLabel(module, schemeId, language)}
         </header>
         <Canvas
-          dpr={module.spec.slug === "astroclock" ? 0.5 : undefined}
-          frameloop="always"
+          dpr={[1, 2]}
+          frameloop="demand"
           gl={{
-            antialias: false,
+            alpha: false,
             powerPreference: "high-performance",
+            stencil: false,
             toneMapping: ACESFilmicToneMapping,
             toneMappingExposure: 1.05,
           }}
           onCreated={prepareSceneEnvironment}
         >
+          <CompareInvalidator
+            register={registerInvalidator}
+            revision={`${cameraRevision}:${hoveredPartId ?? "none"}:${geometryWarmup.committedAt ?? "warming"}`}
+            side={side}
+          />
           <CompareFrameCounter
             key={`${schemeId}:${compiled ? "compiled" : "warming"}`}
             onFrame={() => {
@@ -353,13 +406,6 @@ export default function CompareView({
 
   return (
     <section className="compare-view" data-testid="compare-view">
-      {module.spec.slug === "astroclock" ? (
-        <p className="compare-resolution-notice" role="note">
-          {language === "en"
-            ? "Astroclock comparison uses half-resolution rendering."
-            : "水运仪象台对比模式使用半分辨率渲染。"}
-        </p>
-      ) : null}
       <div className="compare-viewports">
         {viewport("left", leftSchemeId, leftSpec, leftGraph)}
         {viewport("right", rightSchemeId, rightSpec, rightGraph)}

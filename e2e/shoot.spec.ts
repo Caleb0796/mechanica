@@ -52,6 +52,7 @@ const captureStates = [
   "reassemble",
   "inspect",
   "aid",
+  "story",
   "plain",
   "compare",
 ] as const;
@@ -154,6 +155,13 @@ async function enterCaptureState(
   state: CaptureState,
 ) {
   switch (state) {
+    case "story":
+      if (!(await page.getByTestId("story-launch").count())) {
+        throw new Error(`${slug}:story has no authored story`);
+      }
+      await page.getByTestId("story-launch").click();
+      await expect(page.getByTestId("scroll-story")).toBeVisible();
+      return;
     case "plain":
       await page.getByTestId("scene-toggle").click();
       await expect(page.locator(".viewer-canvas")).toHaveAttribute(

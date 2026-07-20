@@ -11,6 +11,7 @@ import {
   driveNodeForSpec,
   schemeGhostPresentation,
   specForScheme,
+  tintForDifference,
 } from "../../src/ui/compare/model";
 
 describe("scheme comparison", () => {
@@ -50,6 +51,18 @@ describe("scheme comparison", () => {
     driveComparedGraphs([leftGraph, rightGraph], driveNodes, Math.PI / 12);
     expect(leftGraph.state()[driveNodes[0]]).toBeCloseTo(Math.PI / 12, 8);
     expect(rightGraph.state()[driveNodes[1]]).toBeCloseTo(Math.PI / 12, 8);
+  });
+
+  it("keeps red and teal difference tints opaque in the live comparison", () => {
+    expect(tintForDifference("left", "changed", new Set(["changed"]))).toMatchObject(
+      {
+        color: "#d95c5c",
+        opacity: 1,
+      },
+    );
+    expect(
+      tintForDifference("right", "changed", new Set(["changed"])),
+    ).toMatchObject({ color: "#2aa7a1", opacity: 1 });
   });
 
   it("routes chariot comparison input through both heading mechanisms", () => {

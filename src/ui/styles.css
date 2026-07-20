@@ -723,21 +723,11 @@ a {
 
 .compare-view {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto minmax(8rem, 28vh);
+  grid-template-rows: minmax(0, 1fr) auto minmax(8rem, 28vh);
   width: 100%;
   height: 100%;
   padding-top: 5.5rem;
   background: #090a0a;
-}
-
-.compare-resolution-notice {
-  z-index: 2;
-  margin: 0;
-  padding: 0.45rem 1rem;
-  color: #d9c79e;
-  background: rgba(104, 75, 30, 0.35);
-  font-size: 0.72rem;
-  text-align: center;
 }
 
 .compare-viewports {
@@ -906,7 +896,7 @@ a {
   }
 
   .compare-view {
-    grid-template-rows: auto minmax(0, 1fr) auto minmax(7rem, 22vh);
+    grid-template-rows: minmax(0, 1fr) auto minmax(7rem, 22vh);
   }
 
   .compare-viewports {

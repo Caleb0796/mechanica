@@ -23,13 +23,16 @@ import {
   Box3,
   type BufferGeometry,
   type Camera,
+  type DirectionalLight,
   Euler,
   type Group,
   type InstancedMesh,
   Matrix4,
+  type Mesh,
   MeshBasicMaterial,
   MeshStandardMaterial,
   type Object3D,
+  type OrthographicCamera,
   PerspectiveCamera,
   Quaternion,
   type Scene,
@@ -157,10 +160,26 @@ interface CameraDiagnosticSnapshot {
   target: [number, number, number];
 }
 
+interface ShadowDiagnostics {
+  casters: number;
+  castingLights: number;
+  configured: boolean;
+  mapSize: number;
+  suppressed: number;
+}
+
 declare global {
   interface Window {
     __mech?: {
       graph: IKinematicGraph;
+      forceIdle: () => void;
+      frameCount: () => number;
+      idleState: () => {
+        autoPaused: boolean;
+        demand: boolean;
+        paused: boolean;
+        timeoutMs: number;
+      };
       cameraState: () => CameraDiagnosticSnapshot | null;
       frameFill: () => number;
       module: MachineModule;
@@ -177,6 +196,8 @@ declare global {
       sceneryRaycastViolations: () => number;
       sceneryTriangles: () => number;
       partMeshCount: (partId: string) => number;
+      resetFrameCount: () => void;
+      shadowState: () => ShadowDiagnostics;
       textureStats: () => {
         entries: number;
         generationMs: number;
@@ -520,6 +541,7 @@ function CameraDirector({
   controls,
   diagnostics,
   enabled,
+  fitFullBounds,
   fitKey,
   fitWholeMachine,
   introPlayed,
@@ -536,6 +558,7 @@ function CameraDirector({
   controls: RefObject<OrbitControlsHandle | null>;
   diagnostics?: MutableRefObject<CameraDiagnostics | null>;
   enabled: boolean;
+  fitFullBounds: boolean;
   fitKey: string;
   fitWholeMachine: boolean;
   introPlayed?: MutableRefObject<boolean>;
@@ -553,6 +576,7 @@ function CameraDirector({
   const localIntroPlayed = useRef(false);
   const hasPlayedIntro = introPlayed ?? localIntroPlayed;
   const transition = useRef<CameraTransition | null>(null);
+  const viewportFitKey = `${fitKey}:${viewport.width}x${viewport.height}`;
 
   useFrame(() => {
     const activeTransition = transition.current;
@@ -603,11 +627,11 @@ function CameraDirector({
     if (!enabled || readyAt === null) return;
     if (blocked) {
       if (hasPlayedIntro.current && fitKey === blockedFitKeyToConsume) {
-        fittedKey.current = fitKey;
+        fittedKey.current = viewportFitKey;
       }
       return;
     }
-    if (fittedKey.current === fitKey) return;
+    if (fittedKey.current === viewportFitKey) return;
     const root = machineRoot.current;
     if (!root) return;
 
@@ -637,7 +661,7 @@ function CameraDirector({
 
     let focusBounds: Box3 | null = null;
     let focusFallback = false;
-    if (!fitWholeMachine && profile.focusPartIds?.length) {
+    if (!fitWholeMachine && !fitFullBounds && profile.focusPartIds?.length) {
       const candidate = new Box3();
       const allFocusPartsFound = profile.focusPartIds.every((partId) => {
         const object = root.getObjectByName(partId);
@@ -737,7 +761,7 @@ function CameraDirector({
     controls.current?.target.copy(target);
     controls.current?.update();
     onTargetChange?.(target.toArray());
-    fittedKey.current = fitKey;
+    fittedKey.current = viewportFitKey;
     hasPlayedIntro.current ||= shouldPlayIntro;
 
     if (diagnostics) {
@@ -1064,6 +1088,7 @@ const PartNode = memo(function PartNode({
 }: PartNodeProps) {
   const group = useRef<Group>(null);
   const instancedMeshes = useRef<Array<InstancedMesh | null>>([]);
+  const compareStaticPositioned = useRef(false);
   const assemblyPointer = useRef<number | null>(null);
   const partPointerIntent = useRef<PointerIntent | null>(null);
   const assemblyStartPoint = useRef(new Vector3());
@@ -1092,6 +1117,9 @@ const PartNode = memo(function PartNode({
   const instanceMatrices = useMemo(
     () => geometries.map((geometry) => getMechanicaInstanceMatrices(geometry)),
     [geometries],
+  );
+  const hasAnimatedGeometry = geometries.some(
+    (geometry) => typeof geometry.userData.mechanicaUpdate === "function",
   );
   const hasInstancedGeometry = instanceMatrices.some(Boolean);
   const visualPresentation = useMemo(
@@ -1222,8 +1250,20 @@ const PartNode = memo(function PartNode({
   const partExplode = reassembling ? 0 : explode;
   const stagingSlot = assembly?.plan.stagingByPartId.get(part.id);
   const drivable = drivePartIds.has(part.id);
+  const crank = crankByRod.get(part.id);
+  const wheel = crank ? partsById.get(crank.wheel) : undefined;
+  const compareStaticTransform = Boolean(
+    compareContext &&
+      !crank &&
+      !part.joint &&
+      !hasAnimatedGeometry &&
+      !(module.data.slug === "astroclock" && part.id === "scoop-01"),
+  );
 
   useLayoutEffect(() => geometryResource.retain(), [geometryResource]);
+  useLayoutEffect(() => {
+    compareStaticPositioned.current = false;
+  }, [compareStaticTransform, part]);
 
   const setInstancedMesh = useCallback(
     (index: number, mesh: InstancedMesh | null) => {
@@ -1234,10 +1274,9 @@ const PartNode = memo(function PartNode({
 
   useFrame(() => {
     if (!group.current) return;
+    if (compareStaticTransform && compareStaticPositioned.current) return;
     group.current.scale.setScalar(assemblyAppearance);
     const state = displayState.current ?? graph.state();
-    const crank = crankByRod.get(part.id);
-    const wheel = crank ? partsById.get(crank.wheel) : undefined;
     if (reassembling && !seated && stagingSlot) {
       const parentObject = group.current.parent;
       const stagingPosition = new Vector3(...stagingSlot.position);
@@ -1306,6 +1345,7 @@ const PartNode = memo(function PartNode({
     } else if (part.joint?.kind === "prismatic") {
       group.current.position.addScaledVector(axis, value);
     }
+    compareStaticPositioned.current = true;
   });
 
   if (!visible) return null;
@@ -1569,6 +1609,7 @@ interface MachineSceneProps {
   onGeometryCommitted: (committedAt: number) => void;
   paused: boolean;
   schemeId?: string;
+  shadowDiagnostics?: MutableRefObject<ShadowDiagnostics>;
   showScene?: boolean;
   spotlightActive: boolean;
   spotlightPartIds: string[];
@@ -1604,12 +1645,14 @@ function StoryCameraRig({ pose }: { pose?: StoryStageState["camera"] }) {
 
 function SceneComplexityProbe({
   count,
+  frames,
   memory,
   sceneRef,
   sceneryCount,
   sceneryRaycastViolations,
 }: {
   count: { current: number };
+  frames: { current: number };
   memory: { current: { geometries: number; textures: number } };
   sceneRef: { current: Scene | null };
   sceneryCount: { current: number };
@@ -1617,6 +1660,7 @@ function SceneComplexityProbe({
 }) {
   const gl = useThree((state) => state.gl);
   const scene = useThree((state) => state.scene);
+  const trianglesByGeometry = useRef(new Map<string, number>());
 
   useLayoutEffect(() => {
     sceneRef.current = scene;
@@ -1626,6 +1670,7 @@ function SceneComplexityProbe({
   }, [scene, sceneRef]);
 
   useFrame(() => {
+    frames.current += 1;
     let triangles = 0;
     let sceneryTriangles = 0;
     let raycastViolations = 0;
@@ -1639,12 +1684,19 @@ function SceneComplexityProbe({
       if (!mesh.isMesh || !mesh.geometry || mesh.userData.mechanicaAffordance) {
         return;
       }
-      const vertices =
-        mesh.geometry.index?.count ??
-        mesh.geometry.getAttribute("position")?.count ??
-        0;
+      let geometryTriangles = trianglesByGeometry.current.get(
+        mesh.geometry.uuid,
+      );
+      if (geometryTriangles === undefined) {
+        const vertices =
+          mesh.geometry.index?.count ??
+          mesh.geometry.getAttribute("position")?.count ??
+          0;
+        geometryTriangles = Math.floor(vertices / 3);
+        trianglesByGeometry.current.set(mesh.geometry.uuid, geometryTriangles);
+      }
       const meshTriangles =
-        Math.floor(vertices / 3) *
+        geometryTriangles *
         (mesh.isInstancedMesh ? (mesh.count ?? 0) : 1);
       if (mesh.userData.mechanicaScenery) {
         sceneryTriangles += meshTriangles;
@@ -1660,6 +1712,117 @@ function SceneComplexityProbe({
       geometries: gl.info.memory.geometries,
       textures: gl.info.memory.textures,
     };
+  });
+
+  return null;
+}
+
+function ShadowBudget({
+  diagnostics,
+  fitKey,
+  machineRoot,
+  partIds,
+}: {
+  diagnostics: { current: ShadowDiagnostics };
+  fitKey: string;
+  machineRoot: RefObject<Group | null>;
+  partIds: ReadonlySet<string>;
+}) {
+  const scene = useThree((state) => state.scene);
+  const configuredKey = useRef<string | null>(null);
+
+  useFrame(() => {
+    if (configuredKey.current === fitKey || !machineRoot.current) return;
+    const machineBounds = mechanicaBounds(machineRoot.current);
+    if (machineBounds.isEmpty()) return;
+
+    const shadowLights: DirectionalLight[] = [];
+    scene.traverse((object) => {
+      const light = object as DirectionalLight;
+      if (!light.isDirectionalLight || !light.castShadow) return;
+      shadowLights.push(light);
+    });
+    const shadowLight = shadowLights[0];
+    if (!shadowLight) return;
+
+    const machineSphere = machineBounds.getBoundingSphere(new Sphere());
+    let casters = 0;
+    let suppressed = 0;
+    const meshesByPart = new Map<string, Mesh[]>();
+    machineRoot.current.traverse((object) => {
+      const mesh = object as Mesh;
+      if (!mesh.isMesh || mesh.userData.mechanicaAffordance) return;
+      let parent: Object3D | null = mesh.parent;
+      while (parent && !partIds.has(parent.name)) parent = parent.parent;
+      if (!parent) return;
+      const meshes = meshesByPart.get(parent.name) ?? [];
+      meshes.push(mesh);
+      meshesByPart.set(parent.name, meshes);
+    });
+    for (const meshes of meshesByPart.values()) {
+      const partBounds = new Box3();
+      for (const mesh of meshes) partBounds.union(mechanicaBounds(mesh));
+      const partRadius = partBounds.isEmpty()
+        ? 0
+        : partBounds.getBoundingSphere(new Sphere()).radius;
+      const castShadow = partRadius >= machineSphere.radius * 0.02;
+      for (const mesh of meshes) mesh.castShadow = castShadow;
+      if (castShadow) casters += meshes.length;
+      else suppressed += meshes.length;
+    }
+
+    const direction = shadowLight.position
+      .clone()
+      .sub(shadowLight.target.position);
+    if (direction.lengthSq() < 1e-8) direction.set(3, 5, 4);
+    const lightDistance = Math.max(machineSphere.radius * 3, 1);
+    shadowLight.position
+      .copy(machineSphere.center)
+      .addScaledVector(direction.normalize(), lightDistance);
+    shadowLight.target.position.copy(machineSphere.center);
+    shadowLight.target.updateMatrixWorld();
+    shadowLight.updateMatrixWorld();
+    shadowLight.shadow.updateMatrices(shadowLight);
+
+    const shadowCamera = shadowLight.shadow.camera as OrthographicCamera;
+    const lightBounds = new Box3();
+    for (const x of [machineBounds.min.x, machineBounds.max.x]) {
+      for (const y of [machineBounds.min.y, machineBounds.max.y]) {
+        for (const z of [machineBounds.min.z, machineBounds.max.z]) {
+          lightBounds.expandByPoint(
+            new Vector3(x, y, z).applyMatrix4(shadowCamera.matrixWorldInverse),
+          );
+        }
+      }
+    }
+    const padding = Math.max(machineSphere.radius * 0.1, 0.01);
+    shadowCamera.left = lightBounds.min.x - padding;
+    shadowCamera.right = lightBounds.max.x + padding;
+    shadowCamera.bottom = lightBounds.min.y - padding;
+    shadowCamera.top = lightBounds.max.y + padding;
+    shadowCamera.near = Math.max(0.01, -lightBounds.max.z - padding);
+    shadowCamera.far = Math.max(
+      shadowCamera.near + 0.01,
+      -lightBounds.min.z + padding,
+    );
+    shadowCamera.updateProjectionMatrix();
+    if (
+      shadowLight.shadow.mapSize.width !== 1024 ||
+      shadowLight.shadow.mapSize.height !== 1024
+    ) {
+      shadowLight.shadow.map?.dispose();
+      shadowLight.shadow.map = null;
+      shadowLight.shadow.mapSize.set(1024, 1024);
+    }
+    shadowLight.shadow.needsUpdate = true;
+    diagnostics.current = {
+      casters,
+      castingLights: shadowLights.length,
+      configured: true,
+      mapSize: shadowLight.shadow.mapSize.width,
+      suppressed,
+    };
+    configuredKey.current = fitKey;
   });
 
   return null;
@@ -1821,6 +1984,7 @@ function MachineScene({
   onGeometryCommitted,
   paused,
   schemeId,
+  shadowDiagnostics,
   showScene,
   spotlightActive,
   spotlightPartIds,
@@ -2017,7 +2181,7 @@ function MachineScene({
       }
     }
     frameState.current = displayState.current ?? graph.state();
-  });
+  }, -1);
 
   return (
     <>
@@ -2109,6 +2273,14 @@ function MachineScene({
           />
         ))}
       </group>
+      {shadowDiagnostics ? (
+        <ShadowBudget
+          diagnostics={shadowDiagnostics}
+          fitKey={`${geometryReadyAt ?? "warming"}:${sceneVisible ? "scene" : "plain"}:${machineFloorY.toFixed(6)}`}
+          machineRoot={machineRoot}
+          partIds={partIds}
+        />
+      ) : null}
       <AssemblyStagingGround assembly={assembly} />
       <CameraDirector
         blocked={spotlightActive}
@@ -2116,6 +2288,7 @@ function MachineScene({
         controls={orbitControls}
         diagnostics={cameraDiagnostics}
         enabled={!storyCamera && !assemblyCameraPending}
+        fitFullBounds={Boolean(compareContext)}
         fitKey={`${module.data.slug}:${schemeId ?? "default"}:${assemblyCameraState}`}
         fitWholeMachine={assemblyCameraState === "reassemble-staged"}
         introPlayed={introPlayed}
@@ -2591,7 +2764,7 @@ export function MachineStoryStage({
     >
       <Canvas
         camera={{ fov: 36, position: state.camera.position }}
-        dpr={1}
+        dpr={[1, 2]}
         frameloop={spotlightActive ? "always" : "demand"}
         gl={{
           alpha: false,
@@ -2872,6 +3045,7 @@ function SpotlightSemanticReadout({
 }
 
 const DRIVE_COACH_KEY = "mechanica:drive-coach";
+const VIEWER_IDLE_TIMEOUT_MS = 30_000;
 
 export default function MachineViewer({
   module,
@@ -2952,16 +3126,28 @@ export default function MachineViewer({
   const [assemblyPlaying, setAssemblyPlaying] = useState(false);
   const [completionProgress, setCompletionProgress] = useState(1);
   const [driveCoachVisible, setDriveCoachVisible] = useState(false);
+  const [idleDemand, setIdleDemand] = useState(false);
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
   const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
   const viewerIntroPlayed = useRef(false);
+  const viewerIdleTimer = useRef<number | null>(null);
+  const viewerIdleAutoPaused = useRef(false);
+  const viewerIdleDemand = useRef(false);
+  const sceneFrames = useRef(0);
   const sceneTriangles = useRef(0);
   const sceneryTriangles = useRef(0);
   const sceneryRaycastViolations = useRef(0);
   const sceneMemory = useRef({ geometries: 0, textures: 0 });
+  const shadowDiagnostics = useRef<ShadowDiagnostics>({
+    casters: 0,
+    castingLights: 0,
+    configured: false,
+    mapSize: 0,
+    suppressed: 0,
+  });
   const machineScene = useRef<Scene | null>(null);
   const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
   const observedCompletionEffect = useRef(0);
@@ -2997,6 +3183,34 @@ export default function MachineViewer({
       return;
     }
   }, []);
+  const clearViewerIdleTimer = useCallback(() => {
+    if (viewerIdleTimer.current === null) return;
+    window.clearTimeout(viewerIdleTimer.current);
+    viewerIdleTimer.current = null;
+  }, []);
+  const enterViewerIdle = useCallback(() => {
+    clearViewerIdleTimer();
+    viewerIdleAutoPaused.current = !useUiStore.getState().paused;
+    if (viewerIdleAutoPaused.current) setPaused(true);
+    viewerIdleDemand.current = true;
+    setIdleDemand(true);
+  }, [clearViewerIdleTimer, setPaused]);
+  const armViewerIdleTimer = useCallback(() => {
+    clearViewerIdleTimer();
+    viewerIdleTimer.current = window.setTimeout(
+      enterViewerIdle,
+      VIEWER_IDLE_TIMEOUT_MS,
+    );
+  }, [clearViewerIdleTimer, enterViewerIdle]);
+  const registerViewerInteraction = useCallback(() => {
+    viewerIdleDemand.current = false;
+    setIdleDemand(false);
+    if (viewerIdleAutoPaused.current) {
+      viewerIdleAutoPaused.current = false;
+      setPaused(false);
+    }
+    armViewerIdleTimer();
+  }, [armViewerIdleTimer, setPaused]);
 
   const oldSchemeSpec = useMemo(
     () =>
@@ -3083,6 +3297,38 @@ export default function MachineViewer({
       setDriveCoachVisible(true);
     }
   }, []);
+
+  useEffect(() => {
+    clearViewerIdleTimer();
+    viewerIdleDemand.current = false;
+    setIdleDemand(false);
+    if (compareActive) {
+      if (viewerIdleAutoPaused.current) setPaused(false);
+      viewerIdleAutoPaused.current = false;
+      return;
+    }
+    if (viewerIdleAutoPaused.current) setPaused(false);
+    viewerIdleAutoPaused.current = false;
+    armViewerIdleTimer();
+    return clearViewerIdleTimer;
+  }, [
+    activeSchemeId,
+    armViewerIdleTimer,
+    clearViewerIdleTimer,
+    compareActive,
+    module.spec.slug,
+    setPaused,
+  ]);
+
+  useEffect(
+    () => () => {
+      clearViewerIdleTimer();
+      if (viewerIdleAutoPaused.current) setPaused(false);
+      viewerIdleAutoPaused.current = false;
+      viewerIdleDemand.current = false;
+    },
+    [clearViewerIdleTimer, setPaused],
+  );
 
   useLayoutEffect(() => {
     if (spotlightFrame.current !== null) {
@@ -3260,8 +3506,16 @@ export default function MachineViewer({
     if (!hooksEnabled) return;
     window.__mech = {
       cameraState: () => cameraSnapshot(cameraDiagnostics.current),
+      forceIdle: enterViewerIdle,
       frameFill: () => projectedFrameFill(cameraDiagnostics.current),
+      frameCount: () => sceneFrames.current,
       graph,
+      idleState: () => ({
+        autoPaused: viewerIdleAutoPaused.current,
+        demand: viewerIdleDemand.current,
+        paused: useUiStore.getState().paused,
+        timeoutMs: VIEWER_IDLE_TIMEOUT_MS,
+      }),
       machineReady: viewerGeometryReadyAt,
       memory: () => ({ ...sceneMemory.current }),
       module: activeModule,
@@ -3325,8 +3579,12 @@ export default function MachineViewer({
           y: rect.top + ((1 - projected.y) * rect.height) / 2,
         };
       },
+      resetFrameCount: () => {
+        sceneFrames.current = 0;
+      },
       sceneryRaycastViolations: () => sceneryRaycastViolations.current,
       sceneryTriangles: () => sceneryTriangles.current,
+      shadowState: () => ({ ...shadowDiagnostics.current }),
       spec: activeSpec,
       textureStats: materialTextureStats,
       triangles: () => sceneTriangles.current,
@@ -3387,6 +3645,7 @@ export default function MachineViewer({
     assembly,
     assemblyProgress,
     completionProgress,
+    enterViewerIdle,
     explode,
     graph,
     setSelectedPartId,
@@ -3634,7 +3893,12 @@ export default function MachineViewer({
     : null;
 
   return (
-    <main className="viewer-page">
+    <main
+      className="viewer-page"
+      onPointerDownCapture={registerViewerInteraction}
+      onPointerMoveCapture={registerViewerInteraction}
+      onWheelCapture={registerViewerInteraction}
+    >
       <section className="viewer-stage">
         <div className="viewer-title">
           <h1>{module.data.names[language]}</h1>
@@ -3658,6 +3922,9 @@ export default function MachineViewer({
           data-geometry-built={viewerGeometryBuilt}
           data-geometry-state={viewerGeometryStatus}
           data-geometry-total={viewerGeometryTotal}
+          data-frameloop={
+            compareActive ? "compare-demand" : idleDemand ? "demand" : "always"
+          }
           data-drive-gizmo-testid={
             activeDrivePartId ? `drive-gizmo-${activeDrivePartId}` : undefined
           }
@@ -3688,6 +3955,7 @@ export default function MachineViewer({
                   : [0.9, 1.1, 1.6],
               }}
               dpr={[1, 2]}
+              frameloop={idleDemand ? "demand" : "always"}
               gl={{
                 toneMapping: ACESFilmicToneMapping,
                 toneMappingExposure: 1.05,
@@ -3699,6 +3967,7 @@ export default function MachineViewer({
               {hooksEnabled ? (
                 <SceneComplexityProbe
                   count={sceneTriangles}
+                  frames={sceneFrames}
                   memory={sceneMemory}
                   sceneRef={machineScene}
                   sceneryCount={sceneryTriangles}
@@ -3727,6 +3996,7 @@ export default function MachineViewer({
                     onGeometryCommitted={commitViewerGeometry}
                     paused={paused || !assembly.state.transmissionEnabled}
                     schemeId={activeSchemeId}
+                    shadowDiagnostics={shadowDiagnostics}
                     showScene={showScene && assembly.state.mode === "idle"}
                     spotlightActive={spotlightActive}
                     spotlightPartIds={spotlightPartIds}

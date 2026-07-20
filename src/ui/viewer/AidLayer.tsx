@@ -1,6 +1,7 @@
 import { Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import {
+  AdditiveBlending,
   BufferGeometry,
   CatmullRomCurve3,
   type Camera,
@@ -315,7 +316,11 @@ function FlowParticles({
   const customRoot = useRef<Group>(null);
   const points = useRef<Points>(null);
   const runtimeKey = useRef("");
-  const count = Math.min(160, Math.max(8, Math.round(aid.rate ?? 40)));
+  const warnedRef = useRef(false);
+  const count = Math.min(
+    200,
+    Math.max(24, Math.round((aid.rate ?? 40) * 2)),
+  );
   const geometry = useMemo(() => {
     const next = new BufferGeometry();
     next.setAttribute("position", new Float32BufferAttribute(count * 3, 3));
@@ -362,6 +367,15 @@ function FlowParticles({
       if (!part) continue;
       part.getWorldPosition(pathPositions[resolved]);
       resolved += 1;
+    }
+    if (import.meta.env.DEV && resolved === 0 && !warnedRef.current) {
+      warnedRef.current = true;
+      console.warn(
+        "[aids] flowParticles resolved 0 of",
+        aid.pathPartIds.length,
+        "part ids",
+        aid.pathPartIds,
+      );
     }
     const mode =
       resolved === 0
@@ -437,10 +451,11 @@ function FlowParticles({
       visible={false}
     >
       <pointsMaterial
+        blending={AdditiveBlending}
         color={particleColors[aid.flavor]}
         depthWrite={false}
-        opacity={0.82}
-        size={aid.flavor === "sparks" ? 0.024 : 0.018}
+        opacity={0.95}
+        size={aid.flavor === "sparks" ? 0.06 : 0.055}
         sizeAttenuation
         transparent
       />

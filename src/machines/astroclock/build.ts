@@ -1375,10 +1375,13 @@ const mechanism: MechanismScript = {
         en: "See one escapement beat",
       },
       run: (graph, emit) => {
-        emit("camera", "tower-shell");
+        emit("camera", "shulun");
         emit("highlight", "scoop-01");
         runEscapementBeat(graph, emit, true);
+        emit("camera", "celestial-column");
         emit("highlight", "celestial-globe");
+        emit("camera", "chime-tier-1");
+        emit("camera", "tower-shell");
         emit("spotlight:done", "shulun");
       },
     },

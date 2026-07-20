@@ -96,6 +96,7 @@ import DriveHandle, {
   isPointerTap,
   type PointerIntent,
 } from "./DriveHandle";
+import DemoFocusRig from "./DemoFocusRig";
 import { buildDemoTimeline } from "./demoTimeline";
 import ExplodedControl from "./ExplodedControl";
 import {
@@ -212,6 +213,7 @@ declare global {
       };
     };
     __mechExplodeSpread?: () => number;
+    __mechDemoFocus?: { focusPartId: string | null };
     __mechSelect?: (partId: string | null) => void;
     __mechAssembly?: {
       advanceStep: () => void;
@@ -3019,6 +3021,10 @@ export default function MachineViewer({
     () => ({ ...module, spec: activeSpec }),
     [activeSpec, module],
   );
+  const activePartIds = useMemo(
+    () => activeSpec.parts.map((part) => part.id),
+    [activeSpec.parts],
+  );
   const assembly = useAssemblyController(activeSpec.parts);
   const schemeIds = useMemo(
     () => Object.keys(module.schemes ?? {}),
@@ -3044,6 +3050,7 @@ export default function MachineViewer({
     null,
   );
   const [spotlightDone, setSpotlightDone] = useState(false);
+  const [demoFocusPartId, setDemoFocusPartId] = useState<string | null>(null);
   const [spotlightPartIds, setSpotlightPartIds] = useState<string[]>([]);
   const [spotlightRunId, setSpotlightRunId] = useState(0);
   const [spotlightTranscript, setSpotlightTranscript] = useState<string[]>([]);
@@ -3057,6 +3064,8 @@ export default function MachineViewer({
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
+  const demoFocusRef = useRef<string | null>(null);
+  demoFocusRef.current = demoFocusPartId;
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
   const viewerIntroPlayed = useRef(false);
   const viewerIdleTimer = useRef<number | null>(null);
@@ -3533,6 +3542,11 @@ export default function MachineViewer({
       warmTextures: warmMaterialTextures,
     };
     window.__mechSelect = (partId) => setSelectedPartId(partId);
+    window.__mechDemoFocus = {
+      get focusPartId() {
+        return demoFocusRef.current;
+      },
+    };
     window.__mechAssembly = {
       advanceStep: assembly.advanceStep,
       enterExplodedMode: assembly.enterExplodedMode,
@@ -3577,6 +3591,7 @@ export default function MachineViewer({
       if (window.__mech?.graph === graph) {
         delete window.__mech;
         delete window.__mechSelect;
+        delete window.__mechDemoFocus;
         delete window.__mechExplodeSpread;
         delete window.__mechAssembly;
       }
@@ -3632,8 +3647,6 @@ export default function MachineViewer({
   const handleSolve = (result: SolveResult) => {
     for (const event of result.events) recordEvent(event.type, event.part);
   };
-
-  const setDemoFocusPartId = (_: string | null) => {};
 
   const runTrigger = (triggerId: string) => {
     const trigger = module.mechanism?.triggers.find(
@@ -3920,6 +3933,12 @@ export default function MachineViewer({
                         : undefined
                     }
                   />
+                  <DemoFocusRig
+                    focusPartId={demoFocusPartId}
+                    onSettled={() => setDemoFocusPartId(null)}
+                    partIds={activePartIds}
+                    profile={viewerProfile}
+                  />
                   {assembly.state.mode === "idle" ? (
                     <AidLayer
                       aids={module.aids ?? []}
@@ -4006,6 +4025,14 @@ export default function MachineViewer({
               {paused ? t("viewer.resume") : t("viewer.pause")}
             </button>
           ) : null}
+          <button
+            className="ghost-button"
+            data-testid="reset-view"
+            onClick={() => setDemoFocusPartId("tower-shell")}
+            type="button"
+          >
+            {t("viewer.resetView")}
+          </button>
           {selectedDrivePart ? (
             <button
               aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown ArrowUp"

@@ -1338,7 +1338,7 @@ describe("astroclock machine module", () => {
   it("runs the spotlight through one beat and closes with a done state", () => {
     const { events, eventStates, graph } = runTrigger("spotlight");
     expect(events).toEqual([
-      { type: "camera", part: "tower-shell" },
+      { type: "camera", part: "shulun" },
       { type: "highlight", part: "scoop-01" },
       { type: "phase:start", part: "water-flow-indicator" },
       { type: "phase:water-arrival", part: "water-flow-indicator" },
@@ -1358,7 +1358,10 @@ describe("astroclock machine module", () => {
       { type: "caption:advance", part: "shulun" },
       { type: "caption:relock", part: "tiansuo-r" },
       { type: "phase:end", part: "tiansuo-r" },
+      { type: "camera", part: "celestial-column" },
       { type: "highlight", part: "celestial-globe" },
+      { type: "camera", part: "chime-tier-1" },
+      { type: "camera", part: "tower-shell" },
       { type: "spotlight:done", part: "shulun" },
     ]);
     const stateAt = (type: string) =>

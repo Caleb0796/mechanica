@@ -1,4 +1,9 @@
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  Canvas,
+  type RootState,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
 import {
   type ReactNode,
   useCallback,
@@ -26,6 +31,7 @@ import {
   type CompareSide,
 } from "./model";
 import { useCompareStore } from "./store";
+import PosterFallback from "../PosterFallback";
 import SceneEnvironment, {
   prepareSceneEnvironment,
 } from "../viewer/SceneEnvironment";
@@ -75,6 +81,26 @@ declare global {
   interface Window {
     __mechCompare?: MechCompareHook;
   }
+}
+
+function registerContextLossHandlers(
+  { gl, invalidate }: Pick<RootState, "gl" | "invalidate">,
+  onChange: (lost: boolean) => void,
+): () => void {
+  const handleLost = (event: Event) => {
+    event.preventDefault();
+    onChange(true);
+  };
+  const handleRestored = () => {
+    onChange(false);
+    invalidate();
+  };
+  gl.domElement.addEventListener("webglcontextlost", handleLost);
+  gl.domElement.addEventListener("webglcontextrestored", handleRestored);
+  return () => {
+    gl.domElement.removeEventListener("webglcontextlost", handleLost);
+    gl.domElement.removeEventListener("webglcontextrestored", handleRestored);
+  };
 }
 
 function LinkedCamera({ side }: { side: CompareSide }) {
@@ -212,8 +238,14 @@ export default function CompareView({
     Partial<Record<CompareSide, string>>
   >({});
   const [driveCaption, setDriveCaption] = useState("");
+  const [contextLost, setContextLost] = useState<
+    Partial<Record<CompareSide, boolean>>
+  >({});
   const driveCaptionTimeout = useRef<number | null>(null);
   const driveRepeatInterval = useRef<number | null>(null);
+  const contextLossCleanup = useRef<
+    Partial<Record<CompareSide, () => void>>
+  >({});
   const frameCounts = useRef<[number, number]>([0, 0]);
   const viewportInvalidators = useRef<
     Partial<Record<CompareSide, () => void>>
@@ -365,6 +397,8 @@ export default function CompareView({
 
   useEffect(
     () => () => {
+      contextLossCleanup.current.left?.();
+      contextLossCleanup.current.right?.();
       stopDriveRepeat();
       if (driveCaptionTimeout.current !== null) {
         window.clearTimeout(driveCaptionTimeout.current);
@@ -430,7 +464,16 @@ export default function CompareView({
             toneMapping: ACESFilmicToneMapping,
             toneMappingExposure: 1.05,
           }}
-          onCreated={prepareSceneEnvironment}
+          onCreated={(rootState) => {
+            prepareSceneEnvironment(rootState);
+            contextLossCleanup.current[side]?.();
+            setContextLost((current) => ({ ...current, [side]: false }));
+            contextLossCleanup.current[side] = registerContextLossHandlers(
+              rootState,
+              (lost) =>
+                setContextLost((current) => ({ ...current, [side]: lost })),
+            );
+          }}
         >
           <CompareInvalidator
             register={registerInvalidator}
@@ -451,6 +494,24 @@ export default function CompareView({
             onReady={() => markViewportCompiled(side, schemeId)}
           />
         </Canvas>
+        {contextLost[side] ? (
+          <div className="context-lost-overlay" role="alert">
+            <p>{t("viewer.contextLost")}</p>
+            <button
+              className="gold-button"
+              onClick={() => window.location.reload()}
+              type="button"
+            >
+              {t("app.retry")}
+            </button>
+          </div>
+        ) : null}
+        <div
+          className="poster-overlay"
+          data-ready={geometryWarmup.committedAt !== null ? "true" : "false"}
+        >
+          <PosterFallback slug={module.data.slug} />
+        </div>
         {!geometryWarmup.prepared ? (
           <GeometryLoading
             built={geometryWarmup.built}

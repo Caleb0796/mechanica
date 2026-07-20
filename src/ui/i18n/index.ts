@@ -15,7 +15,17 @@ export function detectBrowserLanguage(
   return language?.toLowerCase().startsWith("zh") ? "zh" : "en";
 }
 
-export const initialLanguage = detectBrowserLanguage();
+function storedLanguage(): SupportedLanguage | undefined {
+  if (typeof localStorage === "undefined") return undefined;
+  try {
+    const language = localStorage.getItem("mechanica-lang");
+    return language === "en" || language === "zh" ? language : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export const initialLanguage = storedLanguage() ?? detectBrowserLanguage();
 
 void i18n.use(initReactI18next).init({
   fallbackLng: "en",

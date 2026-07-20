@@ -1,6 +1,7 @@
 import { ContactShadows, OrbitControls } from "@react-three/drei";
 import {
   Canvas,
+  type RootState,
   type ThreeEvent,
   useFrame,
   useThree,
@@ -81,6 +82,7 @@ import {
   type SchemeTransitionMetadata,
 } from "../compare/model";
 import GalleryPanel from "../panels/GalleryPanel";
+import PosterFallback from "../PosterFallback";
 import DocentChat from "../panels/DocentChat";
 import PartInspector from "../panels/PartInspector";
 import SchemeSwitcher from "../panels/SchemeSwitcher";
@@ -260,6 +262,26 @@ export interface MachineViewerProps {
 }
 
 const EMPTY_PART_IDS: string[] = [];
+
+function registerContextLossHandlers(
+  { gl, invalidate }: Pick<RootState, "gl" | "invalidate">,
+  onChange: (lost: boolean) => void,
+): () => void {
+  const handleLost = (event: Event) => {
+    event.preventDefault();
+    onChange(true);
+  };
+  const handleRestored = () => {
+    onChange(false);
+    invalidate();
+  };
+  gl.domElement.addEventListener("webglcontextlost", handleLost);
+  gl.domElement.addEventListener("webglcontextrestored", handleRestored);
+  return () => {
+    gl.domElement.removeEventListener("webglcontextlost", handleLost);
+    gl.domElement.removeEventListener("webglcontextrestored", handleRestored);
+  };
+}
 
 interface PartNodeProps {
   aidCutawayPartIds?: readonly string[];
@@ -2423,6 +2445,33 @@ export function captureSpotlightState(
   return captured;
 }
 
+function AspectAwareStoryCamera({
+  pose,
+}: {
+  pose: StoryStageState["camera"];
+}) {
+  const camera = useThree((threeState) => threeState.camera);
+  const size = useThree((threeState) => threeState.size);
+  const authoredPosition = useMemo(() => new Vector3(), []);
+  const target = useMemo(() => new Vector3(), []);
+  const targetQuaternion = useMemo(() => new Quaternion(), []);
+  const lookAtMatrix = useMemo(() => new Matrix4(), []);
+
+  useFrame(() => {
+    const aspect = size.width / size.height;
+    const compensation = aspect >= 1.6 ? 1 : Math.min(1.45, 1.6 / aspect);
+    authoredPosition.set(...pose.position);
+    target.set(...pose.target);
+    camera.position.copy(authoredPosition).multiplyScalar(compensation);
+    lookAtMatrix.lookAt(camera.position, target, camera.up);
+    targetQuaternion.setFromRotationMatrix(lookAtMatrix);
+    camera.quaternion.copy(targetQuaternion);
+    camera.updateMatrixWorld();
+  });
+
+  return null;
+}
+
 export function MachineStoryStage({
   module,
   spotlightRunId,
@@ -2434,6 +2483,8 @@ export function MachineStoryStage({
 }) {
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
+  const [contextLost, setContextLost] = useState(false);
+  const contextLossCleanup = useRef<(() => void) | null>(null);
   const [storedStoryReady, setStoredStoryReady] = useState<{
     at: number;
     key: string;
@@ -2608,6 +2659,13 @@ export function MachineStoryStage({
       graph.drive(partId, delta);
     },
     [graph],
+  );
+
+  useEffect(
+    () => () => {
+      contextLossCleanup.current?.();
+    },
+    [],
   );
 
   useLayoutEffect(() => {
@@ -2804,12 +2862,21 @@ export function MachineStoryStage({
           toneMapping: ACESFilmicToneMapping,
           toneMappingExposure: 1.05,
         }}
-        onCreated={prepareSceneEnvironment}
+        onCreated={(rootState) => {
+          prepareSceneEnvironment(rootState);
+          contextLossCleanup.current?.();
+          setContextLost(false);
+          contextLossCleanup.current = registerContextLossHandlers(
+            rootState,
+            setContextLost,
+          );
+        }}
       >
         <SceneEnvironment />
         {geometryPrepared ? (
           <MachineScene
             activeSpec={activeSpec}
+            aidHighlightPartIds={highlightedParts}
             appearance={activeAppearance}
             assemblyProgress={1}
             displayState={displayState}
@@ -2826,11 +2893,29 @@ export function MachineStoryStage({
             spotlightPartIds={EMPTY_PART_IDS}
             spotlightRunId={0}
             storyCamera={state.camera}
-            storyHighlightPartIds={highlightedParts}
             transitionLayer={transitionLayer}
           />
         ) : null}
+        <AspectAwareStoryCamera pose={state.camera} />
       </Canvas>
+      {contextLost ? (
+        <div className="context-lost-overlay" role="alert">
+          <p>{t("viewer.contextLost")}</p>
+          <button
+            className="gold-button"
+            onClick={() => window.location.reload()}
+            type="button"
+          >
+            {t("app.retry")}
+          </button>
+        </div>
+      ) : null}
+      <div
+        className="poster-overlay"
+        data-ready={storyReadyAt !== null ? "true" : "false"}
+      >
+        <PosterFallback slug={module.data.slug} />
+      </div>
       {!geometryPrepared ? (
         <GeometryLoading
           built={geometryBuilt}
@@ -3111,6 +3196,8 @@ export default function MachineViewer({
   const [completionProgress, setCompletionProgress] = useState(1);
   const [driveCoachVisible, setDriveCoachVisible] = useState(false);
   const [idleDemand, setIdleDemand] = useState(false);
+  const [contextLost, setContextLost] = useState(false);
+  const contextLossCleanup = useRef<(() => void) | null>(null);
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
@@ -3334,6 +3421,7 @@ export default function MachineViewer({
 
   useEffect(
     () => () => {
+      contextLossCleanup.current?.();
       clearViewerIdleTimer();
       if (viewerIdleAutoPaused.current) setPaused(false);
       viewerIdleAutoPaused.current = false;
@@ -4000,7 +4088,15 @@ export default function MachineViewer({
                 toneMapping: ACESFilmicToneMapping,
                 toneMappingExposure: 1.05,
               }}
-              onCreated={prepareSceneEnvironment}
+              onCreated={(rootState) => {
+                prepareSceneEnvironment(rootState);
+                contextLossCleanup.current?.();
+                setContextLost(false);
+                contextLossCleanup.current = registerContextLossHandlers(
+                  rootState,
+                  setContextLost,
+                );
+              }}
               shadows
             >
               <SceneEnvironment />
@@ -4071,6 +4167,26 @@ export default function MachineViewer({
               ) : null}
             </Canvas>
           )}
+          {!compareActive && contextLost ? (
+            <div className="context-lost-overlay" role="alert">
+              <p>{t("viewer.contextLost")}</p>
+              <button
+                className="gold-button"
+                onClick={() => window.location.reload()}
+                type="button"
+              >
+                {t("app.retry")}
+              </button>
+            </div>
+          ) : null}
+          {!compareActive ? (
+            <div
+              className="poster-overlay"
+              data-ready={viewerGeometryReadyAt !== null ? "true" : "false"}
+            >
+              <PosterFallback slug={module.data.slug} />
+            </div>
+          ) : null}
           {!compareActive && !viewerGeometryPrepared ? (
             <GeometryLoading
               built={viewerGeometryBuilt}
@@ -4171,7 +4287,7 @@ export default function MachineViewer({
               <button
                 aria-pressed={paused}
                 className="ghost-button"
-                disabled={compareActive || !assembly.state.transmissionEnabled}
+                disabled={!assembly.state.transmissionEnabled}
                 onClick={() => setPaused(!paused)}
                 type="button"
               >

@@ -67,12 +67,7 @@ export default function SchemeSwitcher({
   const selected = module.schemes?.[selectedSchemeId];
 
   return (
-    <section
-      className="panel"
-      data-ghost-duration-ms="1000"
-      data-new-part-tint="#2aa7a1"
-      data-old-part-tint="#d95c5c"
-    >
+    <section className="panel">
       <h2>{t("viewer.scheme")}</h2>
       <select
         aria-label={t("viewer.scheme")}

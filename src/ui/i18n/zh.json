@@ -6,6 +6,7 @@
     "home": "典藏",
     "loading": "正在展开机械图谱…",
     "loadError": "展品暂时无法载入",
+    "notFoundMachine": "没有找到展品「{{slug}}」。",
     "retry": "重新载入",
     "demo": "进入齿轮演示",
     "demoHint": "拖动小齿轮，观察传动比与反向运动"
@@ -35,6 +36,7 @@
     "spotlight": "巧思聚焦",
     "spotlightPlay": "播放巧思",
     "spotlightDone": "演示完成",
+    "contextLost": "图形上下文已丢失，正在尝试恢复…",
     "noMechanisms": "暂无独立机构演示"
   },
   "assembly": {

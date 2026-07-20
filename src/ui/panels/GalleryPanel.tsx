@@ -299,8 +299,6 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
     museum: copy.museumDescription,
     collection: copy.collectionDescription,
   };
-  const activeImages = activeLayer === "collection" ? [] : layers[activeLayer];
-
   return (
     <section className="panel">
       <h2>{t("gallery.title")}</h2>
@@ -332,113 +330,130 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
         ))}
       </div>
 
-      <div
-        aria-labelledby={`gallery-tab-${activeLayer}`}
-        data-gallery-panel={activeLayer}
-        id={`gallery-panel-${activeLayer}`}
-        role="tabpanel"
-        tabIndex={0}
-      >
-        <p className="gallery-layer-description">{descriptions[activeLayer]}</p>
+      {GALLERY_LAYERS.map((layer) => {
+        const images = layer === "collection" ? [] : layers[layer];
+        return (
+          <div
+            aria-labelledby={`gallery-tab-${layer}`}
+            data-gallery-panel={layer}
+            hidden={activeLayer !== layer}
+            id={`gallery-panel-${layer}`}
+            key={layer}
+            role="tabpanel"
+            tabIndex={activeLayer === layer ? 0 : -1}
+          >
+            <p className="gallery-layer-description">{descriptions[layer]}</p>
 
-        {activeLayer === "collection" ? (
-          layerCounts.collection === 0 ? (
-            <p className="panel-empty">{t("gallery.empty")}</p>
-          ) : (
-            <div className="gallery-grid gallery-collection-grid">
-              {data.museums.map((museum) => {
-                const name = museum.name[language];
-                const exhibit = museum.exhibit[language];
-                const city = museum.city[language];
-                return (
-                  <article
-                    className="gallery-item gallery-collection-card"
-                    data-collection-status={museum.url ? "linked" : "fallback"}
-                    key={`${name}-${exhibit}`}
-                  >
-                    <h3>{name}</h3>
-                    <p>
-                      {city} · {exhibit}
-                      {museum.isOriginalArtifact ? ` · ${copy.original}` : ""}
-                    </p>
-                    {museum.url ? (
-                      <>
-                        <a
-                          className="panel-link"
-                          href={museum.url}
-                          rel="noreferrer noopener"
-                          target="_blank"
-                        >
-                          {name} — {exhibit}
-                        </a>
-                        <p className="gallery-link-fallback">{copy.deadLink}</p>
-                      </>
-                    ) : (
-                      <p className="gallery-link-fallback" role="status">
-                        {copy.linkUnavailable}
-                      </p>
-                    )}
-                  </article>
-                );
-              })}
-              {layers.linkouts.map((image) => (
-                <article
-                  className="gallery-item gallery-collection-card"
-                  data-collection-status="linked"
-                  key={`${image.title}-${image.angle}`}
-                >
-                  <h3>{image.title}</h3>
-                  <p>{image.angle}</p>
-                  <a
-                    className="panel-link"
-                    href={image.sourceUrl}
-                    rel="noreferrer noopener"
-                    target="_blank"
-                  >
-                    {image.title} — {image.angle}
-                  </a>
-                  <p className="gallery-link-fallback">{copy.deadLink}</p>
-                </article>
-              ))}
-            </div>
-          )
-        ) : activeImages.length === 0 ? (
-          <p className="panel-empty">{t("gallery.empty")}</p>
-        ) : (
-          <div className="gallery-grid">
-            {activeImages.map((image) => {
-              const imageUrl = localImageUrl(image);
-              return (
-                <article
-                  className="gallery-item"
-                  data-gallery-license={image.license}
-                  data-testid="image-credit"
-                  key={`${image.title}-${image.angle}`}
-                >
-                  {imageUrl ? (
-                    <button
-                      aria-label={`${copy.viewImage}: ${image.title}`}
-                      className="gallery-image-button"
-                      onClick={() => openLightbox(image)}
-                      type="button"
+            {layer === "collection" ? (
+              layerCounts.collection === 0 ? (
+                <p className="panel-empty">{t("gallery.empty")}</p>
+              ) : (
+                <div className="gallery-grid gallery-collection-grid">
+                  {data.museums.map((museum) => {
+                    const name = museum.name[language];
+                    const exhibit = museum.exhibit[language];
+                    const city = museum.city[language];
+                    return (
+                      <article
+                        className="gallery-item gallery-collection-card"
+                        data-collection-status={
+                          museum.url ? "linked" : "fallback"
+                        }
+                        key={`${name}-${exhibit}`}
+                      >
+                        <h3>{name}</h3>
+                        <p>
+                          {city} · {exhibit}
+                          {museum.isOriginalArtifact
+                            ? ` · ${copy.original}`
+                            : ""}
+                        </p>
+                        {museum.url ? (
+                          <>
+                            <a
+                              className="panel-link"
+                              href={museum.url}
+                              rel="noreferrer noopener"
+                              target="_blank"
+                            >
+                              {name} — {exhibit}
+                            </a>
+                            <p className="gallery-link-fallback">
+                              {copy.deadLink}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="gallery-link-fallback" role="status">
+                            {copy.linkUnavailable}
+                          </p>
+                        )}
+                      </article>
+                    );
+                  })}
+                  {layers.linkouts.map((image) => (
+                    <article
+                      className="gallery-item gallery-collection-card"
+                      data-collection-status="linked"
+                      key={`${image.title}-${image.angle}`}
                     >
-                      <img alt={image.title} loading="lazy" src={imageUrl} />
-                    </button>
-                  ) : (
-                    <p className="panel-empty">{copy.imageUnavailable}</p>
-                  )}
-                  <ImageCaption
-                    copy={copy}
-                    image={image}
-                    licenseLabel={t("gallery.license")}
-                    openLabel={t("gallery.open")}
-                  />
-                </article>
-              );
-            })}
+                      <h3>{image.title}</h3>
+                      <p>{image.angle}</p>
+                      <a
+                        className="panel-link"
+                        href={image.sourceUrl}
+                        rel="noreferrer noopener"
+                        target="_blank"
+                      >
+                        {image.title} — {image.angle}
+                      </a>
+                      <p className="gallery-link-fallback">{copy.deadLink}</p>
+                    </article>
+                  ))}
+                </div>
+              )
+            ) : images.length === 0 ? (
+              <p className="panel-empty">{t("gallery.empty")}</p>
+            ) : (
+              <div className="gallery-grid">
+                {images.map((image) => {
+                  const imageUrl = localImageUrl(image);
+                  return (
+                    <article
+                      className="gallery-item"
+                      data-gallery-license={image.license}
+                      data-testid="image-credit"
+                      key={`${image.title}-${image.angle}`}
+                    >
+                      {imageUrl ? (
+                        <button
+                          aria-label={`${copy.viewImage}: ${image.title}`}
+                          className="gallery-image-button"
+                          onClick={() => openLightbox(image)}
+                          type="button"
+                        >
+                          <img
+                            alt={image.title}
+                            loading="lazy"
+                            src={imageUrl}
+                          />
+                        </button>
+                      ) : (
+                        <p className="panel-empty">{copy.imageUnavailable}</p>
+                      )}
+                      <ImageCaption
+                        copy={copy}
+                        image={image}
+                        licenseLabel={t("gallery.license")}
+                        openLabel={t("gallery.open")}
+                      />
+                    </article>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        );
+      })}
 
       {lightboxImage && localImageUrl(lightboxImage) ? (
         <div
@@ -450,25 +465,10 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
             if (event.target === event.currentTarget) setLightboxImage(null);
           }}
           role="dialog"
-          style={{
-            alignItems: "center",
-            background: "rgba(10, 10, 10, 0.88)",
-            display: "flex",
-            inset: 0,
-            justifyContent: "center",
-            padding: "2rem",
-            position: "fixed",
-            zIndex: 1000,
-          }}
         >
           <div
             className="gallery-lightbox-content"
             ref={lightboxContent}
-            style={{
-              maxHeight: "100%",
-              maxWidth: "min(92vw, 1100px)",
-              overflow: "auto",
-            }}
           >
             <button
               aria-label={copy.close}
@@ -483,12 +483,8 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
             <h3 id="gallery-lightbox-title">{copy.lightbox}</h3>
             <img
               alt={lightboxImage.title}
+              className="gallery-lightbox-image"
               src={localImageUrl(lightboxImage)}
-              style={{
-                maxHeight: "70vh",
-                maxWidth: "100%",
-                objectFit: "contain",
-              }}
             />
             <ImageCaption
               copy={copy}

@@ -316,6 +316,15 @@ export default function ScrollStory({
         })}
       </div>
 
+      <nav aria-label="story progress" className="story-progress">
+        {steps.map((step, index) => (
+          <span
+            className={index === state.activeIndex ? "dot active" : "dot"}
+            key={step.id}
+          />
+        ))}
+      </nav>
+
       {openSource ? (
         <aside
           aria-labelledby="story-source-title"

@@ -19,6 +19,7 @@ import {
 import { useTranslation } from "react-i18next";
 import {
   ACESFilmicToneMapping,
+  BackSide,
   Box3,
   type BufferGeometry,
   type Camera,
@@ -26,6 +27,7 @@ import {
   type Group,
   type InstancedMesh,
   Matrix4,
+  MeshBasicMaterial,
   MeshStandardMaterial,
   type Object3D,
   PerspectiveCamera,
@@ -85,7 +87,12 @@ import MachineEnvironment, {
 import { useUiStore } from "../store";
 import type { StoryStageState } from "../story/types";
 import AidLayer from "./AidLayer";
-import DriveHandle, { handleDriveKeyDown } from "./DriveHandle";
+import DriveHandle, {
+  beginPointerIntent,
+  handleDriveKeyDown,
+  isPointerTap,
+  type PointerIntent,
+} from "./DriveHandle";
 import ExplodedControl from "./ExplodedControl";
 import {
   GeometryLoading,
@@ -165,6 +172,7 @@ declare global {
         opacity: number;
         side: number;
       }>;
+      partScreenPoint: (partId: string) => { x: number; y: number } | null;
       spec: MachineModule["spec"];
       sceneryRaycastViolations: () => number;
       sceneryTriangles: () => number;
@@ -182,7 +190,7 @@ declare global {
       };
     };
     __mechExplodeSpread?: () => number;
-    __mechSelect?: (partId: string) => void;
+    __mechSelect?: (partId: string | null) => void;
     __mechAssembly?: {
       advanceStep: () => void;
       enterExplodedMode: () => void;
@@ -782,6 +790,25 @@ function radialExplodeVector(part: PartDef) {
   return radial.normalize().multiplyScalar(0.25);
 }
 
+type InspectionState = "hovered" | "selected";
+
+const hoveredOutlineMaterial = new MeshBasicMaterial({
+  color: "#d9b86d",
+  depthWrite: false,
+  opacity: 0.72,
+  side: BackSide,
+  toneMapped: false,
+  transparent: true,
+});
+const selectedOutlineMaterial = new MeshBasicMaterial({
+  color: "#f0cf83",
+  depthWrite: false,
+  opacity: 0.92,
+  side: BackSide,
+  toneMapped: false,
+  transparent: true,
+});
+
 interface TransientMaterialState {
   aidCutaway: boolean;
   aidHighlighted: boolean;
@@ -791,6 +818,7 @@ interface TransientMaterialState {
   compareColor?: string;
   compareEmissive?: string;
   compareOpacity?: number;
+  inspectionState?: InspectionState;
   layerColor?: string;
   layerOpacity?: number;
   schemeHighlighted: boolean;
@@ -845,6 +873,13 @@ function applyTransientMaterialState(
     material.transparent = true;
     material.depthWrite = false;
   }
+  if (state.inspectionState) {
+    material.emissive.set(
+      state.inspectionState === "selected" ? "#b97f25" : "#6e4e18",
+    );
+    material.emissiveIntensity =
+      state.inspectionState === "selected" ? 1.5 : 0.9;
+  }
   if (state.assemblyStaged) {
     material.color.set("#d7b968");
     material.emissive.set("#835d22");
@@ -867,9 +902,9 @@ function PartGeometryMesh({
   compareContext,
   geometry,
   index,
+  inspectionOutline,
   instanceMatrices,
   onInstancedMesh,
-  onPointerDown,
   part,
   transientState,
   transientStateKey,
@@ -879,9 +914,9 @@ function PartGeometryMesh({
   compareContext?: CompareSceneContext;
   geometry: BufferGeometry;
   index: number;
+  inspectionOutline?: InspectionState;
   instanceMatrices: readonly number[][] | null;
   onInstancedMesh: (index: number, mesh: InstancedMesh | null) => void;
-  onPointerDown?: (event: ThreeEvent<PointerEvent>) => void;
   part: PartDef;
   transientState: TransientMaterialState;
   transientStateKey: string;
@@ -969,7 +1004,6 @@ function PartGeometryMesh({
     <instancedMesh
       args={[geometry, renderedMaterial, instanceMatrices.length]}
       castShadow
-      onPointerDown={onPointerDown}
       receiveShadow
       ref={(mesh) => {
         onInstancedMesh(index, mesh);
@@ -977,13 +1011,27 @@ function PartGeometryMesh({
       }}
     />
   ) : (
-    <mesh
-      castShadow
-      geometry={geometry}
-      material={renderedMaterial}
-      onPointerDown={onPointerDown}
-      receiveShadow
-    />
+    <>
+      <mesh
+        castShadow
+        geometry={geometry}
+        material={renderedMaterial}
+        receiveShadow
+      />
+      {inspectionOutline ? (
+        <mesh
+          geometry={geometry}
+          material={
+            inspectionOutline === "selected"
+              ? selectedOutlineMaterial
+              : hoveredOutlineMaterial
+          }
+          raycast={() => undefined}
+          scale={inspectionOutline === "selected" ? 1.025 : 1.018}
+          userData={{ mechanicaAffordance: true }}
+        />
+      ) : null}
+    </>
   );
 }
 
@@ -1017,6 +1065,7 @@ const PartNode = memo(function PartNode({
   const group = useRef<Group>(null);
   const instancedMeshes = useRef<Array<InstancedMesh | null>>([]);
   const assemblyPointer = useRef<number | null>(null);
+  const partPointerIntent = useRef<PointerIntent | null>(null);
   const assemblyStartPoint = useRef(new Vector3());
   const assemblyOffset = useRef(new Vector3());
   const hovered = useUiStore((state) => state.hoveredPartId === part.id);
@@ -1044,6 +1093,7 @@ const PartNode = memo(function PartNode({
     () => geometries.map((geometry) => getMechanicaInstanceMatrices(geometry)),
     [geometries],
   );
+  const hasInstancedGeometry = instanceMatrices.some(Boolean);
   const visualPresentation = useMemo(
     () => visualMaterialFor(module.data.slug, part),
     [module.data.slug, part],
@@ -1061,6 +1111,16 @@ const PartNode = memo(function PartNode({
   const assemblyError = assembly?.state.errorPartId === part.id;
   const assemblyHighlighted = assembly?.currentPartId === part.id;
   const assemblyStaged = reassembling && !seated;
+  const inspectionState: InspectionState | undefined = reassembling
+    ? undefined
+    : selected
+      ? "selected"
+      : hovered
+        ? "hovered"
+        : undefined;
+  const inspectionMaterialState = hasInstancedGeometry
+    ? inspectionState
+    : undefined;
   const aidCutaway = aidCutawayPartIds.includes(part.id);
   const aidHighlighted = aidHighlightPartIds.includes(part.id);
   const spotlightCutaway =
@@ -1089,6 +1149,7 @@ const PartNode = memo(function PartNode({
     layerPresentation
       ? `layer:${layerPresentation.variant}:${layerColor ?? "base"}`
       : "",
+    inspectionMaterialState ? `inspection:${inspectionMaterialState}` : "",
     assemblyHighlighted ? "assembly-highlight" : "",
     assemblyStaged ? "assembly-staged" : "",
     assemblyError ? "assembly-error" : "",
@@ -1104,6 +1165,7 @@ const PartNode = memo(function PartNode({
     compareColor,
     compareEmissive,
     compareOpacity,
+    inspectionState: inspectionMaterialState,
     layerColor,
     layerOpacity,
     schemeHighlighted,
@@ -1320,13 +1382,23 @@ const PartNode = memo(function PartNode({
     assemblyOffset.current.set(0, 0, 0);
   };
 
-  const handlePointerDown =
-    interactionDisabled || reassembling || drivable
-      ? undefined
-      : (event: { stopPropagation: () => void }) => {
-          event.stopPropagation();
-          setSelectedPartId(part.id);
-        };
+  const beginPartPointer = (event: ThreeEvent<PointerEvent>) => {
+    if (interactionDisabled || reassembling || drivable) return;
+    partPointerIntent.current = beginPointerIntent(event.nativeEvent);
+  };
+  const endPartPointer = (event: ThreeEvent<PointerEvent>) => {
+    const intent = partPointerIntent.current;
+    if (!intent || intent.pointerId !== event.pointerId) return;
+    partPointerIntent.current = null;
+    if (!isPointerTap(intent, event.nativeEvent)) return;
+    event.stopPropagation();
+    setSelectedPartId(part.id);
+  };
+  const cancelPartPointer = (event: ThreeEvent<PointerEvent>) => {
+    if (partPointerIntent.current?.pointerId === event.pointerId) {
+      partPointerIntent.current = null;
+    }
+  };
   const woodenOxLoadStage =
     module.data.slug === "wooden-ox" &&
     schemeId === "wheelbarrow" &&
@@ -1350,10 +1422,12 @@ const PartNode = memo(function PartNode({
               compareContext={compareContext}
               geometry={geometry}
               index={index}
+              inspectionOutline={
+                hasInstancedGeometry ? undefined : inspectionState
+              }
               instanceMatrices={instanceMatrices[index]}
               key={geometry.uuid}
               onInstancedMesh={setInstancedMesh}
-              onPointerDown={handlePointerDown}
               part={part}
               transientState={transientState}
               transientStateKey={transientStateKey}
@@ -1412,7 +1486,17 @@ const PartNode = memo(function PartNode({
   return (
     <group
       name={part.id}
-      onPointerDown={interactionDisabled ? undefined : beginAssemblyDrag}
+      onPointerCancel={
+        interactionDisabled || reassembling ? undefined : cancelPartPointer
+      }
+      onPointerDown={(event) => {
+        if (interactionDisabled) return;
+        if (reassembling) {
+          beginAssemblyDrag(event);
+        } else {
+          beginPartPointer(event);
+        }
+      }}
       onPointerMove={moveAssemblyPart}
       onPointerOut={() => {
         if (!interactionDisabled) {
@@ -1428,7 +1512,13 @@ const PartNode = memo(function PartNode({
         compareContext?.onHoverPart(part.id);
         setHoveredPartId(part.id);
       }}
-      onPointerUp={endAssemblyDrag}
+      onPointerUp={(event) => {
+        if (reassembling) {
+          endAssemblyDrag(event);
+        } else {
+          endPartPointer(event);
+        }
+      }}
       ref={group}
       visible={visible}
     >
@@ -3218,6 +3308,22 @@ export default function MachineViewer({
           }
         });
         return count;
+      },
+      partScreenPoint: (partId) => {
+        const part = machineScene.current?.getObjectByName(partId);
+        const camera = cameraDiagnostics.current?.camera;
+        const canvas = document.querySelector<HTMLCanvasElement>(
+          ".viewer-canvas canvas",
+        );
+        if (!part || !camera || !canvas) return null;
+        const bounds = mechanicaBounds(part);
+        if (bounds.isEmpty()) return null;
+        const projected = bounds.getCenter(new Vector3()).project(camera);
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: rect.left + ((projected.x + 1) * rect.width) / 2,
+          y: rect.top + ((1 - projected.y) * rect.height) / 2,
+        };
       },
       sceneryRaycastViolations: () => sceneryRaycastViolations.current,
       sceneryTriangles: () => sceneryTriangles.current,

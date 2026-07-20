@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import type {
@@ -261,10 +262,32 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const selectedPartId = useUiStore((state) => state.selectedPartId);
   const part = spec.parts.find((candidate) => candidate.id === selectedPartId);
+  const panel = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!part) return;
+    const frame = requestAnimationFrame(() => {
+      panel.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      panel.current?.animate(
+        [
+          { boxShadow: "0 0 0 rgba(217, 184, 109, 0)" },
+          { boxShadow: "0 0 2rem rgba(217, 184, 109, 0.38)" },
+          { boxShadow: "0 0 0 rgba(217, 184, 109, 0)" },
+        ],
+        { duration: 650, easing: "ease-out" },
+      );
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [part]);
 
   if (!part) {
     return (
-      <section className="panel" data-testid="part-inspector">
+      <section
+        className="panel"
+        data-selected-part-id=""
+        data-testid="part-inspector"
+        ref={panel}
+      >
         <h2>{t("inspector.title")}</h2>
         <p className="panel-empty">{t("inspector.empty")}</p>
         <MachineEvidenceRecord module={module} spec={spec} />
@@ -305,7 +328,12 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
   );
 
   return (
-    <section className="panel" data-testid="part-inspector">
+    <section
+      className="panel"
+      data-selected-part-id={part.id}
+      data-testid="part-inspector"
+      ref={panel}
+    >
       <h2>{t("inspector.title")}</h2>
       <h3 className="part-name">{part.name[language]}</h3>
       <span className="provenance-badge">

@@ -50,6 +50,7 @@ const captureStates = [
   "cutaway",
   "assembly-mid",
   "reassemble",
+  "inspect",
   "aid",
   "plain",
   "compare",
@@ -182,6 +183,19 @@ async function enterCaptureState(
         )
         .toBeGreaterThan(refitCount);
       await waitForCamera(page);
+      return;
+    }
+    case "inspect": {
+      const partId =
+        slug === "chariot"
+          ? "left-road-wheel"
+          : await page.evaluate(() => window.__mech?.spec.primaryDrive ?? null);
+      if (!partId) throw new Error(`${slug}:inspect has no selectable part`);
+      await page.evaluate((id) => window.__mechSelect?.(id), partId);
+      await expect(page.getByTestId("part-inspector")).toHaveAttribute(
+        "data-selected-part-id",
+        partId,
+      );
       return;
     }
     case "compare":

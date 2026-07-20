@@ -25,6 +25,52 @@ interface DriveHandleProps {
 }
 
 export const keyboardDriveStep = Math.PI / 36;
+export const pointerTapDistancePx = 5;
+export const pointerTapDurationMs = 300;
+
+export interface PointerIntent {
+  clientX: number;
+  clientY: number;
+  pointerId: number;
+  startedAt: number;
+}
+
+interface PointerSample {
+  clientX: number;
+  clientY: number;
+  pointerId: number;
+  timeStamp: number;
+}
+
+export function beginPointerIntent(sample: PointerSample): PointerIntent {
+  return {
+    clientX: sample.clientX,
+    clientY: sample.clientY,
+    pointerId: sample.pointerId,
+    startedAt: sample.timeStamp,
+  };
+}
+
+export function pointerIntentDistance(
+  intent: PointerIntent,
+  sample: PointerSample,
+): number {
+  return Math.hypot(
+    sample.clientX - intent.clientX,
+    sample.clientY - intent.clientY,
+  );
+}
+
+export function isPointerTap(
+  intent: PointerIntent,
+  sample: PointerSample,
+): boolean {
+  return (
+    sample.pointerId === intent.pointerId &&
+    sample.timeStamp - intent.startedAt < pointerTapDurationMs &&
+    pointerIntentDistance(intent, sample) < pointerTapDistancePx
+  );
+}
 
 export function handleDriveKeyDown(
   event: ReactKeyboardEvent<HTMLButtonElement>,
@@ -109,6 +155,8 @@ export default function DriveHandle({
   const gl = useThree((state) => state.gl);
   const group = useRef<Group>(null);
   const activePointer = useRef<number | null>(null);
+  const pointerIntent = useRef<PointerIntent | null>(null);
+  const driveActivated = useRef(false);
   const [dragging, setDragging] = useState(false);
   const axisWorld = useRef(new Vector3(0, 0, 1));
   const centerWorld = useRef(new Vector3());
@@ -137,8 +185,9 @@ export default function DriveHandle({
   const beginDrag = (event: ThreeEvent<PointerEvent>) => {
     if (!group.current) return;
     event.stopPropagation();
-    onSelect();
     activePointer.current = event.pointerId;
+    pointerIntent.current = beginPointerIntent(event.nativeEvent);
+    driveActivated.current = false;
     group.current.getWorldPosition(centerWorld.current);
     group.current.getWorldQuaternion(worldQuaternion.current);
     axisWorld.current
@@ -187,6 +236,15 @@ export default function DriveHandle({
   const continueDrag = (event: ThreeEvent<PointerEvent>) => {
     if (activePointer.current !== event.pointerId) return;
     event.stopPropagation();
+    if (
+      !driveActivated.current &&
+      pointerIntent.current &&
+      pointerIntentDistance(pointerIntent.current, event.nativeEvent) <
+        pointerTapDistancePx
+    ) {
+      return;
+    }
+    driveActivated.current = true;
     let delta = 0;
     if (useScreenArc.current) {
       const angle = Math.atan2(
@@ -226,23 +284,32 @@ export default function DriveHandle({
     }
   };
 
-  const endDrag = (event: ThreeEvent<PointerEvent>) => {
+  const endDrag = (
+    event: ThreeEvent<PointerEvent>,
+    allowSelection: boolean,
+  ) => {
     if (activePointer.current !== event.pointerId) return;
     event.stopPropagation();
+    const intent = pointerIntent.current;
     activePointer.current = null;
+    pointerIntent.current = null;
+    driveActivated.current = false;
     if ((event.target as Element).hasPointerCapture(event.pointerId)) {
       (event.target as Element).releasePointerCapture(event.pointerId);
     }
     setDragging(false);
     onDraggingChange(false);
+    if (allowSelection && intent && isPointerTap(intent, event.nativeEvent)) {
+      onSelect();
+    }
   };
 
   return (
     <group
-      onPointerCancel={endDrag}
+      onPointerCancel={(event) => endDrag(event, false)}
       onPointerDown={beginDrag}
       onPointerMove={continueDrag}
-      onPointerUp={endDrag}
+      onPointerUp={(event) => endDrag(event, true)}
       ref={group}
     >
       {children}

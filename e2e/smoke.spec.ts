@@ -78,7 +78,7 @@ async function sampleCompareFrameRates(page: Page, seconds: number) {
   );
 }
 
-async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
+async function hoverDriveGizmo(page: Page, testIdPrefix: string) {
   await expect
     .poll(() =>
       page.evaluate(
@@ -99,7 +99,6 @@ async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
       ),
     testIdPrefix,
   );
-  let target: (typeof candidates)[number] | undefined;
   for (const candidate of candidates) {
     await page.mouse.move(candidate.x, candidate.y);
     const active = await page.evaluate(
@@ -113,9 +112,16 @@ async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
         ),
       candidate.id,
     );
-    if (!active) continue;
-    await page.mouse.down();
-    const dragging = await page.evaluate(
+    if (active) return candidate;
+  }
+  throw new Error(`Drive gizmo ${testIdPrefix} has no projected points`);
+}
+
+async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
+  const target = await hoverDriveGizmo(page, testIdPrefix);
+  await page.mouse.down();
+  expect(
+    await page.evaluate(
       (id) =>
         new Promise<boolean>((resolve) =>
           requestAnimationFrame(() =>
@@ -124,21 +130,6 @@ async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
             ),
           ),
         ),
-      candidate.id,
-    );
-    if (!dragging) {
-      await page.mouse.up();
-      continue;
-    }
-    target = candidate;
-    break;
-  }
-  if (!target) {
-    throw new Error(`Drive gizmo ${testIdPrefix} has no projected points`);
-  }
-  expect(
-    await page.evaluate(
-      (id) => window.__mechDriveGizmos?.[id]?.dragging ?? false,
       target.id,
     ),
     `Drive gizmo ${target.id} did not capture a real pointer drag`,
@@ -986,6 +977,76 @@ test("F0-T8: Reassemble stages on the ground, scrub resets explode, and completi
     transmissionEnabled: true,
   });
   expect(settled.supportsExistingSemantics).toBe(true);
+});
+
+test("F0-T9: wheel tap selects, wheel drag drives, and orbit drag does not select", async ({
+  page,
+}) => {
+  test.setTimeout(45_000);
+  await page.goto("/#/m/chariot");
+  await waitForMechanica(page, "chariot");
+  await waitForCamera(page);
+  const englishToggle = page.getByRole("button", { name: "EN", exact: true });
+  if ((await englishToggle.count()) > 0) await englishToggle.click();
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+  await page.evaluate(() => window.__mechSelect?.(null));
+
+  const beforeDrive = await page.evaluate(
+    () => window.__mech?.graph.state()["left-road-wheel"] ?? 0,
+  );
+  await dragDriveGizmo(page, "drive-gizmo-left-road-wheel");
+  const afterDrive = await page.evaluate(
+    () => window.__mech?.graph.state()["left-road-wheel"] ?? 0,
+  );
+  expect(Math.abs(afterDrive - beforeDrive)).toBeGreaterThan(0.01);
+  await expect(page.getByTestId("part-inspector")).toHaveAttribute(
+    "data-selected-part-id",
+    "",
+  );
+
+  const wheelPoint = await hoverDriveGizmo(page, "drive-gizmo-left-road-wheel");
+  await page.mouse.click(wheelPoint.x, wheelPoint.y);
+  await expect(page.getByTestId("part-inspector")).toHaveAttribute(
+    "data-selected-part-id",
+    "left-road-wheel",
+  );
+  await expect(page.getByTestId("part-inspector")).toContainText(
+    "Left road wheel",
+  );
+  await expect(
+    page.getByTestId("part-inspector").locator(".provenance-badge"),
+  ).toBeVisible();
+
+  await page.evaluate(() => window.__mechSelect?.(null));
+  await expect(page.getByTestId("part-inspector")).toHaveAttribute(
+    "data-selected-part-id",
+    "",
+  );
+  const platformPoint = await page.evaluate(() =>
+    window.__mech?.partScreenPoint("platform"),
+  );
+  if (!platformPoint) throw new Error("The chariot platform is unavailable");
+  const cameraBefore = await page.evaluate(() => window.__mech?.cameraState());
+  await page.mouse.move(platformPoint.x, platformPoint.y);
+  await page.mouse.down();
+  await page.mouse.move(platformPoint.x + 80, platformPoint.y + 36, {
+    steps: 8,
+  });
+  await page.mouse.up();
+  await page.waitForTimeout(100);
+  const cameraAfter = await page.evaluate(() => window.__mech?.cameraState());
+  const cameraDisplacement = Math.hypot(
+    ...((cameraAfter?.position ?? [0, 0, 0]).map(
+      (value, axis) => value - (cameraBefore?.position[axis] ?? 0),
+    ) as [number, number, number]),
+  );
+  expect(cameraDisplacement).toBeGreaterThan(
+    (cameraBefore?.sphereRadius ?? 1) * 0.01,
+  );
+  await expect(page.getByTestId("part-inspector")).toHaveAttribute(
+    "data-selected-part-id",
+    "",
+  );
 });
 
 test("U6: spotlight completes after its ordered highlight sequence", async ({

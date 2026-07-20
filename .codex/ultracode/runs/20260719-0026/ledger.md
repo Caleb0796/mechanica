@@ -240,3 +240,42 @@ Concerns:
 - Validator-generated timestamp-only report changes are parked in a named stash; protected Phase 4/F1 work remains isolated for post-commit restoration.
 
 Next: F0-T9 part-selection reliability.
+
+## F0-T9 — PASS
+
+Files:
+- `src/ui/viewer/DriveHandle.tsx`
+- `src/ui/viewer/MachineViewer.tsx` (tap-versus-drag selection, inspection affordance, and browser diagnostics only)
+- `src/ui/panels/PartInspector.tsx`
+- `tests/ui/driveHandle.test.ts`
+- `e2e/smoke.spec.ts`
+- `e2e/shoot.spec.ts`
+
+Verification:
+- `pnpm test` — 30 files, 251/251 tests passed; the focused pointer-intent and assembly run passed 10/10 tests.
+- `pnpm validate` — exit 0; all ten strict validation reports regenerated without failure.
+- `pnpm e2e` — 46 passed, the requested-only screenshot runner skipped, zero failed in 7.7 minutes.
+- `pnpm i18n:check` — 0 issues.
+- `pnpm build` — exit 0; TypeScript and the production Vite build passed.
+- Focused real-browser acceptance passed: a chariot wheel drag changes graph state without selecting, a quick wheel tap selects and exposes provenance, and an orbit drag over the platform moves the camera without selecting a part.
+- Boundary tests prove selection requires the same pointer, less than 5 px of movement, and less than 300 ms; exact thresholds are rejected.
+- No authoritative machine data, dimensions, transmission ratios, or provenance changed.
+
+Evidence:
+- `artifacts/visual-gate-2/_baseline-w0/before-chariot.png`
+- `artifacts/visual-gate-2/F0-T9/after-inspect-chariot.png`
+- Root review confirmed the selected left road wheel retains its silhouette, gains a continuous gold rim, and scrolls a clearly sourced Part record into view.
+- Independent read-only skeptic `/root/f0_t9_visual_skeptic` returned `SURVIVES`: no inflated duplicate, displaced shell, or mechanism-obscuring selection treatment was found.
+
+Repairs during verification:
+- Moved both drivable and ordinary part selection from pointer-down to a shared pointer-up tap classifier so drive and orbit gestures cannot select accidentally.
+- Preserved OrbitControls propagation for ordinary parts while retaining pointer capture for drive gestures.
+- Added back-face silhouette outlines for ordinary meshes and bounded emissive emphasis for instanced meshes, avoiding translated scaled-shell artifacts.
+- Added selected-part inspector scrolling and a brief, non-blocking flash while preserving the existing evidence and provenance content.
+
+Concerns:
+- Static evidence demonstrates the selected state; the passing browser test carries the click-versus-drag and orbit behavioral proof.
+- Vite reports the existing non-blocking three-vendor chunk-size warning.
+- Validator-generated timestamp-only report changes and protected Phase 4/F1 work remain parked in named stashes pending post-commit restoration.
+
+Next: F0-T10 performance guardrails.

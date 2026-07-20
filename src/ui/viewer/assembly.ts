@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useMemo, useReducer } from "react";
+import { Box3, Sphere, Vector3 } from "three";
 
 import type { PartDef } from "../../sim/types";
 
 export const ASSEMBLY_SNAP_RATIO = 0.15;
+export const ASSEMBLY_PART_DURATION_MS = 280;
+export const ASSEMBLY_MIN_DURATION_MS = 2_500;
+export const ASSEMBLY_MAX_DURATION_MS = 20_000;
+export const ASSEMBLY_COMPLETION_DURATION_MS = 600;
 
 export type AssemblyMode = "idle" | "step" | "reassemble";
 
@@ -30,11 +35,21 @@ export type AssemblyAttempt =
       snapDistance: number;
     };
 
+export interface AssemblyStagingSlot {
+  groundOffset: number;
+  position: readonly [number, number, number];
+  radius: number;
+}
+
 export interface AssemblyPlan {
+  durationMs: number;
   parts: readonly PartDef[];
   orderedPartIds: readonly string[];
+  orderIndexByPartId: ReadonlyMap<string, number>;
   partById: ReadonlyMap<string, PartDef>;
   dependencyCyclePartIds: readonly string[];
+  stagingByPartId: ReadonlyMap<string, AssemblyStagingSlot>;
+  stagingGroundY: number;
 }
 
 export interface AssemblyState {
@@ -81,6 +96,175 @@ function indexedPartOrder(a: IndexedPart, b: IndexedPart): number {
   return aStep - bStep || a.index - b.index;
 }
 
+function clamp(value: number, minimum: number, maximum: number): number {
+  return Math.max(minimum, Math.min(value, maximum));
+}
+
+export function assemblyDurationMs(partCount: number): number {
+  return clamp(
+    Math.max(0, partCount) * ASSEMBLY_PART_DURATION_MS,
+    ASSEMBLY_MIN_DURATION_MS,
+    ASSEMBLY_MAX_DURATION_MS,
+  );
+}
+
+export function assemblyEaseOutCubic(progress: number): number {
+  const bounded = clamp(progress, 0, 1);
+  return 1 - (1 - bounded) ** 3;
+}
+
+export function assemblyPartLocalProgress(
+  plan: AssemblyPlan,
+  progress: number,
+  partId: string,
+): number {
+  const orderIndex = plan.orderIndexByPartId.get(partId);
+  if (orderIndex === undefined) return 0;
+  return clamp(progress * plan.orderedPartIds.length - orderIndex, 0, 1);
+}
+
+export function assemblyPartAppearance(progress: number): number {
+  return assemblyEaseOutCubic(clamp(progress / 0.15, 0, 1));
+}
+
+function radialExplodeComponents(part: PartDef): [number, number, number] {
+  if (part.explodeVector) return [...part.explodeVector];
+  const [x, y, z] = part.position;
+  const length = Math.hypot(x, y, z);
+  if (length < 0.01) return [0, 0.25, 0];
+  return [(x / length) * 0.25, (y / length) * 0.25, (z / length) * 0.25];
+}
+
+export function assemblyFlightOffset(
+  part: PartDef,
+  progress: number,
+): [number, number, number] {
+  const radial = radialExplodeComponents(part);
+  const remaining = 1 - assemblyEaseOutCubic(progress);
+  return [
+    radial[0] * 2 * remaining,
+    (radial[1] * 2 + 0.3) * remaining,
+    radial[2] * 2 * remaining,
+  ];
+}
+
+function partBoundingRadius(part: PartDef): number {
+  const geometry = part.geometry;
+  switch (geometry.type) {
+    case "gear":
+      return Math.hypot(
+        (geometry.module * geometry.teeth) / 2 + geometry.module,
+        geometry.thickness / 2,
+      );
+    case "shaft":
+      return Math.hypot(geometry.radius, geometry.length / 2);
+    case "beam":
+    case "box":
+    case "scoop":
+      return Math.hypot(...geometry.size) / 2;
+    case "wheel":
+      return Math.hypot(geometry.radius, geometry.width / 2);
+    case "shell":
+      return geometry.radius;
+    case "ring":
+      return geometry.radius + geometry.tube;
+    case "link":
+      return Math.hypot(geometry.length, geometry.width) / 2;
+    case "custom":
+      return Math.max(
+        0.001,
+        ...Object.entries(geometry.params)
+          .filter(
+            ([key]) =>
+              !/(?:count|columns|index|phase|segments|spokes|teeth)/i.test(key),
+          )
+          .map(([key, value]) =>
+            /radius/i.test(key) ? Math.abs(value) : Math.abs(value) / 2,
+          ),
+      );
+  }
+}
+
+function partGroundOffset(part: PartDef): number {
+  const geometry = part.geometry;
+  switch (geometry.type) {
+    case "gear":
+      return (geometry.module * geometry.teeth) / 2 + geometry.module;
+    case "shaft":
+      return geometry.length / 2;
+    case "beam":
+    case "box":
+    case "scoop":
+      return geometry.size[1] / 2;
+    case "wheel":
+      return geometry.width / 2;
+    case "shell":
+      return geometry.radius;
+    case "ring":
+      return geometry.tube;
+    case "link":
+      return geometry.width / 2;
+    case "custom":
+      if (geometry.params.height !== undefined) {
+        return Math.abs(geometry.params.height) / 2;
+      }
+      if (geometry.params.depth !== undefined) {
+        return Math.abs(geometry.params.depth) / 2;
+      }
+      return Math.max(
+        0.001,
+        ...Object.entries(geometry.params)
+          .filter(([key]) => /radius/i.test(key))
+          .map(([, value]) => Math.abs(value)),
+      );
+  }
+}
+
+function createStagingLayout(parts: readonly PartDef[]): {
+  groundY: number;
+  slots: ReadonlyMap<string, AssemblyStagingSlot>;
+} {
+  if (parts.length === 0) return { groundY: 0, slots: new Map() };
+  const spheres = parts.map(
+    (part) =>
+      new Sphere(new Vector3(...part.position), partBoundingRadius(part)),
+  );
+  const machineBounds = new Box3();
+  for (const sphere of spheres) {
+    machineBounds.expandByPoint(
+      sphere.center.clone().addScalar(-sphere.radius),
+    );
+    machineBounds.expandByPoint(sphere.center.clone().addScalar(sphere.radius));
+  }
+  const maximumRadius = Math.max(...spheres.map((sphere) => sphere.radius));
+  const cellSize = Math.max(maximumRadius * 2.4, 0.001);
+  const columns = Math.ceil(Math.sqrt(parts.length));
+  const rows = Math.ceil(parts.length / columns);
+  const groundY = Math.min(
+    ...parts.map((part) => part.position[1] - partGroundOffset(part)),
+  );
+  const stagingStartX = machineBounds.max.x + cellSize;
+  const stagingStartZ =
+    machineBounds.getCenter(new Vector3()).z - ((rows - 1) * cellSize) / 2;
+  const slots = new Map<string, AssemblyStagingSlot>();
+  for (let index = 0; index < parts.length; index += 1) {
+    const column = index % columns;
+    const row = Math.floor(index / columns);
+    const radius = spheres[index].radius;
+    const groundOffset = partGroundOffset(parts[index]);
+    slots.set(parts[index].id, {
+      groundOffset,
+      position: [
+        stagingStartX + column * cellSize,
+        groundY + groundOffset,
+        stagingStartZ + row * cellSize,
+      ],
+      radius,
+    });
+  }
+  return { groundY, slots };
+}
+
 export function createAssemblyPlan(parts: readonly PartDef[]): AssemblyPlan {
   const copiedParts = [...parts];
   const partById = new Map(copiedParts.map((part) => [part.id, part]));
@@ -106,11 +290,25 @@ export function createAssemblyPlan(parts: readonly PartDef[]): AssemblyPlan {
     emitted.add(part.id);
   }
 
+  const orderIndexByPartId = new Map(
+    orderedPartIds.map((partId, index) => [partId, index]),
+  );
+  const staging = createStagingLayout(
+    orderedPartIds.flatMap((partId) => {
+      const part = partById.get(partId);
+      return part ? [part] : [];
+    }),
+  );
+
   return {
+    durationMs: assemblyDurationMs(orderedPartIds.length),
     parts: copiedParts,
     orderedPartIds,
+    orderIndexByPartId,
     partById,
     dependencyCyclePartIds,
+    stagingByPartId: staging.slots,
+    stagingGroundY: staging.groundY,
   };
 }
 
@@ -293,11 +491,12 @@ export function isPartVisibleInAssemblyStep(
   plan: AssemblyPlan,
   state: AssemblyState,
   partId: string,
+  progress: number,
 ): boolean {
   if (state.mode !== "step") return true;
   return (
     state.seatedPartIds.has(partId) ||
-    assemblyCurrentPartId(plan, state) === partId
+    assemblyPartLocalProgress(plan, progress, partId) > 0
   );
 }
 
@@ -370,6 +569,7 @@ export interface AssemblyController {
   currentPartId: string | null;
   currentPart: PartDef | null;
   currentPartName: PartDef["name"] | null;
+  currentPartCaption: PartDef["assemblyCaption"] | null;
   currentAssemblyStep: number | null;
   enterStepMode: () => void;
   enterExplodedMode: () => void;
@@ -466,6 +666,7 @@ export function useAssemblyController(
     currentPartId,
     currentPart,
     currentPartName: currentPart?.name ?? null,
+    currentPartCaption: currentPart?.assemblyCaption ?? null,
     currentAssemblyStep: currentPart?.assemblyStep ?? null,
     enterStepMode,
     enterExplodedMode,

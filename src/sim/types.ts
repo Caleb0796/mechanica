@@ -55,6 +55,7 @@ export interface PartDef {
   dimensionNotes?: Quantity[];
   explodeVector?: [number, number, number];
   assemblyStep?: number;
+  assemblyCaption?: { zh: string; en: string };
   schemeTags?: string[];
   interactive?: boolean;
 }

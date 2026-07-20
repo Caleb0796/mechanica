@@ -198,3 +198,45 @@ Concerns:
 - Protected Phase 4/F1 work and generated validation outputs remain parked in named stashes pending post-commit restoration.
 
 Next: F0-T8 assembly rework.
+
+## F0-T8 — PASS
+
+Files:
+- `src/ui/viewer/MachineViewer.tsx`
+- `src/ui/viewer/assembly.ts`
+- `src/sim/types.ts`
+- `tests/ui/assembly.test.ts`
+- `e2e/smoke.spec.ts`
+- `e2e/shoot.spec.ts`
+
+Verification:
+- `pnpm test` — 29 files, 249/249 tests passed.
+- `pnpm validate` — exit 0; all ten strict machine reports regenerated without failure.
+- `pnpm e2e` — final full run: 45 passed, the requested-only screenshot runner skipped, zero failed in 8.7 minutes.
+- `pnpm i18n:check` — 0 issues.
+- `pnpm build` — exit 0; TypeScript and the production Vite build passed.
+- Focused browser acceptance passed 3/3 for runtime-scaled duration, localized current-part naming, grounded reassembly, scrub/explode reset, 600 ms completion settling, and spotlight camera handoff.
+- Runtime geometry assertions prove every gimbal part reaches its recorded staging slot and shares one ground plane.
+- No authoritative machine data, dimensions, transmission ratios, or provenance changed.
+
+Evidence:
+- `artifacts/visual-gate-2/_baseline-w0/before-assembly-mid-astroclock.png`
+- `artifacts/visual-gate-2/F0-T8/after-assembly-mid-astroclock.png`
+- `artifacts/visual-gate-2/F0-T8/after-reassemble-gimbal.png`
+- Root review confirmed a visible non-binary astroclock arrival path and a complete, centered, unclipped gimbal staging layout with compact controls and no unrelated aids or coach.
+- Fresh independent read-only skeptic `/root/f0_t8_visual_skeptic_green` returned `SURVIVES`, then re-reviewed the final taller slider panel and again returned `SURVIVES` with every staged part visible.
+
+Repairs during verification:
+- Replaced binary part appearance with per-part eased flight, scale, and fade derived from runtime order.
+- Corrected nested-parent transforms so stored staging slots are exact world positions and drag/seat distances use world space.
+- Replaced fake minimum dimensions with geometry-aware radii and ground offsets; added a shared ground grid.
+- Delayed staged and completed camera fits until transforms settle, reserved a control-safe frame, and restored the required assembly/explode sliders.
+- Hid unrelated aids and scenery during assembly, added staged-only contrast, and corrected spotlight auto-switch fit keys after the assembly-aware camera-key change.
+- Corrected an E2E assertion that injected F1-owned caption values at runtime; F0 acceptance verifies the authored Chinese part name, while optional caption values remain owned by F1 as planned.
+
+Concerns:
+- The astroclock's large black diagonal occluder and both machines' broader semantic abstraction remain blocking F1/F3 visual-fidelity findings; the skeptic confirmed they do not make the F0-T8 interaction unusable.
+- Vite reports the existing non-blocking three-vendor chunk-size warning.
+- Validator-generated timestamp-only report changes are parked in a named stash; protected Phase 4/F1 work remains isolated for post-commit restoration.
+
+Next: F0-T9 part-selection reliability.

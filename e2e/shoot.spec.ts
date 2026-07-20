@@ -49,6 +49,7 @@ const captureStates = [
   "hover",
   "cutaway",
   "assembly-mid",
+  "reassemble",
   "aid",
   "plain",
   "compare",
@@ -160,8 +161,29 @@ async function enterCaptureState(
       );
       return;
     case "assembly-mid":
-      await page.getByRole("slider", { name: "Assembly progress" }).fill("0.5");
+      await page
+        .getByRole("slider", { name: "Assembly progress" })
+        .fill("0.48");
       return;
+    case "reassemble": {
+      const refitCount = await page.evaluate(
+        () => window.__mech?.cameraState()?.refitCount ?? 0,
+      );
+      await page.getByTestId("assembly-reassemble").click();
+      await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+        "data-assembly-mode",
+        "reassemble",
+      );
+      await expect
+        .poll(
+          () =>
+            page.evaluate(() => window.__mech?.cameraState()?.refitCount ?? 0),
+          { timeout: 5_000 },
+        )
+        .toBeGreaterThan(refitCount);
+      await waitForCamera(page);
+      return;
+    }
     case "compare":
       if (!(await page.getByTestId("compare-toggle").count())) {
         throw new Error(`${slug}:compare has no second reconstruction`);

@@ -22,6 +22,7 @@ import {
   Box3,
   type BufferGeometry,
   type Camera,
+  Euler,
   type Group,
   type InstancedMesh,
   Matrix4,
@@ -93,7 +94,12 @@ import {
 } from "./geometryWarmup";
 import SceneEnvironment, { prepareSceneEnvironment } from "./SceneEnvironment";
 import {
+  ASSEMBLY_COMPLETION_DURATION_MS,
   type AssemblyController,
+  assemblyEaseOutCubic,
+  assemblyFlightOffset,
+  assemblyPartAppearance,
+  assemblyPartLocalProgress,
   isPartVisibleInAssemblyStep,
   useAssemblyController,
 } from "./assembly";
@@ -182,6 +188,20 @@ declare global {
       enterExplodedMode: () => void;
       enterStepMode: () => void;
       exitAssembly: () => void;
+      partPosition: (partId: string) => [number, number, number] | null;
+      plan: () => {
+        durationMs: number;
+        orderedPartIds: string[];
+        stagingByPartId: Record<
+          string,
+          {
+            groundOffset: number;
+            position: readonly [number, number, number];
+            radius: number;
+          }
+        >;
+        stagingGroundY: number;
+      };
       seat: (
         partId: string,
         distanceFromHome?: number,
@@ -191,6 +211,9 @@ declare global {
       state: () => {
         complete: boolean;
         errorPartId: string | null;
+        assemblyProgress: number;
+        completionProgress: number;
+        explode: number;
         mode: string;
         seatedPartIds: string[];
         transmissionEnabled: boolean;
@@ -490,6 +513,7 @@ function CameraDirector({
   diagnostics,
   enabled,
   fitKey,
+  fitWholeMachine,
   introPlayed,
   machineRoot,
   onIntroActiveChange,
@@ -505,6 +529,7 @@ function CameraDirector({
   diagnostics?: MutableRefObject<CameraDiagnostics | null>;
   enabled: boolean;
   fitKey: string;
+  fitWholeMachine: boolean;
   introPlayed?: MutableRefObject<boolean>;
   machineRoot: RefObject<Group | null>;
   onIntroActiveChange: (active: boolean) => void;
@@ -604,7 +629,7 @@ function CameraDirector({
 
     let focusBounds: Box3 | null = null;
     let focusFallback = false;
-    if (profile.focusPartIds?.length) {
+    if (!fitWholeMachine && profile.focusPartIds?.length) {
       const candidate = new Box3();
       const allFocusPartsFound = profile.focusPartIds.every((partId) => {
         const object = root.getObjectByName(partId);
@@ -627,9 +652,13 @@ function CameraDirector({
 
     const fitBounds = focusBounds ?? wholeBounds;
     const fitSize = fitBounds.getSize(new Vector3());
-    const target = profile.homePose
-      ? new Vector3(...profile.homePose.target)
-      : fitBounds.getCenter(new Vector3());
+    const target =
+      fitWholeMachine || !profile.homePose
+        ? fitBounds.getCenter(new Vector3())
+        : new Vector3(...profile.homePose.target);
+    if (fitWholeMachine) {
+      target.y -= fitSize.y * 0.12;
+    }
     if (!profile.homePose && profile.targetOffset) {
       target.add(
         new Vector3(...profile.targetOffset).multiply(
@@ -638,7 +667,15 @@ function CameraDirector({
       );
     }
     const authoredPosition = profile.homePose
-      ? new Vector3(...profile.homePose.position)
+      ? fitWholeMachine
+        ? target
+            .clone()
+            .add(
+              new Vector3(...profile.homePose.position).sub(
+                new Vector3(...profile.homePose.target),
+              ),
+            )
+        : new Vector3(...profile.homePose.position)
       : target.clone().add(new Vector3(...profile.direction));
     const direction = authoredPosition.sub(target).normalize();
     const fov = profile.homePose?.fov ?? 36;
@@ -651,13 +688,18 @@ function CameraDirector({
     );
     const wholeSphere = wholeBounds.getBoundingSphere(new Sphere());
     const authoredDistance = profile.homePose
-      ? new Vector3(...profile.homePose.position).distanceTo(target)
+      ? new Vector3(...profile.homePose.position).distanceTo(
+          new Vector3(...profile.homePose.target),
+        )
       : fitDistance * Math.max(profile.margin, 1);
-    const homeDistance = Math.max(
+    const fittedHomeDistance = Math.max(
       fitDistance,
       wholeSphere.radius * (profile.minDistanceFactor ?? 1.6),
       authoredDistance,
     );
+    const homeDistance = fitWholeMachine
+      ? fittedHomeDistance * 1.25
+      : fittedHomeDistance;
     const endPosition = target.clone().addScaledVector(direction, homeDistance);
     const endQuaternion = new Quaternion().setFromRotationMatrix(
       new Matrix4().lookAt(endPosition, target, camera.up),
@@ -745,6 +787,7 @@ interface TransientMaterialState {
   aidHighlighted: boolean;
   assemblyError: boolean;
   assemblyHighlighted: boolean;
+  assemblyStaged: boolean;
   compareColor?: string;
   compareEmissive?: string;
   compareOpacity?: number;
@@ -802,9 +845,15 @@ function applyTransientMaterialState(
     material.transparent = true;
     material.depthWrite = false;
   }
+  if (state.assemblyStaged) {
+    material.color.set("#d7b968");
+    material.emissive.set("#835d22");
+    material.emissiveIntensity = 1.45;
+    material.roughness = Math.min(material.roughness, 0.58);
+  }
   if (state.assemblyHighlighted) {
-    material.emissive.set("#a77825");
-    material.emissiveIntensity = 1.1;
+    material.emissive.set("#b97f25");
+    material.emissiveIntensity = 1.6;
   }
   if (state.assemblyError) {
     material.color.set("#b62f2f");
@@ -814,6 +863,7 @@ function applyTransientMaterialState(
 }
 
 function PartGeometryMesh({
+  assemblyOpacity,
   compareContext,
   geometry,
   index,
@@ -825,6 +875,7 @@ function PartGeometryMesh({
   transientStateKey,
   visualPresentation,
 }: {
+  assemblyOpacity: number;
   compareContext?: CompareSceneContext;
   geometry: BufferGeometry;
   index: number;
@@ -886,6 +937,8 @@ function PartGeometryMesh({
         return transientMaterial;
       })
     : baseMaterial;
+  const assemblyMaterial = useMemo(() => material.clone(), [material]);
+  const renderedMaterial = assemblyOpacity < 1 ? assemblyMaterial : material;
 
   useEffect(() => {
     const lease = acquireMaterial(
@@ -896,14 +949,25 @@ function PartGeometryMesh({
     return lease.release;
   }, [activeMaterialKey, material, part.material]);
 
+  useEffect(() => () => assemblyMaterial.dispose(), [assemblyMaterial]);
+
   useLayoutEffect(() => {
     if (!transientStateKey) return;
     applyTransientMaterialState(material, baseMaterial, transientState);
   }, [baseMaterial, material, transientState, transientStateKey]);
 
+  useLayoutEffect(() => {
+    const cacheKey = assemblyMaterial.userData.mechanicaMaterialCacheKey;
+    assemblyMaterial.copy(material);
+    assemblyMaterial.userData.mechanicaMaterialCacheKey = cacheKey;
+    assemblyMaterial.opacity = material.opacity * assemblyOpacity;
+    assemblyMaterial.transparent = material.transparent || assemblyOpacity < 1;
+    assemblyMaterial.depthWrite = material.depthWrite && assemblyOpacity >= 1;
+  }, [assemblyMaterial, assemblyOpacity, material]);
+
   return instanceMatrices ? (
     <instancedMesh
-      args={[geometry, material, instanceMatrices.length]}
+      args={[geometry, renderedMaterial, instanceMatrices.length]}
       castShadow
       onPointerDown={onPointerDown}
       receiveShadow
@@ -916,7 +980,7 @@ function PartGeometryMesh({
     <mesh
       castShadow
       geometry={geometry}
-      material={material}
+      material={renderedMaterial}
       onPointerDown={onPointerDown}
       receiveShadow
     />
@@ -992,8 +1056,11 @@ const PartNode = memo(function PartNode({
     appearance && (!appearance.partIds || appearance.partIds.has(part.id))
       ? appearance
       : undefined;
+  const reassembling = assembly?.state.mode === "reassemble";
+  const seated = assembly?.state.seatedPartIds.has(part.id) ?? true;
   const assemblyError = assembly?.state.errorPartId === part.id;
   const assemblyHighlighted = assembly?.currentPartId === part.id;
+  const assemblyStaged = reassembling && !seated;
   const aidCutaway = aidCutawayPartIds.includes(part.id);
   const aidHighlighted = aidHighlightPartIds.includes(part.id);
   const spotlightCutaway =
@@ -1023,6 +1090,7 @@ const PartNode = memo(function PartNode({
       ? `layer:${layerPresentation.variant}:${layerColor ?? "base"}`
       : "",
     assemblyHighlighted ? "assembly-highlight" : "",
+    assemblyStaged ? "assembly-staged" : "",
     assemblyError ? "assembly-error" : "",
   ]
     .filter(Boolean)
@@ -1032,6 +1100,7 @@ const PartNode = memo(function PartNode({
     aidHighlighted,
     assemblyError,
     assemblyHighlighted,
+    assemblyStaged,
     compareColor,
     compareEmissive,
     compareOpacity,
@@ -1052,19 +1121,44 @@ const PartNode = memo(function PartNode({
     [part.position],
   );
   const baseRotation = part.rotationEuler ?? [0, 0, 0];
+  const baseQuaternion = useMemo(
+    () => new Quaternion().setFromEuler(new Euler(...baseRotation)),
+    [baseRotation],
+  );
   const assemblyStep = part.assemblyStep ?? 0;
   const visibleStep = Math.floor(
     assemblyProgress * Math.max(maxAssemblyStep, 1),
   );
-  const visible = assembly
-    ? isPartVisibleInAssemblyStep(assembly.plan, assembly.state, part.id) &&
-      (assembly.state.mode === "step" || assemblyStep <= visibleStep)
-    : assemblyStep <= visibleStep;
+  const assemblyLocalProgress = assembly
+    ? assemblyPartLocalProgress(assembly.plan, assemblyProgress, part.id)
+    : 1;
+  const assemblyAppearance =
+    assembly?.state.mode === "step"
+      ? assemblyPartAppearance(assemblyLocalProgress)
+      : 1;
+  const assemblyFlight = useMemo(
+    () =>
+      new Vector3(
+        ...assemblyFlightOffset(
+          part,
+          assembly?.state.mode === "step" ? assemblyLocalProgress : 1,
+        ),
+      ),
+    [assembly?.state.mode, assemblyLocalProgress, part],
+  );
+  const visible =
+    assembly?.state.mode === "step"
+      ? isPartVisibleInAssemblyStep(
+          assembly.plan,
+          assembly.state,
+          part.id,
+          assemblyProgress,
+        )
+      : assemblyStep <= visibleStep;
   const childParts = childrenByParent.get(part.id) ?? [];
   const renderOwnPart = !visiblePartIds || visiblePartIds.has(part.id);
-  const reassembling = assembly?.state.mode === "reassemble";
-  const seated = assembly?.state.seatedPartIds.has(part.id) ?? true;
-  const partExplode = reassembling ? (seated ? 0 : 1) : explode;
+  const partExplode = reassembling ? 0 : explode;
+  const stagingSlot = assembly?.plan.stagingByPartId.get(part.id);
   const drivable = drivePartIds.has(part.id);
 
   useLayoutEffect(() => geometryResource.retain(), [geometryResource]);
@@ -1078,9 +1172,30 @@ const PartNode = memo(function PartNode({
 
   useFrame(() => {
     if (!group.current) return;
+    group.current.scale.setScalar(assemblyAppearance);
     const state = displayState.current ?? graph.state();
     const crank = crankByRod.get(part.id);
     const wheel = crank ? partsById.get(crank.wheel) : undefined;
+    if (reassembling && !seated && stagingSlot) {
+      const parentObject = group.current.parent;
+      const stagingPosition = new Vector3(...stagingSlot.position);
+      if (parentObject) {
+        parentObject.updateWorldMatrix(true, false);
+        parentObject.worldToLocal(stagingPosition);
+        const parentQuaternion = parentObject.getWorldQuaternion(
+          new Quaternion(),
+        );
+        group.current.quaternion
+          .copy(parentQuaternion.invert())
+          .multiply(baseQuaternion);
+      } else {
+        group.current.quaternion.copy(baseQuaternion);
+      }
+      group.current.position.copy(stagingPosition).add(assemblyOffset.current);
+      return;
+    }
+    // Composition order: kinematic seat, explode, assembly flight or staging,
+    // pointer drag, then any joint translation below.
     if (crank && wheel) {
       const pose = planarCrankRodPose(
         state[crank.wheel] ?? 0,
@@ -1091,7 +1206,8 @@ const PartNode = memo(function PartNode({
       group.current.position
         .set(...pose.center)
         .addScaledVector(explodeVector, partExplode)
-        .add(assemblyOffset.current);
+        .add(assemblyFlight);
+      group.current.position.add(assemblyOffset.current);
       group.current.rotation.set(0, 0, pose.rotationZ);
       return;
     }
@@ -1115,7 +1231,8 @@ const PartNode = memo(function PartNode({
     group.current.position
       .copy(basePosition)
       .addScaledVector(explodeVector, partExplode)
-      .add(assemblyOffset.current);
+      .add(assemblyFlight);
+    group.current.position.add(assemblyOffset.current);
     group.current.rotation.set(...baseRotation);
 
     if (attitude) {
@@ -1144,7 +1261,15 @@ const PartNode = memo(function PartNode({
   const moveAssemblyPart = (event: ThreeEvent<PointerEvent>) => {
     if (assemblyPointer.current !== event.pointerId) return;
     event.stopPropagation();
-    assemblyOffset.current.copy(event.point).sub(assemblyStartPoint.current);
+    const parentObject = group.current?.parent;
+    if (!parentObject) {
+      assemblyOffset.current.copy(event.point).sub(assemblyStartPoint.current);
+      return;
+    }
+    parentObject.updateWorldMatrix(true, false);
+    const start = parentObject.worldToLocal(assemblyStartPoint.current.clone());
+    const current = parentObject.worldToLocal(event.point.clone());
+    assemblyOffset.current.copy(current.sub(start));
   };
   const endAssemblyDrag = (event: ThreeEvent<PointerEvent>) => {
     if (assemblyPointer.current !== event.pointerId) return;
@@ -1162,11 +1287,34 @@ const PartNode = memo(function PartNode({
       bounds.isEmpty() ? 0.1 : bounds.getBoundingSphere(new Sphere()).radius,
       0.001,
     );
-    const distance = explodeVector
-      .clone()
-      .multiplyScalar(partExplode)
-      .add(assemblyOffset.current)
-      .length();
+    const state = displayState.current ?? graph.state();
+    const crank = crankByRod.get(part.id);
+    const wheel = crank ? partsById.get(crank.wheel) : undefined;
+    const seatPosition =
+      crank && wheel
+        ? new Vector3(
+            ...planarCrankRodPose(
+              state[crank.wheel] ?? 0,
+              wheel.position,
+              crank.crankRadius,
+              crank.rodLength,
+            ).center,
+          )
+        : basePosition.clone();
+    if (!crank && part.joint?.kind === "prismatic") {
+      seatPosition.addScaledVector(axis, state[part.id] ?? 0);
+    }
+    const parentObject = group.current?.parent;
+    const seatWorldPosition = seatPosition.clone();
+    if (parentObject) {
+      parentObject.updateWorldMatrix(true, false);
+      parentObject.localToWorld(seatWorldPosition);
+    }
+    group.current?.updateWorldMatrix(true, false);
+    const currentWorldPosition = group.current?.getWorldPosition(new Vector3());
+    const distance = currentWorldPosition
+      ? currentWorldPosition.distanceTo(seatWorldPosition)
+      : Number.POSITIVE_INFINITY;
     assembly?.attemptSeat(part.id, distance, radius);
     assembly?.endDrag();
     assemblyOffset.current.set(0, 0, 0);
@@ -1198,6 +1346,7 @@ const PartNode = memo(function PartNode({
       {renderOwnPart
         ? geometries.map((geometry, index) => (
             <PartGeometryMesh
+              assemblyOpacity={assemblyAppearance}
               compareContext={compareContext}
               geometry={geometry}
               index={index}
@@ -1517,6 +1666,49 @@ function GhostPartLayer({
   ));
 }
 
+function AssemblyStagingGround({
+  assembly,
+}: {
+  assembly?: AssemblyController;
+}) {
+  const layout = useMemo(() => {
+    if (!assembly) return null;
+    const slots = [...assembly.plan.stagingByPartId.values()];
+    if (slots.length === 0) return null;
+    const minimumX = Math.min(...slots.map((slot) => slot.position[0]));
+    const maximumX = Math.max(...slots.map((slot) => slot.position[0]));
+    const minimumZ = Math.min(...slots.map((slot) => slot.position[2]));
+    const maximumZ = Math.max(...slots.map((slot) => slot.position[2]));
+    const padding = Math.max(...slots.map((slot) => slot.radius)) * 1.5;
+    return {
+      center: [(minimumX + maximumX) / 2, (minimumZ + maximumZ) / 2] as const,
+      divisions: Math.max(2, Math.ceil(Math.sqrt(slots.length))),
+      size: Math.max(maximumX - minimumX, maximumZ - minimumZ) + padding * 2,
+    };
+  }, [assembly]);
+
+  if (
+    !assembly ||
+    !layout ||
+    assembly.state.mode !== "reassemble" ||
+    assembly.state.complete
+  ) {
+    return null;
+  }
+  return (
+    <gridHelper
+      args={[layout.size, layout.divisions, "#b98b42", "#554328"]}
+      position={[
+        layout.center[0],
+        assembly.plan.stagingGroundY + 0.0005,
+        layout.center[1],
+      ]}
+      raycast={() => undefined}
+      userData={{ mechanicaAffordance: true }}
+    />
+  );
+}
+
 function MachineScene({
   activeSpec,
   aidCutawayPartIds = EMPTY_PART_IDS,
@@ -1571,6 +1763,30 @@ function MachineScene({
           homePose: undefined,
         }
       : VIEWER_PROFILES[module.data.slug];
+  const desiredAssemblyCameraState =
+    assembly?.state.mode === "reassemble"
+      ? assembly.state.complete
+        ? "reassemble-complete"
+        : "reassemble-staged"
+      : "default";
+  const [assemblyCameraState, setAssemblyCameraState] = useState(
+    desiredAssemblyCameraState,
+  );
+  useEffect(() => {
+    if (assemblyCameraState === desiredAssemblyCameraState) return;
+    let secondFrame = 0;
+    const firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => {
+        setAssemblyCameraState(desiredAssemblyCameraState);
+      });
+    });
+    return () => {
+      cancelAnimationFrame(firstFrame);
+      cancelAnimationFrame(secondFrame);
+    };
+  }, [assemblyCameraState, desiredAssemblyCameraState]);
+  const assemblyCameraPending =
+    assemblyCameraState !== desiredAssemblyCameraState;
   const controlsEnabled =
     !cameraIntroActive &&
     !spotlightActive &&
@@ -1803,13 +2019,15 @@ function MachineScene({
           />
         ))}
       </group>
+      <AssemblyStagingGround assembly={assembly} />
       <CameraDirector
         blocked={spotlightActive}
         blockedFitKeyToConsume={blockedFitKeyToConsume}
         controls={orbitControls}
         diagnostics={cameraDiagnostics}
-        enabled={!storyCamera}
-        fitKey={`${module.data.slug}:${schemeId ?? "default"}`}
+        enabled={!storyCamera && !assemblyCameraPending}
+        fitKey={`${module.data.slug}:${schemeId ?? "default"}:${assemblyCameraState}`}
+        fitWholeMachine={assemblyCameraState === "reassemble-staged"}
         introPlayed={introPlayed}
         machineRoot={machineRoot}
         onIntroActiveChange={setCameraIntroActive}
@@ -2642,8 +2860,10 @@ export default function MachineViewer({
     module.spec.slug === "odometer" ? "0.00" : null,
   );
   const [assemblyPlaying, setAssemblyPlaying] = useState(false);
+  const [completionProgress, setCompletionProgress] = useState(1);
   const [driveCoachVisible, setDriveCoachVisible] = useState(false);
   const animationFrame = useRef<number | null>(null);
+  const completionFrame = useRef<number | null>(null);
   const processFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
@@ -2846,6 +3066,9 @@ export default function MachineViewer({
       if (processFrame.current !== null) {
         cancelAnimationFrame(processFrame.current);
       }
+      if (completionFrame.current !== null) {
+        cancelAnimationFrame(completionFrame.current);
+      }
     },
     [],
   );
@@ -2854,11 +3077,15 @@ export default function MachineViewer({
     if (!assemblyPlaying) return;
     const startedAt = performance.now();
     const animate = (now: number) => {
-      const progress = Math.min(1, (now - startedAt) / 1600);
+      const progress = Math.min(
+        1,
+        (now - startedAt) / assembly.plan.durationMs,
+      );
       setAssemblyProgress(progress);
       if (progress < 1) {
         animationFrame.current = requestAnimationFrame(animate);
       } else {
+        animationFrame.current = null;
         setAssemblyPlaying(false);
       }
     };
@@ -2867,7 +3094,7 @@ export default function MachineViewer({
       if (animationFrame.current !== null)
         cancelAnimationFrame(animationFrame.current);
     };
-  }, [assemblyPlaying, setAssemblyProgress]);
+  }, [assembly.plan.durationMs, assemblyPlaying, setAssemblyProgress]);
 
   useEffect(() => {
     if (assembly.state.mode !== "step") return;
@@ -2904,8 +3131,34 @@ export default function MachineViewer({
     }
     observedCompletionEffect.current = assembly.state.completionEffectToken;
     setAssemblyProgress(1);
-    setExplode(0);
     setPaused(false);
+    if (completionFrame.current !== null) {
+      cancelAnimationFrame(completionFrame.current);
+    }
+    const startingExplode = useUiStore.getState().explode;
+    const startedAt = performance.now();
+    setCompletionProgress(0);
+    const animate = (now: number) => {
+      const progress = Math.min(
+        1,
+        (now - startedAt) / ASSEMBLY_COMPLETION_DURATION_MS,
+      );
+      setCompletionProgress(progress);
+      setExplode(startingExplode * (1 - assemblyEaseOutCubic(progress)));
+      if (progress < 1) {
+        completionFrame.current = requestAnimationFrame(animate);
+      } else {
+        completionFrame.current = null;
+        setExplode(0);
+      }
+    };
+    completionFrame.current = requestAnimationFrame(animate);
+    return () => {
+      if (completionFrame.current !== null) {
+        cancelAnimationFrame(completionFrame.current);
+        completionFrame.current = null;
+      }
+    };
   }, [
     assembly.state.completionEffectToken,
     setAssemblyProgress,
@@ -2979,12 +3232,25 @@ export default function MachineViewer({
       enterExplodedMode: assembly.enterExplodedMode,
       enterStepMode: assembly.enterStepMode,
       exitAssembly: assembly.exitAssembly,
+      partPosition: (partId) => {
+        const part = machineScene.current?.getObjectByName(partId);
+        return part ? part.getWorldPosition(new Vector3()).toArray() : null;
+      },
+      plan: () => ({
+        durationMs: assembly.plan.durationMs,
+        orderedPartIds: [...assembly.plan.orderedPartIds],
+        stagingByPartId: Object.fromEntries(assembly.plan.stagingByPartId),
+        stagingGroundY: assembly.plan.stagingGroundY,
+      }),
       seat: (partId, distanceFromHome = 0, radius = 1) =>
         assembly.attemptSeat(partId, distanceFromHome, radius),
       selectPart: assembly.selectPart,
       state: () => ({
+        assemblyProgress,
         complete: assembly.state.complete,
+        completionProgress,
         errorPartId: assembly.state.errorPartId,
+        explode,
         mode: assembly.state.mode,
         seatedPartIds: [...assembly.state.seatedPartIds],
         transmissionEnabled: assembly.state.transmissionEnabled,
@@ -3013,6 +3279,9 @@ export default function MachineViewer({
     activeModule,
     activeSpec,
     assembly,
+    assemblyProgress,
+    completionProgress,
+    explode,
     graph,
     setSelectedPartId,
     viewerGeometryReadyAt,
@@ -3035,7 +3304,7 @@ export default function MachineViewer({
       if (Number.isFinite(value)) setOdometerReadout(value.toFixed(2));
     }
     if (type === "scheme:switch" && module.schemes?.[part]) {
-      setSpotlightAutoFitKey(`${module.data.slug}:${part}`);
+      setSpotlightAutoFitKey(`${module.data.slug}:${part}:default`);
       setActiveSchemeId(part);
     }
     if (type === "spotlight:done") setSpotlightDone(true);
@@ -3064,7 +3333,7 @@ export default function MachineViewer({
     ) {
       graph.setScheme(module.schemes.fengrui);
       setActiveSchemeId("fengrui");
-      setSpotlightAutoFitKey("seismoscope:fengrui");
+      setSpotlightAutoFitKey("seismoscope:fengrui:default");
       spotlightSpec = applySchemePatch(module.spec, module.schemes.fengrui);
     }
 
@@ -3287,7 +3556,11 @@ export default function MachineViewer({
             activeDrivePartId ? `drive-gizmo-${activeDrivePartId}` : undefined
           }
           data-machine-ready={viewerGeometryReadyAt !== null ? "true" : "false"}
-          data-scene-enabled={showScene && module.scene ? "true" : "false"}
+          data-scene-enabled={
+            showScene && module.scene && assembly.state.mode === "idle"
+              ? "true"
+              : "false"
+          }
           data-scheme-transition={schemeTransition ? "true" : "false"}
           data-spotlight-active={spotlightActive ? "true" : "false"}
         >
@@ -3348,7 +3621,7 @@ export default function MachineViewer({
                     onGeometryCommitted={commitViewerGeometry}
                     paused={paused || !assembly.state.transmissionEnabled}
                     schemeId={activeSchemeId}
-                    showScene={showScene}
+                    showScene={showScene && assembly.state.mode === "idle"}
                     spotlightActive={spotlightActive}
                     spotlightPartIds={spotlightPartIds}
                     spotlightRunId={spotlightRunId}
@@ -3361,14 +3634,16 @@ export default function MachineViewer({
                         : undefined
                     }
                   />
-                  <AidLayer
-                    aids={module.aids ?? []}
-                    language={language}
-                    module={module}
-                    onCutawayChange={setAidCutawayPartIds}
-                    onHighlightChange={setAidHighlightPartIds}
-                    onRunTrigger={runTrigger}
-                  />
+                  {assembly.state.mode === "idle" ? (
+                    <AidLayer
+                      aids={module.aids ?? []}
+                      language={language}
+                      module={module}
+                      onCutawayChange={setAidCutawayPartIds}
+                      onHighlightChange={setAidHighlightPartIds}
+                      onRunTrigger={runTrigger}
+                    />
+                  ) : null}
                 </>
               ) : null}
             </Canvas>
@@ -3381,7 +3656,10 @@ export default function MachineViewer({
               total={viewerGeometryTotal}
             />
           ) : null}
-          {driveCoachVisible && !compareActive && viewerGeometryPrepared ? (
+          {driveCoachVisible &&
+          !compareActive &&
+          viewerGeometryPrepared &&
+          assembly.state.mode === "idle" ? (
             <div
               data-testid="drive-coach"
               style={{
@@ -3432,14 +3710,16 @@ export default function MachineViewer({
           data-completion-effect={assembly.state.completionEffectToken}
           hidden={compareActive}
         >
-          <button
-            className="ghost-button"
-            disabled={compareActive || !assembly.state.transmissionEnabled}
-            onClick={() => setPaused(!paused)}
-            type="button"
-          >
-            {paused ? t("viewer.resume") : t("viewer.pause")}
-          </button>
+          {assembly.state.mode !== "reassemble" ? (
+            <button
+              className="ghost-button"
+              disabled={compareActive || !assembly.state.transmissionEnabled}
+              onClick={() => setPaused(!paused)}
+              type="button"
+            >
+              {paused ? t("viewer.resume") : t("viewer.pause")}
+            </button>
+          ) : null}
           {selectedDrivePart ? (
             <button
               aria-keyshortcuts="ArrowLeft ArrowRight ArrowDown ArrowUp"
@@ -3479,10 +3759,11 @@ export default function MachineViewer({
               })}
             </button>
           ) : null}
-          {module.scene ? (
+          {module.scene && assembly.state.mode !== "reassemble" ? (
             <button
               className="ghost-button"
               data-testid="scene-toggle"
+              disabled={assembly.state.mode !== "idle"}
               onClick={() => setShowScene(!showScene)}
               type="button"
             >
@@ -3503,7 +3784,8 @@ export default function MachineViewer({
               min="0"
               onChange={(event) => {
                 setAssemblyPlaying(false);
-                assembly.exitAssembly();
+                assembly.enterStepMode();
+                setExplode(0);
                 setAssemblyProgress(Number(event.currentTarget.value));
               }}
               step="0.01"
@@ -3511,31 +3793,36 @@ export default function MachineViewer({
               value={assemblyProgress}
             />
           </label>
-          <button
-            className="ghost-button"
-            data-testid="assembly-play"
-            onClick={() => {
-              assembly.enterStepMode();
-              setAssemblyProgress(0);
-              setAssemblyPlaying(true);
-            }}
-            type="button"
-          >
-            {t("assembly.play")}
-          </button>
-          <button
-            className="ghost-button"
-            data-testid="assembly-reassemble"
-            onClick={() => {
-              setAssemblyPlaying(false);
-              setAssemblyProgress(1);
-              setExplode(1);
-              assembly.enterExplodedMode();
-            }}
-            type="button"
-          >
-            {language === "zh" ? "拖拽复原" : "Reassemble"}
-          </button>
+          {assembly.state.mode !== "reassemble" ? (
+            <>
+              <button
+                className="ghost-button"
+                data-testid="assembly-play"
+                onClick={() => {
+                  assembly.enterStepMode();
+                  setExplode(0);
+                  setAssemblyProgress(0);
+                  setAssemblyPlaying(true);
+                }}
+                type="button"
+              >
+                {t("assembly.play")}
+              </button>
+              <button
+                className="ghost-button"
+                data-testid="assembly-reassemble"
+                onClick={() => {
+                  setAssemblyPlaying(false);
+                  setAssemblyProgress(1);
+                  setExplode(0);
+                  assembly.enterExplodedMode();
+                }}
+                type="button"
+              >
+                {language === "zh" ? "拖拽复原" : "Reassemble"}
+              </button>
+            </>
+          ) : null}
           {assembly.state.mode === "step" ? (
             <div className="assembly-step-controls">
               <button
@@ -3589,6 +3876,9 @@ export default function MachineViewer({
           {assembly.currentPartName ? (
             <p className="assembly-current" data-testid="assembly-current-part">
               {assembly.currentPartName[language]}
+              {assembly.currentPartCaption
+                ? ` · ${assembly.currentPartCaption[language]}`
+                : null}
             </p>
           ) : null}
           {assemblyHint ? (

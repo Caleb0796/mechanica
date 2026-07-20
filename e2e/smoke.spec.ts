@@ -839,6 +839,155 @@ test("U1: gimbal and odometer reject dependency violations then restore", async 
   }
 });
 
+test("F0-T8: assembly duration follows runtime part count and captions the Chinese step", async ({
+  page,
+}) => {
+  test.setTimeout(30_000);
+  await page.goto("/#/m/astroclock");
+  await waitForMechanica(page, "astroclock");
+  const chineseToggle = page.getByRole("button", { name: "中文", exact: true });
+  if ((await chineseToggle.count()) > 0) await chineseToggle.click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
+
+  const expected = await page.evaluate(() => {
+    const assembly = window.__mechAssembly;
+    const spec = window.__mech?.spec;
+    if (!assembly || !spec) throw new Error("Assembly hooks are unavailable");
+    const plan = assembly.plan();
+    const firstPart = spec.parts.find(
+      (part) => part.id === plan.orderedPartIds[0],
+    );
+    if (!firstPart) throw new Error("The first assembly part is unavailable");
+    return {
+      durationMs: plan.durationMs,
+      formulaMs: Math.min(
+        20_000,
+        Math.max(2_500, plan.orderedPartIds.length * 280),
+      ),
+      name: firstPart.name.zh,
+    };
+  });
+  expect(expected.durationMs).toBe(expected.formulaMs);
+
+  const startedAt = await page.evaluate(() => performance.now());
+  await page.getByTestId("assembly-play").click();
+  await expect(page.getByTestId("assembly-current-part")).toContainText(
+    expected.name,
+  );
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          () => window.__mechAssembly?.state().assemblyProgress ?? 0,
+        ),
+      { timeout: expected.durationMs * 1.1 + 1_000 },
+    )
+    .toBe(1);
+  const elapsed = (await page.evaluate(() => performance.now())) - startedAt;
+  expect(elapsed).toBeGreaterThanOrEqual(expected.durationMs * 0.9);
+  expect(elapsed).toBeLessThanOrEqual(expected.durationMs * 1.1);
+});
+
+test("F0-T8: Reassemble stages on the ground, scrub resets explode, and completion settles", async ({
+  page,
+}) => {
+  await page.goto("/#/m/gimbal");
+  await waitForMechanica(page, "gimbal");
+  await page.getByTestId("assembly-reassemble").click();
+  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
+    "data-assembly-mode",
+    "reassemble",
+  );
+
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const assembly = window.__mechAssembly;
+        if (!assembly) return Number.POSITIVE_INFINITY;
+        const plan = assembly.plan();
+        return Math.max(
+          ...plan.orderedPartIds.map((partId) => {
+            const actual = assembly.partPosition(partId);
+            const staged = plan.stagingByPartId[partId]?.position;
+            if (!actual || !staged) return Number.POSITIVE_INFINITY;
+            return Math.hypot(
+              actual[0] - staged[0],
+              actual[1] - staged[1],
+              actual[2] - staged[2],
+            );
+          }),
+        );
+      }),
+    )
+    .toBeLessThan(0.001);
+  const grounded = await page.evaluate(() => {
+    const plan = window.__mechAssembly?.plan();
+    if (!plan) return 1;
+    return Math.max(
+      ...Object.values(plan.stagingByPartId).map((slot) =>
+        Math.abs(slot.position[1] - slot.groundOffset - plan.stagingGroundY),
+      ),
+    );
+  });
+  expect(grounded).toBeCloseTo(0, 10);
+
+  await page.getByTestId("explode-slider").fill("1");
+  await page
+    .locator('.viewer-toolbar .range-control input[type="range"]')
+    .first()
+    .fill("0.5");
+  expect(
+    await page.evaluate(() => window.__mechAssembly?.state()),
+  ).toMatchObject({ explode: 0, mode: "step" });
+
+  await page.getByTestId("assembly-reassemble").click();
+  await page.getByTestId("explode-slider").fill("1");
+  const settlingStartedAt = await page.evaluate(() => {
+    const assembly = window.__mechAssembly;
+    if (!assembly) throw new Error("Assembly hook is unavailable");
+    const partIds = assembly.plan().orderedPartIds;
+    for (const partId of partIds) assembly.seat(partId, 0, 1);
+    return performance.now();
+  });
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          () => window.__mechAssembly?.state().completionProgress ?? 1,
+        ),
+      { intervals: [16], timeout: 1_500 },
+    )
+    .toBeLessThan(1);
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          () => window.__mechAssembly?.state().completionProgress ?? 0,
+        ),
+      { intervals: [16], timeout: 1_500 },
+    )
+    .toBe(1);
+  const settled = await page.evaluate(() => ({
+    elapsed: performance.now(),
+    state: window.__mechAssembly?.state(),
+    supportsExistingSemantics:
+      typeof window.__mechAssembly?.advanceStep === "function" &&
+      typeof window.__mechAssembly?.enterStepMode === "function" &&
+      typeof window.__mechAssembly?.exitAssembly === "function" &&
+      typeof window.__mechAssembly?.seat === "function" &&
+      typeof window.__mechAssembly?.selectPart === "function",
+  }));
+  expect(settled.elapsed - settlingStartedAt).toBeGreaterThanOrEqual(540);
+  expect(settled.elapsed - settlingStartedAt).toBeLessThanOrEqual(750);
+  expect(settled.state).toMatchObject({
+    complete: true,
+    completionProgress: 1,
+    explode: 0,
+    transmissionEnabled: true,
+  });
+  expect(settled.supportsExistingSemantics).toBe(true);
+});
+
 test("U6: spotlight completes after its ordered highlight sequence", async ({
   page,
 }) => {

@@ -3044,7 +3044,7 @@ export default function MachineViewer({
   const storedScheme = useUiStore(
     (state) => state.schemeByMachine[module.data.slug],
   );
-  const [activeSchemeId, setActiveSchemeId] = useState(
+  const [activeSchemeId, setActiveSchemeId] = useState<string | undefined>(
     storedScheme ?? schemeId,
   );
   const activeSpec = useMemo(
@@ -3908,14 +3908,15 @@ export default function MachineViewer({
   const spotlight = module.mechanism?.triggers.find(
     (trigger) => trigger.id === "spotlight",
   );
+  const assemblyStateHint = assembly.state.hint;
   const requiredAssemblyPartName =
-    assembly.state.hint?.kind === "parent-required"
+    assemblyStateHint?.kind === "parent-required"
       ? (module.spec.parts.find(
-          (part) => part.id === assembly.state.hint?.requiredPartId,
-        )?.name[language] ?? assembly.state.hint.requiredPartId)
+          (part) => part.id === assemblyStateHint.requiredPartId,
+        )?.name[language] ?? assemblyStateHint.requiredPartId)
       : null;
-  const assemblyHint = assembly.state.hint
-    ? assembly.state.hint.kind === "parent-required"
+  const assemblyHint = assemblyStateHint
+    ? assemblyStateHint.kind === "parent-required"
       ? language === "zh"
         ? `请先安装 ${requiredAssemblyPartName}`
         : `Seat ${requiredAssemblyPartName} first`

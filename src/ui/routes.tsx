@@ -126,6 +126,7 @@ function HomePage() {
               <h2>{card.name[language]}</h2>
               <p className="machine-era">{card.era[language]}</p>
               <p className="machine-principle">{card.principle[language]}</p>
+              <span className="machine-open">{t("home.open")}</span>
             </a>
           );
         })}

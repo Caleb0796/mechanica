@@ -869,7 +869,9 @@ export default function AidLayer({
           >
             {aids.map((aid, index) => {
               const pressed =
-                activeIndex === index || flowCutawayIndex === index;
+                activeIndex === index ||
+                flowCutawayIndex === index ||
+                (aid.kind === "subDemo" && activeTriggerId === aid.triggerId);
               return (
                 <button
                   aria-pressed={pressed}
@@ -881,6 +883,11 @@ export default function AidLayer({
                   key={`${aid.kind}:${index}`}
                   onClick={() => {
                     resetPerformance();
+                    if (aid.kind === "subDemo") {
+                      setActiveIndex(index);
+                      onRunTrigger(aid.triggerId);
+                      return;
+                    }
                     setActiveIndex((current) =>
                       current === index ? null : index,
                     );

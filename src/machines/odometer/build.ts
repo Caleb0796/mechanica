@@ -45,6 +45,29 @@ function translatedBox(
   return new THREE.BoxGeometry(...size).translate(...position);
 }
 
+function cylinderBetween(
+  start: THREE.Vector3,
+  end: THREE.Vector3,
+  radius: number,
+): THREE.BufferGeometry {
+  const direction = end.clone().sub(start);
+  const geometry = new THREE.CylinderGeometry(
+    radius,
+    radius,
+    direction.length(),
+    12,
+  );
+  geometry.applyQuaternion(
+    new THREE.Quaternion().setFromUnitVectors(
+      new THREE.Vector3(0, 1, 0),
+      direction.normalize(),
+    ),
+  );
+  const midpoint = start.clone().add(end).multiplyScalar(0.5);
+  geometry.translate(midpoint.x, midpoint.y, midpoint.z);
+  return geometry;
+}
+
 function odometerUnderframe(
   params: Record<string, number>,
 ): THREE.BufferGeometry {
@@ -621,35 +644,56 @@ function odometerMalletArm(
     contactDepth = head * 1.5,
     contactOffset = 0,
   } = params;
-  const arm = new THREE.CylinderGeometry(
-    thickness,
-    thickness,
-    length,
-    12,
-  ).rotateZ((direction * Math.PI) / 2);
-  arm.translate((direction * length) / 2, 0, planeOffset);
+  const shoulderRadius = thickness * 0.72;
+  const shoulderRoot = new THREE.Vector3(
+    0,
+    0,
+    Math.min(planeOffset, shoulderRadius),
+  );
+  const elbow = new THREE.Vector3(
+    direction * Math.min(length * 0.26, planeOffset * 0.36),
+    0,
+    planeOffset,
+  );
+  const grip = new THREE.Vector3(
+    direction * length,
+    -handle * 0.28,
+    planeOffset,
+  );
   const shoulderBridge =
     planeOffset > 0
       ? new THREE.CylinderGeometry(
-          thickness * 0.72,
-          thickness * 0.72,
-          planeOffset,
+          shoulderRadius,
+          shoulderRadius,
+          shoulderRoot.z,
           12,
         )
           .rotateX(Math.PI / 2)
-          .translate(0, 0, planeOffset / 2)
+          .translate(0, 0, shoulderRoot.z / 2)
       : null;
-  const strikerArm = shoulderBridge
-    ? mergeOdometerGeometry([arm, shoulderBridge], "outboard striker arm")
-    : arm;
-  strikerArm.computeVertexNormals();
-  strikerArm.computeBoundingBox();
-  strikerArm.computeBoundingSphere();
+  const upperArm = cylinderBetween(shoulderRoot, elbow, shoulderRadius);
+  const forearm = cylinderBetween(elbow, grip, thickness * 0.78);
+  const elbowJoint = new THREE.SphereGeometry(thickness * 0.9, 12, 8);
+  elbowJoint.translate(elbow.x, elbow.y, elbow.z);
+  const handCuff = new THREE.SphereGeometry(thickness * 0.95, 12, 8);
+  handCuff.scale(0.86, 1, 0.86);
+  handCuff.translate(grip.x, grip.y, grip.z);
+  const armParts = [upperArm, forearm, elbowJoint, handCuff];
+  if (shoulderBridge) armParts.push(shoulderBridge);
+  const strikerArm = mergeOdometerGeometry(armParts, "articulated striker arm");
+  const elbowAngle = THREE.MathUtils.radToDeg(
+    shoulderRoot.clone().sub(elbow).angleTo(grip.clone().sub(elbow)),
+  );
   strikerArm.userData.mechanicaSemantic = {
     kind: "instrument-facing-striker-arm",
+    armSegments: 2,
     direction,
+    elbowAngle,
+    gripPoint: grip.toArray(),
+    handCuffGrip: true,
     outboardShoulderBridge: planeOffset > 0,
     readableStrikePath: true,
+    shoulderEmbedded: true,
     shoulderPivotAtOrigin: true,
   };
   strikerArm.userData.mechanicaMaterialRole = "figure";
@@ -678,7 +722,9 @@ function odometerMalletArm(
     instrumentFacingAxis: direction < 0 ? "-x" : "+x",
     contactDepth,
     contactOffset,
+    restHeadCenter: [direction * length, -handle, planeOffset - contactOffset],
     strikePlaneOffset: planeOffset,
+    targetFacingAxis: "-z",
   };
   mallet.userData.mechanicaMaterialRole = "instrument-striker";
   mallet.userData.mechanicaMaterial = {

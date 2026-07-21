@@ -625,6 +625,18 @@ describe("odometer drum carriage", () => {
       ["li-instrument-support", 0.5, 0.48],
       ["ten-li-instrument-support", 0.46, 0.5],
     ] as const;
+    // Frozen pre-refinement local envelopes: articulation may tighten them,
+    // but no point may grow beyond the declared striker silhouette.
+    const strikerEnvelopes = {
+      "lower-figure": new Box3(
+        new Vector3(-0.430001, -0.240001, -0.040001),
+        new Vector3(0.028801, 0.040001, 0.180001),
+      ),
+      "upper-figure": new Box3(
+        new Vector3(-0.445001, -0.245001, -0.000001),
+        new Vector3(0.028801, 0.040001, 0.480001),
+      ),
+    } as const;
 
     for (const body of [lowerBody, upperBody]) {
       expect(body.geometry).toMatchObject({
@@ -696,17 +708,65 @@ describe("odometer drum carriage", () => {
       expect(armEntries).toHaveLength(2);
       expect(armEntries[0].userData.mechanicaSemantic).toMatchObject({
         kind: "instrument-facing-striker-arm",
+        armSegments: 2,
         direction: -1,
+        handCuffGrip: true,
         readableStrikePath: true,
         outboardShoulderBridge: true,
+        shoulderEmbedded: true,
       });
+      const armSemantic = armEntries[0].userData.mechanicaSemantic;
+      expect(armSemantic.elbowAngle).toBeGreaterThanOrEqual(100);
+      expect(armSemantic.elbowAngle).toBeLessThanOrEqual(130);
+      expect(armSemantic.gripPoint).toEqual([
+        arm.geometry.params.direction * arm.geometry.params.length,
+        -arm.geometry.params.handle * 0.28,
+        arm.geometry.params.planeOffset,
+      ]);
       expect(armEntries[1].userData.mechanicaSemantic).toMatchObject({
         kind: "separate-mallet-head-and-handle",
         instrumentFacingAxis: "-x",
         contactDepth: 0.18,
         contactOffset: 0.09,
         strikePlaneOffset: arm.id === "upper-figure" ? 0.44 : 0.14,
+        targetFacingAxis: "-z",
       });
+      expect(armEntries[1].userData.mechanicaSemantic.restHeadCenter).toEqual([
+        arm.geometry.params.direction * arm.geometry.params.length,
+        -arm.geometry.params.handle,
+        arm.geometry.params.planeOffset - arm.geometry.params.contactOffset,
+      ]);
+      if (body.geometry.type !== "custom") {
+        throw new Error(`Missing figure-body geometry for ${body.id}`);
+      }
+      expect(Math.abs(arm.position[0])).toBeLessThan(
+        body.geometry.params.shoulderWidth / 2,
+      );
+      expect(arm.position[1]).toBeGreaterThan(
+        body.geometry.params.height * (0.19 - 0.085 / 2),
+      );
+      expect(arm.position[1]).toBeLessThan(
+        body.geometry.params.height * (0.19 + 0.085 / 2),
+      );
+      expect(Math.abs(arm.position[2])).toBeLessThan(
+        (body.geometry.params.depth * 0.82) / 2,
+      );
+      const armBounds = new Box3();
+      for (const geometry of armEntries) {
+        geometry.computeBoundingBox();
+        armBounds.union(geometry.boundingBox!);
+      }
+      const frozenEnvelope = strikerEnvelopes[arm.id];
+      for (const axis of ["x", "y", "z"] as const) {
+        expect(
+          armBounds.min[axis],
+          `${arm.id} minimum ${axis}`,
+        ).toBeGreaterThanOrEqual(frozenEnvelope.min[axis]);
+        expect(
+          armBounds.max[axis],
+          `${arm.id} maximum ${axis}`,
+        ).toBeLessThanOrEqual(frozenEnvelope.max[axis]);
+      }
       expect(armEntries[0].userData.mechanicaMaterial.color).not.toBe(
         armEntries[1].userData.mechanicaMaterial.color,
       );
@@ -791,6 +851,13 @@ describe("odometer drum carriage", () => {
       const [heldMalletX, heldMalletY] = malletPosition(heldAngle, 0);
       const riseDistance = raisedMallet[1] - startMallet[1];
       riseDistances.push(riseDistance);
+      expect(
+        Math.hypot(
+          startMallet[0] - instrument.position[0],
+          startMallet[1] - instrument.position[1],
+        ),
+        `${arm.id} rest head aims at ${instrument.id}`,
+      ).toBeLessThan(instrument.geometry.params.radius);
       expect(riseDistance).toBeGreaterThan(0.1);
       expect(heldMalletY - startMallet[1]).toBeLessThan(-0.05);
       expect(Math.abs(heldMalletX - instrument.position[0])).toBeLessThan(

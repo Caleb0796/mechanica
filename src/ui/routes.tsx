@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { MachineModule, MachineSlug } from "../sim/types";
+import HomeCarouselHero from "./HomeCarouselHero";
 import PosterFallback from "./PosterFallback";
 import type { SceneSpec } from "./scene/types";
 import type { StoryStep } from "./story";
@@ -105,11 +106,7 @@ function HomePage() {
 
   return (
     <main className="home-page">
-      <section className="hero">
-        <p className="eyebrow">{t("home.eyebrow")}</p>
-        <h1 className="display-title">{t("home.title")}</h1>
-        <p className="hero-copy">{t("home.intro")}</p>
-      </section>
+      <HomeCarouselHero slugs={MACHINE_SLUGS} />
       <section aria-label={t("app.home")} className="machine-grid">
         {MACHINE_SLUGS.map((slug, index) => {
           const card = machineCards[slug];

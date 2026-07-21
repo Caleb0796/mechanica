@@ -161,6 +161,90 @@ a {
   line-height: 1.7;
 }
 
+.home-carousel-hero {
+  max-width: none;
+}
+
+.home-carousel-link {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  height: clamp(34rem, 70vh, 48rem);
+  min-height: 34rem;
+  overflow: hidden;
+  border: 1px solid rgba(213, 164, 78, 0.25);
+  color: inherit;
+  background: #0c0d0c;
+  text-decoration: none;
+}
+
+.home-carousel-link::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(7, 8, 8, 0.94), transparent 58%),
+    linear-gradient(0deg, rgba(7, 8, 8, 0.85), transparent 42%);
+  content: "";
+  pointer-events: none;
+}
+
+.home-carousel-heading,
+.home-carousel-machine-copy {
+  position: absolute;
+  z-index: 2;
+  left: clamp(1.5rem, 4vw, 3.5rem);
+  pointer-events: none;
+}
+
+.home-carousel-heading {
+  top: clamp(2rem, 6vh, 4rem);
+  width: min(34rem, 52%);
+}
+
+.home-carousel-heading .display-title {
+  font-size: clamp(2.6rem, 6vw, 5.7rem);
+}
+
+.home-carousel-heading .hero-copy {
+  max-width: 30rem;
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+}
+
+.home-carousel-visual {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+}
+
+.home-carousel-visual canvas {
+  display: block;
+}
+
+.home-carousel-visual .geometry-loading {
+  background: transparent;
+}
+
+.home-carousel-machine-copy {
+  bottom: clamp(1.5rem, 5vh, 3rem);
+  width: min(34rem, calc(100% - 3rem));
+}
+
+.home-carousel-machine-copy h2 {
+  margin: 0.5rem 0 0;
+  color: #eee5d3;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 500;
+}
+
+.home-carousel-machine-copy p {
+  max-width: 30rem;
+  margin: 0.55rem 0 0;
+  color: #aaa69d;
+  line-height: 1.55;
+}
+
 .gold-button,
 .ghost-button,
 .mechanism-button {

@@ -37,6 +37,7 @@
     "spotlight": "Ingenuity spotlight",
     "spotlightPlay": "Play spotlight",
     "spotlightDone": "Demo complete",
+    "demoInProgress": "A demo is already in progress.",
     "contextLost": "The graphics context was lost — trying to recover…",
     "noMechanisms": "No separate mechanism demo",
     "enterStory": "Enter story",

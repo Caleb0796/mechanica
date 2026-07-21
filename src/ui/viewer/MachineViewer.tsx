@@ -3102,6 +3102,12 @@ export default function MachineViewer({
     useState<SchemeTransitionMetadata | null>(null);
   const [schemeTransitionNow, setSchemeTransitionNow] = useState(0);
   const [caption, setCaption] = useState("");
+  const [captionPulseToken, setCaptionPulseToken] = useState(0);
+  const [activeTrigger, setActiveTrigger] = useState<{
+    arg?: number;
+    triggerId: string;
+  } | null>(null);
+  const [demoProgress, setDemoProgress] = useState(0);
   const [aidCutawayPartIds, setAidCutawayPartIds] = useState<string[]>([]);
   const [aidHighlightPartIds, setAidHighlightPartIds] = useState<string[]>([]);
   const [spotlightActive, setSpotlightActive] = useState(false);
@@ -3369,6 +3375,8 @@ export default function MachineViewer({
     cameraDiagnostics.current = null;
     setAidCutawayPartIds([]);
     setAidHighlightPartIds([]);
+    setActiveTrigger(null);
+    setDemoProgress(0);
     setSpotlightActive(false);
     setSpotlightAutoFitKey(null);
     setSpotlightDone(false);
@@ -3848,13 +3856,22 @@ export default function MachineViewer({
       statesDiffer,
       initialState,
     );
+    const totalDuration = timeline.reduce(
+      (duration, entry) =>
+        duration + (entry.motionMs + entry.dwellMs) / speed,
+      0,
+    );
     let index = 0;
+    let completedDuration = 0;
+    let lastProgressUpdateAt = 0;
     let previousState = initialState;
     const playNext = () => {
       const entry = timeline[index];
       if (!entry) {
         displayState.current = null;
         if (donePart) recordEvent("spotlight:done", donePart);
+        setDemoProgress(1);
+        setActiveTrigger(null);
         setSpotlightActive(false);
         setDemoFocusPartId(null);
         setPaused(pausedBefore);
@@ -3894,6 +3911,21 @@ export default function MachineViewer({
           1,
           motion === 0 ? 1 : (now - startedAt) / motion,
         );
+        const entryElapsed = Math.min(
+          motion + dwell,
+          Math.max(0, now - startedAt),
+        );
+        if (
+          now - lastProgressUpdateAt >= 50 ||
+          entryElapsed >= motion + dwell
+        ) {
+          setDemoProgress(
+            totalDuration === 0
+              ? 1
+              : Math.min(1, (completedDuration + entryElapsed) / totalDuration),
+          );
+          lastProgressUpdateAt = now;
+        }
         displayState.current = interpolateState(
           previousState,
           entry.event.state,
@@ -3903,6 +3935,7 @@ export default function MachineViewer({
           spotlightFrame.current = requestAnimationFrame(animate);
           return;
         }
+        completedDuration += motion + dwell;
         previousState = entry.event.state;
         index += 1;
         playNext();
@@ -3912,7 +3945,16 @@ export default function MachineViewer({
     playNext();
   };
 
+  const pulseDemoInProgress = () => {
+    setCaption(t("viewer.demoInProgress"));
+    setCaptionPulseToken((token) => token + 1);
+  };
+
   const runTrigger = (triggerId: string, arg?: number) => {
+    if (pendingTrigger.current || activeTrigger) {
+      pulseDemoInProgress();
+      return;
+    }
     if (
       !module.mechanism?.triggers.some(
         (candidate) => candidate.id === triggerId,
@@ -3920,7 +3962,10 @@ export default function MachineViewer({
     ) {
       return;
     }
-    pendingTrigger.current = { arg, triggerId };
+    const requestedTrigger = { arg, triggerId };
+    pendingTrigger.current = requestedTrigger;
+    setActiveTrigger(requestedTrigger);
+    setDemoProgress(0);
     setDemoFocusPartId("tower-shell");
   };
 
@@ -4120,6 +4165,7 @@ export default function MachineViewer({
                   />
                   {assembly.state.mode === "idle" ? (
                     <AidLayer
+                      activeTriggerId={activeTrigger?.triggerId}
                       aids={module.aids ?? []}
                       language={language}
                       module={module}
@@ -4509,11 +4555,17 @@ export default function MachineViewer({
             <p className="panel-copy">{module.data.ingenuity.hook[language]}</p>
             <p className="panel-copy">{module.data.ingenuity.demo[language]}</p>
             <button
-              className="gold-button"
-              data-testid="spotlight-play"
-              disabled={
-                !spotlight || viewerGeometryReadyAt === null || spotlightActive
+              aria-pressed={activeTrigger?.triggerId === spotlight?.id}
+              className="gold-button demo-trigger-button"
+              data-demo-state={
+                activeTrigger
+                  ? activeTrigger.triggerId === spotlight?.id
+                    ? "playing"
+                    : "dimmed"
+                  : "idle"
               }
+              data-testid="spotlight-play"
+              disabled={!spotlight || viewerGeometryReadyAt === null}
               onClick={() => spotlight && runTrigger(spotlight.id)}
               type="button"
             >
@@ -4554,9 +4606,22 @@ export default function MachineViewer({
                 (bearing, index) => (
                   <button
                     aria-pressed={quakeBearing === index}
-                    className={quakeBearing === index ? "chip active" : "chip"}
+                    className={`chip demo-trigger-button${
+                      quakeBearing === index ? " active" : ""
+                    }`}
+                    data-demo-state={
+                      activeTrigger
+                        ? activeTrigger.triggerId === "quake" &&
+                          activeTrigger.arg === index
+                          ? "playing"
+                          : "dimmed"
+                        : "idle"
+                    }
                     key={bearing}
-                    onClick={() => setQuakeBearing(index)}
+                    onClick={() => {
+                      if (!activeTrigger) setQuakeBearing(index);
+                      runTrigger("quake", index);
+                    }}
                     type="button"
                   >
                     {t(`seismo.bearing.${bearing}`)}
@@ -4573,9 +4638,16 @@ export default function MachineViewer({
                 .filter((trigger) => !trigger.id.startsWith("drive:"))
                 .map((trigger) => (
                   <button
-                    className="mechanism-button"
+                    aria-pressed={activeTrigger?.triggerId === trigger.id}
+                    className="mechanism-button demo-trigger-button"
+                    data-demo-state={
+                      activeTrigger
+                        ? activeTrigger.triggerId === trigger.id
+                          ? "playing"
+                          : "dimmed"
+                        : "idle"
+                    }
                     data-testid={`mech-trigger-${trigger.id}`}
-                    disabled={spotlightActive}
                     key={trigger.id}
                     onClick={() =>
                       runTrigger(
@@ -4602,7 +4674,21 @@ export default function MachineViewer({
               </output>
             </p>
           ) : null}
-          <div aria-live="polite" data-testid="event-captions">
+          <div
+            aria-live="polite"
+            className="event-caption-bar"
+            data-pulsing={captionPulseToken > 0 ? "true" : "false"}
+            data-testid="event-captions"
+            key={captionPulseToken}
+          >
+            {activeTrigger ? (
+              <progress
+                aria-label={t("viewer.demoInProgress")}
+                className="demo-progress"
+                max={1}
+                value={demoProgress}
+              />
+            ) : null}
             {caption !== "" ? <p className="event-caption">{caption}</p> : null}
           </div>
         </section>

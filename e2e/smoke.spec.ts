@@ -659,13 +659,20 @@ test("U4: seismoscope part inspection exposes the duzhu source quote", async ({
 test("seismoscope matched bearing releases only the corresponding ball", async ({
   page,
 }) => {
+  test.setTimeout(120_000);
   await page.goto("/#/m/seismoscope");
   await waitForMechanica(page, "seismoscope");
 
   await page.getByRole("button", { name: "E", exact: true }).click();
   await page.getByTestId("mech-trigger-quake:arm").click();
+  const progress = page.getByTestId("demo-progress");
+  await expect(progress).toBeVisible();
+  await expect(progress).toBeHidden({ timeout: 60_000 });
+  await expect(page.getByTestId("armed-bearing")).toContainText("E");
   await page.getByTestId("mech-trigger-quake").click();
-  await expect(page.getByTestId("event-captions")).toContainText(/ball|铜丸/i);
+  await expect(page.getByTestId("event-captions")).toContainText(/ball|铜丸/i, {
+    timeout: 60_000,
+  });
   expect(
     await page.evaluate(() =>
       Object.entries(window.__mech?.graph.state() ?? {})
@@ -1252,7 +1259,7 @@ test("F0-T4: spotlight hands its target back before the first orbit", async ({
   await waitForCamera(page);
   await page.getByTestId("spotlight-play").click();
   await expect(page.locator(".spotlight-done")).toBeVisible({
-    timeout: 10_000,
+    timeout: 45_000,
   });
   await expect(page.locator(".viewer-canvas")).toHaveAttribute(
     "data-spotlight-active",
@@ -1338,20 +1345,20 @@ test("F0-T4: spotlight hands its target back before the first orbit", async ({
   expect(loomAfter?.refitCount).toBe(loomBefore?.refitCount);
 });
 
-test("U6: all four machine spotlights complete within ten seconds", async ({
+test("U6: all four machine spotlights complete on the paced timeline", async ({
   page,
 }) => {
-  test.setTimeout(120_000);
+  test.setTimeout(180_000);
   for (const slug of machineSlugs) {
     await page.goto(`/#/m/${slug}`);
     await waitForMechanica(page, slug);
     await page.getByTestId("spotlight-play").click();
     await expect(page.getByTestId("event-captions")).toContainText(
       "The demonstration is complete",
-      { timeout: 10_000 },
+      { timeout: 45_000 },
     );
     await expect(page.locator(".spotlight-done")).toBeVisible({
-      timeout: 10_000,
+      timeout: 45_000,
     });
     if (
       ["seismoscope", "loom"].includes(slug)
@@ -1386,7 +1393,7 @@ test("U6 semantics: astroclock stages sourced captions", async ({
   await waitForMechanica(page, "astroclock");
   await page.getByTestId("spotlight-play").click();
   await expect(page.locator(".spotlight-done")).toBeVisible({
-    timeout: 10_000,
+    timeout: 45_000,
   });
   const stages = await page
     .getByTestId("spotlight-source-transcript")

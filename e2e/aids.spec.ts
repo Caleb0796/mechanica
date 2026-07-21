@@ -174,9 +174,36 @@ async function expectCalloutLabelsSeparated(page: Page) {
   }
 }
 
+async function dragAcrossCalloutCheckpoints(
+  page: Page,
+  startX: number,
+  startY: number,
+  checkpoints: Array<{ x: number; y: number; delay: number }>,
+) {
+  await page.mouse.move(startX, startY);
+  await page.mouse.down();
+  try {
+    for (const checkpoint of checkpoints) {
+      await page.mouse.move(checkpoint.x, checkpoint.y, { steps: 6 });
+      await page.waitForTimeout(checkpoint.delay);
+      await expectCalloutsAligned(page);
+      await expectCalloutLabelsSeparated(page);
+    }
+  } finally {
+    if (!page.isClosed()) {
+      try {
+        await page.mouse.up();
+      } catch (error) {
+        if (!page.isClosed()) throw error;
+      }
+    }
+  }
+}
+
 test("F0-T11: astroclock principle aids remain aligned, bilingual, and responsive", async ({
   page,
 }) => {
+  test.setTimeout(90_000);
   const errors: string[] = [];
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(message.text());
@@ -233,21 +260,17 @@ test("F0-T11: astroclock principle aids remain aligned, bilingual, and responsiv
     { x: startX - 70, y: startY - 12, delay: 166 },
     { x: startX - 105, y: startY - 16, delay: 167 },
   ];
-  await page.mouse.move(startX, startY);
-  await page.mouse.down();
-  try {
-    for (const checkpoint of checkpoints) {
-      await page.mouse.move(checkpoint.x, checkpoint.y, { steps: 6 });
-      await page.waitForTimeout(checkpoint.delay);
-      await expectCalloutsAligned(page);
-      await expectCalloutLabelsSeparated(page);
-    }
-  } finally {
-    await page.mouse.up();
-  }
+  await dragAcrossCalloutCheckpoints(
+    page,
+    startX,
+    startY,
+    checkpoints,
+  );
 
   await page.getByRole("button", { name: "中文", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
+  await waitForAstroclock(page);
+  await activateAid(page, calloutIndex, "callouts");
   await expect
     .poll(() => renderedCalloutLabels(page))
     .toEqual(await calloutLabels(page, "zh"));
@@ -369,6 +392,7 @@ test("F0-T11: astroclock principle aids remain aligned, bilingual, and responsiv
 
   await page.getByRole("button", { name: "EN", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await waitForAstroclock(page);
   await activateAid(page, subDemoIndex, "subDemo");
   const subDemo = page.getByTestId("aid-sub-demo");
   await expect(subDemo).toHaveText(aids[subDemoIndex]?.caption?.en ?? "");

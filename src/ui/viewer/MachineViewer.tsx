@@ -4850,6 +4850,7 @@ export default function MachineViewer({
               <progress
                 aria-label={t("viewer.demoInProgress")}
                 className="demo-progress"
+                data-testid="demo-progress"
                 max={1}
                 value={demoProgress}
               />

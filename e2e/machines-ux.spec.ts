@@ -39,6 +39,7 @@ for (const slug of MACHINES) {
 }
 
 test("seismoscope: matched bearing fires the dragon", async ({ page }) => {
+  test.setTimeout(120_000);
   await page.goto("/#/m/seismoscope");
   await page.getByRole("button", { name: "中文", exact: true }).click();
   await page
@@ -46,13 +47,21 @@ test("seismoscope: matched bearing fires the dragon", async ({ page }) => {
     .getByRole("button", { name: "东 E", exact: true })
     .click();
   await page.getByTestId("mech-trigger-quake:arm").click();
-  const progress = page.getByRole("progressbar");
+  const progress = page.getByTestId("demo-progress");
   await expect(progress).toBeVisible();
-  await expect(progress).toBeHidden({ timeout: 30_000 });
+  await expect(progress).toBeHidden({ timeout: 60_000 });
+  await expect(page.getByTestId("armed-bearing")).toContainText("东 E");
   await page.getByTestId("mech-trigger-quake").click();
   await expect(page.getByTestId("event-captions")).toContainText(/ball|铜丸/, {
-    timeout: 30_000,
+    timeout: 60_000,
   });
+  expect(
+    await page.evaluate(() =>
+      Object.entries(window.__mech?.graph.state() ?? {})
+        .filter(([partId, value]) => partId.startsWith("ball-") && value > 0)
+        .map(([partId]) => partId),
+    ),
+  ).toEqual(["ball-2"]);
 });
 
 test("odometer: readout counts during the decimal-distance demo", async ({

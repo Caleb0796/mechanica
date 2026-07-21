@@ -10,8 +10,8 @@
     "loadError": "This exhibit could not be loaded",
     "notFoundMachine": "No exhibit named “{{slug}}”.",
     "retry": "Try again",
-    "demo": "Open the gear demo",
-    "demoHint": "Drag the small gear to see the ratio and reverse motion"
+    "versionPublished": "A new version was published — reload to continue.",
+    "reload": "Reload"
   },
   "home": {
     "eyebrow": "Four machines · Four ingenious ideas",

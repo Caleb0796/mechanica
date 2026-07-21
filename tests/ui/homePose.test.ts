@@ -39,4 +39,13 @@ describe("safeHomePose", () => {
     expect(usesAuthoredHomeFocus("loom-frame")).toBe(true);
     expect(usesAuthoredHomeFocus("single-hook")).toBe(false);
   });
+
+  it("allows a full horizontal orbit for every machine", () => {
+    for (const profile of Object.values(VIEWER_PROFILES)) {
+      expect(profile.minAzimuthAngle).toBeUndefined();
+      expect(profile.maxAzimuthAngle).toBeUndefined();
+    }
+    expect(VIEWER_PROFILES.astroclock.minPolarAngle).toBe(1.1);
+    expect(VIEWER_PROFILES.astroclock.maxPolarAngle).toBe(1.45);
+  });
 });

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Component, type ReactNode, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import './i18n'
@@ -6,17 +6,57 @@ import './styles.css'
 import RouterView from './routes'
 import { type UiLanguage, useUiStore } from './store'
 
+interface LazyRouteErrorBoundaryProps {
+  children: ReactNode
+  message: string
+  reloadLabel: string
+}
+
+interface LazyRouteErrorBoundaryState {
+  failed: boolean
+}
+
+export class LazyRouteErrorBoundary extends Component<
+  LazyRouteErrorBoundaryProps,
+  LazyRouteErrorBoundaryState
+> {
+  state = { failed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  render() {
+    if (this.state.failed) {
+      return (
+        <main className="error-page" role="alert">
+          <h1>{this.props.message}</h1>
+          <button
+            className="gold-button"
+            onClick={() => window.location.reload()}
+            type="button"
+          >
+            {this.props.reloadLabel}
+          </button>
+        </main>
+      )
+    }
+
+    return this.props.children
+  }
+}
+
 function LanguageSwitch() {
   const { i18n, t } = useTranslation()
   const language = useUiStore((state) => state.language)
   const setLanguage = useUiStore((state) => state.setLanguage)
 
   useEffect(() => {
-    void i18n.changeLanguage(language)
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'
-  }, [i18n, language])
+  }, [language])
 
   const chooseLanguage = (nextLanguage: UiLanguage) => {
+    void i18n.changeLanguage(nextLanguage)
     setLanguage(nextLanguage)
   }
 
@@ -60,7 +100,13 @@ export default function App() {
         </a>
         <LanguageSwitch />
       </header>
-      <RouterView />
+      <LazyRouteErrorBoundary
+        key={language}
+        message={t('app.versionPublished')}
+        reloadLabel={t('app.reload')}
+      >
+        <RouterView />
+      </LazyRouteErrorBoundary>
     </div>
   )
 }

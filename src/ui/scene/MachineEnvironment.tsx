@@ -121,11 +121,12 @@ function BalustradeArc({
 }) {
   const radius = params.radius ?? 3.8;
   const posts = Math.min(18, Math.max(7, Math.round(params.posts ?? 13)));
-  const arc = Math.PI * 1.15;
+  const arc = params.arc ?? Math.PI * 1.15;
+  const closed = Math.abs(arc - Math.PI * 2) < 1e-6;
   return (
     <group position={position} scale={scale} userData={sceneryUserData()}>
       {Array.from({ length: posts }, (_, index) => {
-        const angle = -arc / 2 + (arc * index) / (posts - 1);
+        const angle = -arc / 2 + (arc * index) / (closed ? posts : posts - 1);
         return (
           <mesh
             key={index}

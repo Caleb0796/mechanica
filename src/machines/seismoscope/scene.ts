@@ -16,7 +16,7 @@ const scene: SceneSpec = {
     },
     {
       kind: "balustrade-arc",
-      params: { posts: 13, radius: 4.1 },
+      params: { arc: Math.PI * 2, posts: 13, radius: 4.1 },
       position: [0, 0, 0],
     },
     {

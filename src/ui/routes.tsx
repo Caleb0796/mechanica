@@ -6,14 +6,24 @@ import PosterFallback from "./PosterFallback";
 import type { SceneSpec } from "./scene/types";
 import type { StoryStep } from "./story";
 
-const MachineViewer = lazy(() => import("./viewer/MachineViewer"));
+export function retryImportOnce<T>(loader: () => Promise<T>): Promise<T> {
+  return loader().catch(() => loader());
+}
+
+const MachineViewer = lazy(() =>
+  retryImportOnce(() => import("./viewer/MachineViewer")),
+);
 const MachineStoryStage = lazy(() =>
-  import("./viewer/MachineViewer").then((module) => ({
-    default: module.MachineStoryStage,
-  })),
+  retryImportOnce(() =>
+    import("./viewer/MachineViewer").then((module) => ({
+      default: module.MachineStoryStage,
+    })),
+  ),
 );
 const ScrollStory = lazy(() =>
-  import("./story").then((module) => ({ default: module.ScrollStory })),
+  retryImportOnce(() =>
+    import("./story").then((module) => ({ default: module.ScrollStory })),
+  ),
 );
 
 export const MACHINE_SLUGS = [
@@ -100,12 +110,6 @@ function HomePage() {
         <h1 className="display-title">{t("home.title")}</h1>
         <p className="hero-copy">{t("home.intro")}</p>
       </section>
-      <aside className="demo-callout">
-        <p>{t("app.demoHint")}</p>
-        <a className="gold-button" href="#/m/demo">
-          {t("app.demo")}
-        </a>
-      </aside>
       <section aria-label={t("app.home")} className="machine-grid">
         {MACHINE_SLUGS.map((slug, index) => {
           const card = machineCards[slug];

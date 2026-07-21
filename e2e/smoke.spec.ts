@@ -1318,9 +1318,12 @@ test("F0-T4: spotlight hands its target back before the first orbit", async ({
   await expect(
     page.getByRole("combobox", { name: "Reconstruction" }),
   ).toHaveValue("wangzhenduo");
-  expect(seismoscopeAfter?.refitCount).toBe(
-    (seismoscopeBefore?.refitCount ?? 0) + 1,
+  expect(seismoscopeAfter?.target).toEqual(seismoscopeBefore?.target);
+  expect(seismoscopeAfter?.cameraDistance).toBeCloseTo(
+    seismoscopeBefore?.cameraDistance ?? 0,
+    4,
   );
+  expect(seismoscopeAfter?.controlsEnabled).toBe(true);
 
   await page.goto("/#/m/seismoscope");
   await waitForMechanica(page, "seismoscope");

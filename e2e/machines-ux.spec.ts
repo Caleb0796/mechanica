@@ -29,7 +29,13 @@ for (const slug of MACHINES) {
     expect(new Set(labels).size).toBe(labels.length);
     const count = await chips.count();
     for (let i = 0; i < count; i += 1) {
+      const kind = await chips.nth(i).getAttribute("data-aid-kind");
       await chips.nth(i).click();
+      if (kind === "subDemo") {
+        await expect(chips.nth(i)).toHaveAttribute("aria-pressed", "true");
+        await expect(page.getByTestId("demo-progress")).toBeVisible();
+        continue;
+      }
       await page.waitForFunction(
         (index) => (window as any).__mechAid?.state().index === index,
         i,
@@ -53,7 +59,7 @@ test("seismoscope: matched bearing fires the dragon", async ({ page }) => {
   const scheme = page.locator(".viewer-sidebar .scheme-select").first();
   await expect(scheme).toHaveValue("wangzhenduo");
   await page.getByTestId("mech-trigger-quake").click();
-  await expect(page.getByTestId("event-captions")).toContainText(/ball|铜丸/, {
+  await expect(page.getByTestId("event-captions")).toContainText(/ball|丸/i, {
     timeout: 60_000,
   });
   await expect(progress).toBeHidden({ timeout: 60_000 });

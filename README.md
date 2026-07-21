@@ -70,7 +70,7 @@ repository.
 
 ## Verification
 
-The current local test run passes **266 unit tests across 30 test files**:
+The current local test run passes **267 unit tests across 30 test files**:
 
 ```bash
 pnpm test

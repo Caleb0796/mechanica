@@ -1,4 +1,10 @@
 import { describe, expect, it } from "vitest";
+
+import astroclock from "../../src/machines/astroclock/build";
+import loom from "../../src/machines/loom/build";
+import odometer from "../../src/machines/odometer/build";
+import seismoscope from "../../src/machines/seismoscope/build";
+import { KinematicGraph } from "../../src/sim/graph";
 import { buildDemoTimeline } from "../../src/ui/viewer/demoTimeline";
 
 const differ = (a: Record<string, number>, b: Record<string, number>) =>
@@ -63,4 +69,32 @@ describe("buildDemoTimeline", () => {
     expect(total).toBeLessThanOrEqual(48_000);
     expect(tl.every((entry) => entry.dwellMs >= 1300)).toBe(true);
   });
+});
+
+describe("viewer demo trigger inventory", () => {
+  it.each([astroclock, loom, odometer, seismoscope])(
+    "fires every $data.slug trigger exposed as a button",
+    (machine) => {
+      for (const trigger of machine.mechanism?.triggers ?? []) {
+        if (trigger.id.startsWith("drive:")) continue;
+        const graph = new KinematicGraph(machine.spec);
+        const schemeId =
+          machine.data.slug === "seismoscope"
+            ? "fengrui"
+            : machine.defaultSchemeId;
+        if (schemeId && machine.schemes?.[schemeId]) {
+          graph.setScheme(machine.schemes[schemeId]);
+        }
+        const events: Array<{ part: string; type: string }> = [];
+
+        trigger.run(
+          graph,
+          (type, part) => events.push({ part, type }),
+          trigger.id === "quake" || trigger.id === "quake:arm" ? 6 : undefined,
+        );
+
+        expect(events, trigger.id).not.toHaveLength(0);
+      }
+    },
+  );
 });

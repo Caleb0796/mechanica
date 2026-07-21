@@ -3,6 +3,7 @@ import { Sphere, Vector3 } from "three";
 
 import {
   safeHomePose,
+  usesAuthoredHomeFocus,
   VIEWER_PROFILES,
 } from "../../src/ui/viewer/visualRecovery";
 
@@ -31,5 +32,11 @@ describe("safeHomePose", () => {
       expect(profile.homePose.position).toHaveLength(3);
       expect(profile.homePose.target).toHaveLength(3);
     }
+  });
+
+  it("keeps whole-machine demo cues on the authored home framing", () => {
+    expect(usesAuthoredHomeFocus("tower-shell")).toBe(true);
+    expect(usesAuthoredHomeFocus("loom-frame")).toBe(true);
+    expect(usesAuthoredHomeFocus("single-hook")).toBe(false);
   });
 });

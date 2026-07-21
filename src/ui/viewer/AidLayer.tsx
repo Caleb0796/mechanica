@@ -50,6 +50,7 @@ interface AidWindow extends Window {
 }
 
 interface AidLayerProps {
+  activeTriggerId?: string;
   aids: PrincipleAid[];
   language: Language;
   module: MachineModule;
@@ -562,6 +563,7 @@ function PowerPathRoute({
 }
 
 export default function AidLayer({
+  activeTriggerId,
   aids,
   language,
   module,
@@ -786,6 +788,15 @@ export default function AidLayer({
             ))}
             {activeAid?.kind === "subDemo" ? (
               <button
+                aria-pressed={activeTriggerId === activeAid.triggerId}
+                className="demo-trigger-button"
+                data-demo-state={
+                  activeTriggerId
+                    ? activeTriggerId === activeAid.triggerId
+                      ? "playing"
+                      : "dimmed"
+                    : "idle"
+                }
                 data-testid="aid-sub-demo"
                 onClick={() => onRunTrigger(activeAid.triggerId)}
                 style={{

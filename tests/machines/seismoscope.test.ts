@@ -868,6 +868,27 @@ describe("seismoscope machine module", () => {
     expect(events.some((event) => event.type === "releaseBall")).toBe(true);
   });
 
+  it("injects the armed compass bearing when no bearing argument is supplied", () => {
+    for (const bearing of [0, 2]) {
+      const graph = new KinematicGraph(machine.spec);
+      graph.setScheme(scheme("fengrui"));
+      const events: Array<{ type: string; part: string }> = [];
+      const emit = (type: string, part: string) => events.push({ type, part });
+      machine.mechanism!.triggers.find(
+        (trigger) => trigger.id === "quake:arm",
+      )!.run(graph, emit, bearing);
+      machine.mechanism!.triggers.find(
+        (trigger) => trigger.id === "quake",
+      )!.run(graph, emit);
+
+      expect(events).toContainEqual({
+        type: "releaseBall",
+        part: `dragon-${bearing}`,
+      });
+      expect(graph.state()[`ball-${bearing}`]).toBe(0.61);
+    }
+  });
+
   it("quake and quake:arm share the same default bearing", () => {
     const graph = new KinematicGraph(machine.spec);
     const events: Array<{ type: string; part: string }> = [];

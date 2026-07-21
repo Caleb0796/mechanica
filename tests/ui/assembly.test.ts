@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import astroclock from "../../src/machines/astroclock/build";
 import loom from "../../src/machines/loom/build";
 import odometer from "../../src/machines/odometer/build";
+import seismoscope from "../../src/machines/seismoscope/build";
 import type { PartDef } from "../../src/sim/types";
 import {
   ASSEMBLY_SNAP_RATIO,
@@ -118,6 +119,25 @@ describe("assembly controller", () => {
       ),
     ).toEqual([true, true, false, false]);
   });
+
+  it.each([astroclock, loom, odometer, seismoscope])(
+    "keeps every $data.slug part visible and staged on reassemble entry",
+    (machine) => {
+      const plan = createAssemblyPlan(machine.spec.parts);
+      const state = reduceAssembly(plan, createAssemblyState(plan), {
+        type: "enter-exploded",
+      });
+
+      expect(state.mode).toBe("reassemble");
+      expect(state.seatedPartIds.size).toBe(0);
+      expect(plan.stagingByPartId.size).toBe(machine.spec.parts.length);
+      expect(
+        plan.orderedPartIds.every((partId) =>
+          isPartVisibleInAssemblyStep(plan, state, partId, 0),
+        ),
+      ).toBe(true);
+    },
+  );
 
   it("clamps assembly duration from the runtime part count", () => {
     expect(assemblyDurationMs(1)).toBe(9_000);

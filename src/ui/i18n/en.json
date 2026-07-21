@@ -37,6 +37,7 @@
     "spotlight": "Ingenuity spotlight",
     "spotlightPlay": "Play spotlight",
     "spotlightDone": "Demo complete",
+    "demoInProgress": "A demo is already in progress.",
     "contextLost": "The graphics context was lost — trying to recover…",
     "noMechanisms": "No separate mechanism demo",
     "enterStory": "Enter story",
@@ -46,7 +47,7 @@
     "principleAids": "Principle aids",
     "odometerDistance": "Distance",
     "odometerUnit": "li",
-    "semanticWestDragon": "West dragon",
+    "semanticBearingDragon": "{{bearing}} dragon",
     "semanticBallReleased": "Ball released",
     "semanticOtherPaths": "Other seven paths",
     "semanticLocked": "Locked",
@@ -54,6 +55,7 @@
   },
   "seismo": {
     "bearingLabel": "Choose the quake bearing",
+    "armedStatus": "Armed: {{bearing}}",
     "bearing": {
       "N": "N",
       "NE": "NE",
@@ -172,7 +174,7 @@
       "caption_drag-coach": "Drag the gold ring along the rim to drive the scoop wheel"
     },
     "seismoscope": {
-      "caption_quake-report": "The west dragon drops its ball into the toad — bearing recorded",
+      "caption_quake-report": "The {{bearing}} dragon drops its ball into the toad — bearing recorded",
       "caption_quake-reset-hint": "Press “Reset all eight directions” to try another bearing",
       "caption_scheme-switch": "Switched to the Feng Rui 2005 pendulum scheme for this demo",
       "releaseBall": "One dragon releases its ball toward the matching toad · Book of Later Han",

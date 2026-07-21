@@ -107,6 +107,11 @@ import {
   GeometryLoading,
   useMachineGeometryWarmup,
 } from "./geometryWarmup";
+import {
+  transitionViewerIdle,
+  VIEWER_IDLE_TIMEOUT_MS,
+  type ViewerIdleState,
+} from "./idleActivity";
 import SceneEnvironment, { prepareSceneEnvironment } from "./SceneEnvironment";
 import {
   ASSEMBLY_COMPLETION_DURATION_MS,
@@ -268,6 +273,16 @@ export interface MachineViewerProps {
 }
 
 const EMPTY_PART_IDS: string[] = [];
+const SEISMOSCOPE_BEARINGS = [
+  "N",
+  "NE",
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+] as const;
 
 function registerContextLossHandlers(
   { gl, invalidate }: Pick<RootState, "gl" | "invalidate">,
@@ -874,6 +889,7 @@ interface TransientMaterialState {
   layerOpacity?: number;
   schemeHighlighted: boolean;
   seismoscopeDragonSpotlight: boolean;
+  spotlightDimmed: boolean;
   spotlightHighlighted: boolean;
 }
 
@@ -922,6 +938,11 @@ function applyTransientMaterialState(
     material.opacity = state.layerOpacity;
     material.transparent = true;
     material.depthWrite = false;
+  }
+  if (state.spotlightDimmed) {
+    material.opacity = Math.max(material.opacity, 0.3);
+    if (material.emissive.getHex() === 0) material.emissive.set("#2a2114");
+    material.emissiveIntensity = Math.max(material.emissiveIntensity, 0.18);
   }
   if (state.inspectionState) {
     material.emissive.set(
@@ -1175,6 +1196,7 @@ const PartNode = memo(function PartNode({
   const schemeHighlighted = part.schemeTags?.includes(schemeId ?? "") ?? false;
   const spotlightHighlighted =
     spotlightActive && spotlightPartIds.includes(part.id);
+  const spotlightDimmed = spotlightActive && !spotlightHighlighted;
   const seismoscopeDragonSpotlight =
     module.data.slug === "seismoscope" &&
     spotlightHighlighted &&
@@ -1186,6 +1208,7 @@ const PartNode = memo(function PartNode({
     aidHighlighted ? "aid-highlight" : "",
     schemeHighlighted ? "scheme" : "",
     spotlightHighlighted ? "spotlight" : "",
+    spotlightDimmed ? "spotlight-dim" : "",
     seismoscopeDragonSpotlight ? "dragon" : "",
     compareColor ? `compare-color:${compareColor}` : "",
     compareEmissive ? `compare-emissive:${compareEmissive}` : "",
@@ -1216,6 +1239,7 @@ const PartNode = memo(function PartNode({
     layerOpacity,
     schemeHighlighted,
     seismoscopeDragonSpotlight,
+    spotlightDimmed,
     spotlightHighlighted,
   };
   const explodeVector = useMemo(() => radialExplodeVector(part), [part]);
@@ -1253,15 +1277,14 @@ const PartNode = memo(function PartNode({
       ),
     [assembly?.state.mode, assemblyLocalProgress, part],
   );
-  const visible =
-    assembly?.state.mode === "step"
-      ? isPartVisibleInAssemblyStep(
-          assembly.plan,
-          assembly.state,
-          part.id,
-          assemblyProgress,
-        )
-      : assemblyStep <= visibleStep;
+  const visible = assembly
+    ? isPartVisibleInAssemblyStep(
+        assembly.plan,
+        assembly.state,
+        part.id,
+        assemblyProgress,
+      )
+    : assemblyStep <= visibleStep;
   const childParts = childrenByParent.get(part.id) ?? [];
   const renderOwnPart = !visiblePartIds || visiblePartIds.has(part.id);
   const partExplode = reassembling ? 0 : explode;
@@ -2985,6 +3008,13 @@ function mechanismCaption(
       type === "releaseBall" ||
       type === "locked")
   ) {
+    if (type === "caption:quake-report") {
+      const bearingIndex = Number.parseInt(part.replace("dragon-", ""), 10);
+      const bearing = SEISMOSCOPE_BEARINGS[bearingIndex];
+      return t(`events.seismoscope.${eventKey}`, {
+        bearing: bearing ? t(`seismo.bearing.${bearing}`) : part,
+      });
+    }
     return t(`events.seismoscope.${eventKey}`);
   }
 
@@ -2998,9 +3028,11 @@ function mechanismCaption(
 
 function SpotlightSemanticReadout({
   module,
+  seismoscopeBearing,
   visible,
 }: {
   module: MachineModule;
+  seismoscopeBearing: (typeof SEISMOSCOPE_BEARINGS)[number];
   visible: boolean;
 }) {
   const { t } = useTranslation();
@@ -3010,7 +3042,9 @@ function SpotlightSemanticReadout({
   if (module.data.slug === "seismoscope") {
     rows.push(
       {
-        label: t("viewer.semanticWestDragon"),
+        label: t("viewer.semanticBearingDragon", {
+          bearing: t(`seismo.bearing.${seismoscopeBearing}`),
+        }),
         value: t("viewer.semanticBallReleased"),
       },
       {
@@ -3044,7 +3078,6 @@ function SpotlightSemanticReadout({
 }
 
 const DRIVE_COACH_KEY = "mechanica:drive-coach";
-const VIEWER_IDLE_TIMEOUT_MS = 30_000;
 
 export default function MachineViewer({
   module,
@@ -3115,6 +3148,12 @@ export default function MachineViewer({
     useState<SchemeTransitionMetadata | null>(null);
   const [schemeTransitionNow, setSchemeTransitionNow] = useState(0);
   const [caption, setCaption] = useState("");
+  const [captionPulseToken, setCaptionPulseToken] = useState(0);
+  const [activeTrigger, setActiveTrigger] = useState<{
+    arg?: number;
+    triggerId: string;
+  } | null>(null);
+  const [demoProgress, setDemoProgress] = useState(0);
   const [aidCutawayPartIds, setAidCutawayPartIds] = useState<string[]>([]);
   const [aidHighlightPartIds, setAidHighlightPartIds] = useState<string[]>([]);
   const [spotlightActive, setSpotlightActive] = useState(false);
@@ -3128,6 +3167,9 @@ export default function MachineViewer({
   const [spotlightRunId, setSpotlightRunId] = useState(0);
   const [spotlightTranscript, setSpotlightTranscript] = useState<string[]>([]);
   const [quakeBearing, setQuakeBearing] = useState(6);
+  const [armedQuakeBearing, setArmedQuakeBearing] = useState<number | null>(
+    null,
+  );
   const [odometerReadout, setOdometerReadout] = useState<string | null>(
     module.spec.slug === "odometer" ? "0.00" : null,
   );
@@ -3143,6 +3185,9 @@ export default function MachineViewer({
   const spotlightFrame = useRef<number | null>(null);
   const pendingSpotlightDonePart = useRef<string | null>(null);
   const spotlightCaptionLockUntil = useRef(0);
+  const pendingTrigger = useRef<{ arg?: number; triggerId: string } | null>(
+    null,
+  );
   const demoFocusRef = useRef<string | null>(null);
   demoFocusRef.current = demoFocusPartId;
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
@@ -3157,6 +3202,7 @@ export default function MachineViewer({
   const viewerIdleTimer = useRef<number | null>(null);
   const viewerIdleAutoPaused = useRef(false);
   const viewerIdleDemand = useRef(false);
+  const viewerTimelineActive = useRef(false);
   const sceneFrames = useRef(0);
   const sceneTriangles = useRef(0);
   const sceneryTriangles = useRef(0);
@@ -3187,23 +3233,19 @@ export default function MachineViewer({
   const setShowScene = useUiStore((state) => state.setShowScene);
   const selectedPartId = useUiStore((state) => state.selectedPartId);
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
+  const timelineActive =
+    activeTrigger !== null || assemblyPlaying || completionProgress < 1;
+  viewerTimelineActive.current = timelineActive;
   const mechanismCutawayPartIds = useMemo(() => {
     const aid = module.aids?.find((candidate) => candidate.kind === "cutaway");
     return aid?.kind === "cutaway" ? aid.partIds : EMPTY_PART_IDS;
   }, [module.aids]);
-  const retainMechanismCutaway =
-    module.data.slug === "seismoscope" && spotlightDone;
   const visibleCutawayPartIds = useMemo(
     () =>
-      spotlightActive || retainMechanismCutaway
+      spotlightActive
         ? [...new Set([...aidCutawayPartIds, ...mechanismCutawayPartIds])]
         : aidCutawayPartIds,
-    [
-      aidCutawayPartIds,
-      mechanismCutawayPartIds,
-      retainMechanismCutaway,
-      spotlightActive,
-    ],
+    [aidCutawayPartIds, mechanismCutawayPartIds, spotlightActive],
   );
   const selectedDrivePart = useMemo(
     () =>
@@ -3229,33 +3271,45 @@ export default function MachineViewer({
     window.clearTimeout(viewerIdleTimer.current);
     viewerIdleTimer.current = null;
   }, []);
+  const idleState = useCallback(
+    (): ViewerIdleState => ({
+      autoPaused: viewerIdleAutoPaused.current,
+      demand: viewerIdleDemand.current,
+      paused: useUiStore.getState().paused,
+      timelineActive: viewerTimelineActive.current,
+    }),
+    [],
+  );
+  const applyIdleState = useCallback(
+    (next: ViewerIdleState) => {
+      viewerIdleAutoPaused.current = next.autoPaused;
+      viewerIdleDemand.current = next.demand;
+      setIdleAutoPaused(next.autoPaused);
+      setIdleDemand(next.demand);
+      setPaused(next.paused);
+    },
+    [setIdleAutoPaused, setIdleDemand, setPaused],
+  );
   const enterViewerIdle = useCallback(() => {
     clearViewerIdleTimer();
-    viewerIdleAutoPaused.current = !useUiStore.getState().paused;
-    if (viewerIdleAutoPaused.current) {
-      setIdleAutoPaused(true);
-      setPaused(true);
-    }
-    viewerIdleDemand.current = true;
-    setIdleDemand(true);
-  }, [clearViewerIdleTimer, setIdleAutoPaused, setPaused]);
+    applyIdleState(
+      transitionViewerIdle(idleState(), { type: "idle-elapsed" }).state,
+    );
+  }, [applyIdleState, clearViewerIdleTimer, idleState]);
   const armViewerIdleTimer = useCallback(() => {
     clearViewerIdleTimer();
+    if (viewerTimelineActive.current) return;
     viewerIdleTimer.current = window.setTimeout(
       enterViewerIdle,
       VIEWER_IDLE_TIMEOUT_MS,
     );
   }, [clearViewerIdleTimer, enterViewerIdle]);
   const registerViewerInteraction = useCallback(() => {
-    viewerIdleDemand.current = false;
-    setIdleDemand(false);
-    if (viewerIdleAutoPaused.current) {
-      viewerIdleAutoPaused.current = false;
-      setIdleAutoPaused(false);
-      setPaused(false);
-    }
+    applyIdleState(
+      transitionViewerIdle(idleState(), { type: "interaction" }).state,
+    );
     armViewerIdleTimer();
-  }, [armViewerIdleTimer, setIdleAutoPaused, setPaused]);
+  }, [applyIdleState, armViewerIdleTimer, idleState]);
 
   const oldSchemeSpec = useMemo(
     () =>
@@ -3368,6 +3422,28 @@ export default function MachineViewer({
     setPaused,
   ]);
 
+  useEffect(() => {
+    applyIdleState(
+      transitionViewerIdle(idleState(), {
+        type: "timeline-change",
+        active: timelineActive,
+      }).state,
+    );
+    if (timelineActive || compareActive) {
+      clearViewerIdleTimer();
+      return;
+    }
+    armViewerIdleTimer();
+    return clearViewerIdleTimer;
+  }, [
+    applyIdleState,
+    armViewerIdleTimer,
+    clearViewerIdleTimer,
+    compareActive,
+    idleState,
+    timelineActive,
+  ]);
+
   useEffect(
     () => () => {
       contextLossCleanup.current?.();
@@ -3391,13 +3467,17 @@ export default function MachineViewer({
     cameraDiagnostics.current = null;
     setAidCutawayPartIds([]);
     setAidHighlightPartIds([]);
+    setActiveTrigger(null);
+    setDemoProgress(0);
     setSpotlightActive(false);
     setSpotlightAutoFitKey(null);
     setSpotlightDone(false);
     setDemoFocusActive(false);
+    pendingTrigger.current = null;
     setDemoFocusPartId(null);
     setSpotlightPartIds([]);
     setSpotlightTranscript([]);
+    setArmedQuakeBearing(null);
     setHoveredPartId(null);
     setSelectedPartId(null);
     setActiveSchemeId(
@@ -3819,7 +3899,7 @@ export default function MachineViewer({
     for (const event of result.events) recordEvent(event.type, event.part);
   };
 
-  const runTrigger = (triggerId: string, arg?: number) => {
+  const startTrigger = (triggerId: string, arg?: number) => {
     const trigger = module.mechanism?.triggers.find(
       (candidate) => candidate.id === triggerId,
     );
@@ -3887,7 +3967,14 @@ export default function MachineViewer({
       statesDiffer,
       initialState,
     );
+    const totalDuration = timeline.reduce(
+      (duration, entry) =>
+        duration + (entry.motionMs + entry.dwellMs) / speed,
+      0,
+    );
     let index = 0;
+    let completedDuration = 0;
+    let lastProgressUpdateAt = 0;
     let previousState = initialState;
     const playNext = () => {
       const entry = timeline[index];
@@ -3897,8 +3984,11 @@ export default function MachineViewer({
           pendingSpotlightDonePart.current = donePart;
         } else if (donePart) {
           recordEvent("spotlight:done", donePart);
+          setActiveTrigger(null);
         }
+        setDemoProgress(1);
         setSpotlightActive(false);
+        setSpotlightPartIds([]);
         setDemoFocusPartId(null);
         setPaused(pausedBefore);
         spotlightFrame.current = null;
@@ -3937,6 +4027,21 @@ export default function MachineViewer({
           1,
           motion === 0 ? 1 : (now - startedAt) / motion,
         );
+        const entryElapsed = Math.min(
+          motion + dwell,
+          Math.max(0, now - startedAt),
+        );
+        if (
+          now - lastProgressUpdateAt >= 50 ||
+          entryElapsed >= motion + dwell
+        ) {
+          setDemoProgress(
+            totalDuration === 0
+              ? 1
+              : Math.min(1, (completedDuration + entryElapsed) / totalDuration),
+          );
+          lastProgressUpdateAt = now;
+        }
         displayState.current = interpolateState(
           previousState,
           entry.event.state,
@@ -3946,6 +4051,7 @@ export default function MachineViewer({
           spotlightFrame.current = requestAnimationFrame(animate);
           return;
         }
+        completedDuration += motion + dwell;
         previousState = entry.event.state;
         index += 1;
         playNext();
@@ -3953,6 +4059,65 @@ export default function MachineViewer({
       spotlightFrame.current = requestAnimationFrame(animate);
     };
     playNext();
+  };
+
+  const pulseDemoInProgress = () => {
+    setCaption(t("viewer.demoInProgress"));
+    setCaptionPulseToken((token) => token + 1);
+  };
+
+  const runTrigger = (triggerId: string, arg?: number) => {
+    registerViewerInteraction();
+    if (pendingTrigger.current || activeTrigger) {
+      pulseDemoInProgress();
+      return;
+    }
+    if (
+      !module.mechanism?.triggers.some(
+        (candidate) => candidate.id === triggerId,
+      )
+    ) {
+      return;
+    }
+    if (module.data.slug === "seismoscope") {
+      if (
+        triggerId === "quake:arm" &&
+        typeof arg === "number" &&
+        SEISMOSCOPE_BEARINGS[arg]
+      ) {
+        setArmedQuakeBearing(arg);
+      } else if (triggerId === "quake" || triggerId === "quake:reset") {
+        setArmedQuakeBearing(null);
+      }
+    }
+    const requestedTrigger = { arg, triggerId };
+    pendingTrigger.current = requestedTrigger;
+    setActiveTrigger(requestedTrigger);
+    setDemoProgress(0);
+    setDemoFocusPartId("tower-shell");
+  };
+
+  const handleDemoFocusSettled = () => {
+    setDemoFocusPartId(null);
+    const pending = pendingTrigger.current;
+    pendingTrigger.current = null;
+    if (pending) {
+      startTrigger(pending.triggerId, pending.arg);
+      return;
+    }
+    const donePart = pendingSpotlightDonePart.current;
+    if (!donePart) return;
+    pendingSpotlightDonePart.current = null;
+    recordEvent("spotlight:done", donePart);
+    setActiveTrigger(null);
+  };
+
+  const handleDemoFocusRestored = () => {
+    const donePart = pendingSpotlightDonePart.current;
+    if (!donePart) return;
+    pendingSpotlightDonePart.current = null;
+    recordEvent("spotlight:done", donePart);
+    setActiveTrigger(null);
   };
 
   const drivePart = (partId: string, delta: number) => {
@@ -4005,6 +4170,8 @@ export default function MachineViewer({
   return (
     <main
       className="viewer-page"
+      onClickCapture={registerViewerInteraction}
+      onKeyDownCapture={registerViewerInteraction}
       onPointerDownCapture={registerViewerInteraction}
       onPointerMoveCapture={registerViewerInteraction}
       onWheelCapture={registerViewerInteraction}
@@ -4140,24 +4307,14 @@ export default function MachineViewer({
                   <DemoFocusRig
                     focusPartId={demoFocusPartId}
                     onActiveChange={handleDemoFocusActiveChange}
-                    onRestored={() => {
-                      const donePart = pendingSpotlightDonePart.current;
-                      if (!donePart) return;
-                      pendingSpotlightDonePart.current = null;
-                      recordEvent("spotlight:done", donePart);
-                    }}
-                    onSettled={() => {
-                      setDemoFocusPartId(null);
-                      const donePart = pendingSpotlightDonePart.current;
-                      if (!donePart) return;
-                      pendingSpotlightDonePart.current = null;
-                      recordEvent("spotlight:done", donePart);
-                    }}
+                    onRestored={handleDemoFocusRestored}
+                    onSettled={handleDemoFocusSettled}
                     partIds={activePartIds}
                     profile={viewerProfile}
                   />
                   {assembly.state.mode === "idle" ? (
                     <AidLayer
+                      activeTriggerId={activeTrigger?.triggerId}
                       aids={module.aids ?? []}
                       language={language}
                       module={module}
@@ -4547,11 +4704,17 @@ export default function MachineViewer({
             <p className="panel-copy">{module.data.ingenuity.hook[language]}</p>
             <p className="panel-copy">{module.data.ingenuity.demo[language]}</p>
             <button
-              className="gold-button"
-              data-testid="spotlight-play"
-              disabled={
-                !spotlight || viewerGeometryReadyAt === null || spotlightActive
+              aria-pressed={activeTrigger?.triggerId === spotlight?.id}
+              className="gold-button demo-trigger-button"
+              data-demo-state={
+                activeTrigger
+                  ? activeTrigger.triggerId === spotlight?.id
+                    ? "playing"
+                    : "dimmed"
+                  : "idle"
               }
+              data-testid="spotlight-play"
+              disabled={!spotlight || viewerGeometryReadyAt === null}
               onClick={() => spotlight && runTrigger(spotlight.id)}
               type="button"
             >
@@ -4559,6 +4722,7 @@ export default function MachineViewer({
             </button>
             <SpotlightSemanticReadout
               module={module}
+              seismoscopeBearing={SEISMOSCOPE_BEARINGS[quakeBearing]}
               visible={spotlightActive || spotlightDone}
             />
             {spotlightTranscript.length > 0 ? (
@@ -4582,26 +4746,52 @@ export default function MachineViewer({
         <section className="panel">
           <h2>{t("viewer.mechanisms")}</h2>
           {module.data.slug === "seismoscope" ? (
-            <div
-              aria-label={t("seismo.bearingLabel")}
-              className="bearing-picker"
-              data-testid="bearing-picker"
-              role="group"
-            >
-              {["N", "NE", "E", "SE", "S", "SW", "W", "NW"].map(
-                (bearing, index) => (
+            <>
+              <div
+                aria-label={t("seismo.bearingLabel")}
+                className="bearing-picker"
+                data-testid="bearing-picker"
+                role="group"
+              >
+                {SEISMOSCOPE_BEARINGS.map((bearing, index) => (
                   <button
                     aria-pressed={quakeBearing === index}
-                    className={quakeBearing === index ? "chip active" : "chip"}
+                    className={`chip demo-trigger-button${
+                      quakeBearing === index ? " active" : ""
+                    }`}
+                    data-demo-state={
+                      activeTrigger
+                        ? activeTrigger.triggerId === "quake:arm" &&
+                          activeTrigger.arg === index
+                          ? "playing"
+                          : "dimmed"
+                        : "idle"
+                    }
                     key={bearing}
-                    onClick={() => setQuakeBearing(index)}
+                    onClick={() => {
+                      if (!activeTrigger) setQuakeBearing(index);
+                      runTrigger("quake:arm", index);
+                    }}
                     type="button"
                   >
                     {t(`seismo.bearing.${bearing}`)}
                   </button>
-                ),
-              )}
-            </div>
+                ))}
+              </div>
+              {armedQuakeBearing !== null ? (
+                <p
+                  aria-live="polite"
+                  className="panel-copy"
+                  data-testid="armed-bearing"
+                >
+                  {t("seismo.armedStatus", {
+                    bearing: t(
+                      `seismo.bearing.${SEISMOSCOPE_BEARINGS[armedQuakeBearing]}`,
+                    ),
+                  })}
+                </p>
+              ) : null}
+            </>
           ) : null}
           <div className="mechanism-list">
             {module.mechanism?.triggers.some(
@@ -4611,14 +4801,21 @@ export default function MachineViewer({
                 .filter((trigger) => !trigger.id.startsWith("drive:"))
                 .map((trigger) => (
                   <button
-                    className="mechanism-button"
+                    aria-pressed={activeTrigger?.triggerId === trigger.id}
+                    className="mechanism-button demo-trigger-button"
+                    data-demo-state={
+                      activeTrigger
+                        ? activeTrigger.triggerId === trigger.id
+                          ? "playing"
+                          : "dimmed"
+                        : "idle"
+                    }
                     data-testid={`mech-trigger-${trigger.id}`}
-                    disabled={spotlightActive}
                     key={trigger.id}
                     onClick={() =>
                       runTrigger(
                         trigger.id,
-                        trigger.id === "quake" || trigger.id === "quake:arm"
+                        trigger.id === "quake:arm"
                           ? quakeBearing
                           : undefined,
                       )
@@ -4640,7 +4837,21 @@ export default function MachineViewer({
               </output>
             </p>
           ) : null}
-          <div aria-live="polite" data-testid="event-captions">
+          <div
+            aria-live="polite"
+            className="event-caption-bar"
+            data-pulsing={captionPulseToken > 0 ? "true" : "false"}
+            data-testid="event-captions"
+            key={captionPulseToken}
+          >
+            {activeTrigger ? (
+              <progress
+                aria-label={t("viewer.demoInProgress")}
+                className="demo-progress"
+                max={1}
+                value={demoProgress}
+              />
+            ) : null}
             {caption !== "" ? <p className="event-caption">{caption}</p> : null}
           </div>
         </section>

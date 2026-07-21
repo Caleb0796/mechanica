@@ -36,6 +36,10 @@ export function safeHomePose<
   return pose;
 }
 
+export function usesAuthoredHomeFocus(focusPartId: string): boolean {
+  return focusPartId === "tower-shell" || focusPartId === "loom-frame";
+}
+
 export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
   astroclock: {
     direction: [1, 0.72, 1.4],

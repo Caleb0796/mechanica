@@ -805,6 +805,106 @@ a {
   gap: 0.5rem;
 }
 
+.bearing-picker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-bottom: 0.65rem;
+}
+
+.bearing-picker .chip {
+  min-height: 2rem;
+  border: 1px solid #4a4130;
+  color: #b9ad94;
+  background: #121311;
+  cursor: pointer;
+}
+
+.bearing-picker .chip.active {
+  border-color: #b8944f;
+  color: #e4c87f;
+}
+
+.demo-trigger-button {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.demo-trigger-button[data-demo-state="playing"] {
+  border-color: #f0cf83;
+  box-shadow:
+    inset 0 0 0 1px rgba(240, 207, 131, 0.35),
+    0 0 0.85rem rgba(217, 184, 109, 0.28);
+  opacity: 1;
+}
+
+.demo-trigger-button[data-demo-state="playing"]::after {
+  display: inline-block;
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0.5rem currentColor;
+  content: "";
+  animation: demo-playing-pulse 900ms ease-in-out infinite alternate;
+}
+
+.demo-trigger-button[data-demo-state="dimmed"] {
+  opacity: 0.38;
+}
+
+.demo-trigger-button[data-demo-state="dimmed"]:hover,
+.demo-trigger-button[data-demo-state="dimmed"]:focus-visible {
+  opacity: 0.62;
+}
+
+@keyframes demo-playing-pulse {
+  to {
+    opacity: 0.35;
+    transform: scale(0.72);
+  }
+}
+
+.event-caption-bar {
+  min-height: 0.3rem;
+}
+
+.event-caption-bar[data-pulsing="true"] {
+  animation: demo-caption-pulse 500ms ease-out;
+}
+
+.demo-progress {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 0.8rem;
+  overflow: hidden;
+  border: 0;
+  color: #d9b86d;
+  background: rgba(217, 184, 109, 0.16);
+  appearance: none;
+}
+
+.demo-progress::-webkit-progress-bar {
+  background: rgba(217, 184, 109, 0.16);
+}
+
+.demo-progress::-webkit-progress-value,
+.demo-progress::-moz-progress-bar {
+  background: #d9b86d;
+}
+
+@keyframes demo-caption-pulse {
+  45% {
+    background: rgba(217, 184, 109, 0.14);
+    box-shadow: 0 0 1rem rgba(217, 184, 109, 0.2);
+  }
+}
+
 .event-caption {
   min-height: 2rem;
   margin: 0.8rem 0 0;

@@ -164,22 +164,31 @@ a {
 .home-carousel-hero {
   display: grid;
   max-width: none;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-bottom: 0;
 }
 
 .home-carousel-heading {
-  width: min(52rem, 100%);
-  padding-bottom: clamp(0.5rem, 1.5vh, 1.25rem);
+  width: 100%;
+  padding-bottom: 0.25rem;
+}
+
+.home-carousel-heading .eyebrow {
+  margin-bottom: 0.45rem;
+  font-size: 12px;
 }
 
 .home-carousel-heading .display-title {
-  font-size: clamp(2.7rem, 7vw, 6.6rem);
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1.08;
+  white-space: nowrap;
 }
 
 .home-carousel-heading .hero-copy {
   max-width: 42rem;
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  margin-top: 0.55rem;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .home-turntable-stage {
@@ -188,6 +197,7 @@ a {
   min-height: 32rem;
   overflow: hidden;
   border: 1px solid rgba(213, 164, 78, 0.3);
+  border-bottom: 0;
   background:
     radial-gradient(
       circle at 50% 72%,
@@ -287,7 +297,8 @@ a {
 
 @media (max-width: 899px) {
   .home-carousel-heading .display-title {
-    font-size: clamp(2.35rem, 10vw, 4.2rem);
+    font-size: clamp(28px, 7vw, 38px);
+    white-space: normal;
   }
 
   .home-turntable-stage {

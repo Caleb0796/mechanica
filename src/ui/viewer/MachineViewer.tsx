@@ -867,6 +867,7 @@ interface TransientMaterialState {
   layerOpacity?: number;
   schemeHighlighted: boolean;
   seismoscopeDragonSpotlight: boolean;
+  spotlightDimmed: boolean;
   spotlightHighlighted: boolean;
 }
 
@@ -915,6 +916,11 @@ function applyTransientMaterialState(
     material.opacity = state.layerOpacity;
     material.transparent = true;
     material.depthWrite = false;
+  }
+  if (state.spotlightDimmed) {
+    material.opacity = Math.max(material.opacity, 0.3);
+    if (material.emissive.getHex() === 0) material.emissive.set("#2a2114");
+    material.emissiveIntensity = Math.max(material.emissiveIntensity, 0.18);
   }
   if (state.inspectionState) {
     material.emissive.set(
@@ -1168,6 +1174,7 @@ const PartNode = memo(function PartNode({
   const schemeHighlighted = part.schemeTags?.includes(schemeId ?? "") ?? false;
   const spotlightHighlighted =
     spotlightActive && spotlightPartIds.includes(part.id);
+  const spotlightDimmed = spotlightActive && !spotlightHighlighted;
   const seismoscopeDragonSpotlight =
     module.data.slug === "seismoscope" &&
     spotlightHighlighted &&
@@ -1179,6 +1186,7 @@ const PartNode = memo(function PartNode({
     aidHighlighted ? "aid-highlight" : "",
     schemeHighlighted ? "scheme" : "",
     spotlightHighlighted ? "spotlight" : "",
+    spotlightDimmed ? "spotlight-dim" : "",
     seismoscopeDragonSpotlight ? "dragon" : "",
     compareColor ? `compare-color:${compareColor}` : "",
     compareEmissive ? `compare-emissive:${compareEmissive}` : "",
@@ -1209,6 +1217,7 @@ const PartNode = memo(function PartNode({
     layerOpacity,
     schemeHighlighted,
     seismoscopeDragonSpotlight,
+    spotlightDimmed,
     spotlightHighlighted,
   };
   const explodeVector = useMemo(() => radialExplodeVector(part), [part]);

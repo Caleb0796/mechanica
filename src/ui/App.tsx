@@ -12,11 +12,11 @@ function LanguageSwitch() {
   const setLanguage = useUiStore((state) => state.setLanguage)
 
   useEffect(() => {
-    void i18n.changeLanguage(language)
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'
-  }, [i18n, language])
+  }, [language])
 
   const chooseLanguage = (nextLanguage: UiLanguage) => {
+    void i18n.changeLanguage(nextLanguage)
     setLanguage(nextLanguage)
   }
 

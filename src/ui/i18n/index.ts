@@ -15,7 +15,7 @@ export function detectBrowserLanguage(
   return language?.toLowerCase().startsWith("zh") ? "zh" : "en";
 }
 
-function storedLanguage(): SupportedLanguage | undefined {
+export function storedLanguage(): SupportedLanguage | undefined {
   if (typeof localStorage === "undefined") return undefined;
   try {
     const language = localStorage.getItem("mechanica-lang");

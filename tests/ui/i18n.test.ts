@@ -4,7 +4,10 @@ import {
   auditBundledCatalogs,
   auditCatalogs,
 } from "../../src/ui/i18n/catalog-audit";
-import { detectBrowserLanguage } from "../../src/ui/i18n";
+import i18n, {
+  detectBrowserLanguage,
+  storedLanguage,
+} from "../../src/ui/i18n";
 
 describe("interface catalogs", () => {
   it("has matching non-empty string leaves in English and Chinese", () => {
@@ -28,5 +31,34 @@ describe("interface catalogs", () => {
     expect(detectBrowserLanguage("zh-CN")).toBe("zh");
     expect(detectBrowserLanguage("en-US")).toBe("en");
     expect(detectBrowserLanguage("fr-FR")).toBe("en");
+  });
+
+  it("switches copy in both directions", async () => {
+    await i18n.changeLanguage("zh");
+    expect(i18n.t("app.language")).toBe("语言");
+
+    await i18n.changeLanguage("en");
+    expect(i18n.t("app.language")).toBe("Language");
+  });
+
+  it("restores the exact persisted language on reload", () => {
+    const previousLocalStorage = globalThis.localStorage;
+    const values = new Map<string, string>();
+    Object.defineProperty(globalThis, "localStorage", {
+      configurable: true,
+      value: {
+        getItem: (key: string) => values.get(key) ?? null,
+      },
+    });
+
+    values.set("mechanica-lang", "zh");
+    expect(storedLanguage()).toBe("zh");
+    values.set("mechanica-lang", "en");
+    expect(storedLanguage()).toBe("en");
+
+    Object.defineProperty(globalThis, "localStorage", {
+      configurable: true,
+      value: previousLocalStorage,
+    });
   });
 });

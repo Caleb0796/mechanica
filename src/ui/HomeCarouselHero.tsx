@@ -368,7 +368,7 @@ function RoundPlatform({ radius }: { radius: number }) {
       <mesh position={[0, PLATFORM_TOP / 2, 0]}>
         <cylinderGeometry args={[radius, radius, PLATFORM_TOP, 72]} />
         <meshStandardMaterial
-          color="#6f3f20"
+          color="#4f2d19"
           metalness={0.06}
           roughness={0.72}
         />
@@ -448,6 +448,7 @@ function Turntable({
   activeIndex,
   modulesBySlug,
   onActivate,
+  onTurningChange,
   reducedMotion,
   slugs,
   step,
@@ -455,6 +456,7 @@ function Turntable({
   activeIndex: number;
   modulesBySlug: Partial<Record<MachineSlug, MachineModule>>;
   onActivate: (index: number) => void;
+  onTurningChange: (turning: boolean) => void;
   reducedMotion: boolean;
   slugs: readonly MachineSlug[];
   step: number;
@@ -472,8 +474,10 @@ function Turntable({
         anchor?.scale.setScalar(index === activeIndex ? 1.12 : 1),
       );
       animation.current = null;
+      onTurningChange(false);
       return;
     }
+    onTurningChange(true);
     animation.current = {
       activeIndex,
       elapsed: 0,
@@ -481,7 +485,7 @@ function Turntable({
       fromScales: anchors.current.map((anchor) => anchor?.scale.x ?? 1),
       toRotation: targetRotation,
     };
-  }, [activeIndex, reducedMotion, targetRotation]);
+  }, [activeIndex, onTurningChange, reducedMotion, targetRotation]);
 
   useFrame((_, delta) => {
     const current = animation.current;
@@ -504,7 +508,10 @@ function Turntable({
         ),
       );
     });
-    if (progress === 1) animation.current = null;
+    if (progress === 1) {
+      animation.current = null;
+      onTurningChange(false);
+    }
   });
 
   return (
@@ -545,24 +552,28 @@ function TurntableStage({
   activeIndex,
   modulesBySlug,
   onActivate,
+  onTurningChange,
   reducedMotion,
   rendering,
   slugs,
   step,
+  turning,
 }: {
   activeIndex: number;
   modulesBySlug: Partial<Record<MachineSlug, MachineModule>>;
   onActivate: (index: number) => void;
+  onTurningChange: (turning: boolean) => void;
   reducedMotion: boolean;
   rendering: boolean;
   slugs: readonly MachineSlug[];
   step: number;
+  turning: boolean;
 }) {
   return (
     <Canvas
       camera={{ fov: 34, position: [0, 2.3, 7.2] }}
       dpr={[1, 1.5]}
-      frameloop={rendering ? "always" : "never"}
+      frameloop={!rendering ? "never" : turning ? "always" : "demand"}
       gl={{
         antialias: false,
         powerPreference: "high-performance",
@@ -579,6 +590,7 @@ function TurntableStage({
         activeIndex={activeIndex}
         modulesBySlug={modulesBySlug}
         onActivate={onActivate}
+        onTurningChange={onTurningChange}
         reducedMotion={reducedMotion}
         slugs={slugs}
         step={step}
@@ -601,6 +613,7 @@ export default function HomeCarouselHero({
   const heroInView = useElementInView(heroRef);
   const rendering = documentVisible && heroInView;
   const [carousel, setCarousel] = useState(createHomeCarouselState);
+  const [turning, setTurning] = useState(false);
   const dataBySlug = useMachineCatalog(slugs);
   const { modulesBySlug, progress } = useSequentialMachineWarmup(
     !compact,
@@ -609,6 +622,7 @@ export default function HomeCarouselHero({
   const activeIndex = activeHomeCarouselIndex(carousel.step, slugs.length);
   const activeSlug = slugs[activeIndex];
   const activeData = dataBySlug[activeSlug];
+  const mountedMachineCount = Object.keys(modulesBySlug).length;
 
   const dispatch = useCallback(
     (event: Parameters<typeof transitionHomeCarousel>[1]) => {
@@ -667,7 +681,11 @@ export default function HomeCarouselHero({
         <h1 className="display-title">{t("home.title")}</h1>
         <p className="hero-copy">{t("home.intro")}</p>
       </header>
-      <div className="home-turntable-stage" data-testid="home-turntable">
+      <div
+        className="home-turntable-stage"
+        data-mounted-machine-count={mountedMachineCount}
+        data-testid="home-turntable"
+      >
         {compact ? (
           <a className="home-carousel-poster-link" href={`#/m/${activeSlug}`}>
             <img
@@ -681,10 +699,12 @@ export default function HomeCarouselHero({
             activeIndex={activeIndex}
             modulesBySlug={modulesBySlug}
             onActivate={activateMachine}
+            onTurningChange={setTurning}
             reducedMotion={reduceMotion}
             rendering={rendering}
             slugs={slugs}
             step={carousel.step}
+            turning={turning}
           />
         )}
         {!compact && Object.keys(modulesBySlug).length === 0 && progress ? (
@@ -719,6 +739,7 @@ export default function HomeCarouselHero({
           return (
             <button
               aria-pressed={index === activeIndex}
+              data-machine-slug={slug}
               data-testid="home-machine-pill"
               key={slug}
               onClick={() => dispatch({ type: "select", index })}

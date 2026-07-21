@@ -191,27 +191,46 @@ async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
   return target.id;
 }
 
-test("smoke: homepage presents the four-machine collection", async ({
+test("smoke: homepage turntable is the sole four-machine navigation", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.getByTestId("machine-card")).toHaveCount(4);
-  await expect(page.locator(".machine-era")).toHaveCount(4);
-  await expect(page.locator(".machine-principle")).toHaveCount(4);
-  await expect(page.locator(".machine-thumbnail")).toHaveCount(4);
-  const thumbnails = page.getByTestId("machine-thumbnail-image");
-  await expect(thumbnails).toHaveCount(4);
-  await expect
-    .poll(() =>
-      thumbnails.evaluateAll((images) =>
-        images.every(
-          (image) =>
-            (image as HTMLImageElement).complete &&
-            (image as HTMLImageElement).naturalWidth > 0,
-        ),
-      ),
-    )
-    .toBe(true);
+  await expect(page.getByTestId("home-turntable")).toBeVisible();
+  await expect(
+    page.getByTestId("home-turntable").locator("canvas"),
+  ).toHaveCount(1);
+  await expect(page.getByTestId("home-machine-pill")).toHaveCount(4);
+  await expect(page.getByTestId("machine-card")).toHaveCount(0);
+
+  const loomPill = page.locator('[data-machine-slug="loom"]');
+  await loomPill.click();
+  await expect(page.locator(".home-carousel-hero")).toHaveAttribute(
+    "data-active-slug",
+    "loom",
+  );
+  const activeMachine = page.getByTestId("home-active-machine");
+  await expect(activeMachine).toHaveAttribute("href", "#/m/loom");
+  await activeMachine.click();
+  await waitForMechanica(page, "loom");
+});
+
+test("G6.3: home turntable holds fifty fps with four mounted machines", async ({
+  page,
+}) => {
+  test.setTimeout(45_000);
+  await page.goto("/");
+  const stage = page.getByTestId("home-turntable");
+  await expect(stage).toHaveAttribute("data-mounted-machine-count", "4", {
+    timeout: 30_000,
+  });
+  await stage.hover();
+  await page.waitForTimeout(1_200);
+  const frameRate = await sampleFrameRate(page, 3);
+  test.info().annotations.push({
+    description: `${frameRate.toFixed(1)} fps`,
+    type: "home turntable fps",
+  });
+  expect(frameRate).toBeGreaterThanOrEqual(50);
 });
 
 test("smoke: removed machine routes do not resolve", async ({ page }) => {
@@ -1514,7 +1533,7 @@ test("G6.3: cold homepage largest-contentful paint stays under three seconds", a
     }).observe({ buffered: true, type: "largest-contentful-paint" });
   });
   await page.goto("/");
-  await expect(page.getByTestId("machine-card")).toHaveCount(4);
+  await expect(page.getByTestId("home-machine-pill")).toHaveCount(4);
   await page.waitForTimeout(750);
   const lcp = await page.evaluate(
     () => (window as Window & { __mechanicaLcp?: number }).__mechanicaLcp ?? 0,

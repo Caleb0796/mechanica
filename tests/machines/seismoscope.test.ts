@@ -38,15 +38,26 @@ function provenanceFor(part: PartDef, path: string): Provenance | undefined {
   return part.dimensionProvenance[path] ?? part.dimensionProvenance["@rest"];
 }
 
+function customGeometries(
+  builder: string,
+  params: Record<string, number>,
+): THREE.BufferGeometry[] {
+  const built = machine.customBuilders?.[builder]?.(params);
+  if (!built) {
+    throw new Error(`${builder} must return geometry`);
+  }
+  return (Array.isArray(built) ? built : [built]) as THREE.BufferGeometry[];
+}
+
 function customGeometry(
   builder: string,
   params: Record<string, number>,
 ): THREE.BufferGeometry {
-  const built = machine.customBuilders?.[builder]?.(params);
-  if (!built || Array.isArray(built)) {
+  const geometries = customGeometries(builder, params);
+  if (geometries.length !== 1) {
     throw new Error(`${builder} must return one geometry`);
   }
-  return built as THREE.BufferGeometry;
+  return geometries[0];
 }
 
 describe("seismoscope machine module", () => {
@@ -139,22 +150,24 @@ describe("seismoscope machine module", () => {
 
     expect(geometry.index).not.toBeNull();
     expect(geometry.getAttribute("position").count).toBeGreaterThan(500);
-    expect(size?.toArray()).toEqual(
-      expect.arrayContaining([
-        expect.closeTo(0.56, 5),
-        expect.closeTo(0.448, 5),
-        expect.closeTo(0.56, 5),
-      ]),
-    );
+    // The refined sculpt tightens the old box while only its mount collar grows urnward.
+    expect(size?.x).toBeLessThanOrEqual(0.56);
+    expect(size?.y).toBeLessThanOrEqual(0.448);
     expect(semantic).toMatchObject({
       kind: "chinese-dragon-head",
       forward: [0, 0, 1],
+      headPitchDeg: 27,
+      jawAngleDeg: 19,
       jawGapRatio: 0.34,
-      maneFinCount: 3,
+      maneFinCount: 0,
+      sideLipCount: 2,
+      snoutLengthRatio: 0.51,
       features: expect.arrayContaining([
         "connected-neck-root",
         "connected-neck-flare",
+        "solid-mount-plate",
         "cranial-mass",
+        "down-pitched-head",
         "upper-jaw",
         "elongated-upper-snout",
         "deep-open-jaw-gap",
@@ -162,19 +175,24 @@ describe("seismoscope machine module", () => {
         "swept-neck-profile",
         "jaw-hinge",
         "open-lower-jaw",
+        "ball-cradle",
+        "side-lip-plates",
         "backward-horns",
         "whiskers",
+        "short-curved-whiskers",
         "brow-eyes",
         "arched-brows",
         "paired-nostrils",
         "visible-tongue",
         "side-ears",
-        "mane-fins",
       ]),
     });
-    expect(geometry.boundingBox?.min.z).toBeCloseTo(-0.296, 5);
-    expect(1.22 + (geometry.boundingBox?.min.z ?? 0)).toBeCloseTo(0.924, 5);
-    expect(geometry.boundingBox?.max.z).toBeCloseTo(0.264, 5);
+    expect(geometry.boundingBox?.min.x).toBeGreaterThanOrEqual(-0.28);
+    expect(geometry.boundingBox?.max.x).toBeLessThanOrEqual(0.28);
+    expect(geometry.boundingBox?.min.y).toBeGreaterThanOrEqual(-0.2432);
+    expect(geometry.boundingBox?.max.y).toBeLessThanOrEqual(0.2048);
+    expect(geometry.boundingBox?.min.z).toBeGreaterThanOrEqual(-0.354);
+    expect(geometry.boundingBox?.max.z).toBeLessThanOrEqual(0.264);
     const dragonMuzzle = 1.22 + (geometry.boundingBox?.max.z ?? 0);
     expect(1.43 - 0.078).toBeLessThan(dragonMuzzle);
     expect(1.43 + 0.078 - dragonMuzzle).toBeGreaterThan(0.015);
@@ -241,7 +259,9 @@ describe("seismoscope machine module", () => {
       bossRadius: 0.14,
       boreRadius: 0.105,
     });
-    const toad = customGeometry("seismoscopeToad", { radius: 0.18 });
+    const [toad, toadMouthShadow] = customGeometries("seismoscopeToad", {
+      radius: 0.18,
+    });
     const wangChute = customGeometry("seismoscopeWangChute", {
       length: 0.36,
       width: 0.07,
@@ -349,17 +369,34 @@ describe("seismoscope machine module", () => {
     expect(toad.userData.mechanicaSemantic).toMatchObject({
       kind: "open-mouthed-toad",
       forward: [0, 0, -1],
+      catchAxis: [0, expect.any(Number), expect.any(Number)],
       features: expect.arrayContaining([
+        "single-dome-body",
         "upturned-open-mouth",
+        "flared-funnel-rim",
         "broad-lower-lip",
         "haunches",
-        "webbed-forefeet",
-        "hind-legs",
-        "rear-feet",
+        "front-props",
+        "folded-hind-haunches",
+        "planted-feet",
         "four-limb-crouch",
       ]),
     });
-    expect(1.78 + (toad.boundingBox?.min.z ?? 0)).toBeCloseTo(1.5298, 4);
+    expect(toad.userData.mechanicaMaterial).toMatchObject({
+      color: "#a9783f",
+      textureVariant: "bronze:fresh",
+    });
+    expect(toadMouthShadow.userData).toMatchObject({
+      mechanicaMaterial: { color: "#17120f" },
+      mechanicaSemantic: { kind: "toad-mouth-shadow" },
+    });
+    // The seated sculpt tightens inward without exceeding the frozen blob envelope.
+    expect(toad.boundingBox?.min.x).toBeGreaterThanOrEqual(-0.27);
+    expect(toad.boundingBox?.max.x).toBeLessThanOrEqual(0.27);
+    expect(toad.boundingBox?.min.y).toBeGreaterThanOrEqual(-0.1656);
+    expect(toad.boundingBox?.max.y).toBeLessThanOrEqual(0.1944);
+    expect(toad.boundingBox?.min.z).toBeGreaterThanOrEqual(-0.2502);
+    expect(toad.boundingBox?.max.z).toBeLessThanOrEqual(0.1098);
     expect(wangChute.userData.mechanicaSemantic).toMatchObject({
       kind: "wang-standing-column-chute",
       features: expect.arrayContaining(["broad-u-channel"]),
@@ -393,6 +430,7 @@ describe("seismoscope machine module", () => {
       gate,
       lock,
       toad,
+      toadMouthShadow,
       wangChute,
       fengTrack,
       standing,
@@ -440,11 +478,37 @@ describe("seismoscope machine module", () => {
     expect(ball.userData.mechanicaSemantic.features).toContain(
       "high-contrast-silhouette",
     );
+    expect(ball.userData.mechanicaSemantic).toMatchObject({
+      restSeatOffset: [0, expect.closeTo(-0.078 * 0.18, 6), 0],
+      releaseOrigin: [0, 0, 0],
+      features: expect.arrayContaining([
+        "nested-mouth-seat",
+        "release-origin-preserved",
+      ]),
+    });
+    expect(ball.userData.mechanicaUpdate).toBeTypeOf("function");
+    expect(ball.boundingBox?.getCenter(new THREE.Vector3()).y).toBeCloseTo(
+      -0.078 * 0.18,
+      6,
+    );
+    ball.userData.mechanicaUpdate(0.61);
+    expect(ball.boundingBox?.getCenter(new THREE.Vector3()).y).toBeCloseTo(
+      0,
+      6,
+    );
+    ball.userData.mechanicaUpdate(0);
 
     for (const geometry of [vessel, dragon, ball, linkage]) geometry.dispose();
   });
 
   it("orients all dragons outward and aligns every dragon, ball, and toad path", () => {
+    const toadGeometries = customGeometries("seismoscopeToad", {
+      radius: 0.18,
+    });
+    const catchAxis = new THREE.Vector3(
+      ...toadGeometries[0].userData.mechanicaSemantic.catchAxis,
+    );
+
     for (let bearing = 0; bearing < 8; bearing += 1) {
       const dragon = machine.spec.parts.find(
         (part) => part.id === `dragon-${bearing}`,
@@ -470,6 +534,9 @@ describe("seismoscope machine module", () => {
       const dragonPoint = new THREE.Vector3(...dragon.position);
       const ballPoint = new THREE.Vector3(...ball.position);
       const toadPoint = new THREE.Vector3(...toad.position);
+      const toadCatchAxis = catchAxis
+        .clone()
+        .applyEuler(new THREE.Euler(...(toad.rotationEuler ?? [0, 0, 0])));
       const dragonToToad = toadPoint
         .clone()
         .sub(dragonPoint)
@@ -520,10 +587,15 @@ describe("seismoscope machine module", () => {
         .add(toadPoint);
       expect(forward.dot(outward)).toBeCloseTo(1, 12);
       expect(dragonToToad.dot(outward)).toBeCloseTo(1, 12);
+      expect(toadCatchAxis.y).toBeGreaterThan(0.5);
+      expect(
+        toadCatchAxis.clone().setY(0).normalize().dot(outward.clone().negate()),
+      ).toBeCloseTo(1, 12);
       expect(ballPoint.clone().setY(0).normalize().dot(outward)).toBeCloseTo(
         1,
         12,
       );
+      expect(ballPoint.y).toBeCloseTo(0.21, 12);
       expect(ballRadius - dragonRadius).toBeCloseTo(0.21, 5);
       expect(toadRadius - ballRadius).toBeCloseTo(0.35, 5);
       expect(ballAxis.length()).toBeCloseTo(1, 12);
@@ -534,6 +606,7 @@ describe("seismoscope machine module", () => {
       expect(receivedRadius - ballRadius).toBeGreaterThan(0.2);
       expect(receivedPoint.distanceTo(toadMouth)).toBeLessThan(0.01);
     }
+    for (const geometry of toadGeometries) geometry.dispose();
   });
 
   it("orients every toad mouth toward its matching dragon", () => {

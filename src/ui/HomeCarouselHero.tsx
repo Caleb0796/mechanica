@@ -7,6 +7,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type RefObject,
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,6 +20,7 @@ import {
 } from "three";
 
 import { machineGeometryCache } from "../core/geometryCache";
+import { warmMachine } from "../core/geometryWarmup";
 import {
   acquireMaterial,
   getMaterial,
@@ -79,6 +81,33 @@ function useMediaQuery(query: string): boolean {
     return () => media.removeEventListener("change", update);
   }, [query]);
   return matches;
+}
+
+function useDocumentVisible(): boolean {
+  const [visible, setVisible] = useState(
+    () => document.visibilityState !== "hidden",
+  );
+  useEffect(() => {
+    const update = () => setVisible(document.visibilityState !== "hidden");
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
+  return visible;
+}
+
+function useElementInView(ref: RefObject<HTMLElement | null>): boolean {
+  const [inView, setInView] = useState(true);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref]);
+  return inView;
 }
 
 function HeroPartGeometry({
@@ -248,10 +277,12 @@ function HeroMachineModel({
 function LoadedHeroStage({
   module,
   onReady,
+  rendering,
   slug,
 }: {
   module: MachineModule;
   onReady: (slug: MachineSlug) => void;
+  rendering: boolean;
   slug: MachineSlug;
 }) {
   const { t } = useTranslation();
@@ -281,6 +312,7 @@ function LoadedHeroStage({
       <Canvas
         camera={{ fov: 34, position: [0, 0, 5] }}
         dpr={[1, 1.5]}
+        frameloop={rendering ? "always" : "never"}
         gl={{ antialias: false, powerPreference: "high-performance" }}
       >
         <color args={["#0c0d0c"]} attach="background" />
@@ -325,7 +357,11 @@ export default function HomeCarouselHero({
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const reduceMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const compact = useMediaQuery("(max-width: 899px)");
+  const heroRef = useRef<HTMLElement>(null);
+  const documentVisible = useDocumentVisible();
+  const heroInView = useElementInView(heroRef);
   const interactive = !reduceMotion && !compact;
+  const rendering = interactive && documentVisible && heroInView;
   const [carousel, setCarousel] = useState(createHomeCarouselState);
   const [dataBySlug, setDataBySlug] = useState<
     Partial<Record<MachineSlug, MachineData>>
@@ -337,12 +373,17 @@ export default function HomeCarouselHero({
   const [stageReadySlug, setStageReadySlug] = useState<MachineSlug | null>(
     null,
   );
+  const idlePreparedSlugs = useRef(new Set<MachineSlug>());
   const activeSlug = slugs[carousel.activeIndex];
+  const nextSlug = slugs[(carousel.activeIndex + 1) % slugs.length];
   const pendingSlug =
     carousel.pendingIndex === null ? null : slugs[carousel.pendingIndex];
-  const wantedSlug = pendingSlug ?? activeSlug;
   const activeData = dataBySlug[activeSlug];
   const activeModule = modulesBySlug[activeSlug];
+  const wantedSlug =
+    interactive && carousel.phase === "idle" && activeData && activeModule
+      ? nextSlug
+      : (pendingSlug ?? activeSlug);
 
   const dispatch = useCallback(
     (event: Parameters<typeof transitionHomeCarousel>[1]) => {
@@ -390,13 +431,56 @@ export default function HomeCarouselHero({
   }, [interactive, modulesBySlug, wantedSlug]);
 
   useEffect(() => {
-    if (!interactive) return;
+    if (!rendering) return;
     const interval = window.setInterval(
       () => dispatch({ type: "cycle" }),
       7000,
     );
     return () => window.clearInterval(interval);
-  }, [dispatch, interactive]);
+  }, [dispatch, rendering]);
+
+  useEffect(() => {
+    if (
+      !rendering ||
+      carousel.phase !== "idle" ||
+      stageReadySlug !== activeSlug ||
+      idlePreparedSlugs.current.has(nextSlug)
+    ) {
+      return;
+    }
+    const nextModule = modulesBySlug[nextSlug];
+    if (!nextModule) return;
+    const spec = applySchemePatch(
+      nextModule.spec,
+      nextModule.defaultSchemeId
+        ? nextModule.schemes?.[nextModule.defaultSchemeId]
+        : undefined,
+    );
+    const controller = warmMachine(nextModule, spec, () => undefined, {
+      consumerScope: `home:${nextSlug}`,
+    });
+    let active = true;
+    void controller.done.then(
+      (result) => {
+        controller.release();
+        if (active && result.status === "completed") {
+          idlePreparedSlugs.current.add(nextSlug);
+        }
+      },
+      () => controller.release(),
+    );
+    return () => {
+      active = false;
+      controller.cancel();
+    };
+  }, [
+    activeSlug,
+    carousel.phase,
+    modulesBySlug,
+    nextSlug,
+    rendering,
+    stageReadySlug,
+  ]);
 
   useEffect(() => {
     if (carousel.phase !== "exiting") {
@@ -467,7 +551,11 @@ export default function HomeCarouselHero({
   }, []);
 
   return (
-    <section className="hero home-carousel-hero">
+    <section
+      className="hero home-carousel-hero"
+      data-rendering={rendering ? "true" : "false"}
+      ref={heroRef}
+    >
       <a
         aria-label={
           activeData
@@ -493,6 +581,7 @@ export default function HomeCarouselHero({
             <LoadedHeroStage
               module={activeModule}
               onReady={handleStageReady}
+              rendering={rendering}
               slug={activeSlug}
             />
           ) : (

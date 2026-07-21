@@ -150,7 +150,9 @@ describe("seismoscope machine module", () => {
       features: expect.arrayContaining([
         "connected-neck-root",
         "connected-neck-flare",
+        "solid-mount-plate",
         "cranial-mass",
+        "down-pitched-head",
         "upper-jaw",
         "elongated-upper-snout",
         "deep-open-jaw-gap",
@@ -160,12 +162,14 @@ describe("seismoscope machine module", () => {
         "open-lower-jaw",
         "backward-horns",
         "whiskers",
+        "short-curved-whiskers",
         "brow-eyes",
         "arched-brows",
         "paired-nostrils",
         "visible-tongue",
         "side-ears",
         "mane-fins",
+        "back-swept-mane-fins",
       ]),
     });
     expect(geometry.boundingBox?.min.x).toBeGreaterThanOrEqual(-0.28);
@@ -349,14 +353,20 @@ describe("seismoscope machine module", () => {
       kind: "open-mouthed-toad",
       forward: [0, 0, -1],
       features: expect.arrayContaining([
+        "single-dome-body",
         "upturned-open-mouth",
+        "flared-funnel-rim",
         "broad-lower-lip",
         "haunches",
-        "webbed-forefeet",
-        "hind-legs",
-        "rear-feet",
+        "front-props",
+        "folded-hind-haunches",
+        "planted-feet",
         "four-limb-crouch",
       ]),
+    });
+    expect(toad.userData.mechanicaMaterial).toMatchObject({
+      color: "#a9783f",
+      textureVariant: "bronze:fresh",
     });
     // The seated sculpt tightens inward without exceeding the frozen blob envelope.
     expect(toad.boundingBox?.min.x).toBeGreaterThanOrEqual(-0.27);

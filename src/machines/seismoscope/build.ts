@@ -177,6 +177,17 @@ function orientAlong(
   return geometry;
 }
 
+function pitchAround(
+  geometry: THREE.BufferGeometry,
+  pivot: THREE.Vector3,
+  angle: number,
+): THREE.BufferGeometry {
+  geometry.translate(-pivot.x, -pivot.y, -pivot.z);
+  geometry.rotateX(angle);
+  geometry.translate(pivot.x, pivot.y, pivot.z);
+  return geometry;
+}
+
 function flaredMountCollar(
   radius: number,
   centerY: number,
@@ -186,7 +197,7 @@ function flaredMountCollar(
   const neckRadius = radius * 0.77;
   const baseRadiusX = neckRadius * 1.6;
   const baseRadiusY = neckRadius * 1.35;
-  const depth = radius * 0.34;
+  const depth = radius * 0.28;
   const positions = [0, centerY, surfaceZ];
   const indices: number[] = [];
 
@@ -205,6 +216,8 @@ function flaredMountCollar(
       surfaceZ + depth,
     );
   }
+  const topCenter = 1 + radialSegments * 2;
+  positions.push(0, centerY, surfaceZ + depth);
   for (let side = 0; side < radialSegments; side += 1) {
     const nextSide = (side + 1) % radialSegments;
     const base = 1 + side;
@@ -222,8 +235,54 @@ function flaredMountCollar(
       baseNext,
       topNext,
     );
+    indices.push(topCenter, top, topNext);
   }
 
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(positions, 3),
+  );
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  geometry.setAttribute(
+    "uv",
+    new THREE.Float32BufferAttribute(
+      new Array((positions.length / 3) * 2).fill(0),
+      2,
+    ),
+  );
+  return geometry;
+}
+
+function sweptManeFin(
+  center: THREE.Vector3,
+  length: number,
+  height: number,
+  thickness: number,
+): THREE.BufferGeometry {
+  const halfThickness = thickness / 2;
+  const halfLength = length / 2;
+  const positions: number[] = [];
+  for (const x of [-halfThickness, halfThickness]) {
+    positions.push(
+      center.x + x,
+      center.y,
+      center.z + halfLength,
+      center.x + x,
+      center.y,
+      center.z - halfLength,
+      center.x + x,
+      center.y + height,
+      center.z - length * 0.18,
+    );
+  }
+  const indices = [
+    0, 1, 2, 3, 5, 4,
+    0, 3, 1, 1, 3, 4,
+    1, 4, 2, 2, 4, 5,
+    2, 5, 0, 0, 5, 3,
+  ];
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute(
     "position",
@@ -732,9 +791,11 @@ function seismoscopeDragon(
 ): THREE.BufferGeometry {
   const radius = params.radius;
   const length = radius * 3.5;
-  const jawAngle = THREE.MathUtils.degToRad(33);
+  const headPitch = THREE.MathUtils.degToRad(20);
+  const headPivot = new THREE.Vector3(0, radius * 0.16, -radius * 0.12);
+  const jawAngle = THREE.MathUtils.degToRad(13);
   const jawLength = length * 0.35;
-  const jawHinge = new THREE.Vector3(0, -radius * 0.15, radius * 0.32);
+  const jawHinge = new THREE.Vector3(0, radius * 0.18, radius * 0.38);
   const jawTip = jawHinge
     .clone()
     .add(
@@ -758,154 +819,230 @@ function seismoscopeDragon(
       28,
       12,
     ),
-    placeGeometry(
-      new THREE.SphereGeometry(1, 20, 14),
-      [length * 0.19, radius * 0.55, length * 0.225],
-      [0, radius * 0.3, radius * 0.05],
+    pitchAround(
+      placeGeometry(
+        new THREE.SphereGeometry(1, 20, 14),
+        [length * 0.2185, radius * 0.62, length * 0.225],
+        [0, radius * 0.48, radius * 0.12],
+      ),
+      headPivot,
+      headPitch,
     ),
-    taperedWedge([
-      {
-        center: new THREE.Vector3(0, radius * 0.2, radius * 0.08),
-        halfWidth: radius * 0.58,
-        halfHeight: radius * 0.3,
-      },
-      {
-        center: new THREE.Vector3(0, radius * 0.08, radius * 0.78),
-        halfWidth: radius * 0.48,
-        halfHeight: radius * 0.24,
-      },
-      {
-        center: new THREE.Vector3(0, -radius * 0.05, radius * 1.48),
-        halfWidth: radius * 0.38,
-        halfHeight: radius * 0.18,
-      },
-    ]),
-    taperedWedge([
-      {
-        center: jawHinge,
-        halfWidth: radius * 0.52,
-        halfHeight: radius * 0.07,
-      },
-      {
-        center: jawHinge.clone().lerp(jawTip, 0.55),
-        halfWidth: radius * 0.48,
-        halfHeight: radius * 0.075,
-      },
-      {
-        center: jawTip,
-        halfWidth: radius * 0.4,
-        halfHeight: radius * 0.08,
-      },
-    ]),
-    cylinderBetween(
-      jawHinge
-        .clone()
-        .lerp(jawTip, 0.46)
-        .add(new THREE.Vector3(-radius * 0.5, 0, 0)),
-      jawTip.clone().add(new THREE.Vector3(-radius * 0.42, 0, 0)),
-      radius * 0.055,
-      8,
+    pitchAround(
+      taperedWedge([
+        {
+          center: new THREE.Vector3(0, radius * 0.38, radius * 0.2),
+          halfWidth: radius * 0.67,
+          halfHeight: radius * 0.34,
+        },
+        {
+          center: new THREE.Vector3(0, radius * 0.38, radius * 0.85),
+          halfWidth: radius * 0.56,
+          halfHeight: radius * 0.29,
+        },
+        {
+          center: new THREE.Vector3(0, radius * 0.34, radius * 1.5),
+          halfWidth: radius * 0.43,
+          halfHeight: radius * 0.22,
+        },
+      ]),
+      headPivot,
+      headPitch,
     ),
-    cylinderBetween(
-      jawHinge
-        .clone()
-        .lerp(jawTip, 0.46)
-        .add(new THREE.Vector3(radius * 0.5, 0, 0)),
-      jawTip.clone().add(new THREE.Vector3(radius * 0.42, 0, 0)),
-      radius * 0.055,
-      8,
+    pitchAround(
+      taperedWedge([
+        {
+          center: jawHinge,
+          halfWidth: radius * 0.62,
+          halfHeight: radius * 0.12,
+        },
+        {
+          center: jawHinge.clone().lerp(jawTip, 0.55),
+          halfWidth: radius * 0.56,
+          halfHeight: radius * 0.135,
+        },
+        {
+          center: jawTip,
+          halfWidth: radius * 0.48,
+          halfHeight: radius * 0.14,
+        },
+      ]),
+      headPivot,
+      headPitch,
     ),
-    placeGeometry(
-      new THREE.SphereGeometry(radius * 0.12, 12, 8),
-      [1, 1, 1],
-      [-radius * 0.38, radius * 0.64, radius * 0.56],
+    pitchAround(
+      cylinderBetween(
+        jawHinge
+          .clone()
+          .lerp(jawTip, 0.46)
+          .add(new THREE.Vector3(-radius * 0.52, 0, 0)),
+        jawTip.clone().add(new THREE.Vector3(-radius * 0.48, 0, 0)),
+        radius * 0.06,
+        8,
+      ),
+      headPivot,
+      headPitch,
     ),
-    placeGeometry(
-      new THREE.SphereGeometry(radius * 0.12, 12, 8),
-      [1, 1, 1],
-      [radius * 0.38, radius * 0.64, radius * 0.56],
+    pitchAround(
+      cylinderBetween(
+        jawHinge
+          .clone()
+          .lerp(jawTip, 0.46)
+          .add(new THREE.Vector3(radius * 0.52, 0, 0)),
+        jawTip.clone().add(new THREE.Vector3(radius * 0.48, 0, 0)),
+        radius * 0.06,
+        8,
+      ),
+      headPivot,
+      headPitch,
     ),
-    taperedTubeAlong(
-      [
-        new THREE.Vector3(-radius * 0.58, radius * 0.73, radius * 0.18),
-        new THREE.Vector3(-radius * 0.4, radius * 0.82, radius * 0.48),
-        new THREE.Vector3(-radius * 0.2, radius * 0.78, radius * 0.76),
-      ],
-      length * 0.05,
-      length * 0.04,
-      12,
-      8,
+    pitchAround(
+      placeGeometry(
+        new THREE.SphereGeometry(radius * 0.12, 12, 8),
+        [1, 1, 1],
+        [-radius * 0.43, radius * 0.82, radius * 0.55],
+      ),
+      headPivot,
+      headPitch,
     ),
-    taperedTubeAlong(
-      [
-        new THREE.Vector3(radius * 0.58, radius * 0.73, radius * 0.18),
-        new THREE.Vector3(radius * 0.4, radius * 0.82, radius * 0.48),
-        new THREE.Vector3(radius * 0.2, radius * 0.78, radius * 0.76),
-      ],
-      length * 0.05,
-      length * 0.04,
-      12,
-      8,
+    pitchAround(
+      placeGeometry(
+        new THREE.SphereGeometry(radius * 0.12, 12, 8),
+        [1, 1, 1],
+        [radius * 0.43, radius * 0.82, radius * 0.55],
+      ),
+      headPivot,
+      headPitch,
     ),
-    placeGeometry(
-      new THREE.SphereGeometry(length * 0.04, 10, 8),
-      [1, 0.72, 1],
-      [-radius * 0.24, radius * 0.02, radius * 1.42],
+    pitchAround(
+      taperedTubeAlong(
+        [
+          new THREE.Vector3(-radius * 0.63, radius * 0.88, radius * 0.2),
+          new THREE.Vector3(-radius * 0.46, radius * 0.98, radius * 0.48),
+          new THREE.Vector3(-radius * 0.23, radius * 0.91, radius * 0.75),
+        ],
+        length * 0.05,
+        length * 0.04,
+        12,
+        8,
+      ),
+      headPivot,
+      headPitch,
     ),
-    placeGeometry(
-      new THREE.SphereGeometry(length * 0.04, 10, 8),
-      [1, 0.72, 1],
-      [radius * 0.24, radius * 0.02, radius * 1.42],
+    pitchAround(
+      taperedTubeAlong(
+        [
+          new THREE.Vector3(radius * 0.63, radius * 0.88, radius * 0.2),
+          new THREE.Vector3(radius * 0.46, radius * 0.98, radius * 0.48),
+          new THREE.Vector3(radius * 0.23, radius * 0.91, radius * 0.75),
+        ],
+        length * 0.05,
+        length * 0.04,
+        12,
+        8,
+      ),
+      headPivot,
+      headPitch,
     ),
-    taperedTubeAlong(
-      [
-        new THREE.Vector3(-radius * 0.45, radius * 0.7, -radius * 0.15),
-        new THREE.Vector3(-radius * 0.64, radius * 1.02, -radius * 0.63),
-        new THREE.Vector3(-radius * 0.76, radius * 1.08, -radius * 1.08),
-      ],
-      length * 0.05,
-      radius * 0.03,
-      18,
-      9,
+    pitchAround(
+      placeGeometry(
+        new THREE.SphereGeometry(length * 0.04, 10, 8),
+        [1, 0.72, 1],
+        [-radius * 0.27, radius * 0.32, radius * 1.42],
+      ),
+      headPivot,
+      headPitch,
     ),
-    taperedTubeAlong(
-      [
-        new THREE.Vector3(radius * 0.45, radius * 0.7, -radius * 0.15),
-        new THREE.Vector3(radius * 0.64, radius * 1.02, -radius * 0.63),
-        new THREE.Vector3(radius * 0.76, radius * 1.08, -radius * 1.08),
-      ],
-      length * 0.05,
-      radius * 0.03,
-      18,
-      9,
+    pitchAround(
+      placeGeometry(
+        new THREE.SphereGeometry(length * 0.04, 10, 8),
+        [1, 0.72, 1],
+        [radius * 0.27, radius * 0.32, radius * 1.42],
+      ),
+      headPivot,
+      headPitch,
     ),
-    cylinderBetween(
-      new THREE.Vector3(-radius * 0.38, -radius * 0.05, radius * 1.12),
-      new THREE.Vector3(-radius * 1.48, -radius * 0.08, radius * 0.78),
-      radius * 0.045,
-      8,
+    pitchAround(
+      taperedTubeAlong(
+        [
+          new THREE.Vector3(-radius * 0.5, radius * 0.78, -radius * 0.1),
+          new THREE.Vector3(-radius * 0.68, radius * 0.94, -radius * 0.58),
+          new THREE.Vector3(-radius * 0.76, radius * 0.97, -radius * 1.02),
+        ],
+        length * 0.05,
+        radius * 0.03,
+        18,
+        9,
+      ),
+      headPivot,
+      headPitch,
     ),
-    cylinderBetween(
-      new THREE.Vector3(radius * 0.38, -radius * 0.05, radius * 1.12),
-      new THREE.Vector3(radius * 1.48, -radius * 0.08, radius * 0.78),
-      radius * 0.045,
-      8,
+    pitchAround(
+      taperedTubeAlong(
+        [
+          new THREE.Vector3(radius * 0.5, radius * 0.78, -radius * 0.1),
+          new THREE.Vector3(radius * 0.68, radius * 0.94, -radius * 0.58),
+          new THREE.Vector3(radius * 0.76, radius * 0.97, -radius * 1.02),
+        ],
+        length * 0.05,
+        radius * 0.03,
+        18,
+        9,
+      ),
+      headPivot,
+      headPitch,
+    ),
+    pitchAround(
+      taperedTubeAlong(
+        [
+          new THREE.Vector3(-radius * 0.45, radius * 0.18, radius * 1.05),
+          new THREE.Vector3(-radius * 0.78, radius * 0.04, radius * 0.92),
+          new THREE.Vector3(-radius * 1.05, -radius * 0.05, radius * 0.75),
+        ],
+        radius * 0.035,
+        radius * 0.008,
+        12,
+        7,
+      ),
+      headPivot,
+      headPitch,
+    ),
+    pitchAround(
+      taperedTubeAlong(
+        [
+          new THREE.Vector3(radius * 0.45, radius * 0.18, radius * 1.05),
+          new THREE.Vector3(radius * 0.78, radius * 0.04, radius * 0.92),
+          new THREE.Vector3(radius * 1.05, -radius * 0.05, radius * 0.75),
+        ],
+        radius * 0.035,
+        radius * 0.008,
+        12,
+        7,
+      ),
+      headPivot,
+      headPitch,
     ),
   ];
-  for (let fin = 0; fin < 3; fin += 1) {
-    parts.push(
-      placeGeometry(
-        new THREE.ConeGeometry(
-          radius * (0.2 - fin * 0.02),
-          radius * (0.42 - fin * 0.045),
-          3,
-        ),
-        [1, 1, 0.5],
-        [0, radius * (0.38 - fin * 0.2), -radius * (0.34 + fin * 0.36)],
-        [-0.38, 0, fin % 2 === 0 ? 0 : Math.PI],
-      ),
-    );
-  }
+  parts.push(
+    sweptManeFin(
+      new THREE.Vector3(0, radius * 0.48, -radius * 0.34),
+      length * 0.16,
+      length * 0.1,
+      radius * 0.06,
+    ),
+    sweptManeFin(
+      new THREE.Vector3(0, radius * 0.26, -radius * 0.67),
+      length * 0.145,
+      length * 0.085,
+      radius * 0.055,
+    ),
+    sweptManeFin(
+      new THREE.Vector3(0, -radius * 0.02, -radius * 0.97),
+      length * 0.13,
+      length * 0.07,
+      radius * 0.05,
+    ),
+  );
   return setGeometryPresentation(
     mergeComposite(parts),
     {
@@ -923,7 +1060,9 @@ function seismoscopeDragon(
       features: [
         "connected-neck-root",
         "connected-neck-flare",
+        "solid-mount-plate",
         "cranial-mass",
+        "down-pitched-head",
         "upper-jaw",
         "elongated-upper-snout",
         "deep-open-jaw-gap",
@@ -933,12 +1072,14 @@ function seismoscopeDragon(
         "open-lower-jaw",
         "backward-horns",
         "whiskers",
+        "short-curved-whiskers",
         "brow-eyes",
         "arched-brows",
         "paired-nostrils",
         "visible-tongue",
         "side-ears",
         "mane-fins",
+        "back-swept-mane-fins",
       ],
     },
   );
@@ -956,101 +1097,81 @@ function seismoscopeToad(
     -Math.cos(THREE.MathUtils.degToRad(35)),
   );
   const throat = mouth.clone().addScaledVector(mouthDirection, -radius * 0.62);
-  const mouthRim = orientAlong(
-    new THREE.TorusGeometry(radius * 0.58, radius * 0.065, 8, 28),
-    new THREE.Vector3(0, 0, 1),
-    mouthDirection,
-  ).translate(mouth.x, mouth.y, mouth.z);
+  const rimThroat = mouth
+    .clone()
+    .addScaledVector(mouthDirection, -radius * 0.08);
   const parts = [
     placeGeometry(
       new THREE.SphereGeometry(1, 20, 14),
-      [height * 0.4, height * 0.275, radius * 0.58],
-      [0, -radius * 0.25, 0],
-    ),
-    placeGeometry(
-      new THREE.SphereGeometry(1, 18, 12),
-      [radius * 0.7, radius * 0.48, radius * 0.55],
-      [0, radius * 0.18, -radius * 0.35],
+      [height * 0.5, height * 0.275, radius * 0.68],
+      [0, -radius * 0.32, -radius * 0.2],
       [THREE.MathUtils.degToRad(15), 0, 0],
     ),
-    openFrustumBetween(throat, mouth, radius * 0.32, radius * 0.58, 24),
-    mouthRim,
-    placeGeometry(
-      new THREE.SphereGeometry(height * 0.08, 12, 9),
-      [1, 1, 0.88],
-      [-radius * 0.43, radius * 0.68, -radius * 0.64],
+    openFrustumBetween(throat, mouth, radius * 0.32, radius * 0.565, 24),
+    openFrustumBetween(
+      rimThroat,
+      mouth,
+      radius * 0.565,
+      radius * 0.65,
+      24,
     ),
     placeGeometry(
       new THREE.SphereGeometry(height * 0.08, 12, 9),
       [1, 1, 0.88],
-      [radius * 0.43, radius * 0.68, -radius * 0.64],
+      [-radius * 0.42, radius * 0.38, -radius * 0.55],
+    ),
+    placeGeometry(
+      new THREE.SphereGeometry(height * 0.08, 12, 9),
+      [1, 1, 0.88],
+      [radius * 0.42, radius * 0.38, -radius * 0.55],
     ),
     placeGeometry(
       new THREE.SphereGeometry(1, 16, 10),
-      [radius * 0.46, height * 0.15, radius * 0.45],
-      [-radius * 1.02, -radius * 0.45, radius * 0.12],
+      [radius * 0.32, height * 0.125, radius * 0.38],
+      [-radius * 0.78, -radius * 0.62, radius * 0.05],
     ),
     placeGeometry(
       new THREE.SphereGeometry(1, 16, 10),
-      [radius * 0.46, height * 0.15, radius * 0.45],
-      [radius * 1.02, -radius * 0.45, radius * 0.12],
+      [radius * 0.32, height * 0.125, radius * 0.38],
+      [radius * 0.78, -radius * 0.62, radius * 0.05],
     ),
     cylinderBetween(
-      new THREE.Vector3(-radius * 0.38, radius * 0.04, -radius * 0.36),
-      new THREE.Vector3(-radius * 0.5, -radius * 0.68, -radius * 0.72),
+      new THREE.Vector3(-radius * 0.38, -radius * 0.08, -radius * 0.38),
+      new THREE.Vector3(-radius * 0.46, -radius * 0.74, -radius * 0.72),
       height * 0.07,
       10,
     ),
     cylinderBetween(
-      new THREE.Vector3(radius * 0.38, radius * 0.04, -radius * 0.36),
-      new THREE.Vector3(radius * 0.5, -radius * 0.68, -radius * 0.72),
+      new THREE.Vector3(radius * 0.38, -radius * 0.08, -radius * 0.38),
+      new THREE.Vector3(radius * 0.46, -radius * 0.74, -radius * 0.72),
       height * 0.07,
       10,
-    ),
-    placeGeometry(
-      new THREE.SphereGeometry(1, 12, 8),
-      [radius * 0.34, radius * 0.11, radius * 0.3],
-      [-radius * 0.54, -radius * 0.75, -radius * 0.84],
-    ),
-    placeGeometry(
-      new THREE.SphereGeometry(1, 12, 8),
-      [radius * 0.34, radius * 0.11, radius * 0.3],
-      [radius * 0.54, -radius * 0.75, -radius * 0.84],
-    ),
-    placeGeometry(
-      new THREE.SphereGeometry(1, 12, 8),
-      [radius * 0.42, radius * 0.12, radius * 0.34],
-      [-radius * 0.92, -radius * 0.72, radius * 0.25],
-    ),
-    placeGeometry(
-      new THREE.SphereGeometry(1, 12, 8),
-      [radius * 0.42, radius * 0.12, radius * 0.34],
-      [radius * 0.92, -radius * 0.72, radius * 0.25],
     ),
   ];
   return setGeometryPresentation(
     mergeComposite(parts),
     {
-      color: "#896936",
-      metalness: 0.72,
-      roughness: 0.64,
-      textureVariant: "bronze:excavated",
+      color: "#a9783f",
+      metalness: 0.86,
+      roughness: 0.42,
+      textureVariant: "bronze:fresh",
     },
     {
       kind: "open-mouthed-toad",
       forward: [0, 0, -1],
       features: [
         "crouched-body",
+        "single-dome-body",
         "raised-chest",
         "upturned-open-mouth",
         "funnel-mouth",
+        "flared-funnel-rim",
         "broad-lower-lip",
         "eyes",
         "haunches",
-        "front-legs",
-        "webbed-forefeet",
-        "hind-legs",
-        "rear-feet",
+        "front-props",
+        "folded-hind-haunches",
+        "planted-feet",
         "four-limb-crouch",
       ],
     },

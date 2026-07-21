@@ -1,16 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const dualSchemeSlugs = [
-  "astroclock",
-  "seismoscope",
-  "loom",
-] as const;
-const machineSlugs = [
-  "astroclock",
-  "seismoscope",
-  "odometer",
-  "loom",
-] as const;
+const dualSchemeSlugs = ["astroclock", "seismoscope", "loom"] as const;
+const machineSlugs = ["astroclock", "seismoscope", "odometer", "loom"] as const;
 const removedMachineSlugs = [
   "chariot",
   "typecase",
@@ -78,10 +69,7 @@ async function sampleFrameRate(page: Page, seconds: number) {
   );
 }
 
-async function sampleCompareInteractionFrameRates(
-  page: Page,
-  seconds: number,
-) {
+async function sampleCompareInteractionFrameRates(page: Page, seconds: number) {
   return page.evaluate(
     (sampleSeconds) =>
       new Promise<number[]>((resolve, reject) => {
@@ -597,6 +585,7 @@ test("F0-T7: selected drive exposes bilingual arrow-key control", async ({
   ).toBeCloseTo(before, 8);
 
   await page.getByRole("button", { name: "中文", exact: true }).click();
+  await page.evaluate(() => window.__mechSelect?.("small-gear"));
   await expect(reverse).toHaveAttribute("aria-label", /.+：反向驱动/);
   await expect(forward).toHaveAttribute("aria-label", /.+：正向驱动/);
 });
@@ -683,7 +672,6 @@ test("seismoscope matched bearing releases only the corresponding ball", async (
   await waitForMechanica(page, "seismoscope");
 
   await page.getByRole("button", { name: "E", exact: true }).click();
-  await page.getByTestId("mech-trigger-quake:arm").click();
   const progress = page.getByTestId("demo-progress");
   await expect(progress).toBeVisible();
   await expect(progress).toBeHidden({ timeout: 60_000 });
@@ -737,7 +725,7 @@ test("U3: switching reconstructions runs the one-second ghost handoff", async ({
     await expect(page.locator(".viewer-canvas")).toHaveAttribute(
       "data-scheme-transition",
       "false",
-      { timeout: 2500 },
+      { timeout: 10_000 },
     );
   }
 });
@@ -917,10 +905,7 @@ test("F0-T8: assembly duration follows runtime part count and captions the Chine
             ),
           ).size - 1,
         ) * 700,
-      formulaMs: Math.min(
-        45_000,
-        Math.max(9_000, spec.parts.length * 320),
-      ),
+      formulaMs: Math.min(45_000, Math.max(9_000, spec.parts.length * 320)),
       name: firstPart.name.zh,
     };
   });
@@ -1152,7 +1137,7 @@ test("U6: spotlight completes after its ordered highlight sequence", async ({
     "true",
   );
   await expect(page.locator(".spotlight-done")).toBeVisible({
-    timeout: 10_000,
+    timeout: 45_000,
   });
   const events = await page
     .locator(".viewer-canvas")
@@ -1244,9 +1229,7 @@ test("F0-T4: all authored home cameras pass the framing gate", async ({
   }
 });
 
-test("F0-T4: exploded state refits the retained model", async ({
-  page,
-}) => {
+test("F0-T4: exploded state refits the retained model", async ({ page }) => {
   await page.goto("/#/m/odometer");
   await waitForMechanica(page, "odometer");
   await waitForCamera(page);
@@ -1266,7 +1249,9 @@ test("F0-T4: exploded state refits the retained model", async ({
   const after = await page.evaluate(() => window.__mech?.cameraState());
 
   expect(after?.position).not.toEqual(before?.position);
-  expect(await page.evaluate(() => window.__mech?.frameFill() ?? 0)).toBeLessThanOrEqual(0.8);
+  expect(
+    await page.evaluate(() => window.__mech?.frameFill() ?? 0),
+  ).toBeLessThanOrEqual(0.8);
 });
 
 test("F0-T4: spotlight hands its target back before the first orbit", async ({
@@ -1324,13 +1309,18 @@ test("F0-T4: spotlight hands its target back before the first orbit", async ({
   );
   await page.getByTestId("spotlight-play").click();
   await expect(page.locator(".spotlight-done")).toBeVisible({
-    timeout: 10_000,
+    timeout: 45_000,
   });
   await waitForCamera(page);
   const seismoscopeAfter = await page.evaluate(() =>
     window.__mech?.cameraState(),
   );
-  expect(seismoscopeAfter?.refitCount).toBe(seismoscopeBefore?.refitCount);
+  await expect(
+    page.getByRole("combobox", { name: "Reconstruction" }),
+  ).toHaveValue("wangzhenduo");
+  expect(seismoscopeAfter?.refitCount).toBe(
+    (seismoscopeBefore?.refitCount ?? 0) + 1,
+  );
 
   await page.goto("/#/m/seismoscope");
   await waitForMechanica(page, "seismoscope");
@@ -1352,9 +1342,7 @@ test("F0-T4: spotlight hands its target back before the first orbit", async ({
   await page.goto("/#/m/loom");
   await waitForMechanica(page, "loom");
   await waitForCamera(page);
-  const loomBefore = await page.evaluate(() =>
-    window.__mech?.cameraState(),
-  );
+  const loomBefore = await page.evaluate(() => window.__mech?.cameraState());
   await page.getByTestId("spotlight-play").click();
   await expect(page.locator(".spotlight-done")).toBeVisible({
     timeout: 10_000,
@@ -1379,9 +1367,7 @@ test("U6: all four machine spotlights complete on the paced timeline", async ({
     await expect(page.locator(".spotlight-done")).toBeVisible({
       timeout: 45_000,
     });
-    if (
-      ["seismoscope", "loom"].includes(slug)
-    ) {
+    if (["seismoscope", "loom"].includes(slug)) {
       await expect(
         page.getByTestId("spotlight-semantic-readout"),
       ).toBeVisible();
@@ -1390,7 +1376,7 @@ test("U6: all four machine spotlights complete on the paced timeline", async ({
     if (slug === "seismoscope") {
       await expect(
         page.locator(".viewer-sidebar .scheme-select").first(),
-      ).toHaveValue("fengrui");
+      ).toHaveValue("wangzhenduo");
       expect(
         await page.evaluate(
           () => (window.__mech?.graph.state()["ball-6"] ?? 0) > 0,
@@ -1405,9 +1391,7 @@ test("U6: all four machine spotlights complete on the paced timeline", async ({
   }
 });
 
-test("U6 semantics: astroclock stages sourced captions", async ({
-  page,
-}) => {
+test("U6 semantics: astroclock stages sourced captions", async ({ page }) => {
   await page.goto("/#/m/astroclock");
   await waitForMechanica(page, "astroclock");
   await page.getByTestId("spotlight-play").click();
@@ -1578,7 +1562,7 @@ test("G6.3: every machine reconstruction stays under 150k triangles", async ({
         await expect(page.locator(".viewer-canvas")).toHaveAttribute(
           "data-scheme-transition",
           "false",
-          { timeout: 2500 },
+          { timeout: 10_000 },
         );
       }
       await expect

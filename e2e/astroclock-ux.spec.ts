@@ -3,7 +3,10 @@ import { expect, test } from "@playwright/test";
 const ASTRO = "/#/m/astroclock";
 const E2E_DEMO_SPEED = 8;
 
-test("demo timeline paces captions and restores run state", async ({ page }) => {
+test("demo timeline paces captions and restores run state", async ({
+  page,
+}) => {
+  test.setTimeout(75_000);
   await page.goto(ASTRO);
   await page.getByTestId("event-captions").waitFor({ state: "attached" });
   await page.evaluate(() => {
@@ -36,6 +39,65 @@ test("demo timeline paces captions and restores run state", async ({ page }) => 
   expect(Math.max(...intervals.slice(0, 3))).toBeLessThanOrEqual(
     (3000 + 420) / E2E_DEMO_SPEED + 75,
   );
+  await expect(
+    page.getByRole("button", { name: "Pause", exact: true }),
+  ).toBeVisible();
+
+  await page.getByTestId("spotlight-play").click();
+  await expect(progress).toBeVisible();
+  await expect(progress).toBeHidden({ timeout: 60_000 });
+  await expect(page.locator(".spotlight-done")).toBeVisible();
+});
+
+test("demo playback switches, stops, and leaves orbit zoom enabled", async ({
+  page,
+}) => {
+  test.setTimeout(60_000);
+  await page.goto(ASTRO);
+  const first = page.getByTestId("mech-trigger-escapement-captions");
+  const second = page.getByTestId("mech-trigger-chime-placards");
+  const queued = page.getByTestId("mech-trigger-drag-shulun");
+  const progress = page.getByTestId("demo-progress");
+
+  await first.click();
+  await expect(progress).toBeVisible();
+  await page.waitForFunction(
+    () =>
+      (document.querySelector<HTMLProgressElement>(
+        '[data-testid="demo-progress"]',
+      )?.value ?? 0) > 0 &&
+      window.__mech?.cameraState()?.controlsEnabled === true,
+  );
+  const beforeZoom = await page.evaluate(
+    () => window.__mech?.cameraState()?.cameraDistance ?? 0,
+  );
+  const canvas = page.locator(".viewer-canvas canvas").first();
+  await canvas.hover();
+  await page.mouse.wheel(0, 500);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__mech?.cameraState()?.cameraDistance ?? 0),
+    )
+    .not.toBe(beforeZoom);
+
+  await second.click();
+  await expect(second).toHaveAttribute("data-demo-state", "playing", {
+    timeout: 15_000,
+  });
+  await expect(page.getByTestId("event-captions")).toContainText(
+    /placard|举牌|司辰/,
+    { timeout: 15_000 },
+  );
+  await first.click();
+  await queued.click();
+  await expect(queued).toHaveAttribute("data-demo-state", "playing", {
+    timeout: 15_000,
+  });
+  await queued.click();
+  await expect(progress).toBeHidden({ timeout: 15_000 });
+  await expect(
+    page.getByRole("button", { name: "Pause", exact: true }),
+  ).toBeVisible();
 });
 
 test("camera focuses during the beat demo", async ({ page }) => {

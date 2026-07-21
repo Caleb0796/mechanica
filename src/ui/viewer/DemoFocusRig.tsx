@@ -21,6 +21,8 @@ type ControlsLike = {
   enabled: boolean;
 } | null;
 
+const CAMERA_TRANSIT_MS = 1000;
+
 function fitDistanceForBounds(
   bounds: Box3,
   direction: Vector3,
@@ -74,7 +76,13 @@ export default function DemoFocusRig({
   const camera = useThree((state) => state.camera);
   const controls = useThree((state) => state.controls) as ControlsLike;
   const viewport = useThree((state) => state.size);
-  const goal = useRef<{ position: Vector3; target: Vector3 } | null>(null);
+  const goal = useRef<{
+    endPosition: Vector3;
+    endTarget: Vector3;
+    startPosition: Vector3;
+    startTarget: Vector3;
+    startedAt: number;
+  } | null>(null);
   const goalKind = useRef<"focus" | "home" | "restore" | null>(null);
   const homeGoal = useRef(false);
   const processedFocusPartId = useRef<string | null>(null);
@@ -115,14 +123,16 @@ export default function DemoFocusRig({
             camera.updateProjectionMatrix();
           }
           goal.current = {
-            position: new Vector3(...homePose.position),
-            target: new Vector3(...homePose.target),
+            endPosition: new Vector3(...homePose.position),
+            endTarget: new Vector3(...homePose.target),
+            startPosition: camera.position.clone(),
+            startTarget: controls.target.clone(),
+            startedAt: performance.now(),
           };
         } else {
           const target = wholeBounds.getCenter(new Vector3());
           const direction = new Vector3(...profile.direction).normalize();
-          const fov =
-            camera instanceof PerspectiveCamera ? camera.fov : 36;
+          const fov = camera instanceof PerspectiveCamera ? camera.fov : 36;
           const fitDistance = fitDistanceForBounds(
             wholeBounds,
             direction,
@@ -135,8 +145,11 @@ export default function DemoFocusRig({
             wholeSphere.radius * (profile.minDistanceFactor ?? 1.6),
           );
           goal.current = {
-            position: target.clone().addScaledVector(direction, distance),
-            target,
+            endPosition: target.clone().addScaledVector(direction, distance),
+            endTarget: target,
+            startPosition: camera.position.clone(),
+            startTarget: controls.target.clone(),
+            startedAt: performance.now(),
           };
         }
         homeGoal.current = true;
@@ -156,21 +169,42 @@ export default function DemoFocusRig({
         .sub(controls.target)
         .normalize();
       goal.current = {
-        position: sphere.center.clone().add(direction.multiplyScalar(distance)),
-        target: sphere.center.clone(),
+        endPosition: sphere.center
+          .clone()
+          .add(direction.multiplyScalar(distance)),
+        endTarget: sphere.center.clone(),
+        startPosition: camera.position.clone(),
+        startTarget: controls.target.clone(),
+        startedAt: performance.now(),
       };
       homeGoal.current = false;
       goalKind.current = "focus";
       onActiveChange?.(true);
     } else if (homeGoal.current) {
+      homeGoal.current = false;
       processedFocusPartId.current = null;
       restore.current = null;
+      if (goal.current) {
+        goalKind.current = "restore";
+      } else {
+        controls.enabled = true;
+        onActiveChange?.(false);
+        onRestoredRef.current?.();
+      }
     } else if (restore.current) {
       processedFocusPartId.current = null;
-      goal.current = restore.current;
+      goal.current = {
+        endPosition: restore.current.position,
+        endTarget: restore.current.target,
+        startPosition: camera.position.clone(),
+        startTarget: controls.target.clone(),
+        startedAt: performance.now(),
+      };
       restore.current = null;
       goalKind.current = "restore";
       onActiveChange?.(true);
+    } else {
+      processedFocusPartId.current = null;
     }
   }, [
     camera,
@@ -186,13 +220,23 @@ export default function DemoFocusRig({
   useFrame(() => {
     if (!goal.current || !controls) return;
     controls.enabled = false;
-    camera.position.lerp(goal.current.position, 0.08);
-    controls.target.lerp(goal.current.target, 0.08);
+    const progress = Math.min(
+      1,
+      (performance.now() - goal.current.startedAt) / CAMERA_TRANSIT_MS,
+    );
+    const eased = 1 - (1 - progress) ** 3;
+    camera.position.lerpVectors(
+      goal.current.startPosition,
+      goal.current.endPosition,
+      eased,
+    );
+    controls.target.lerpVectors(
+      goal.current.startTarget,
+      goal.current.endTarget,
+      eased,
+    );
     controls.update();
-    if (
-      camera.position.distanceTo(goal.current.position) < 0.02 &&
-      controls.target.distanceTo(goal.current.target) < 0.02
-    ) {
+    if (progress === 1) {
       const settledKind = goalKind.current;
       goal.current = null;
       goalKind.current = null;

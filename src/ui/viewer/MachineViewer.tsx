@@ -103,10 +103,7 @@ import DriveHandle, {
 import DemoFocusRig from "./DemoFocusRig";
 import { buildDemoTimeline } from "./demoTimeline";
 import ExplodedControl from "./ExplodedControl";
-import {
-  GeometryLoading,
-  useMachineGeometryWarmup,
-} from "./geometryWarmup";
+import { GeometryLoading, useMachineGeometryWarmup } from "./geometryWarmup";
 import {
   transitionViewerIdle,
   VIEWER_IDLE_TIMEOUT_MS,
@@ -420,15 +417,7 @@ function SpotlightRig({
     endQuaternion.current.setFromRotationMatrix(
       new Matrix4().lookAt(endPosition.current, target, camera.up),
     );
-  }, [
-    active,
-    camera,
-    controls,
-    diagnostics,
-    runId,
-    scene,
-    targetPartId,
-  ]);
+  }, [active, camera, controls, diagnostics, runId, scene, targetPartId]);
 
   useFrame(() => {
     if (!active || !targetPartId) return;
@@ -751,10 +740,7 @@ function CameraDirector({
     );
     const explodedFitMargin =
       1 +
-      (Math.max(
-        profile.explodedMargin / Math.max(profile.margin, 0.001),
-        1,
-      ) -
+      (Math.max(profile.explodedMargin / Math.max(profile.margin, 0.001), 1) -
         1) *
         Math.max(0, Math.min(1, explode));
     const authoredDistance = homePose
@@ -1294,10 +1280,10 @@ const PartNode = memo(function PartNode({
   const wheel = crank ? partsById.get(crank.wheel) : undefined;
   const staticTransform = Boolean(
     !reassembling &&
-      !crank &&
-      !part.joint &&
-      !hasAnimatedGeometry &&
-      !(module.data.slug === "astroclock" && part.id === "scoop-01"),
+    !crank &&
+    !part.joint &&
+    !hasAnimatedGeometry &&
+    !(module.data.slug === "astroclock" && part.id === "scoop-01"),
   );
 
   useLayoutEffect(() => geometryResource.retain(), [geometryResource]);
@@ -1720,8 +1706,7 @@ function SceneComplexityProbe({
         trianglesByGeometry.current.set(mesh.geometry.uuid, geometryTriangles);
       }
       const meshTriangles =
-        geometryTriangles *
-        (mesh.isInstancedMesh ? (mesh.count ?? 0) : 1);
+        geometryTriangles * (mesh.isInstancedMesh ? (mesh.count ?? 0) : 1);
       if (mesh.userData.mechanicaScenery) {
         sceneryTriangles += meshTriangles;
         if (mesh.raycast !== SCENERY_RAYCAST_DISABLED) raycastViolations += 1;
@@ -2010,7 +1995,12 @@ function AssemblyStagingGround({
           userData={{ mechanicaAffordance: true }}
         >
           <torusGeometry
-            args={[Math.max(0.12, Math.min(slot.radius * 0.35, 0.35)), 0.018, 8, 32]}
+            args={[
+              Math.max(0.12, Math.min(slot.radius * 0.35, 0.35)),
+              0.018,
+              8,
+              32,
+            ]}
           />
           <meshBasicMaterial
             color="#d9b86d"
@@ -2108,7 +2098,6 @@ function MachineScene({
   const controlsEnabled =
     !cameraIntroActive &&
     !interactionDisabled &&
-    !spotlightActive &&
     !spotlightHandoffActive &&
     !storyCamera;
   const sceneVisible = Boolean(
@@ -2439,6 +2428,29 @@ interface CapturedEvent {
   state: Record<string, number>;
 }
 
+interface DemoRequest {
+  arg?: number;
+  triggerId: string;
+}
+
+type DemoPlaybackPhase = "idle" | "preparing" | "playing" | "restoring";
+
+interface DemoPlaybackSession {
+  autoSwitchedScheme: boolean;
+  pausedBefore: boolean;
+  request: DemoRequest;
+  runToken: number;
+  schemeBefore?: string;
+  userChangedScheme: boolean;
+}
+
+function sameDemoRequest(
+  first: DemoRequest | null,
+  second: DemoRequest,
+): boolean {
+  return first?.triggerId === second.triggerId && first.arg === second.arg;
+}
+
 function statesDiffer(
   before: Record<string, number>,
   after: Record<string, number>,
@@ -2489,11 +2501,7 @@ export function captureSpotlightState(
   return captured;
 }
 
-function AspectAwareStoryCamera({
-  pose,
-}: {
-  pose: StoryStageState["camera"];
-}) {
+function AspectAwareStoryCamera({ pose }: { pose: StoryStageState["camera"] }) {
   const camera = useThree((threeState) => threeState.camera);
   const size = useThree((threeState) => threeState.size);
   const authoredPosition = useMemo(() => new Vector3(), []);
@@ -3021,7 +3029,9 @@ function mechanismCaption(
   const eventLabel = t(`events.labels.${eventKey}`, {
     defaultValue: t("events.fallback"),
   });
-  const namedPart = module.spec.parts.find((candidate) => candidate.id === part);
+  const namedPart = module.spec.parts.find(
+    (candidate) => candidate.id === part,
+  );
   const partLabel = namedPart?.name[language];
   return partLabel ? `${eventLabel} · ${partLabel}` : eventLabel;
 }
@@ -3086,8 +3096,7 @@ export default function MachineViewer({
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const storyAvailable =
-    module.data.slug === "astroclock" ||
-    module.data.slug === "seismoscope";
+    module.data.slug === "astroclock" || module.data.slug === "seismoscope";
   const viewerProfile =
     module.data.slug === "demo"
       ? {
@@ -3149,10 +3158,7 @@ export default function MachineViewer({
   const [schemeTransitionNow, setSchemeTransitionNow] = useState(0);
   const [caption, setCaption] = useState("");
   const [captionPulseToken, setCaptionPulseToken] = useState(0);
-  const [activeTrigger, setActiveTrigger] = useState<{
-    arg?: number;
-    triggerId: string;
-  } | null>(null);
+  const [activeTrigger, setActiveTrigger] = useState<DemoRequest | null>(null);
   const [demoProgress, setDemoProgress] = useState(0);
   const [aidCutawayPartIds, setAidCutawayPartIds] = useState<string[]>([]);
   const [aidHighlightPartIds, setAidHighlightPartIds] = useState<string[]>([]);
@@ -3170,6 +3176,8 @@ export default function MachineViewer({
   const [armedQuakeBearing, setArmedQuakeBearing] = useState<number | null>(
     null,
   );
+  const armedQuakeBearingRef = useRef<number | null>(null);
+  armedQuakeBearingRef.current = armedQuakeBearing;
   const [odometerReadout, setOdometerReadout] = useState<string | null>(
     module.spec.slug === "odometer" ? "0.00" : null,
   );
@@ -3183,16 +3191,22 @@ export default function MachineViewer({
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
-  const pendingDemoCompletion = useRef(false);
-  const pendingSpotlightDonePart = useRef<string | null>(null);
   const spotlightCaptionLockUntil = useRef(0);
-  const pendingTrigger = useRef<{ arg?: number; triggerId: string } | null>(
-    null,
-  );
+  const activeSchemeIdRef = useRef(activeSchemeId);
+  activeSchemeIdRef.current = activeSchemeId;
+  const activeTriggerRef = useRef<DemoRequest | null>(null);
+  const demoFocusActiveRef = useRef(false);
+  const demoPlaybackPhase = useRef<DemoPlaybackPhase>("idle");
+  const demoPlaybackSession = useRef<DemoPlaybackSession | null>(null);
+  const demoRunToken = useRef(0);
+  const pendingDemoDonePart = useRef<string | null>(null);
+  const preparingTrigger = useRef<DemoRequest | null>(null);
+  const queuedTrigger = useRef<DemoRequest | null>(null);
   const demoFocusRef = useRef<string | null>(null);
   demoFocusRef.current = demoFocusPartId;
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
   const handleDemoFocusActiveChange = useCallback((active: boolean) => {
+    demoFocusActiveRef.current = active;
     setDemoFocusActive(active);
     if (cameraDiagnostics.current) {
       cameraDiagnostics.current.controlsEnabled = !active;
@@ -3463,9 +3477,14 @@ export default function MachineViewer({
       spotlightFrame.current = null;
     }
     displayState.current = null;
-    pendingDemoCompletion.current = false;
-    pendingSpotlightDonePart.current = null;
     spotlightCaptionLockUntil.current = 0;
+    activeTriggerRef.current = null;
+    demoPlaybackPhase.current = "idle";
+    demoPlaybackSession.current = null;
+    demoRunToken.current += 1;
+    pendingDemoDonePart.current = null;
+    preparingTrigger.current = null;
+    queuedTrigger.current = null;
     cameraDiagnostics.current = null;
     setAidCutawayPartIds([]);
     setAidHighlightPartIds([]);
@@ -3475,16 +3494,16 @@ export default function MachineViewer({
     setSpotlightAutoFitKey(null);
     setSpotlightDone(false);
     setDemoFocusActive(false);
-    pendingTrigger.current = null;
     setDemoFocusPartId(null);
     setSpotlightPartIds([]);
     setSpotlightTranscript([]);
     setArmedQuakeBearing(null);
     setHoveredPartId(null);
     setSelectedPartId(null);
-    setActiveSchemeId(
-      useUiStore.getState().schemeByMachine[module.data.slug] ?? schemeId,
-    );
+    const restoredSchemeId =
+      useUiStore.getState().schemeByMachine[module.data.slug] ?? schemeId;
+    activeSchemeIdRef.current = restoredSchemeId;
+    setActiveSchemeId(restoredSchemeId);
     setSchemeTransition(null);
     setCompareActive(false);
     setCompareSchemeIds(defaultCompareSchemeIds);
@@ -3627,10 +3646,7 @@ export default function MachineViewer({
   ]);
 
   useEffect(() => {
-    if (
-      assembly.state.mode !== "reassemble" ||
-      assembly.state.selectedPartId
-    ) {
+    if (assembly.state.mode !== "reassemble" || assembly.state.selectedPartId) {
       setAssemblyPickHintToken(0);
     }
   }, [assembly.state.mode, assembly.state.selectedPartId]);
@@ -3888,9 +3904,14 @@ export default function MachineViewer({
       if (Number.isFinite(value)) setOdometerReadout(value.toFixed(2));
     }
     if (type === "scheme:switch" && module.schemes?.[part]) {
+      const session = demoPlaybackSession.current;
+      if (session && activeSchemeIdRef.current !== part) {
+        session.autoSwitchedScheme = true;
+      }
       setSpotlightAutoFitKey(
         cameraFitKey(module.data.slug, part, "default", explode),
       );
+      activeSchemeIdRef.current = part;
       setActiveSchemeId(part);
       useUiStore.getState().setMachineScheme(module.data.slug, part);
     }
@@ -3901,37 +3922,63 @@ export default function MachineViewer({
     for (const event of result.events) recordEvent(event.type, event.part);
   };
 
-  const startTrigger = (triggerId: string, arg?: number) => {
+  function publishActiveTrigger(request: DemoRequest | null) {
+    activeTriggerRef.current = request;
+    setActiveTrigger(request);
+  }
+
+  function publishDemoPhase(phase: DemoPlaybackPhase) {
+    demoPlaybackPhase.current = phase;
+  }
+
+  function startTrigger(request: DemoRequest) {
+    const { arg, triggerId } = request;
     const trigger = module.mechanism?.triggers.find(
       (candidate) => candidate.id === triggerId,
     );
-    if (!trigger) return;
+    if (!trigger) {
+      finishDemoRestore();
+      return;
+    }
     const isSpotlight = triggerId === "spotlight";
+    const pausedBefore = useUiStore.getState().paused;
+    const schemeBefore =
+      activeSchemeIdRef.current ?? module.defaultSchemeId ?? schemeId;
+    const runToken = ++demoRunToken.current;
+    const session: DemoPlaybackSession = {
+      autoSwitchedScheme: false,
+      pausedBefore,
+      request,
+      runToken,
+      schemeBefore,
+      userChangedScheme: false,
+    };
+    demoPlaybackSession.current = session;
+    publishDemoPhase("playing");
 
     setSpotlightAutoFitKey(null);
     let spotlightSpec = activeSpec;
-    let switchedToFengrui = false;
     if (
       module.spec.slug === "seismoscope" &&
       (isSpotlight || triggerId === "quake" || triggerId === "quake:arm") &&
-      activeSchemeId !== "fengrui" &&
+      activeSchemeIdRef.current !== "fengrui" &&
       module.schemes?.fengrui
     ) {
       graph.setScheme(module.schemes.fengrui);
+      activeSchemeIdRef.current = "fengrui";
       setActiveSchemeId("fengrui");
       useUiStore.getState().setMachineScheme(module.data.slug, "fengrui");
       setSpotlightAutoFitKey(
         cameraFitKey("seismoscope", "fengrui", "default", explode),
       );
       spotlightSpec = applySchemePatch(module.spec, module.schemes.fengrui);
-      switchedToFengrui = true;
+      session.autoSwitchedScheme = true;
     }
 
     if (spotlightFrame.current !== null) {
       cancelAnimationFrame(spotlightFrame.current);
       spotlightFrame.current = null;
     }
-    const pausedBefore = useUiStore.getState().paused;
     setPaused(true);
     setSpotlightActive(true);
     if (isSpotlight) setSpotlightDone(false);
@@ -3941,7 +3988,7 @@ export default function MachineViewer({
 
     const initialState = graph.state();
     const captured: CapturedEvent[] = [];
-    if (switchedToFengrui) {
+    if (session.autoSwitchedScheme) {
       captured.push({
         type: "caption:scheme-switch",
         part: "fengrui",
@@ -3949,17 +3996,26 @@ export default function MachineViewer({
       });
     }
     let donePart: string | null = null;
-    trigger.run(graph, (type, part) => {
-      if (type === "spotlight:done") {
-        donePart = part;
-        return;
-      }
-      captured.push({
-        type,
-        part,
-        state: captureSpotlightState(spotlightSpec, graph.state(), type, part),
-      });
-    }, arg);
+    trigger.run(
+      graph,
+      (type, part) => {
+        if (type === "spotlight:done") {
+          donePart = part;
+          return;
+        }
+        captured.push({
+          type,
+          part,
+          state: captureSpotlightState(
+            spotlightSpec,
+            graph.state(),
+            type,
+            part,
+          ),
+        });
+      },
+      arg,
+    );
     displayState.current = initialState;
 
     const speed = useUiStore.getState().demoSpeed || 1;
@@ -3970,8 +4026,7 @@ export default function MachineViewer({
       initialState,
     );
     const totalDuration = timeline.reduce(
-      (duration, entry) =>
-        duration + (entry.motionMs + entry.dwellMs) / speed,
+      (duration, entry) => duration + (entry.motionMs + entry.dwellMs) / speed,
       0,
     );
     let index = 0;
@@ -3979,22 +4034,16 @@ export default function MachineViewer({
     let lastProgressUpdateAt = 0;
     let previousState = initialState;
     const playNext = () => {
+      if (
+        demoPlaybackSession.current?.runToken !== runToken ||
+        demoPlaybackPhase.current !== "playing"
+      ) {
+        return;
+      }
       const entry = timeline[index];
       if (!entry) {
-        displayState.current = null;
-        if (demoFocusRef.current) {
-          pendingDemoCompletion.current = true;
-          pendingSpotlightDonePart.current = donePart;
-        } else {
-          if (donePart) recordEvent("spotlight:done", donePart);
-          setActiveTrigger(null);
-        }
-        setDemoProgress(1);
-        setSpotlightActive(false);
-        setSpotlightPartIds([]);
-        setDemoFocusPartId(null);
-        setPaused(pausedBefore);
         spotlightFrame.current = null;
+        beginDemoRestore(donePart, true);
         return;
       }
 
@@ -4026,6 +4075,12 @@ export default function MachineViewer({
       const dwell = entry.dwellMs / speed;
       const startedAt = performance.now();
       const animate = (now: number) => {
+        if (
+          demoPlaybackSession.current?.runToken !== runToken ||
+          demoPlaybackPhase.current !== "playing"
+        ) {
+          return;
+        }
         const progress = Math.min(
           1,
           motion === 0 ? 1 : (now - startedAt) / motion,
@@ -4062,19 +4117,78 @@ export default function MachineViewer({
       spotlightFrame.current = requestAnimationFrame(animate);
     };
     playNext();
-  };
+  }
 
   const pulseDemoInProgress = () => {
     setCaption(t("viewer.demoInProgress"));
     setCaptionPulseToken((token) => token + 1);
   };
 
-  const runTrigger = (triggerId: string, arg?: number) => {
-    registerViewerInteraction();
-    if (pendingTrigger.current || activeTrigger) {
-      pulseDemoInProgress();
+  function prepareTrigger(request: DemoRequest) {
+    preparingTrigger.current = request;
+    publishActiveTrigger(request);
+    publishDemoPhase("preparing");
+    setDemoProgress(0);
+    setDemoFocusPartId("tower-shell");
+  }
+
+  function restoreDemoScheme(session: DemoPlaybackSession) {
+    if (!session.autoSwitchedScheme || session.userChangedScheme) return;
+    const restoreSchemeId = session.schemeBefore;
+    graph.setScheme(
+      restoreSchemeId ? module.schemes?.[restoreSchemeId] : undefined,
+    );
+    activeSchemeIdRef.current = restoreSchemeId;
+    setActiveSchemeId(restoreSchemeId);
+    if (restoreSchemeId) {
+      useUiStore.getState().setMachineScheme(module.data.slug, restoreSchemeId);
+    }
+  }
+
+  function finishDemoRestore(donePart?: string | null) {
+    const session = demoPlaybackSession.current;
+    if (session) {
+      if (donePart) recordEvent("spotlight:done", donePart);
+      setPaused(session.pausedBefore);
+      restoreDemoScheme(session);
+    }
+    demoPlaybackSession.current = null;
+    preparingTrigger.current = null;
+    publishActiveTrigger(null);
+    publishDemoPhase("idle");
+    setDemoProgress(0);
+
+    const queued = queuedTrigger.current;
+    queuedTrigger.current = null;
+    if (queued) {
+      requestAnimationFrame(() => {
+        if (demoPlaybackPhase.current === "idle") prepareTrigger(queued);
+      });
+    }
+  }
+
+  function beginDemoRestore(donePart: string | null, completed: boolean) {
+    if (demoPlaybackPhase.current === "restoring") return;
+    demoRunToken.current += 1;
+    if (spotlightFrame.current !== null) {
+      cancelAnimationFrame(spotlightFrame.current);
+      spotlightFrame.current = null;
+    }
+    displayState.current = null;
+    publishDemoPhase("restoring");
+    setDemoProgress(completed ? 1 : 0);
+    setSpotlightActive(false);
+    setSpotlightPartIds([]);
+    setDemoFocusPartId(null);
+    if (demoFocusRef.current || demoFocusActiveRef.current) {
+      pendingDemoDonePart.current = completed ? donePart : null;
       return;
     }
+    finishDemoRestore(completed ? donePart : null);
+  }
+
+  function runTrigger(triggerId: string, arg?: number) {
+    registerViewerInteraction();
     if (
       !module.mechanism?.triggers.some(
         (candidate) => candidate.id === triggerId,
@@ -4082,6 +4196,15 @@ export default function MachineViewer({
     ) {
       return;
     }
+    const request: DemoRequest = {
+      arg:
+        module.data.slug === "seismoscope" &&
+        triggerId === "quake" &&
+        arg === undefined
+          ? (armedQuakeBearingRef.current ?? quakeBearing)
+          : arg,
+      triggerId,
+    };
     if (module.data.slug === "seismoscope") {
       if (
         triggerId === "quake:arm" &&
@@ -4089,38 +4212,73 @@ export default function MachineViewer({
         SEISMOSCOPE_BEARINGS[arg]
       ) {
         setArmedQuakeBearing(arg);
-      } else if (triggerId === "quake" || triggerId === "quake:reset") {
+      } else if (triggerId === "quake:reset") {
         setArmedQuakeBearing(null);
       }
     }
-    const requestedTrigger = { arg, triggerId };
-    pendingTrigger.current = requestedTrigger;
-    setActiveTrigger(requestedTrigger);
-    setDemoProgress(0);
-    setDemoFocusPartId("tower-shell");
-  };
-
-  const completePendingDemo = () => {
-    if (!pendingDemoCompletion.current) return;
-    pendingDemoCompletion.current = false;
-    const donePart = pendingSpotlightDonePart.current;
-    pendingSpotlightDonePart.current = null;
-    if (donePart) recordEvent("spotlight:done", donePart);
-    setActiveTrigger(null);
-  };
-
-  const handleDemoFocusSettled = () => {
-    setDemoFocusPartId(null);
-    const pending = pendingTrigger.current;
-    pendingTrigger.current = null;
-    if (pending) {
-      startTrigger(pending.triggerId, pending.arg);
+    const phase = demoPlaybackPhase.current;
+    if (phase === "idle") {
+      prepareTrigger(request);
       return;
     }
-    completePendingDemo();
-  };
+    if (phase === "preparing") {
+      if (sameDemoRequest(preparingTrigger.current, request)) {
+        preparingTrigger.current = null;
+        publishActiveTrigger(null);
+        publishDemoPhase("idle");
+        setDemoFocusPartId(null);
+        setDemoProgress(0);
+      } else {
+        preparingTrigger.current = request;
+        publishActiveTrigger(request);
+      }
+      return;
+    }
+    if (phase === "playing") {
+      queuedTrigger.current = sameDemoRequest(activeTriggerRef.current, request)
+        ? null
+        : request;
+      beginDemoRestore(null, false);
+      return;
+    }
+    queuedTrigger.current = request;
+    pulseDemoInProgress();
+  }
 
-  const handleDemoFocusRestored = () => completePendingDemo();
+  function resetViewerFocus() {
+    registerViewerInteraction();
+    queuedTrigger.current = null;
+    if (demoPlaybackPhase.current === "playing") {
+      beginDemoRestore(null, false);
+      return;
+    }
+    if (demoPlaybackPhase.current === "preparing") {
+      preparingTrigger.current = null;
+      publishActiveTrigger(null);
+      publishDemoPhase("idle");
+      setDemoProgress(0);
+      setDemoFocusPartId(null);
+      return;
+    }
+    if (demoPlaybackPhase.current === "restoring") return;
+    setDemoFocusPartId("tower-shell");
+  }
+
+  function handleDemoFocusSettled() {
+    setDemoFocusPartId(null);
+    if (demoPlaybackPhase.current === "preparing") {
+      const pending = preparingTrigger.current;
+      preparingTrigger.current = null;
+      if (pending) startTrigger(pending);
+    }
+  }
+
+  function handleDemoFocusRestored() {
+    if (demoPlaybackPhase.current !== "restoring") return;
+    const donePart = pendingDemoDonePart.current;
+    pendingDemoDonePart.current = null;
+    finishDemoRestore(donePart);
+  }
 
   const drivePart = (partId: string, delta: number) => {
     if (module.spec.slug === "astroclock" && delta < 0) {
@@ -4401,9 +4559,7 @@ export default function MachineViewer({
                   strokeWidth="1.5"
                 />
               </svg>
-              <span>
-                {t("viewer.driveCoach")}
-              </span>
+              <span>{t("viewer.driveCoach")}</span>
             </div>
           ) : null}
         </div>
@@ -4464,7 +4620,7 @@ export default function MachineViewer({
             <button
               className="ghost-button"
               data-testid="reset-view"
-              onClick={() => setDemoFocusPartId("tower-shell")}
+              onClick={resetViewerFocus}
               type="button"
             >
               {t("viewer.resetView")}
@@ -4771,7 +4927,7 @@ export default function MachineViewer({
                     }
                     key={bearing}
                     onClick={() => {
-                      if (!activeTrigger) setQuakeBearing(index);
+                      setQuakeBearing(index);
                       runTrigger("quake:arm", index);
                     }}
                     type="button"
@@ -4817,9 +4973,7 @@ export default function MachineViewer({
                     onClick={() =>
                       runTrigger(
                         trigger.id,
-                        trigger.id === "quake:arm"
-                          ? quakeBearing
-                          : undefined,
+                        trigger.id === "quake:arm" ? quakeBearing : undefined,
                       )
                     }
                     type="button"
@@ -4863,8 +5017,12 @@ export default function MachineViewer({
           compareSchemeIds={compareSchemeIds}
           module={module}
           onChange={(nextSchemeId) => {
+            if (demoPlaybackSession.current) {
+              demoPlaybackSession.current.userChangedScheme = true;
+            }
             assembly.exitAssembly();
             setSpotlightAutoFitKey(null);
+            activeSchemeIdRef.current = nextSchemeId;
             setActiveSchemeId(nextSchemeId);
             if (nextSchemeId) {
               useUiStore

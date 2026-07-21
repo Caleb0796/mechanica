@@ -756,7 +756,8 @@ describe("odometer drum carriage", () => {
         geometry.computeBoundingBox();
         armBounds.union(geometry.boundingBox!);
       }
-      const frozenEnvelope = strikerEnvelopes[arm.id];
+      const frozenEnvelope =
+        strikerEnvelopes[arm.id as keyof typeof strikerEnvelopes];
       for (const axis of ["x", "y", "z"] as const) {
         expect(
           armBounds.min[axis],

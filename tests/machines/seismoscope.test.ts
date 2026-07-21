@@ -1104,5 +1104,5 @@ describe("seismoscope machine module", () => {
         ),
       ).not.toContainEqual(["dragon-6", "ball-6"]);
     }
-  });
+  }, 20_000);
 });

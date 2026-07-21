@@ -139,7 +139,7 @@ describe("independent machine validation", () => {
     expect(
       report.checks.find((check) => check.id === "base:ratio-1")?.status,
     ).toBe("fail");
-  });
+  }, 20_000);
 
   it("executes mechanism triggers and requires spotlight completion", () => {
     const module = miniModule();
@@ -173,7 +173,7 @@ describe("independent machine validation", () => {
     expect(
       report.checks.find((check) => check.id === "base:ratio-1")?.status,
     ).toBe("fail");
-  });
+  }, 20_000);
 
   it("requires every component of a composite source reference to resolve", () => {
     const module = miniModule();

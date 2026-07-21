@@ -31,6 +31,59 @@ const spec = partsJson as unknown as MachineSpec;
 const data = dataJson as unknown as MachineData;
 const wangzhenduo = wangzhenduoJson as unknown as SchemePatch;
 const fengrui = fengruiJson as unknown as SchemePatch;
+const DRAGON_MOUNT_CLEARANCE = 0.0038;
+const DRAGON_MOUNT_CONTACT_RINGS = 4;
+const DRAGON_MOUNT_RADIAL_SEGMENTS = 24;
+const VESSEL_PROFILE = [
+  [0.56, -0.9],
+  [0.63, -0.82],
+  [0.67, -0.68],
+  [0.9, -0.42],
+  [1, -0.2],
+  [0.93, 0.06],
+  [0.79, 0.28],
+  [0.7, 0.48],
+  [0.76, 0.58],
+] as const;
+
+const vesselMountPart = spec.parts.find((part) => part.id === "vessel");
+const dragonMountPart = spec.parts.find((part) => part.id === "dragon-0");
+if (
+  !vesselMountPart ||
+  vesselMountPart.geometry.type !== "custom" ||
+  !dragonMountPart
+) {
+  throw new Error("Seismoscope mount frame is incomplete");
+}
+const mountFrame = {
+  dragonRadius: Math.hypot(
+    dragonMountPart.position[0],
+    dragonMountPart.position[2],
+  ),
+  dragonY: dragonMountPart.position[1],
+  vesselRadius: vesselMountPart.geometry.params.radius,
+  vesselY: vesselMountPart.position[1],
+};
+
+function vesselProfile(radius: number): Array<readonly [number, number]> {
+  return VESSEL_PROFILE.map(([radiusRatio, y]) => [radius * radiusRatio, y]);
+}
+
+function vesselSurfaceRadiusAt(localY: number): number {
+  const profile = vesselProfile(mountFrame.vesselRadius);
+  if (localY <= profile[0][1]) return profile[0][0];
+  for (let index = 1; index < profile.length; index += 1) {
+    const [nextRadius, nextY] = profile[index];
+    if (localY > nextY) continue;
+    const [previousRadius, previousY] = profile[index - 1];
+    return THREE.MathUtils.lerp(
+      previousRadius,
+      nextRadius,
+      (localY - previousY) / (nextY - previousY),
+    );
+  }
+  return profile.at(-1)![0];
+}
 
 function placeGeometry(
   geometry: THREE.BufferGeometry,
@@ -188,12 +241,41 @@ function pitchAround(
   return geometry;
 }
 
+function fitDragonMountClearance(
+  geometry: THREE.BufferGeometry,
+  contactVertexCount = 0,
+): THREE.BufferGeometry {
+  const position = geometry.getAttribute("position");
+  for (let vertex = 0; vertex < position.count; vertex += 1) {
+    const x = position.getX(vertex);
+    const localY = position.getY(vertex);
+    const currentZ = position.getZ(vertex);
+    const vesselLocalY = mountFrame.dragonY + localY - mountFrame.vesselY;
+    const targetRadius =
+      vesselSurfaceRadiusAt(vesselLocalY) + DRAGON_MOUNT_CLEARANCE;
+    const currentRadius = Math.hypot(x, mountFrame.dragonRadius + currentZ);
+    if (vertex >= contactVertexCount && currentRadius >= targetRadius) {
+      continue;
+    }
+    position.setZ(
+      vertex,
+      Math.sqrt(Math.max(0, targetRadius * targetRadius - x * x)) -
+        mountFrame.dragonRadius,
+    );
+  }
+  position.needsUpdate = true;
+  geometry.computeVertexNormals();
+  geometry.computeBoundingBox();
+  geometry.computeBoundingSphere();
+  return geometry;
+}
+
 function flaredMountCollar(
   radius: number,
   centerY: number,
   surfaceZ: number,
 ): THREE.BufferGeometry {
-  const radialSegments = 18;
+  const radialSegments = DRAGON_MOUNT_RADIAL_SEGMENTS;
   const neckRadius = radius * 0.77;
   const baseRadiusX = neckRadius * 1.3;
   const baseRadiusY = neckRadius * 1.18;
@@ -202,7 +284,11 @@ function flaredMountCollar(
   const indices: number[] = [];
 
   const rings = [
-    { radiusX: baseRadiusX, radiusY: baseRadiusY, rise: 0 },
+    ...Array.from({ length: DRAGON_MOUNT_CONTACT_RINGS }, (_, index) => ({
+      radiusX: baseRadiusX * ((index + 1) / DRAGON_MOUNT_CONTACT_RINGS),
+      radiusY: baseRadiusY * ((index + 1) / DRAGON_MOUNT_CONTACT_RINGS),
+      rise: 0,
+    })),
     {
       radiusX: neckRadius * 1.12,
       radiusY: neckRadius * 1.02,
@@ -210,20 +296,12 @@ function flaredMountCollar(
     },
     { radiusX: neckRadius, radiusY: neckRadius * 0.9, rise: depth },
   ];
-  for (const [ringIndex, ring] of rings.entries()) {
+  for (const ring of rings) {
     for (let side = 0; side < radialSegments; side += 1) {
       const angle = (side / radialSegments) * Math.PI * 2;
       const x = Math.cos(angle) * ring.radiusX;
       const y = Math.sin(angle) * ring.radiusY;
-      const curvatureSag =
-        ringIndex === 0
-          ? Math.min(
-              (x * x) / (radius * 10.8) +
-                (y * y) / (radius * 8.2),
-              radius * 0.025,
-            )
-          : 0;
-      positions.push(x, centerY + y, surfaceZ + ring.rise - curvatureSag);
+      positions.push(x, centerY + y, surfaceZ + ring.rise);
     }
   }
   const topCenter = 1 + radialSegments * rings.length;
@@ -259,7 +337,10 @@ function flaredMountCollar(
       2,
     ),
   );
-  return geometry;
+  return fitDragonMountClearance(
+    geometry,
+    1 + radialSegments * DRAGON_MOUNT_CONTACT_RINGS,
+  );
 }
 
 function taperedWedge(
@@ -360,17 +441,7 @@ function seismoscopeVessel(
   params: Record<string, number>,
 ): THREE.BufferGeometry {
   const { radius, wallThickness } = params;
-  const profile = [
-    [radius * 0.56, -0.9],
-    [radius * 0.63, -0.82],
-    [radius * 0.67, -0.68],
-    [radius * 0.9, -0.42],
-    [radius, -0.2],
-    [radius * 0.93, 0.06],
-    [radius * 0.79, 0.28],
-    [radius * 0.7, 0.48],
-    [radius * 0.76, 0.58],
-  ] as const;
+  const profile = vesselProfile(radius);
   const points = [
     ...profile.map(([profileRadius, height]) =>
       new THREE.Vector2(profileRadius, height),
@@ -779,8 +850,7 @@ function seismoscopeDragon(
     .clone()
     .lerp(jawTip, 0.88)
     .addScaledVector(jawNormal, radius * 0.17);
-  const parts = [
-    flaredMountCollar(radius, mountCenterY, mountSurfaceZ),
+  const neckRoot = fitDragonMountClearance(
     taperedTubeAlong(
       [
         new THREE.Vector3(0, mountCenterY, mountCrownZ),
@@ -793,6 +863,10 @@ function seismoscopeDragon(
       28,
       12,
     ),
+  );
+  const parts = [
+    flaredMountCollar(radius, mountCenterY, mountSurfaceZ),
+    neckRoot,
     pitchAround(
       placeGeometry(
         new THREE.SphereGeometry(1, 20, 14),
@@ -1025,6 +1099,9 @@ function seismoscopeDragon(
       jawAngleDeg: 19,
       jawGapRatio: 0.34,
       maneFinCount: 0,
+      mountClearance: DRAGON_MOUNT_CLEARANCE,
+      mountContactVertexCount:
+        1 + DRAGON_MOUNT_RADIAL_SEGMENTS * DRAGON_MOUNT_CONTACT_RINGS,
       sideLipCount: 2,
       snoutLengthRatio: 0.51,
       features: [

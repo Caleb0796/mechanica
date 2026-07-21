@@ -1246,15 +1246,14 @@ const PartNode = memo(function PartNode({
       ),
     [assembly?.state.mode, assemblyLocalProgress, part],
   );
-  const visible =
-    assembly?.state.mode === "step"
-      ? isPartVisibleInAssemblyStep(
-          assembly.plan,
-          assembly.state,
-          part.id,
-          assemblyProgress,
-        )
-      : assemblyStep <= visibleStep;
+  const visible = assembly
+    ? isPartVisibleInAssemblyStep(
+        assembly.plan,
+        assembly.state,
+        part.id,
+        assemblyProgress,
+      )
+    : assemblyStep <= visibleStep;
   const childParts = childrenByParent.get(part.id) ?? [];
   const renderOwnPart = !visiblePartIds || visiblePartIds.has(part.id);
   const partExplode = reassembling ? 0 : explode;

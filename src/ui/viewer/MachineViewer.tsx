@@ -302,7 +302,7 @@ function registerContextLossHandlers(
 }
 
 interface PartNodeProps {
-  aidCutawayPartIds?: readonly string[];
+  aidCutawayMaxAssemblyStep?: number;
   aidHighlightPartIds?: readonly string[];
   appearance?: PartAppearance;
   assembly?: AssemblyController;
@@ -863,6 +863,7 @@ const selectedOutlineMaterial = new MeshBasicMaterial({
 
 interface TransientMaterialState {
   aidCutaway: boolean;
+  aidCutawayStrong: boolean;
   aidHighlighted: boolean;
   assemblyError: boolean;
   assemblyHighlighted: boolean;
@@ -959,13 +960,24 @@ function applyTransientMaterialState(
     material.emissive.set("#7d1515");
     material.emissiveIntensity = 1.6;
   }
-  if (state.aidCutaway || state.layerVariant === "story-cutaway") {
-    material.opacity = state.aidCutaway
-      ? 0.22
-      : Math.max(0.18, Math.min(state.layerOpacity ?? 0.22, 0.25));
+  if (state.aidCutaway) {
+    material.opacity = state.aidCutawayStrong ? 0.22 : 0.5;
+    material.emissiveIntensity = Math.min(material.emissiveIntensity, 0.15);
+    material.transparent = true;
+    material.depthWrite = !state.aidCutawayStrong;
+  }
+  if (state.layerVariant === "story-cutaway") {
+    material.opacity = Math.max(
+      0.18,
+      Math.min(state.layerOpacity ?? 0.22, 0.25),
+    );
     material.emissiveIntensity = Math.min(material.emissiveIntensity, 0.15);
     material.transparent = true;
     material.depthWrite = false;
+  }
+  if (state.aidHighlighted) {
+    material.opacity = 1;
+    material.transparent = false;
   }
 }
 
@@ -1114,7 +1126,7 @@ function PartGeometryMesh({
 }
 
 const PartNode = memo(function PartNode({
-  aidCutawayPartIds = EMPTY_PART_IDS,
+  aidCutawayMaxAssemblyStep = -1,
   aidHighlightPartIds = EMPTY_PART_IDS,
   appearance,
   assembly,
@@ -1198,8 +1210,11 @@ const PartNode = memo(function PartNode({
   const inspectionMaterialState = hasInstancedGeometry
     ? inspectionState
     : undefined;
-  const aidCutaway = aidCutawayPartIds.includes(part.id);
   const aidHighlighted = aidHighlightPartIds.includes(part.id);
+  const aidCutaway = aidCutawayMaxAssemblyStep >= 0 && !aidHighlighted;
+  const aidCutawayStrong =
+    aidCutaway &&
+    (part.assemblyStep ?? 0) <= aidCutawayMaxAssemblyStep;
   const schemeHighlighted = part.schemeTags?.includes(schemeId ?? "") ?? false;
   const spotlightHighlighted =
     spotlightActive && spotlightPartIds.includes(part.id);
@@ -1212,7 +1227,11 @@ const PartNode = memo(function PartNode({
   const layerOpacity = layerPresentation?.opacity;
   const layerVariant = layerPresentation?.variant;
   const transientStateKey = [
-    aidCutaway ? "aid-cutaway" : "",
+    aidCutawayStrong
+      ? "aid-cutaway-strong"
+      : aidCutaway
+        ? "aid-cutaway-context"
+        : "",
     aidHighlighted ? "aid-highlight" : "",
     schemeHighlighted ? "scheme" : "",
     spotlightHighlighted ? "spotlight" : "",
@@ -1235,6 +1254,7 @@ const PartNode = memo(function PartNode({
     .join("|");
   const transientState: TransientMaterialState = {
     aidCutaway,
+    aidCutawayStrong,
     aidHighlighted,
     assemblyError,
     assemblyHighlighted,
@@ -1521,7 +1541,7 @@ const PartNode = memo(function PartNode({
         : null}
       {childParts.map((child) => (
         <PartNode
-          aidCutawayPartIds={aidCutawayPartIds}
+          aidCutawayMaxAssemblyStep={aidCutawayMaxAssemblyStep}
           aidHighlightPartIds={aidHighlightPartIds}
           appearance={appearance}
           assembly={assembly}
@@ -2137,6 +2157,15 @@ function MachineScene({
     () => new Map(activeSpec.parts.map((part) => [part.id, part])),
     [activeSpec.parts],
   );
+  const aidCutawayMaxAssemblyStep = useMemo(
+    () =>
+      aidCutawayPartIds.reduce(
+        (maximum, partId) =>
+          Math.max(maximum, partsById.get(partId)?.assemblyStep ?? 0),
+        -1,
+      ),
+    [aidCutawayPartIds, partsById],
+  );
   const crankByRod = useMemo(
     () =>
       new Map(
@@ -2325,7 +2354,7 @@ function MachineScene({
       <group ref={machineRoot}>
         {rootParts.map((part) => (
           <PartNode
-            aidCutawayPartIds={aidCutawayPartIds}
+            aidCutawayMaxAssemblyStep={aidCutawayMaxAssemblyStep}
             aidHighlightPartIds={aidHighlightPartIds}
             appearance={appearance}
             assembly={assembly}
@@ -3280,10 +3309,15 @@ export default function MachineViewer({
   }, [module.aids]);
   const visibleCutawayPartIds = useMemo(
     () =>
-      spotlightActive
+      spotlightActive || aidHighlightPartIds.length > 0
         ? [...new Set([...aidCutawayPartIds, ...mechanismCutawayPartIds])]
         : aidCutawayPartIds,
-    [aidCutawayPartIds, mechanismCutawayPartIds, spotlightActive],
+    [
+      aidCutawayPartIds,
+      aidHighlightPartIds.length,
+      mechanismCutawayPartIds,
+      spotlightActive,
+    ],
   );
   const selectedDrivePart = useMemo(
     () =>

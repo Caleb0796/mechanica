@@ -915,6 +915,15 @@ function applyTransientMaterialState(
         ? 2.1
         : 0.65;
   }
+  if (
+    state.spotlightHighlighted &&
+    !state.aidCutaway &&
+    state.layerVariant !== "story-cutaway"
+  ) {
+    material.opacity = 1;
+    material.transparent = false;
+    material.depthTest = false;
+  }
   if (state.seismoscopeDragonSpotlight) {
     material.color.set("#b62f2f");
     material.emissive.set("#7d1515");
@@ -936,7 +945,9 @@ function applyTransientMaterialState(
     material.depthWrite = false;
   }
   if (state.spotlightDimmed) {
-    material.opacity = Math.max(material.opacity, 0.3);
+    material.opacity = 0.3;
+    material.transparent = true;
+    material.depthWrite = false;
     if (material.emissive.getHex() === 0) material.emissive.set("#2a2114");
     material.emissiveIntensity = Math.max(material.emissiveIntensity, 0.18);
   }
@@ -1049,6 +1060,10 @@ function PartGeometryMesh({
     : baseMaterial;
   const assemblyMaterial = useMemo(() => material.clone(), [material]);
   const renderedMaterial = assemblyOpacity < 1 ? assemblyMaterial : material;
+  const focusForeground =
+    transientState.spotlightHighlighted &&
+    !transientState.aidCutaway &&
+    transientState.layerVariant !== "story-cutaway";
 
   useEffect(() => {
     const lease = acquireMaterial(
@@ -1080,6 +1095,7 @@ function PartGeometryMesh({
       args={[geometry, renderedMaterial, instanceMatrices.length]}
       castShadow
       receiveShadow
+      renderOrder={focusForeground ? 999 : 0}
       ref={(mesh) => {
         onInstancedMesh(index, mesh);
         if (mesh) applyMechanicaInstanceMatrices(mesh, instanceMatrices);
@@ -1092,6 +1108,7 @@ function PartGeometryMesh({
         geometry={geometry}
         material={renderedMaterial}
         receiveShadow
+        renderOrder={focusForeground ? 999 : 0}
       />
       {inspectionOutline ? (
         <mesh

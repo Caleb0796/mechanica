@@ -32,12 +32,19 @@ import {
   getMaterial,
   materialVariantKey,
 } from "../core/materialCache";
-import { standardMaterial } from "../core/materials";
+import {
+  standardMaterial,
+  type StandardMaterialPresentation,
+} from "../core/materials";
 import {
   applyMechanicaInstanceMatrices,
   getMechanicaInstanceMatrices,
   partGeometryEntries,
 } from "../core/primitives";
+import {
+  defaultTextureVariant,
+  textureShaderFeatureHash,
+} from "../core/textures";
 import { applySchemePatch } from "../sim/graph";
 import type {
   MachineData,
@@ -198,12 +205,54 @@ function useSequentialMachineWarmup(
 
 function HeroPartGeometry({
   geometry,
-  material,
+  part,
+  visualPresentation,
 }: {
   geometry: BufferGeometry;
-  material: ReturnType<typeof standardMaterial>;
+  part: PartDef;
+  visualPresentation?: StandardMaterialPresentation;
 }) {
+  const materialOverride = useMemo(
+    () =>
+      geometry.userData.mechanicaMaterial as
+        StandardMaterialPresentation | undefined,
+    [geometry],
+  );
+  const textureVariant =
+    materialOverride?.textureVariant ??
+    visualPresentation?.textureVariant ??
+    defaultTextureVariant(part.material);
+  const texturePresentation = useMemo<StandardMaterialPresentation>(
+    () => ({
+      shaderFeatureHash: textureShaderFeatureHash(textureVariant),
+      textureVariant,
+    }),
+    [textureVariant],
+  );
+  const materialKey = useMemo(
+    () =>
+      `base:${materialVariantKey(
+        visualPresentation,
+        texturePresentation,
+        materialOverride,
+      )}`,
+    [materialOverride, texturePresentation, visualPresentation],
+  );
+  const material = getMaterial(part.material, materialKey, () =>
+    standardMaterial(
+      part.material,
+      visualPresentation,
+      texturePresentation,
+      materialOverride,
+    ),
+  );
   const matrices = getMechanicaInstanceMatrices(geometry);
+
+  useEffect(
+    () => acquireMaterial(part.material, materialKey, () => material).release,
+    [material, materialKey, part.material],
+  );
+
   return matrices ? (
     <instancedMesh
       args={[geometry, material, matrices.length]}
@@ -240,19 +289,8 @@ const StaticMachinePart = memo(function StaticMachinePart({
     () => visualMaterialFor(module.data.slug, part),
     [module.data.slug, part],
   );
-  const materialKey = useMemo(
-    () => `home-turntable:${materialVariantKey(presentation)}`,
-    [presentation],
-  );
-  const material = getMaterial(part.material, materialKey, () =>
-    standardMaterial(part.material, presentation),
-  );
 
   useLayoutEffect(() => geometryResource.retain(), [geometryResource]);
-  useEffect(
-    () => acquireMaterial(part.material, materialKey, () => material).release,
-    [material, materialKey, part.material],
-  );
 
   return (
     <group
@@ -264,7 +302,8 @@ const StaticMachinePart = memo(function StaticMachinePart({
         <HeroPartGeometry
           geometry={geometry}
           key={geometry.uuid}
-          material={material}
+          part={part}
+          visualPresentation={presentation}
         />
       ))}
       {(childrenByParent.get(part.id) ?? []).map((child) => (

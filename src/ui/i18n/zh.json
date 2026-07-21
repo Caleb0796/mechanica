@@ -9,7 +9,9 @@
     "loading": "正在展开机械图谱…",
     "loadError": "展品暂时无法载入",
     "notFoundMachine": "没有找到展品「{{slug}}」。",
-    "retry": "重新载入"
+    "retry": "重新载入",
+    "versionPublished": "已发布新版本，请重新载入后继续。",
+    "reload": "重新载入"
   },
   "home": {
     "eyebrow": "四件机械 · 四种巧思",

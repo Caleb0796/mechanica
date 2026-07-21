@@ -9,7 +9,9 @@
     "loading": "Unfolding the mechanism…",
     "loadError": "This exhibit could not be loaded",
     "notFoundMachine": "No exhibit named “{{slug}}”.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "versionPublished": "A new version was published — reload to continue.",
+    "reload": "Reload"
   },
   "home": {
     "eyebrow": "Four machines · Four ingenious ideas",

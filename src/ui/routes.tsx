@@ -6,14 +6,24 @@ import PosterFallback from "./PosterFallback";
 import type { SceneSpec } from "./scene/types";
 import type { StoryStep } from "./story";
 
-const MachineViewer = lazy(() => import("./viewer/MachineViewer"));
+export function retryImportOnce<T>(loader: () => Promise<T>): Promise<T> {
+  return loader().catch(() => loader());
+}
+
+const MachineViewer = lazy(() =>
+  retryImportOnce(() => import("./viewer/MachineViewer")),
+);
 const MachineStoryStage = lazy(() =>
-  import("./viewer/MachineViewer").then((module) => ({
-    default: module.MachineStoryStage,
-  })),
+  retryImportOnce(() =>
+    import("./viewer/MachineViewer").then((module) => ({
+      default: module.MachineStoryStage,
+    })),
+  ),
 );
 const ScrollStory = lazy(() =>
-  import("./story").then((module) => ({ default: module.ScrollStory })),
+  retryImportOnce(() =>
+    import("./story").then((module) => ({ default: module.ScrollStory })),
+  ),
 );
 
 export const MACHINE_SLUGS = [

@@ -603,6 +603,12 @@ export default function AidLayer({
     flowRuntime.current = runtime;
   }, []);
 
+  useEffect(() => {
+    if (!activeTriggerId) return;
+    resetPerformance();
+    setActiveIndex(null);
+  }, [activeTriggerId, resetPerformance]);
+
   useFrame(() => {
     if (
       activeAid &&
@@ -614,7 +620,7 @@ export default function AidLayer({
   });
 
   useEffect(() => {
-    if (!activeAid || activeAid.kind !== "powerPath") {
+    if (activeTriggerId || !activeAid || activeAid.kind !== "powerPath") {
       highlightedPartIds.current = [];
       setCurrentPartId(null);
       onHighlightChange([]);
@@ -635,7 +641,7 @@ export default function AidLayer({
       setCurrentPartId(null);
       onHighlightChange([]);
     };
-  }, [activeAid, onHighlightChange]);
+  }, [activeAid, activeTriggerId, onHighlightChange]);
 
   useEffect(() => {
     const nextPartIds = activeAid?.kind === "cutaway" ? activeAid.partIds : [];
@@ -727,7 +733,7 @@ export default function AidLayer({
           recordFrame={recordFrame}
         />
       ) : null}
-      {activeAid?.kind === "powerPath" ? (
+      {activeAid?.kind === "powerPath" && !activeTriggerId ? (
         <PowerPathRoute
           aid={activeAid}
           currentPartId={currentPartId}

@@ -3194,19 +3194,12 @@ export default function MachineViewer({
     const aid = module.aids?.find((candidate) => candidate.kind === "cutaway");
     return aid?.kind === "cutaway" ? aid.partIds : EMPTY_PART_IDS;
   }, [module.aids]);
-  const retainMechanismCutaway =
-    module.data.slug === "seismoscope" && spotlightDone;
   const visibleCutawayPartIds = useMemo(
     () =>
-      spotlightActive || retainMechanismCutaway
+      spotlightActive
         ? [...new Set([...aidCutawayPartIds, ...mechanismCutawayPartIds])]
         : aidCutawayPartIds,
-    [
-      aidCutawayPartIds,
-      mechanismCutawayPartIds,
-      retainMechanismCutaway,
-      spotlightActive,
-    ],
+    [aidCutawayPartIds, mechanismCutawayPartIds, spotlightActive],
   );
   const selectedDrivePart = useMemo(
     () =>
@@ -3924,6 +3917,7 @@ export default function MachineViewer({
         setDemoProgress(1);
         setActiveTrigger(null);
         setSpotlightActive(false);
+        setSpotlightPartIds([]);
         setDemoFocusPartId(null);
         setPaused(pausedBefore);
         spotlightFrame.current = null;

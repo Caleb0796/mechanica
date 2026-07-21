@@ -23,11 +23,16 @@ describe("buildDemoTimeline", () => {
     expect(tl[0].dwellMs).toBe(0);
   });
 
-  it("captioned events dwell long enough to read (>=1600ms, 85ms/char, cap 4200)", () => {
+  it("captioned events dwell long enough to read (>=1600ms, 85ms/char, cap 3000)", () => {
     const tl = buildDemoTimeline(captured, captionOf, differ, s0);
     expect(tl[1].kind).toBe("caption");
     const len = "Water reaches the receiving scoop".length;
-    expect(tl[1].dwellMs).toBe(Math.min(4200, Math.max(1600, 85 * len)));
+    expect(tl[1].dwellMs).toBe(Math.min(3000, Math.max(1600, 85 * len)));
+  });
+
+  it("caps long caption dwell at 3000ms", () => {
+    const tl = buildDemoTimeline(captured, () => "x".repeat(100), differ, s0);
+    expect(tl[1].dwellMs).toBe(3000);
   });
 
   it("state-changing drive events keep motion pacing", () => {

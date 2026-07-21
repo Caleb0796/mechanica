@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const ASTRO = "/#/m/astroclock";
+const E2E_DEMO_SPEED = 8;
 
 test("demo timeline paces captions and restores run state", async ({ page }) => {
   await page.goto(ASTRO);
@@ -27,7 +28,12 @@ test("demo timeline paces captions and restores run state", async ({ page }) => 
     () => (window as any).__capIntervals,
   );
   expect(intervals.length).toBeGreaterThan(3);
-  expect(Math.min(...intervals)).toBeGreaterThanOrEqual(180);
+  expect(Math.min(...intervals)).toBeGreaterThanOrEqual(
+    1600 / E2E_DEMO_SPEED - 20,
+  );
+  expect(Math.max(...intervals.slice(0, 3))).toBeLessThanOrEqual(
+    (3000 + 420) / E2E_DEMO_SPEED + 75,
+  );
 });
 
 test("camera focuses during the beat demo", async ({ page }) => {

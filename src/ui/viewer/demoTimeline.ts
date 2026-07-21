@@ -37,7 +37,7 @@ export function buildDemoTimeline(
     if (caption !== "") seenCaptions.add(caption);
     const motionMs = changed ? (event.type.includes("drive") ? 420 : 260) : 60;
     const dwellMs = freshCaption
-      ? Math.min(4200, Math.max(1600, 85 * caption.length))
+      ? Math.min(3000, Math.max(1600, 85 * caption.length))
       : 120;
     timeline.push({
       event,

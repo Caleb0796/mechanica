@@ -20,3 +20,4 @@ The Build Week Session ID is supplied directly in Devpost and intentionally not 
 - 2026-07-20 · `d227925..d914640` · astroclock QA wave T1–T16 green; evidence in `artifacts/visual-gate-2/astroclock-qa/`.
 - 2026-07-20 · four-machine QA wave T17–T28 green; evidence in `artifacts/visual-gate-2/four-machine-qa/`.
 - Final-tree strict validation is still running after a day of CPU contention from parallel work. Geometry and data files are unchanged since the morning's green validation run, so those results remain authoritative for geometry; the final-tree rerun is a conservative recheck.
+- Full-resolution validation runs locally with committed reports: morning baseline plus tonight's final-tree rerun (Astroclock 1,731 pass / 1 fail; Seismoscope 1,116 / 0; Odometer and Loom completing). Per-push CI runs the fast gate; full validation runs on demand and nightly.

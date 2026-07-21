@@ -376,14 +376,18 @@ function RoundPlatform({ radius }: { radius: number }) {
         />
       </mesh>
       <mesh
-        position={[0, PLATFORM_TOP + 0.005, 0]}
+        position={[0, PLATFORM_TOP + 0.007, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
       >
-        <ringGeometry args={[radius * 0.72, radius * 0.725, 72]} />
-        <meshStandardMaterial
+        <ringGeometry
+          args={[radius * 0.72, radius * 0.725, 72, 1, 0, Math.PI * 2]}
+        />
+        <meshBasicMaterial
           color="#c88a42"
-          metalness={0.18}
-          roughness={0.58}
+          polygonOffset
+          polygonOffsetFactor={-2}
+          polygonOffsetUnits={-2}
+          toneMapped={false}
         />
       </mesh>
     </group>
@@ -394,8 +398,8 @@ function FixedCamera() {
   const camera = useThree((state) => state.camera);
   useLayoutEffect(() => {
     if (!(camera instanceof PerspectiveCamera)) return;
-    camera.position.set(0, 2.3, 7.2);
-    camera.lookAt(0, 0.9, 0);
+    camera.position.set(0, 2.9, 9);
+    camera.lookAt(0, 0.86, 0);
     camera.updateProjectionMatrix();
   }, [camera]);
   return null;
@@ -409,25 +413,25 @@ function WarmLightRig() {
   }, []);
   return (
     <>
-      <ambientLight color="#d8b46c" intensity={0.38} />
-      <hemisphereLight args={["#ead7b2", "#2d2118", 0.48]} />
-      <directionalLight color="#ffe1b6" intensity={2.2} position={[3, 5, 4]} />
+      <ambientLight color="#d8b46c" intensity={0.12} />
+      <hemisphereLight args={["#ead7b2", "#211811", 0.2]} />
+      <directionalLight color="#ffe1b6" intensity={0.55} position={[3, 5, 4]} />
       <directionalLight
         color="#b88a5a"
-        intensity={0.42}
+        intensity={0.18}
         position={[-4, 2, -3]}
       />
       <spotLight
-        angle={0.42}
+        angle={0.45}
         color="#ffc66f"
         decay={2}
-        distance={11}
-        intensity={7}
-        penumbra={0.72}
-        position={[0, 4.8, 6.2]}
+        distance={12}
+        intensity={110}
+        penumbra={0.6}
+        position={[0, 6.5, 1.8]}
         ref={light}
       />
-      <group position={[0, 0.9, TURNTABLE_RADIUS]} ref={target} />
+      <group position={[0, PLATFORM_TOP, TURNTABLE_RADIUS]} ref={target} />
     </>
   );
 }
@@ -604,7 +608,7 @@ function TurntableStage({
 }) {
   return (
     <Canvas
-      camera={{ fov: 34, position: [0, 2.3, 7.2] }}
+      camera={{ fov: 34, position: [0, 2.9, 9] }}
       dpr={[1, 1.5]}
       frameloop={!rendering ? "never" : reducedMotion ? "demand" : "always"}
       gl={{

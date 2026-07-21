@@ -1,53 +1,56 @@
-import type { MachineSlug } from "../sim/types";
+const FULL_TURN = Math.PI * 2;
 
-export interface HomeCarouselState {
-  paused: boolean;
-  step: number;
+export const HOME_CAROUSEL_DRIFT_RADIANS_PER_SECOND = -FULL_TURN / 48;
+
+function positiveModulo(value: number, divisor: number): number {
+  return ((value % divisor) + divisor) % divisor;
 }
 
-export type HomeCarouselEvent =
-  | { type: "activate"; index?: number }
-  | { type: "advance"; automatic?: boolean; delta?: -1 | 1 }
-  | { type: "hover"; paused: boolean }
-  | { type: "select"; index: number };
-
-export interface HomeCarouselTransition {
-  navigateTo?: string;
-  state: HomeCarouselState;
+function wrappedAngle(value: number): number {
+  return positiveModulo(value + Math.PI, FULL_TURN) - Math.PI;
 }
 
 export function activeHomeCarouselIndex(
-  step: number,
+  rotationY: number,
   machineCount: number,
 ): number {
   if (machineCount === 0) return 0;
-  return ((step % machineCount) + machineCount) % machineCount;
+  const quarter = FULL_TURN / machineCount;
+  return positiveModulo(Math.round(-rotationY / quarter), machineCount);
 }
 
-export function createHomeCarouselState(): HomeCarouselState {
-  return { paused: false, step: 0 };
+export function homeCarouselDriftSpeed(
+  paused: boolean,
+  reducedMotion: boolean,
+): number {
+  return paused || reducedMotion
+    ? 0
+    : HOME_CAROUSEL_DRIFT_RADIANS_PER_SECOND;
 }
 
-export function transitionHomeCarousel(
-  state: HomeCarouselState,
-  event: HomeCarouselEvent,
-  slugs: readonly MachineSlug[],
-): HomeCarouselTransition {
-  if (event.type === "activate") {
-    const index =
-      event.index ?? activeHomeCarouselIndex(state.step, slugs.length);
-    return { navigateTo: `#/m/${slugs[index]}`, state };
-  }
-  if (event.type === "hover") {
-    return { state: { ...state, paused: event.paused } };
-  }
-  if (event.type === "advance") {
-    if ((state.paused && event.automatic) || slugs.length < 2) return { state };
-    return { state: { ...state, step: state.step + (event.delta ?? 1) } };
-  }
-  if (slugs.length < 2) return { state };
-  const activeIndex = activeHomeCarouselIndex(state.step, slugs.length);
-  let delta = (event.index - activeIndex + slugs.length) % slugs.length;
-  if (delta > slugs.length / 2) delta -= slugs.length;
-  return { state: { ...state, step: state.step + delta } };
+export function homeMachineScale(
+  rotationY: number,
+  machineIndex: number,
+  machineCount: number,
+): number {
+  if (machineCount === 0) return 1;
+  const quarter = FULL_TURN / machineCount;
+  const distance = Math.abs(
+    wrappedAngle(rotationY + machineIndex * quarter),
+  );
+  const proximity = Math.max(0, 1 - distance / quarter);
+  const emphasis = proximity * proximity * (3 - 2 * proximity);
+  return 1 + emphasis * 0.12;
+}
+
+export function targetHomeCarouselRotation(
+  rotationY: number,
+  machineIndex: number,
+  machineCount: number,
+): number {
+  if (machineCount === 0) return rotationY;
+  const quarter = FULL_TURN / machineCount;
+  const canonical = -machineIndex * quarter;
+  const revolutions = Math.round((rotationY - canonical) / FULL_TURN);
+  return canonical + revolutions * FULL_TURN;
 }

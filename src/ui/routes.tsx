@@ -34,47 +34,6 @@ export const MACHINE_SLUGS = [
   "loom",
 ] as const satisfies readonly MachineSlug[];
 
-interface MachineCardCopy {
-  era: { en: string; zh: string };
-  name: { en: string; zh: string };
-  principle: { en: string; zh: string };
-}
-
-const machineCards: Record<MachineSlug, MachineCardCopy> = {
-  astroclock: {
-    name: { en: "Astronomical Clock Tower", zh: "水运仪象台" },
-    era: { en: "Northern Song · 1092", zh: "北宋 · 1092 年" },
-    principle: {
-      en: "Water escapement synchronizes the heavens, time, and chimes.",
-      zh: "水运擒纵同步驱动天象、计时与报时机构。",
-    },
-  },
-  seismoscope: {
-    name: { en: "Seismoscope", zh: "候风地动仪" },
-    era: { en: "Eastern Han · 132", zh: "东汉 · 132 年" },
-    principle: {
-      en: "Inertia selects one of eight directional ball releases.",
-      zh: "以惯性辨别震向，并触发八方之一落丸。",
-    },
-  },
-  odometer: {
-    name: { en: "Odometer Carriage", zh: "记里鼓车" },
-    era: { en: "Northern Song record · 1027", zh: "北宋记载 · 1027 年" },
-    principle: {
-      en: "Decimal gear reductions turn road distance into drum strikes.",
-      zh: "十进齿轮减速把行程转化为击鼓报里。",
-    },
-  },
-  loom: {
-    name: { en: "Pattern Loom", zh: "提花织机" },
-    era: { en: "Western Han · c. 157–88 BCE", zh: "西汉 · 约公元前 157–88 年" },
-    principle: {
-      en: "A heddle-lift sequence stores the woven pattern as a program.",
-      zh: "综框升降次序把纹样固化为可执行程序。",
-    },
-  },
-};
-
 const machineModules = import.meta.glob<{ default: MachineModule }>(
   "../machines/*/build.ts",
 );
@@ -98,56 +57,9 @@ function currentPath() {
 }
 
 function HomePage() {
-  const { i18n, t } = useTranslation();
-  const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
-  const [failedThumbnails, setFailedThumbnails] = useState<
-    Partial<Record<MachineSlug, boolean>>
-  >({});
-
   return (
     <main className="home-page">
       <HomeCarouselHero slugs={MACHINE_SLUGS} />
-      <section aria-label={t("app.home")} className="machine-grid">
-        {MACHINE_SLUGS.map((slug, index) => {
-          const card = machineCards[slug];
-          return (
-            <a
-              className="machine-card"
-              data-testid="machine-card"
-              href={`#/m/${slug}`}
-              key={slug}
-            >
-              <span className="machine-index">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="machine-thumbnail">
-                {failedThumbnails[slug] ? (
-                  <span className="machine-thumbnail-fallback">
-                    {t("home.thumbnail")}
-                  </span>
-                ) : (
-                  <img
-                    alt=""
-                    data-testid="machine-thumbnail-image"
-                    loading="lazy"
-                    onError={() =>
-                      setFailedThumbnails((current) => ({
-                        ...current,
-                        [slug]: true,
-                      }))
-                    }
-                    src={`${import.meta.env.BASE_URL}assets/renders/${slug}/overall.jpg`}
-                  />
-                )}
-              </span>
-              <h2>{card.name[language]}</h2>
-              <p className="machine-era">{card.era[language]}</p>
-              <p className="machine-principle">{card.principle[language]}</p>
-              <span className="machine-open">{t("home.open")}</span>
-            </a>
-          );
-        })}
-      </section>
     </main>
   );
 }

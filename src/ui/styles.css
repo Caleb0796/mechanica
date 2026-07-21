@@ -1,6 +1,7 @@
 :root {
-  --font-display: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
-    "SimSun", Georgia, serif;
+  --font-display:
+    "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", Georgia,
+    serif;
   color: #eee8da;
   background: #090a0a;
   font-family:
@@ -85,7 +86,6 @@ a {
 
 .brand-mark,
 .display-title,
-.machine-card h2,
 .panel h2,
 .viewer-title h1 {
   font-family: var(--font-display);
@@ -162,67 +162,49 @@ a {
 }
 
 .home-carousel-hero {
+  display: grid;
   max-width: none;
-}
-
-.home-carousel-link {
-  position: relative;
-  isolation: isolate;
-  display: block;
-  height: clamp(34rem, 70vh, 48rem);
-  min-height: 34rem;
-  overflow: hidden;
-  border: 1px solid rgba(213, 164, 78, 0.25);
-  color: inherit;
-  background: #0c0d0c;
-  text-decoration: none;
-}
-
-.home-carousel-link::after {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(7, 8, 8, 0.94), transparent 58%),
-    linear-gradient(0deg, rgba(7, 8, 8, 0.85), transparent 42%);
-  content: "";
-  pointer-events: none;
-}
-
-.home-carousel-heading,
-.home-carousel-machine-copy {
-  position: absolute;
-  z-index: 2;
-  left: clamp(1.5rem, 4vw, 3.5rem);
-  pointer-events: none;
+  gap: 1rem;
+  margin-bottom: 0;
 }
 
 .home-carousel-heading {
-  top: clamp(2rem, 6vh, 4rem);
-  width: min(34rem, 52%);
+  width: min(52rem, 100%);
+  padding-bottom: clamp(0.5rem, 1.5vh, 1.25rem);
 }
 
 .home-carousel-heading .display-title {
-  font-size: clamp(2.6rem, 6vw, 5.7rem);
+  font-size: clamp(2.7rem, 7vw, 6.6rem);
 }
 
 .home-carousel-heading .hero-copy {
-  max-width: 30rem;
-  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  max-width: 42rem;
+  font-size: clamp(1rem, 2vw, 1.25rem);
 }
 
-.home-carousel-visual {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  transform: scale(1);
-  transition:
-    opacity 240ms ease,
-    transform 240ms ease;
+.home-turntable-stage {
+  position: relative;
+  height: clamp(32rem, 58vw, 43rem);
+  min-height: 32rem;
+  overflow: hidden;
+  border: 1px solid rgba(213, 164, 78, 0.3);
+  background:
+    radial-gradient(
+      circle at 50% 72%,
+      rgba(158, 94, 34, 0.16),
+      transparent 42%
+    ),
+    #090a0a;
 }
 
-.home-carousel-visual canvas {
+.home-turntable-stage canvas {
   display: block;
+}
+
+.home-carousel-poster-link {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .home-carousel-poster {
@@ -230,75 +212,106 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.82) contrast(1.08);
 }
 
-.home-carousel-visual .geometry-loading {
+.home-turntable-stage .geometry-loading {
   background: transparent;
 }
 
 .home-carousel-machine-copy {
-  bottom: clamp(1.5rem, 5vh, 3rem);
-  width: min(34rem, calc(100% - 3rem));
-  transform: translateY(0);
-  transition:
-    opacity 200ms ease,
-    transform 240ms ease;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: 6.5rem;
+  padding: 1.1rem 1.3rem;
+  border: 1px solid rgba(213, 164, 78, 0.3);
+  color: inherit;
+  background: linear-gradient(100deg, #17140f, #0e0f0e);
+  text-decoration: none;
 }
 
-.home-carousel-link[data-phase="exiting"] .home-carousel-visual,
-.home-carousel-link[data-phase="entering"] .home-carousel-visual {
-  opacity: 0;
-  transform: scale(0.965);
+.home-carousel-machine-text {
+  display: grid;
+  gap: 0.35rem;
 }
 
-.home-carousel-link[data-phase="exiting"] .home-carousel-machine-copy,
-.home-carousel-link[data-phase="entering"] .home-carousel-machine-copy {
-  opacity: 0;
-  transform: translateY(0.75rem);
-}
-
-.home-carousel-machine-copy h2 {
-  margin: 0.5rem 0 0;
+.home-carousel-machine-text strong {
   color: #eee5d3;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
   font-weight: 500;
 }
 
-.home-carousel-machine-copy p {
-  max-width: 30rem;
-  margin: 0.55rem 0 0;
+.home-carousel-machine-text > span {
   color: #aaa69d;
   line-height: 1.55;
 }
 
+.home-carousel-machine-copy .machine-open {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+.home-machine-pills {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.home-machine-pills button {
+  min-height: 2.8rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #3e392e;
+  border-radius: 999px;
+  color: #a9a49a;
+  background: #121311;
+  cursor: pointer;
+  font-size: 0.76rem;
+}
+
+.home-machine-pills button[aria-pressed="true"] {
+  border-color: #c49d54;
+  color: #f0d89e;
+  background: #292116;
+  box-shadow: inset 0 0 0 1px rgba(217, 184, 109, 0.16);
+}
+
 @media (max-width: 899px) {
-  .home-carousel-link {
-    height: clamp(30rem, 66vh, 38rem);
-    min-height: 30rem;
-  }
-
-  .home-carousel-link::after {
-    background:
-      linear-gradient(180deg, rgba(7, 8, 8, 0.86), transparent 54%),
-      linear-gradient(0deg, rgba(7, 8, 8, 0.9), transparent 46%);
-  }
-
-  .home-carousel-heading {
-    width: calc(100% - 3rem);
-  }
-
   .home-carousel-heading .display-title {
     font-size: clamp(2.35rem, 10vw, 4.2rem);
   }
 
-  .home-carousel-heading .hero-copy {
-    max-width: 34rem;
+  .home-turntable-stage {
+    height: clamp(20rem, 68vw, 30rem);
+    min-height: 20rem;
   }
 
   .home-carousel-poster {
     object-position: center;
+  }
+
+  .home-carousel-machine-copy {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .home-carousel-machine-copy .machine-open {
+    grid-column: 2;
+  }
+
+  .home-machine-pills {
+    display: flex;
+    padding-bottom: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .home-machine-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-machine-pills button {
+    flex: 0 0 auto;
   }
 }
 
@@ -345,117 +358,10 @@ a {
   padding: 0.55rem 0.7rem;
 }
 
-.machine-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  background: #25241f;
-  border: 1px solid #25241f;
-}
-
-.machine-card {
-  position: relative;
-  isolation: isolate;
-  min-height: 16rem;
-  padding: 2rem;
-  overflow: hidden;
-  border: 1px solid rgba(213, 164, 78, 0.22);
-  background: linear-gradient(180deg, #171511, #100f0c);
-  text-decoration: none;
-  transition:
-    transform 160ms ease,
-    border-color 160ms ease;
-}
-
-.machine-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-.machine-card::after {
-  position: absolute;
-  right: -2rem;
-  bottom: -4.5rem;
-  width: 12rem;
-  height: 12rem;
-  border: 1px solid rgba(214, 179, 101, 0.12);
-  border-radius: 50%;
-  box-shadow:
-    inset 0 0 0 1.5rem #101111,
-    inset 0 0 0 1.55rem rgba(214, 179, 101, 0.09);
-  content: "";
-  transition: transform 500ms ease;
-}
-
-.machine-card:hover {
-  border-color: rgba(213, 164, 78, 0.5);
-  transform: translateY(-3px);
-}
-
-.machine-card:hover::after {
-  transform: rotate(24deg) scale(1.06);
-}
-
 .machine-index {
   color: #a98f5e;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.75rem;
-}
-
-.machine-thumbnail {
-  position: absolute;
-  top: 0;
-  right: 2rem;
-  width: 54%;
-  height: 100%;
-  overflow: hidden;
-  background: #14130f;
-  opacity: 0.58;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(to left, #000 45%, transparent 100%);
-  mask-image: linear-gradient(to left, #000 45%, transparent 100%);
-}
-
-.machine-thumbnail-fallback {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  color: #9a968c;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  place-items: center;
-  text-transform: uppercase;
-}
-
-.machine-thumbnail img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.78) contrast(1.06);
-}
-
-.machine-card h2 {
-  max-width: 17rem;
-  margin: 4.5rem 0 0.5rem;
-  color: #e9e0ce;
-  font-size: clamp(1.35rem, 3vw, 2rem);
-  font-weight: 500;
-  text-shadow: 0 2px 1rem #090a0a;
-}
-
-.machine-card .machine-era {
-  margin: 0;
-  color: #a58c5b;
-  font-size: 0.78rem;
-}
-
-.machine-card .machine-principle {
-  max-width: 25rem;
-  margin: 0.75rem 0 0;
-  color: #898780;
-  font-size: 0.85rem;
-  line-height: 1.55;
 }
 
 .machine-open {
@@ -1415,10 +1321,6 @@ a {
     display: none;
   }
 
-  .machine-grid {
-    grid-template-columns: 1fr;
-  }
-
   .viewer-page {
     display: block;
     height: auto;
@@ -1504,15 +1406,6 @@ a {
 
   .gold-button {
     text-align: center;
-  }
-
-  .machine-card {
-    min-height: 13rem;
-    padding: 1.3rem;
-  }
-
-  .machine-card h2 {
-    margin-top: 3.5rem;
   }
 
   .viewer-title-row {

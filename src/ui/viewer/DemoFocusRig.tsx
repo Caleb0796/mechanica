@@ -9,7 +9,11 @@ import {
   Vector3,
 } from "three";
 
-import { safeHomePose, type ViewerProfile } from "./visualRecovery";
+import {
+  safeHomePose,
+  usesAuthoredHomeFocus,
+  type ViewerProfile,
+} from "./visualRecovery";
 
 type ControlsLike = {
   target: Vector3;
@@ -81,7 +85,7 @@ export default function DemoFocusRig({
           target: controls.target.clone(),
         };
       }
-      if (focusPartId === "tower-shell") {
+      if (usesAuthoredHomeFocus(focusPartId)) {
         const wholeBounds = new Box3();
         for (const partId of partIds) {
           const part = scene.getObjectByName(partId);

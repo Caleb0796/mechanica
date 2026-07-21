@@ -1084,6 +1084,18 @@ function armBearing(graph: IKinematicGraph, bearing: number): void {
   }
 }
 
+function armedBearing(graph: IKinematicGraph): number | undefined {
+  const state = graph.state();
+  for (let bearing = 0; bearing < DIRECTION_COUNT; bearing += 1) {
+    if (
+      Math.abs((state[`gate-${bearing}`] ?? 0) - ARMED_GATE_EXTENSION) < 1e-9
+    ) {
+      return bearing;
+    }
+  }
+  return undefined;
+}
+
 function resetBearingState(graph: IKinematicGraph): void {
   const state = graph.state();
   graph.setInput("vessel", 0);
@@ -1151,12 +1163,13 @@ const mechanism: MechanismScript = {
       label: { zh: "注入地震方位脉冲", en: "Inject a quake-bearing pulse" },
       run(graph, emit, param) {
         const bearing =
-          typeof param === "number" &&
-          Number.isInteger(param) &&
-          param >= 0 &&
-          param < DIRECTION_COUNT
+          armedBearing(graph) ??
+          (typeof param === "number" &&
+            Number.isInteger(param) &&
+            param >= 0 &&
+            param < DIRECTION_COUNT
             ? param
-            : WEST_BEARING;
+            : WEST_BEARING);
         graph.setInput("vessel", (bearing * Math.PI) / 4);
         emit("pulse", "vessel");
         if (droppedBearing(graph) === undefined) {

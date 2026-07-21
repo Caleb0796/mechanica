@@ -270,6 +270,16 @@ export interface MachineViewerProps {
 }
 
 const EMPTY_PART_IDS: string[] = [];
+const SEISMOSCOPE_BEARINGS = [
+  "N",
+  "NE",
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW",
+] as const;
 
 function registerContextLossHandlers(
   { gl, invalidate }: Pick<RootState, "gl" | "invalidate">,
@@ -2986,6 +2996,13 @@ function mechanismCaption(
       type === "releaseBall" ||
       type === "locked")
   ) {
+    if (type === "caption:quake-report") {
+      const bearingIndex = Number.parseInt(part.replace("dragon-", ""), 10);
+      const bearing = SEISMOSCOPE_BEARINGS[bearingIndex];
+      return t(`events.seismoscope.${eventKey}`, {
+        bearing: bearing ? t(`seismo.bearing.${bearing}`) : part,
+      });
+    }
     return t(`events.seismoscope.${eventKey}`);
   }
 
@@ -2999,9 +3016,11 @@ function mechanismCaption(
 
 function SpotlightSemanticReadout({
   module,
+  seismoscopeBearing,
   visible,
 }: {
   module: MachineModule;
+  seismoscopeBearing: (typeof SEISMOSCOPE_BEARINGS)[number];
   visible: boolean;
 }) {
   const { t } = useTranslation();
@@ -3011,7 +3030,9 @@ function SpotlightSemanticReadout({
   if (module.data.slug === "seismoscope") {
     rows.push(
       {
-        label: t("viewer.semanticWestDragon"),
+        label: t("viewer.semanticBearingDragon", {
+          bearing: t(`seismo.bearing.${seismoscopeBearing}`),
+        }),
         value: t("viewer.semanticBallReleased"),
       },
       {
@@ -3133,6 +3154,9 @@ export default function MachineViewer({
   const [spotlightRunId, setSpotlightRunId] = useState(0);
   const [spotlightTranscript, setSpotlightTranscript] = useState<string[]>([]);
   const [quakeBearing, setQuakeBearing] = useState(6);
+  const [armedQuakeBearing, setArmedQuakeBearing] = useState<number | null>(
+    null,
+  );
   const [odometerReadout, setOdometerReadout] = useState<string | null>(
     module.spec.slug === "odometer" ? "0.00" : null,
   );
@@ -3428,6 +3452,7 @@ export default function MachineViewer({
     setDemoFocusPartId(null);
     setSpotlightPartIds([]);
     setSpotlightTranscript([]);
+    setArmedQuakeBearing(null);
     setHoveredPartId(null);
     setSelectedPartId(null);
     setActiveSchemeId(
@@ -4007,6 +4032,17 @@ export default function MachineViewer({
       )
     ) {
       return;
+    }
+    if (module.data.slug === "seismoscope") {
+      if (
+        triggerId === "quake:arm" &&
+        typeof arg === "number" &&
+        SEISMOSCOPE_BEARINGS[arg]
+      ) {
+        setArmedQuakeBearing(arg);
+      } else if (triggerId === "quake" || triggerId === "quake:reset") {
+        setArmedQuakeBearing(null);
+      }
     }
     const requestedTrigger = { arg, triggerId };
     pendingTrigger.current = requestedTrigger;
@@ -4621,6 +4657,7 @@ export default function MachineViewer({
             </button>
             <SpotlightSemanticReadout
               module={module}
+              seismoscopeBearing={SEISMOSCOPE_BEARINGS[quakeBearing]}
               visible={spotlightActive || spotlightDone}
             />
             {spotlightTranscript.length > 0 ? (
@@ -4644,14 +4681,14 @@ export default function MachineViewer({
         <section className="panel">
           <h2>{t("viewer.mechanisms")}</h2>
           {module.data.slug === "seismoscope" ? (
-            <div
-              aria-label={t("seismo.bearingLabel")}
-              className="bearing-picker"
-              data-testid="bearing-picker"
-              role="group"
-            >
-              {["N", "NE", "E", "SE", "S", "SW", "W", "NW"].map(
-                (bearing, index) => (
+            <>
+              <div
+                aria-label={t("seismo.bearingLabel")}
+                className="bearing-picker"
+                data-testid="bearing-picker"
+                role="group"
+              >
+                {SEISMOSCOPE_BEARINGS.map((bearing, index) => (
                   <button
                     aria-pressed={quakeBearing === index}
                     className={`chip demo-trigger-button${
@@ -4659,7 +4696,7 @@ export default function MachineViewer({
                     }`}
                     data-demo-state={
                       activeTrigger
-                        ? activeTrigger.triggerId === "quake" &&
+                        ? activeTrigger.triggerId === "quake:arm" &&
                           activeTrigger.arg === index
                           ? "playing"
                           : "dimmed"
@@ -4668,15 +4705,28 @@ export default function MachineViewer({
                     key={bearing}
                     onClick={() => {
                       if (!activeTrigger) setQuakeBearing(index);
-                      runTrigger("quake", index);
+                      runTrigger("quake:arm", index);
                     }}
                     type="button"
                   >
                     {t(`seismo.bearing.${bearing}`)}
                   </button>
-                ),
-              )}
-            </div>
+                ))}
+              </div>
+              {armedQuakeBearing !== null ? (
+                <p
+                  aria-live="polite"
+                  className="panel-copy"
+                  data-testid="armed-bearing"
+                >
+                  {t("seismo.armedStatus", {
+                    bearing: t(
+                      `seismo.bearing.${SEISMOSCOPE_BEARINGS[armedQuakeBearing]}`,
+                    ),
+                  })}
+                </p>
+              ) : null}
+            </>
           ) : null}
           <div className="mechanism-list">
             {module.mechanism?.triggers.some(
@@ -4700,7 +4750,7 @@ export default function MachineViewer({
                     onClick={() =>
                       runTrigger(
                         trigger.id,
-                        trigger.id === "quake" || trigger.id === "quake:arm"
+                        trigger.id === "quake:arm"
                           ? quakeBearing
                           : undefined,
                       )

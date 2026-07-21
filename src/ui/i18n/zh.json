@@ -47,7 +47,7 @@
     "principleAids": "原理辅助",
     "odometerDistance": "里程",
     "odometerUnit": "里",
-    "semanticWestDragon": "西方龙首",
+    "semanticBearingDragon": "{{bearing}} 方龙首",
     "semanticBallReleased": "落丸已释放",
     "semanticOtherPaths": "其余七路",
     "semanticLocked": "已互锁",
@@ -55,6 +55,7 @@
   },
   "seismo": {
     "bearingLabel": "选择震源方位",
+    "armedStatus": "已预备：{{bearing}}",
     "bearing": {
       "N": "北 N",
       "NE": "东北 NE",
@@ -173,7 +174,7 @@
       "caption_drag-coach": "沿轮缘方向拖动金色圆环即可驱动枢轮"
     },
     "seismoscope": {
-      "caption_quake-report": "西方龙口铜丸落入蟾口 — 记下方位",
+      "caption_quake-report": "{{bearing}} 方龙口铜丸落入蟾口 — 记下方位",
       "caption_quake-reset-hint": "按「复位八方」可再试其他方向",
       "caption_scheme-switch": "已切换到冯锐 2005 悬摆方案以演示",
       "releaseBall": "一龙吐丸，落向对应蟾蜍 ·《后汉书》",

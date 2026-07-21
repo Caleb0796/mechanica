@@ -591,6 +591,7 @@ function Turntable({
       fromRotation: turntable.current.rotation.y,
       toRotation: targetRotation,
     };
+    invalidate();
   }, [invalidate, onActiveIndexChange, reducedMotion, request, slugs.length]);
 
   useFrame((_, delta) => {
@@ -629,6 +630,7 @@ function Turntable({
       activeIndex.current = nextActiveIndex;
       onActiveIndexChange(nextActiveIndex);
     }
+    if (animation.current) invalidate();
   });
 
   return (
@@ -688,7 +690,9 @@ function TurntableStage({
     <Canvas
       camera={{ fov: 34, position: [0, 2.9, 9] }}
       dpr={[1, 1.5]}
-      frameloop={!rendering ? "never" : reducedMotion ? "demand" : "always"}
+      frameloop={
+        !rendering ? "never" : reducedMotion || paused ? "demand" : "always"
+      }
       gl={{
         antialias: false,
         powerPreference: "high-performance",

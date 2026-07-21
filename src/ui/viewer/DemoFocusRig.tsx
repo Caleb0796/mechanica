@@ -64,11 +64,15 @@ function fitDistanceForBounds(
 
 export default function DemoFocusRig({
   focusPartId,
+  onActiveChange,
+  onRestored,
   onSettled,
   partIds,
   profile,
 }: {
   focusPartId: string | null;
+  onActiveChange?: (active: boolean) => void;
+  onRestored?: () => void;
   onSettled?: () => void;
   partIds: readonly string[];
   profile: ViewerProfile;
@@ -78,14 +82,20 @@ export default function DemoFocusRig({
   const controls = useThree((state) => state.controls) as ControlsLike;
   const viewport = useThree((state) => state.size);
   const goal = useRef<{ position: Vector3; target: Vector3 } | null>(null);
+  const goalKind = useRef<"focus" | "home" | "restore" | null>(null);
   const homeGoal = useRef(false);
+  const processedFocusPartId = useRef<string | null>(null);
   const restore = useRef<{ position: Vector3; target: Vector3 } | null>(null);
   const onSettledRef = useRef(onSettled);
+  const onRestoredRef = useRef(onRestored);
   onSettledRef.current = onSettled;
+  onRestoredRef.current = onRestored;
 
   useEffect(() => {
     if (!controls) return;
     if (focusPartId) {
+      if (processedFocusPartId.current === focusPartId) return;
+      processedFocusPartId.current = focusPartId;
       if (!restore.current) {
         restore.current = {
           position: camera.position.clone(),
@@ -137,6 +147,8 @@ export default function DemoFocusRig({
           };
         }
         homeGoal.current = true;
+        goalKind.current = "home";
+        onActiveChange?.(true);
         return;
       }
       const object = scene.getObjectByName(focusPartId);
@@ -155,16 +167,32 @@ export default function DemoFocusRig({
         target: sphere.center.clone(),
       };
       homeGoal.current = false;
+      goalKind.current = "focus";
+      onActiveChange?.(true);
     } else if (homeGoal.current) {
+      processedFocusPartId.current = null;
       restore.current = null;
     } else if (restore.current) {
+      processedFocusPartId.current = null;
       goal.current = restore.current;
       restore.current = null;
+      goalKind.current = "restore";
+      onActiveChange?.(true);
     }
-  }, [camera, controls, focusPartId, partIds, profile, scene, viewport]);
+  }, [
+    camera,
+    controls,
+    focusPartId,
+    onActiveChange,
+    partIds,
+    profile,
+    scene,
+    viewport,
+  ]);
 
   useFrame(() => {
     if (!goal.current || !controls) return;
+    controls.enabled = false;
     camera.position.lerp(goal.current.position, 0.08);
     controls.target.lerp(goal.current.target, 0.08);
     controls.update();
@@ -172,7 +200,12 @@ export default function DemoFocusRig({
       camera.position.distanceTo(goal.current.position) < 0.02 &&
       controls.target.distanceTo(goal.current.target) < 0.02
     ) {
+      const settledKind = goalKind.current;
       goal.current = null;
+      goalKind.current = null;
+      controls.enabled = true;
+      onActiveChange?.(false);
+      if (settledKind === "restore") onRestoredRef.current?.();
       if (homeGoal.current) {
         homeGoal.current = false;
         restore.current = null;

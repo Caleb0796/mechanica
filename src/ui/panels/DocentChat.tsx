@@ -177,6 +177,7 @@ function GroundedAnswer({
         return (
           <sup
             className="docent-cite"
+            data-testid="docent-citation"
             key={`${index}:${segment.id}`}
             title={segment.book}
           >

@@ -24,7 +24,7 @@ export function buildDemoTimeline(
 ): TimelineEntry[] {
   const timeline: TimelineEntry[] = [];
   let previousState = initialState;
-  let previousCaption = "";
+  const seenCaptions = new Set<string>();
   for (const event of captured) {
     const changed = statesDiffer(previousState, event.state);
     if (event.type === "camera") {
@@ -33,8 +33,8 @@ export function buildDemoTimeline(
       continue;
     }
     const caption = captionOf(event.type, event.part);
-    const freshCaption = caption !== "" && caption !== previousCaption;
-    if (caption !== "") previousCaption = caption;
+    const freshCaption = caption !== "" && !seenCaptions.has(caption);
+    if (caption !== "") seenCaptions.add(caption);
     const motionMs = changed ? (event.type.includes("drive") ? 420 : 260) : 60;
     const dwellMs = freshCaption
       ? Math.min(4200, Math.max(1600, 85 * caption.length))
@@ -59,7 +59,7 @@ export function buildDemoTimeline(
     const dwellScale = (DEMO_TARGET_MAX_MS - totalMotion) / totalDwell;
     for (const entry of timeline) {
       if (entry.kind === "camera") continue;
-      const dwellFloor = entry.kind === "caption" ? 1300 : 120;
+      const dwellFloor = entry.kind === "caption" ? 1600 : 120;
       entry.dwellMs = Math.max(
         dwellFloor,
         Math.floor(entry.dwellMs * dwellScale),

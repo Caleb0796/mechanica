@@ -2076,6 +2076,7 @@ function MachineScene({
     assemblyCameraState !== desiredAssemblyCameraState;
   const controlsEnabled =
     !cameraIntroActive &&
+    !interactionDisabled &&
     !spotlightActive &&
     !spotlightHandoffActive &&
     !storyCamera;
@@ -3111,6 +3112,7 @@ export default function MachineViewer({
   );
   const [spotlightDone, setSpotlightDone] = useState(false);
   const [demoFocusPartId, setDemoFocusPartId] = useState<string | null>(null);
+  const [demoFocusActive, setDemoFocusActive] = useState(false);
   const [spotlightPartIds, setSpotlightPartIds] = useState<string[]>([]);
   const [spotlightRunId, setSpotlightRunId] = useState(0);
   const [spotlightTranscript, setSpotlightTranscript] = useState<string[]>([]);
@@ -3128,9 +3130,18 @@ export default function MachineViewer({
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
+  const pendingSpotlightDonePart = useRef<string | null>(null);
+  const spotlightCaptionLockUntil = useRef(0);
   const demoFocusRef = useRef<string | null>(null);
   demoFocusRef.current = demoFocusPartId;
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
+  const handleDemoFocusActiveChange = useCallback((active: boolean) => {
+    setDemoFocusActive(active);
+    if (cameraDiagnostics.current) {
+      cameraDiagnostics.current.controlsEnabled = !active;
+      cameraDiagnostics.current.phase = active ? "spotlight" : "idle";
+    }
+  }, []);
   const viewerIntroPlayed = useRef(false);
   const viewerIdleTimer = useRef<number | null>(null);
   const viewerIdleAutoPaused = useRef(false);
@@ -3364,12 +3375,16 @@ export default function MachineViewer({
       spotlightFrame.current = null;
     }
     displayState.current = null;
+    pendingSpotlightDonePart.current = null;
+    spotlightCaptionLockUntil.current = 0;
     cameraDiagnostics.current = null;
     setAidCutawayPartIds([]);
     setAidHighlightPartIds([]);
     setSpotlightActive(false);
     setSpotlightAutoFitKey(null);
     setSpotlightDone(false);
+    setDemoFocusActive(false);
+    setDemoFocusPartId(null);
     setSpotlightPartIds([]);
     setSpotlightTranscript([]);
     setHoveredPartId(null);
@@ -3728,13 +3743,21 @@ export default function MachineViewer({
 
   const recordEvent = (type: string, part: string) => {
     const nextCaption = mechanismCaption(module, language, type, part, t);
-    setCaption(nextCaption);
+    const speed = useUiStore.getState().demoSpeed || 1;
+    if (
+      type === "spotlight:done" ||
+      performance.now() >= spotlightCaptionLockUntil.current
+    ) {
+      setCaption(nextCaption);
+    }
     if (type === "spotlight:done") {
+      spotlightCaptionLockUntil.current = performance.now() + 6000 / speed;
       window.setTimeout(() => {
         setCaption((current) => (current === nextCaption ? "" : current));
-      }, 6000 / (useUiStore.getState().demoSpeed || 1));
+      }, 6000 / speed);
     }
     if (type === "reset") {
+      spotlightCaptionLockUntil.current = 0;
       setSpotlightDone(false);
       setSpotlightTranscript([]);
     }
@@ -3850,7 +3873,11 @@ export default function MachineViewer({
       const entry = timeline[index];
       if (!entry) {
         displayState.current = null;
-        if (donePart) recordEvent("spotlight:done", donePart);
+        if (donePart && demoFocusRef.current) {
+          pendingSpotlightDonePart.current = donePart;
+        } else if (donePart) {
+          recordEvent("spotlight:done", donePart);
+        }
         setSpotlightActive(false);
         setDemoFocusPartId(null);
         setPaused(pausedBefore);
@@ -4069,6 +4096,7 @@ export default function MachineViewer({
                     geometryReadyAt={viewerGeometryReadyAt}
                     graph={graph}
                     introPlayed={viewerIntroPlayed}
+                    interactionDisabled={demoFocusActive}
                     module={module}
                     onDrivePart={drivePart}
                     onDriveSuccess={dismissDriveCoach}
@@ -4091,7 +4119,20 @@ export default function MachineViewer({
                   />
                   <DemoFocusRig
                     focusPartId={demoFocusPartId}
-                    onSettled={() => setDemoFocusPartId(null)}
+                    onActiveChange={handleDemoFocusActiveChange}
+                    onRestored={() => {
+                      const donePart = pendingSpotlightDonePart.current;
+                      if (!donePart) return;
+                      pendingSpotlightDonePart.current = null;
+                      recordEvent("spotlight:done", donePart);
+                    }}
+                    onSettled={() => {
+                      setDemoFocusPartId(null);
+                      const donePart = pendingSpotlightDonePart.current;
+                      if (!donePart) return;
+                      pendingSpotlightDonePart.current = null;
+                      recordEvent("spotlight:done", donePart);
+                    }}
                     partIds={activePartIds}
                     profile={viewerProfile}
                   />

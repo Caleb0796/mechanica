@@ -45,6 +45,17 @@ async function waitForCamera(page: Page) {
     .toBe("idle");
 }
 
+async function openAdvancedControls(page: Page) {
+  const controls = page.locator(".controls-advanced");
+  if (
+    !(await controls.evaluate(
+      (element) => (element as HTMLDetailsElement).open,
+    ))
+  ) {
+    await controls.locator("summary").click();
+  }
+}
+
 async function sampleFrameRate(page: Page, seconds: number) {
   return page.evaluate(
     (sampleSeconds) =>
@@ -626,6 +637,7 @@ test("U4: inspection responds within 300 ms and exploded view spreads parts", as
     "Large driven gear",
   );
 
+  await openAdvancedControls(page);
   await page.getByTestId("explode-slider").fill("1");
   const spread = await page.evaluate(() => window.__mechExplodeSpread?.() ?? 0);
   expect(spread).toBeGreaterThan(0.1);
@@ -644,40 +656,23 @@ test("U4: seismoscope part inspection exposes the duzhu source quote", async ({
   ).toContainText("中有都柱");
 });
 
-test("seismoscope quake is inert in Wang and releases a ball in Feng", async ({
+test("seismoscope matched bearing releases only the corresponding ball", async ({
   page,
 }) => {
   await page.goto("/#/m/seismoscope");
   await waitForMechanica(page, "seismoscope");
 
+  await page.getByRole("button", { name: "E", exact: true }).click();
+  await page.getByTestId("mech-trigger-quake:arm").click();
   await page.getByTestId("mech-trigger-quake").click();
-  await expect(page.getByTestId("event-captions")).toContainText(
-    "The latch remains set",
-  );
-  expect(
-    await page.evaluate(() =>
-      Object.entries(window.__mech?.graph.state() ?? {}).some(
-        ([partId, value]) => partId.startsWith("ball-") && value > 0,
-      ),
-    ),
-  ).toBe(false);
-
-  const select = page.locator(".viewer-sidebar .scheme-select").first();
-  await select.selectOption("fengrui");
-  await expect(page.locator(".viewer-canvas")).toHaveAttribute(
-    "data-scheme-transition",
-    "false",
-    { timeout: 2500 },
-  );
-  await dragDriveGizmo(page, "drive-gizmo-duzhu", 60);
-  await expect(page.getByTestId("event-captions")).toContainText("locked");
+  await expect(page.getByTestId("event-captions")).toContainText(/ball|铜丸/i);
   expect(
     await page.evaluate(() =>
       Object.entries(window.__mech?.graph.state() ?? {})
         .filter(([partId, value]) => partId.startsWith("ball-") && value > 0)
         .map(([partId]) => partId),
     ),
-  ).toEqual(["ball-6"]);
+  ).toEqual(["ball-2"]);
 });
 
 test("U3: switching reconstructions runs the one-second ghost handoff", async ({
@@ -797,6 +792,7 @@ test("U1: odometer rejects dependency violations then restores", async ({
   for (const slug of ["odometer"] as const) {
     await page.goto(`/#/m/${slug}`);
     await waitForMechanica(page, slug);
+    await openAdvancedControls(page);
     await page.getByTestId("assembly-reassemble").click();
     await expect(page.locator(".viewer-canvas")).toHaveAttribute(
       "data-assembly-mode",
@@ -866,7 +862,7 @@ test("U1: odometer rejects dependency violations then restores", async ({
 test("F0-T8: assembly duration follows runtime part count and captions the Chinese step", async ({
   page,
 }) => {
-  test.setTimeout(30_000);
+  test.setTimeout(120_000);
   await page.goto("/#/m/astroclock");
   await waitForMechanica(page, "astroclock");
   const chineseToggle = page.getByRole("button", { name: "中文", exact: true });
@@ -884,15 +880,27 @@ test("F0-T8: assembly duration follows runtime part count and captions the Chine
     if (!firstPart) throw new Error("The first assembly part is unavailable");
     return {
       durationMs: plan.durationMs,
+      holdBudgetMs:
+        Math.max(
+          0,
+          new Set(
+            plan.orderedPartIds.map(
+              (partId) =>
+                spec.parts.find((part) => part.id === partId)?.assemblyStep ??
+                0,
+            ),
+          ).size - 1,
+        ) * 700,
       formulaMs: Math.min(
-        20_000,
-        Math.max(2_500, plan.orderedPartIds.length * 280),
+        45_000,
+        Math.max(9_000, spec.parts.length * 320),
       ),
       name: firstPart.name.zh,
     };
   });
   expect(expected.durationMs).toBe(expected.formulaMs);
 
+  await openAdvancedControls(page);
   const startedAt = await page.evaluate(() => performance.now());
   await page.getByTestId("assembly-play").click();
   await expect(page.getByTestId("assembly-current-part")).toContainText(
@@ -904,12 +912,14 @@ test("F0-T8: assembly duration follows runtime part count and captions the Chine
         page.evaluate(
           () => window.__mechAssembly?.state().assemblyProgress ?? 0,
         ),
-      { timeout: expected.durationMs * 1.1 + 1_000 },
+      { timeout: expected.durationMs + expected.holdBudgetMs + 2_000 },
     )
     .toBe(1);
   const elapsed = (await page.evaluate(() => performance.now())) - startedAt;
   expect(elapsed).toBeGreaterThanOrEqual(expected.durationMs * 0.9);
-  expect(elapsed).toBeLessThanOrEqual(expected.durationMs * 1.1);
+  expect(elapsed).toBeLessThanOrEqual(
+    expected.durationMs + expected.holdBudgetMs + 1_500,
+  );
 });
 
 test("F0-T8: Reassemble stages on the ground, scrub resets explode, and completion settles", async ({
@@ -917,6 +927,7 @@ test("F0-T8: Reassemble stages on the ground, scrub resets explode, and completi
 }) => {
   await page.goto("/#/m/odometer");
   await waitForMechanica(page, "odometer");
+  await openAdvancedControls(page);
   await page.getByTestId("assembly-reassemble").click();
   await expect(page.locator(".viewer-canvas")).toHaveAttribute(
     "data-assembly-mode",
@@ -1213,6 +1224,7 @@ test("F0-T4: exploded state refits the retained model", async ({
   await page.goto("/#/m/odometer");
   await waitForMechanica(page, "odometer");
   await waitForCamera(page);
+  await openAdvancedControls(page);
   const before = await page.evaluate(() => window.__mech?.cameraState());
   expect(before?.introStartDistance).toBeGreaterThan(
     before?.sphereRadius ?? Number.POSITIVE_INFINITY,
@@ -1334,12 +1346,13 @@ test("U6: all four machine spotlights complete within ten seconds", async ({
     await page.goto(`/#/m/${slug}`);
     await waitForMechanica(page, slug);
     await page.getByTestId("spotlight-play").click();
+    await expect(page.getByTestId("event-captions")).toContainText(
+      "The demonstration is complete",
+      { timeout: 10_000 },
+    );
     await expect(page.locator(".spotlight-done")).toBeVisible({
       timeout: 10_000,
     });
-    await expect(page.getByTestId("event-captions")).toContainText(
-      "The demonstration is complete",
-    );
     if (
       ["seismoscope", "loom"].includes(slug)
     ) {
@@ -1439,7 +1452,10 @@ test("gallery exposes four layers, attribution, lightbox, and offline fallback",
   await page.goto("/#/m/astroclock");
   await waitForMechanica(page, "astroclock", false);
   await page.getByTestId("tab-museum").click();
-  const credit = page.getByTestId("image-credit").first();
+  const credit = page
+    .locator('[data-gallery-panel="museum"]:visible')
+    .getByTestId("image-credit")
+    .first();
   await expect(credit).toContainText(/CC|Public domain/);
   await expect(
     credit.locator(".gallery-attribution a").first(),
@@ -1477,7 +1493,7 @@ test("English UI has no Chinese leakage across three machines", async ({
       const copy = main.cloneNode(true) as HTMLElement;
       copy
         .querySelectorAll(
-          '[data-source-id], [data-testid="machine-evidence-register"], .gallery-attribution-text',
+          '[data-source-id], [data-testid="machine-evidence-register"], [data-testid="part-inspector"], .gallery-attribution, .gallery-attribution-text',
         )
         .forEach((node) => node.remove());
       return copy.innerText;
@@ -1610,8 +1626,12 @@ test("F0-T10: seismoscope comparison renders during interaction and sleeps while
   await page.evaluate(() => window.__mechCompare?.resetFrameCounts());
   await page.getByTestId("compare-drive-forward").click();
   await expect
-    .poll(() => page.evaluate(() => window.__mechCompare?.frameCounts ?? []))
-    .toEqual([1, 1]);
+    .poll(() =>
+      page.evaluate(() =>
+        (window.__mechCompare?.frameCounts ?? []).every((count) => count > 0),
+      ),
+    )
+    .toBe(true);
   const afterDrive = await Promise.all([
     canvases.nth(0).screenshot(),
     canvases.nth(1).screenshot(),

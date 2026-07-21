@@ -311,7 +311,7 @@ test("F0-T11: astroclock principle aids remain aligned, bilingual, and responsiv
         return hook?.state();
       }),
     )
-    .toMatchObject({ flowMode: "points", flowParticleCount: 32 });
+    .toMatchObject({ flowMode: "points", flowParticleCount: 64 });
   await expect
     .poll(
       () =>

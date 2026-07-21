@@ -215,10 +215,22 @@ a {
   position: absolute;
   z-index: 0;
   inset: 0;
+  transform: scale(1);
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
 }
 
 .home-carousel-visual canvas {
   display: block;
+}
+
+.home-carousel-poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.82) contrast(1.08);
 }
 
 .home-carousel-visual .geometry-loading {
@@ -228,6 +240,22 @@ a {
 .home-carousel-machine-copy {
   bottom: clamp(1.5rem, 5vh, 3rem);
   width: min(34rem, calc(100% - 3rem));
+  transform: translateY(0);
+  transition:
+    opacity 200ms ease,
+    transform 240ms ease;
+}
+
+.home-carousel-link[data-phase="exiting"] .home-carousel-visual,
+.home-carousel-link[data-phase="entering"] .home-carousel-visual {
+  opacity: 0;
+  transform: scale(0.965);
+}
+
+.home-carousel-link[data-phase="exiting"] .home-carousel-machine-copy,
+.home-carousel-link[data-phase="entering"] .home-carousel-machine-copy {
+  opacity: 0;
+  transform: translateY(0.75rem);
 }
 
 .home-carousel-machine-copy h2 {
@@ -243,6 +271,35 @@ a {
   margin: 0.55rem 0 0;
   color: #aaa69d;
   line-height: 1.55;
+}
+
+@media (max-width: 899px) {
+  .home-carousel-link {
+    height: clamp(30rem, 66vh, 38rem);
+    min-height: 30rem;
+  }
+
+  .home-carousel-link::after {
+    background:
+      linear-gradient(180deg, rgba(7, 8, 8, 0.86), transparent 54%),
+      linear-gradient(0deg, rgba(7, 8, 8, 0.9), transparent 46%);
+  }
+
+  .home-carousel-heading {
+    width: calc(100% - 3rem);
+  }
+
+  .home-carousel-heading .display-title {
+    font-size: clamp(2.35rem, 10vw, 4.2rem);
+  }
+
+  .home-carousel-heading .hero-copy {
+    max-width: 34rem;
+  }
+
+  .home-carousel-poster {
+    object-position: center;
+  }
 }
 
 .gold-button,

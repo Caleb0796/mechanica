@@ -1,6 +1,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   memo,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -31,6 +32,7 @@ import {
 } from "../core/primitives";
 import { applySchemePatch } from "../sim/graph";
 import type {
+  MachineData,
   MachineModule,
   MachineSlug,
   MachineSpec,
@@ -40,7 +42,6 @@ import {
   createHomeCarouselState,
   transitionHomeCarousel,
 } from "./homeCarousel";
-import PosterFallback from "./PosterFallback";
 import {
   GeometryLoading,
   useMachineGeometryWarmup,
@@ -50,11 +51,34 @@ import { visualMaterialFor } from "./viewer/visualRecovery";
 const heroMachineModules = import.meta.glob<{ default: MachineModule }>(
   "../machines/*/build.ts",
 );
+const heroDataModules = import.meta.glob<{ default: MachineData }>(
+  "../data/machines/*.json",
+);
 
 function loadHeroMachine(slug: MachineSlug): Promise<MachineModule> {
   const loader = heroMachineModules[`../machines/${slug}/build.ts`];
   if (!loader) return Promise.reject(new Error(`Missing machine ${slug}`));
   return loader().then((loaded) => loaded.default);
+}
+
+function loadHeroData(slug: MachineSlug): Promise<MachineData> {
+  const loader = heroDataModules[`../data/machines/${slug}.json`];
+  if (!loader) return Promise.reject(new Error(`Missing machine data ${slug}`));
+  return loader().then((loaded) => loaded.default);
+}
+
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(
+    () => window.matchMedia(query).matches,
+  );
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setMatches(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, [query]);
+  return matches;
 }
 
 function HeroPartGeometry({
@@ -221,7 +245,15 @@ function HeroMachineModel({
   );
 }
 
-function LoadedHeroStage({ module }: { module: MachineModule }) {
+function LoadedHeroStage({
+  module,
+  onReady,
+  slug,
+}: {
+  module: MachineModule;
+  onReady: (slug: MachineSlug) => void;
+  slug: MachineSlug;
+}) {
   const { t } = useTranslation();
   const spec = useMemo(
     () =>
@@ -234,11 +266,15 @@ function LoadedHeroStage({ module }: { module: MachineModule }) {
     [module],
   );
   const warmup = useMachineGeometryWarmup({
-    consumerScope: `home:${module.data.slug}`,
+    consumerScope: `home:${slug}`,
     module,
     spec,
-    warmupKey: `${module.data.slug}:${module.defaultSchemeId ?? "default"}`,
+    warmupKey: `${slug}:${module.defaultSchemeId ?? "default"}`,
   });
+
+  useEffect(() => {
+    if (warmup.prepared) onReady(slug);
+  }, [onReady, slug, warmup.prepared]);
 
   return (
     <>
@@ -287,30 +323,148 @@ export default function HomeCarouselHero({
 }) {
   const { i18n, t } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
-  const [carousel] = useState(createHomeCarouselState);
+  const reduceMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const compact = useMediaQuery("(max-width: 899px)");
+  const interactive = !reduceMotion && !compact;
+  const [carousel, setCarousel] = useState(createHomeCarouselState);
+  const [dataBySlug, setDataBySlug] = useState<
+    Partial<Record<MachineSlug, MachineData>>
+  >({});
+  const [modulesBySlug, setModulesBySlug] = useState<
+    Partial<Record<MachineSlug, MachineModule>>
+  >({});
+  const [exitElapsed, setExitElapsed] = useState(false);
+  const [stageReadySlug, setStageReadySlug] = useState<MachineSlug | null>(
+    null,
+  );
   const activeSlug = slugs[carousel.activeIndex];
-  const [module, setModule] = useState<MachineModule | null>(null);
+  const pendingSlug =
+    carousel.pendingIndex === null ? null : slugs[carousel.pendingIndex];
+  const wantedSlug = pendingSlug ?? activeSlug;
+  const activeData = dataBySlug[activeSlug];
+  const activeModule = modulesBySlug[activeSlug];
+
+  const dispatch = useCallback(
+    (event: Parameters<typeof transitionHomeCarousel>[1]) => {
+      setCarousel(
+        (current) => transitionHomeCarousel(current, event, slugs).state,
+      );
+    },
+    [slugs],
+  );
 
   useEffect(() => {
     let cancelled = false;
-    void loadHeroMachine(activeSlug)
+    if (dataBySlug[wantedSlug]) return;
+    void loadHeroData(wantedSlug)
       .then((loaded) => {
-        if (!cancelled) setModule(loaded);
+        if (!cancelled) {
+          setDataBySlug((current) => ({
+            ...current,
+            [wantedSlug]: loaded,
+          }));
+        }
       })
-      .catch(() => {
-        if (!cancelled) setModule(null);
-      });
+      .catch(() => undefined);
     return () => {
       cancelled = true;
     };
-  }, [activeSlug]);
+  }, [dataBySlug, wantedSlug]);
+
+  useEffect(() => {
+    if (!interactive || modulesBySlug[wantedSlug]) return;
+    let cancelled = false;
+    void loadHeroMachine(wantedSlug)
+      .then((loaded) => {
+        if (!cancelled) {
+          setModulesBySlug((current) => ({
+            ...current,
+            [wantedSlug]: loaded,
+          }));
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [interactive, modulesBySlug, wantedSlug]);
+
+  useEffect(() => {
+    if (!interactive) return;
+    const interval = window.setInterval(
+      () => dispatch({ type: "cycle" }),
+      7000,
+    );
+    return () => window.clearInterval(interval);
+  }, [dispatch, interactive]);
+
+  useEffect(() => {
+    if (carousel.phase !== "exiting") {
+      setExitElapsed(false);
+      return;
+    }
+    const timeout = window.setTimeout(() => setExitElapsed(true), 240);
+    return () => window.clearTimeout(timeout);
+  }, [carousel.phase]);
+
+  useEffect(() => {
+    if (
+      carousel.phase !== "exiting" ||
+      !exitElapsed ||
+      !pendingSlug ||
+      !dataBySlug[pendingSlug] ||
+      !modulesBySlug[pendingSlug]
+    ) {
+      return;
+    }
+    setStageReadySlug(null);
+    dispatch({ type: "exit-complete" });
+  }, [
+    carousel.phase,
+    dataBySlug,
+    dispatch,
+    exitElapsed,
+    modulesBySlug,
+    pendingSlug,
+  ]);
+
+  useEffect(() => {
+    if (carousel.phase !== "entering" || stageReadySlug !== activeSlug) {
+      return;
+    }
+    let secondFrame = 0;
+    const firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() =>
+        dispatch({ type: "enter-complete" }),
+      );
+    });
+    return () => {
+      cancelAnimationFrame(firstFrame);
+      cancelAnimationFrame(secondFrame);
+    };
+  }, [activeSlug, carousel.phase, dispatch, stageReadySlug]);
+
+  useEffect(() => {
+    setCarousel((current) =>
+      interactive
+        ? { ...current, paused: false }
+        : {
+            ...current,
+            paused: true,
+            pendingIndex: null,
+            phase: "idle",
+          },
+    );
+  }, [interactive]);
 
   const target = transitionHomeCarousel(
     carousel,
     { type: "activate" },
     slugs,
   ).navigateTo;
-  const activeData = module?.data.slug === activeSlug ? module.data : null;
+  const handleStageReady = useCallback((slug: MachineSlug) => {
+    setStageReadySlug(slug);
+  }, []);
 
   return (
     <section className="hero home-carousel-hero">
@@ -321,7 +475,13 @@ export default function HomeCarouselHero({
             : t("home.open")
         }
         className="home-carousel-link"
+        data-phase={carousel.phase}
+        data-static={interactive ? "false" : "true"}
         href={target}
+        onBlur={() => dispatch({ type: "hover", paused: false })}
+        onFocus={() => dispatch({ type: "hover", paused: true })}
+        onMouseEnter={() => dispatch({ type: "hover", paused: true })}
+        onMouseLeave={() => dispatch({ type: "hover", paused: false })}
       >
         <div className="home-carousel-heading">
           <p className="eyebrow">{t("home.eyebrow")}</p>
@@ -329,10 +489,18 @@ export default function HomeCarouselHero({
           <p className="hero-copy">{t("home.intro")}</p>
         </div>
         <div className="home-carousel-visual">
-          {module ? (
-            <LoadedHeroStage module={module} />
+          {interactive && activeModule ? (
+            <LoadedHeroStage
+              module={activeModule}
+              onReady={handleStageReady}
+              slug={activeSlug}
+            />
           ) : (
-            <PosterFallback slug={activeSlug} />
+            <img
+              alt=""
+              className="home-carousel-poster"
+              src={`${import.meta.env.BASE_URL}assets/renders/${activeSlug}/overall.jpg`}
+            />
           )}
         </div>
         {activeData ? (

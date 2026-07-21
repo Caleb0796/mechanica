@@ -3127,6 +3127,9 @@ export default function MachineViewer({
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
+  const pendingTrigger = useRef<{ arg?: number; triggerId: string } | null>(
+    null,
+  );
   const demoFocusRef = useRef<string | null>(null);
   demoFocusRef.current = demoFocusPartId;
   const cameraDiagnostics = useRef<CameraDiagnostics | null>(null);
@@ -3369,6 +3372,8 @@ export default function MachineViewer({
     setSpotlightActive(false);
     setSpotlightAutoFitKey(null);
     setSpotlightDone(false);
+    pendingTrigger.current = null;
+    setDemoFocusPartId(null);
     setSpotlightPartIds([]);
     setSpotlightTranscript([]);
     setHoveredPartId(null);
@@ -3775,7 +3780,7 @@ export default function MachineViewer({
     for (const event of result.events) recordEvent(event.type, event.part);
   };
 
-  const runTrigger = (triggerId: string, arg?: number) => {
+  const startTrigger = (triggerId: string, arg?: number) => {
     const trigger = module.mechanism?.triggers.find(
       (candidate) => candidate.id === triggerId,
     );
@@ -3905,6 +3910,25 @@ export default function MachineViewer({
       spotlightFrame.current = requestAnimationFrame(animate);
     };
     playNext();
+  };
+
+  const runTrigger = (triggerId: string, arg?: number) => {
+    if (
+      !module.mechanism?.triggers.some(
+        (candidate) => candidate.id === triggerId,
+      )
+    ) {
+      return;
+    }
+    pendingTrigger.current = { arg, triggerId };
+    setDemoFocusPartId("tower-shell");
+  };
+
+  const handleDemoFocusSettled = () => {
+    setDemoFocusPartId(null);
+    const pending = pendingTrigger.current;
+    pendingTrigger.current = null;
+    if (pending) startTrigger(pending.triggerId, pending.arg);
   };
 
   const drivePart = (partId: string, delta: number) => {
@@ -4090,7 +4114,7 @@ export default function MachineViewer({
                   />
                   <DemoFocusRig
                     focusPartId={demoFocusPartId}
-                    onSettled={() => setDemoFocusPartId(null)}
+                    onSettled={handleDemoFocusSettled}
                     partIds={activePartIds}
                     profile={viewerProfile}
                   />

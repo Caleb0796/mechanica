@@ -9,24 +9,13 @@ import {
   Vector3,
 } from "three";
 
-import type { ViewerProfile } from "./visualRecovery";
+import { safeHomePose, type ViewerProfile } from "./visualRecovery";
 
 type ControlsLike = {
   target: Vector3;
   update: () => void;
   enabled: boolean;
 } | null;
-
-function safeHomePose<T extends NonNullable<ViewerProfile["homePose"]>>(
-  pose: T,
-  modelSphere: Sphere,
-): T | null {
-  const camera = new Vector3(...pose.position);
-  if (camera.distanceTo(modelSphere.center) < modelSphere.radius * 1.15) {
-    return null;
-  }
-  return pose;
-}
 
 function fitDistanceForBounds(
   bounds: Box3,

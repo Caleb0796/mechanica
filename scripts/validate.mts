@@ -42,13 +42,58 @@ function quoteFingerprint(quote: string): string {
   return hash.digest('hex')
 }
 
-const args = process.argv.slice(2)
-const unknownArgs = args.filter((argument) => argument !== '--partial')
-if (unknownArgs.length > 0) {
-  console.error(`unknown argument: ${unknownArgs.join(', ')}`)
+interface ValidateOptions {
+  machine?: MachineSlug
+  partial: boolean
+}
+
+function parseArgs(args: string[]): ValidateOptions | null {
+  let machine: MachineSlug | undefined
+  let partial = false
+  const unknownArgs: string[] = []
+
+  for (let index = 0; index < args.length; index += 1) {
+    const argument = args[index]
+    if (argument === '--partial') {
+      partial = true
+      continue
+    }
+    if (argument !== '--machine') {
+      unknownArgs.push(argument)
+      continue
+    }
+    if (machine) {
+      console.error('--machine may only be provided once')
+      return null
+    }
+    const value = args[index + 1]
+    if (!value || value.startsWith('--')) {
+      console.error('--machine requires a slug')
+      return null
+    }
+    if (!(MACHINE_SLUGS as readonly string[]).includes(value)) {
+      console.error(`unknown machine: ${value}`)
+      return null
+    }
+    machine = value as MachineSlug
+    index += 1
+  }
+
+  if (unknownArgs.length > 0) {
+    console.error(`unknown argument: ${unknownArgs.join(', ')}`)
+    return null
+  }
+  return { machine, partial }
+}
+
+const options = parseArgs(process.argv.slice(2))
+if (!options) {
   process.exitCode = 1
 } else {
-  await main(args.includes('--partial'))
+  await main(
+    options.partial,
+    options.machine ? [options.machine] : MACHINE_SLUGS,
+  )
 }
 
 async function loadMachine(slug: MachineSlug): Promise<MachineModule> {
@@ -85,10 +130,13 @@ function writeSummary(
   writeFileSync(repoPath('reports/summary.md'), `${lines.join('\n')}\n`)
 }
 
-function validateDataSnapshots(partial: boolean): { failures: string[]; warnings: string[] } {
+function validateDataSnapshots(
+  partial: boolean,
+  slugs: readonly MachineSlug[],
+): { failures: string[]; warnings: string[] } {
   const failures: string[] = []
   const warnings: string[] = []
-  for (const slug of MACHINE_SLUGS) {
+  for (const slug of slugs) {
     let data: MachineData
     try {
       const parsed = JSON.parse(readFileSync(repoPath(`src/data/machines/${slug}.json`), 'utf8')) as unknown
@@ -132,16 +180,19 @@ function validateDataSnapshots(partial: boolean): { failures: string[]; warnings
   return { failures, warnings }
 }
 
-async function main(partial: boolean): Promise<void> {
+async function main(
+  partial: boolean,
+  slugs: readonly MachineSlug[],
+): Promise<void> {
   mkdirSync(repoPath('reports'), { recursive: true })
   const reports: ValidationReport[] = []
   const missing: MachineSlug[] = []
   const loadFailures: Array<{ slug: MachineSlug; message: string }> = []
-  const dataValidation = validateDataSnapshots(partial)
+  const dataValidation = validateDataSnapshots(partial, slugs)
   dataValidation.failures.forEach((failure) => console.error(failure))
   dataValidation.warnings.forEach((warning) => console.warn(`warning: ${warning}`))
 
-  for (const slug of MACHINE_SLUGS) {
+  for (const slug of slugs) {
     let module: MachineModule
     try {
       module = await loadMachine(slug)

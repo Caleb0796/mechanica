@@ -157,9 +157,10 @@ describe("seismoscope machine module", () => {
       kind: "chinese-dragon-head",
       forward: [0, 0, 1],
       headPitchDeg: 27,
+      jawAngleDeg: 19,
       jawGapRatio: 0.34,
-      maneFinCount: 3,
-      maneSweepMaxDeg: 25,
+      maneFinCount: 0,
+      sideLipCount: 2,
       snoutLengthRatio: 0.51,
       features: expect.arrayContaining([
         "connected-neck-root",
@@ -174,6 +175,8 @@ describe("seismoscope machine module", () => {
         "swept-neck-profile",
         "jaw-hinge",
         "open-lower-jaw",
+        "ball-cradle",
+        "side-lip-plates",
         "backward-horns",
         "whiskers",
         "short-curved-whiskers",
@@ -182,8 +185,6 @@ describe("seismoscope machine module", () => {
         "paired-nostrils",
         "visible-tongue",
         "side-ears",
-        "mane-fins",
-        "back-swept-mane-fins",
       ]),
     });
     expect(geometry.boundingBox?.min.x).toBeGreaterThanOrEqual(-0.28);
@@ -477,6 +478,25 @@ describe("seismoscope machine module", () => {
     expect(ball.userData.mechanicaSemantic.features).toContain(
       "high-contrast-silhouette",
     );
+    expect(ball.userData.mechanicaSemantic).toMatchObject({
+      restSeatOffset: [0, expect.closeTo(-0.078 * 0.18, 6), 0],
+      releaseOrigin: [0, 0, 0],
+      features: expect.arrayContaining([
+        "nested-mouth-seat",
+        "release-origin-preserved",
+      ]),
+    });
+    expect(ball.userData.mechanicaUpdate).toBeTypeOf("function");
+    expect(ball.boundingBox?.getCenter(new THREE.Vector3()).y).toBeCloseTo(
+      -0.078 * 0.18,
+      6,
+    );
+    ball.userData.mechanicaUpdate(0.61);
+    expect(ball.boundingBox?.getCenter(new THREE.Vector3()).y).toBeCloseTo(
+      0,
+      6,
+    );
+    ball.userData.mechanicaUpdate(0);
 
     for (const geometry of [vessel, dragon, ball, linkage]) geometry.dispose();
   });
@@ -575,6 +595,7 @@ describe("seismoscope machine module", () => {
         1,
         12,
       );
+      expect(ballPoint.y).toBeCloseTo(0.21, 12);
       expect(ballRadius - dragonRadius).toBeCloseTo(0.21, 5);
       expect(toadRadius - ballRadius).toBeCloseTo(0.35, 5);
       expect(ballAxis.length()).toBeCloseTo(1, 12);

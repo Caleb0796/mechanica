@@ -262,52 +262,6 @@ function flaredMountCollar(
   return geometry;
 }
 
-function sweptManeFin(
-  center: THREE.Vector3,
-  length: number,
-  height: number,
-  thickness: number,
-): THREE.BufferGeometry {
-  const halfThickness = thickness / 2;
-  const halfLength = length / 2;
-  const rootY = center.y - height * 0.75;
-  const positions: number[] = [];
-  for (const x of [-halfThickness, halfThickness]) {
-    positions.push(
-      center.x + x,
-      rootY,
-      center.z + halfLength,
-      center.x + x,
-      rootY,
-      center.z - halfLength,
-      center.x + x,
-      center.y + height,
-      center.z - length * 0.18,
-    );
-  }
-  const indices = [
-    0, 1, 2, 3, 5, 4,
-    0, 3, 1, 1, 3, 4,
-    1, 4, 2, 2, 4, 5,
-    2, 5, 0, 0, 5, 3,
-  ];
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(positions, 3),
-  );
-  geometry.setIndex(indices);
-  geometry.computeVertexNormals();
-  geometry.setAttribute(
-    "uv",
-    new THREE.Float32BufferAttribute(
-      new Array((positions.length / 3) * 2).fill(0),
-      2,
-    ),
-  );
-  return geometry;
-}
-
 function taperedWedge(
   sections: Array<{
     center: THREE.Vector3;
@@ -801,9 +755,14 @@ function seismoscopeDragon(
   const length = radius * 3.5;
   const headPitch = THREE.MathUtils.degToRad(27);
   const headPivot = new THREE.Vector3(0, radius * 0.16, -radius * 0.12);
-  const jawAngle = THREE.MathUtils.degToRad(6);
+  const jawAngle = THREE.MathUtils.degToRad(19);
   const jawLength = length * 0.35;
   const jawHinge = new THREE.Vector3(0, radius * 0.3, radius * 0.3);
+  const jawNormal = new THREE.Vector3(
+    0,
+    Math.cos(jawAngle),
+    Math.sin(jawAngle),
+  );
   const mountCenterY = -radius * 0.34;
   const mountSurfaceZ = -radius * 2.155;
   const mountCrownZ = mountSurfaceZ + radius * 0.28;
@@ -816,6 +775,10 @@ function seismoscopeDragon(
         Math.cos(jawAngle) * jawLength,
       ),
     );
+  const lipCenter = jawHinge
+    .clone()
+    .lerp(jawTip, 0.88)
+    .addScaledVector(jawNormal, radius * 0.17);
   const parts = [
     flaredMountCollar(radius, mountCenterY, mountSurfaceZ),
     taperedTubeAlong(
@@ -880,6 +843,18 @@ function seismoscopeDragon(
       ]),
       headPivot,
       headPitch,
+    ),
+    ...[-1, 1].map((side) =>
+      pitchAround(
+        placeGeometry(
+          new THREE.BoxGeometry(radius * 0.08, radius * 0.1, radius * 0.3),
+          [1, 1, 1],
+          [side * radius * 0.52, lipCenter.y, lipCenter.z],
+          [jawAngle, 0, 0],
+        ),
+        headPivot,
+        headPitch,
+      ),
     ),
     pitchAround(
       cylinderBetween(
@@ -1034,26 +1009,6 @@ function seismoscopeDragon(
       headPitch,
     ),
   ];
-  parts.push(
-    sweptManeFin(
-      new THREE.Vector3(0, radius * 0.48, -radius * 0.34),
-      length * 0.16,
-      length * 0.06,
-      radius * 0.06,
-    ),
-    sweptManeFin(
-      new THREE.Vector3(0, radius * 0.26, -radius * 0.67),
-      length * 0.145,
-      length * 0.052,
-      radius * 0.055,
-    ),
-    sweptManeFin(
-      new THREE.Vector3(0, -radius * 0.02, -radius * 0.97),
-      length * 0.13,
-      length * 0.045,
-      radius * 0.05,
-    ),
-  );
   return setGeometryPresentation(
     mergeComposite(parts),
     {
@@ -1067,9 +1022,10 @@ function seismoscopeDragon(
       forward: [0, 0, 1],
       envelope: [radius * 3.5, radius * 2.8, radius * 3.73],
       headPitchDeg: 27,
+      jawAngleDeg: 19,
       jawGapRatio: 0.34,
-      maneFinCount: 3,
-      maneSweepMaxDeg: 25,
+      maneFinCount: 0,
+      sideLipCount: 2,
       snoutLengthRatio: 0.51,
       features: [
         "connected-neck-root",
@@ -1085,6 +1041,8 @@ function seismoscopeDragon(
         "swept-neck-profile",
         "jaw-hinge",
         "open-lower-jaw",
+        "ball-cradle",
+        "side-lip-plates",
         "backward-horns",
         "whiskers",
         "short-curved-whiskers",
@@ -1093,8 +1051,6 @@ function seismoscopeDragon(
         "paired-nostrils",
         "visible-tongue",
         "side-ears",
-        "mane-fins",
-        "back-swept-mane-fins",
       ],
     },
   );
@@ -1659,9 +1615,11 @@ const module: MachineModule = {
     seismoscopeSuspendedDuzhu,
     seismoscopeBall(params) {
       const geometry = new THREE.SphereGeometry(params.radius, 20, 14);
-      geometry.computeBoundingBox();
-      geometry.computeBoundingSphere();
-      return setGeometryPresentation(
+      const position = geometry.getAttribute("position");
+      const basePositions = Float32Array.from(position.array);
+      const restSeatDrop = params.radius * 0.18;
+      const releaseBlendDistance = BALL_DROP * 0.12;
+      setGeometryPresentation(
         geometry,
         {
           color: "#3f7466",
@@ -1671,9 +1629,36 @@ const module: MachineModule = {
         },
         {
           kind: "bronze-alarm-ball",
-          features: ["jaw-rest", "high-contrast-silhouette", "gravity-drop"],
+          restSeatOffset: [0, -restSeatDrop, 0],
+          releaseOrigin: [0, 0, 0],
+          features: [
+            "jaw-rest",
+            "nested-mouth-seat",
+            "release-origin-preserved",
+            "high-contrast-silhouette",
+            "gravity-drop",
+          ],
         },
       );
+      geometry.userData.mechanicaAnimation = {
+        currentStateRad: Number.NaN,
+      };
+      geometry.userData.mechanicaUpdate = (state: number) => {
+        const seated =
+          1 - THREE.MathUtils.clamp(state / releaseBlendDistance, 0, 1);
+        for (let vertex = 0; vertex < position.count; vertex += 1) {
+          position.setY(
+            vertex,
+            basePositions[vertex * 3 + 1] - restSeatDrop * seated,
+          );
+        }
+        position.needsUpdate = true;
+        geometry.computeBoundingBox();
+        geometry.computeBoundingSphere();
+        geometry.userData.mechanicaAnimation.currentStateRad = state;
+      };
+      geometry.userData.mechanicaUpdate(0);
+      return geometry;
     },
     seismoscopeTrack,
     seismoscopeWangChute,

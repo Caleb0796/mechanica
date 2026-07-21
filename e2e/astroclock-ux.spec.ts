@@ -21,7 +21,9 @@ test("demo timeline paces captions and restores run state", async ({ page }) => 
     }).observe(el, { childList: true, characterData: true, subtree: true });
   });
   await page.getByTestId("mech-trigger-spotlight").click();
-  await expect(page.getByTestId("mech-trigger-spotlight")).toBeEnabled({
+  const progress = page.getByRole("progressbar");
+  await expect(progress).toBeVisible();
+  await expect(progress).toBeHidden({
     timeout: 60_000,
   });
   const intervals: number[] = await page.evaluate(

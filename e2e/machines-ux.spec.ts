@@ -46,6 +46,9 @@ test("seismoscope: matched bearing fires the dragon", async ({ page }) => {
     .getByRole("button", { name: "东 E", exact: true })
     .click();
   await page.getByTestId("mech-trigger-quake:arm").click();
+  const progress = page.getByRole("progressbar");
+  await expect(progress).toBeVisible();
+  await expect(progress).toBeHidden({ timeout: 30_000 });
   await page.getByTestId("mech-trigger-quake").click();
   await expect(page.getByTestId("event-captions")).toContainText(/ball|铜丸/, {
     timeout: 30_000,

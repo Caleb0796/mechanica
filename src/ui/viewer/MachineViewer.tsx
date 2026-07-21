@@ -3183,6 +3183,7 @@ export default function MachineViewer({
   const animationFrame = useRef<number | null>(null);
   const completionFrame = useRef<number | null>(null);
   const spotlightFrame = useRef<number | null>(null);
+  const pendingDemoCompletion = useRef(false);
   const pendingSpotlightDonePart = useRef<string | null>(null);
   const spotlightCaptionLockUntil = useRef(0);
   const pendingTrigger = useRef<{ arg?: number; triggerId: string } | null>(
@@ -3462,6 +3463,7 @@ export default function MachineViewer({
       spotlightFrame.current = null;
     }
     displayState.current = null;
+    pendingDemoCompletion.current = false;
     pendingSpotlightDonePart.current = null;
     spotlightCaptionLockUntil.current = 0;
     cameraDiagnostics.current = null;
@@ -3980,10 +3982,11 @@ export default function MachineViewer({
       const entry = timeline[index];
       if (!entry) {
         displayState.current = null;
-        if (donePart && demoFocusRef.current) {
+        if (demoFocusRef.current) {
+          pendingDemoCompletion.current = true;
           pendingSpotlightDonePart.current = donePart;
-        } else if (donePart) {
-          recordEvent("spotlight:done", donePart);
+        } else {
+          if (donePart) recordEvent("spotlight:done", donePart);
           setActiveTrigger(null);
         }
         setDemoProgress(1);
@@ -4097,6 +4100,15 @@ export default function MachineViewer({
     setDemoFocusPartId("tower-shell");
   };
 
+  const completePendingDemo = () => {
+    if (!pendingDemoCompletion.current) return;
+    pendingDemoCompletion.current = false;
+    const donePart = pendingSpotlightDonePart.current;
+    pendingSpotlightDonePart.current = null;
+    if (donePart) recordEvent("spotlight:done", donePart);
+    setActiveTrigger(null);
+  };
+
   const handleDemoFocusSettled = () => {
     setDemoFocusPartId(null);
     const pending = pendingTrigger.current;
@@ -4105,20 +4117,10 @@ export default function MachineViewer({
       startTrigger(pending.triggerId, pending.arg);
       return;
     }
-    const donePart = pendingSpotlightDonePart.current;
-    if (!donePart) return;
-    pendingSpotlightDonePart.current = null;
-    recordEvent("spotlight:done", donePart);
-    setActiveTrigger(null);
+    completePendingDemo();
   };
 
-  const handleDemoFocusRestored = () => {
-    const donePart = pendingSpotlightDonePart.current;
-    if (!donePart) return;
-    pendingSpotlightDonePart.current = null;
-    recordEvent("spotlight:done", donePart);
-    setActiveTrigger(null);
-  };
+  const handleDemoFocusRestored = () => completePendingDemo();
 
   const drivePart = (partId: string, delta: number) => {
     if (module.spec.slug === "astroclock" && delta < 0) {

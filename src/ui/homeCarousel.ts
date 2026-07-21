@@ -23,9 +23,7 @@ export function homeCarouselDriftSpeed(
   paused: boolean,
   reducedMotion: boolean,
 ): number {
-  return paused || reducedMotion
-    ? 0
-    : HOME_CAROUSEL_DRIFT_RADIANS_PER_SECOND;
+  return paused || reducedMotion ? 0 : HOME_CAROUSEL_DRIFT_RADIANS_PER_SECOND;
 }
 
 export function homeMachineScale(
@@ -35,9 +33,7 @@ export function homeMachineScale(
 ): number {
   if (machineCount === 0) return 1;
   const quarter = FULL_TURN / machineCount;
-  const distance = Math.abs(
-    wrappedAngle(rotationY + machineIndex * quarter),
-  );
+  const distance = Math.abs(wrappedAngle(rotationY + machineIndex * quarter));
   const proximity = Math.max(0, 1 - distance / quarter);
   const emphasis = proximity * proximity * (3 - 2 * proximity);
   return 1 + emphasis * 0.12;

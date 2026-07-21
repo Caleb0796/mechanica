@@ -48,8 +48,9 @@ import type {
 } from "../sim/types";
 import {
   activeHomeCarouselIndex,
-  createHomeCarouselState,
-  transitionHomeCarousel,
+  homeCarouselDriftSpeed,
+  homeMachineScale,
+  targetHomeCarouselRotation,
 } from "./homeCarousel";
 import { GeometryLoading } from "./viewer/geometryWarmup";
 import SceneEnvironment, {
@@ -59,7 +60,7 @@ import { visualMaterialFor } from "./viewer/visualRecovery";
 
 const TURNTABLE_RADIUS = 2.6;
 const QUARTER_TURN = Math.PI / 2;
-const TURN_DURATION_SECONDS = 1.1;
+const TURN_DURATION_SECONDS = 0.9;
 const PLATFORM_TOP = 0.16;
 
 const heroMachineModules = import.meta.glob<{ default: MachineModule }>(
@@ -430,11 +431,14 @@ function WarmLightRig() {
   );
 }
 
+interface TurnRequest {
+  id: number;
+  index: number;
+}
+
 interface TurnAnimation {
-  activeIndex: number;
   elapsed: number;
   fromRotation: number;
-  fromScales: number[];
   toRotation: number;
 }
 
@@ -445,77 +449,97 @@ function easeInOutCubic(value: number): number {
 }
 
 function Turntable({
-  activeIndex,
   modulesBySlug,
+  onActiveIndexChange,
   onActivate,
-  onTurningChange,
+  paused,
   reducedMotion,
+  request,
   slugs,
-  step,
 }: {
-  activeIndex: number;
   modulesBySlug: Partial<Record<MachineSlug, MachineModule>>;
+  onActiveIndexChange: (index: number) => void;
   onActivate: (index: number) => void;
-  onTurningChange: (turning: boolean) => void;
+  paused: boolean;
   reducedMotion: boolean;
+  request: TurnRequest | null;
   slugs: readonly MachineSlug[];
-  step: number;
 }) {
   const turntable = useRef<Group>(null);
   const anchors = useRef<Array<Group | null>>([]);
   const animation = useRef<TurnAnimation | null>(null);
-  const targetRotation = -step * QUARTER_TURN;
+  const activeIndex = useRef(0);
+  const driftSpeed = useRef(homeCarouselDriftSpeed(paused, reducedMotion));
+  const invalidate = useThree((state) => state.invalidate);
 
   useLayoutEffect(() => {
-    if (!turntable.current) return;
+    if (!turntable.current || !request) return;
+    const targetRotation = targetHomeCarouselRotation(
+      turntable.current.rotation.y,
+      request.index,
+      slugs.length,
+    );
     if (reducedMotion) {
       turntable.current.rotation.y = targetRotation;
       anchors.current.forEach((anchor, index) =>
-        anchor?.scale.setScalar(index === activeIndex ? 1.12 : 1),
-      );
-      animation.current = null;
-      onTurningChange(false);
-      return;
-    }
-    onTurningChange(true);
-    animation.current = {
-      activeIndex,
-      elapsed: 0,
-      fromRotation: turntable.current.rotation.y,
-      fromScales: anchors.current.map((anchor) => anchor?.scale.x ?? 1),
-      toRotation: targetRotation,
-    };
-  }, [activeIndex, onTurningChange, reducedMotion, targetRotation]);
-
-  useFrame((_, delta) => {
-    const current = animation.current;
-    if (!current || !turntable.current) return;
-    current.elapsed += delta;
-    const progress = Math.min(current.elapsed / TURN_DURATION_SECONDS, 1);
-    const eased = easeInOutCubic(progress);
-    turntable.current.rotation.y = MathUtils.lerp(
-      current.fromRotation,
-      current.toRotation,
-      eased,
-    );
-    anchors.current.forEach((anchor, index) => {
-      if (!anchor) return;
-      anchor.scale.setScalar(
-        MathUtils.lerp(
-          current.fromScales[index] ?? 1,
-          index === current.activeIndex ? 1.12 : 1,
-          eased,
+        anchor?.scale.setScalar(
+          homeMachineScale(targetRotation, index, slugs.length),
         ),
       );
-    });
-    if (progress === 1) {
+      activeIndex.current = request.index;
+      onActiveIndexChange(request.index);
       animation.current = null;
-      onTurningChange(false);
+      driftSpeed.current = 0;
+      invalidate();
+      return;
+    }
+    animation.current = {
+      elapsed: 0,
+      fromRotation: turntable.current.rotation.y,
+      toRotation: targetRotation,
+    };
+  }, [invalidate, onActiveIndexChange, reducedMotion, request, slugs.length]);
+
+  useFrame((_, delta) => {
+    if (!turntable.current) return;
+    const frameDelta = Math.min(delta, 0.05);
+    const current = animation.current;
+    if (current) {
+      current.elapsed += frameDelta;
+      const progress = Math.min(current.elapsed / TURN_DURATION_SECONDS, 1);
+      turntable.current.rotation.y = MathUtils.lerp(
+        current.fromRotation,
+        current.toRotation,
+        easeInOutCubic(progress),
+      );
+      if (progress === 1) animation.current = null;
+    } else {
+      const targetSpeed = homeCarouselDriftSpeed(paused, reducedMotion);
+      driftSpeed.current = MathUtils.damp(
+        driftSpeed.current,
+        targetSpeed,
+        9.2,
+        frameDelta,
+      );
+      if (paused && Math.abs(driftSpeed.current) < 0.0001) {
+        driftSpeed.current = 0;
+      }
+      turntable.current.rotation.y += driftSpeed.current * frameDelta;
+    }
+    const rotationY = turntable.current.rotation.y;
+    anchors.current.forEach((anchor, index) => {
+      if (!anchor) return;
+      anchor.scale.setScalar(homeMachineScale(rotationY, index, slugs.length));
+    });
+    const nextActiveIndex = activeHomeCarouselIndex(rotationY, slugs.length);
+    if (nextActiveIndex !== activeIndex.current) {
+      activeIndex.current = nextActiveIndex;
+      onActiveIndexChange(nextActiveIndex);
     }
   });
 
   return (
-    <group ref={turntable} rotation={[0, targetRotation, 0]}>
+    <group ref={turntable}>
       {slugs.map((slug, index) => {
         const angle = index * QUARTER_TURN;
         const module = modulesBySlug[slug];
@@ -531,7 +555,7 @@ function Turntable({
               anchors.current[index] = node;
             }}
             rotation={[0, angle, 0]}
-            scale={index === activeIndex ? 1.12 : 1}
+            scale={homeMachineScale(0, index, slugs.length)}
           >
             {module ? (
               <StaticMachineModel
@@ -549,31 +573,29 @@ function Turntable({
 }
 
 function TurntableStage({
-  activeIndex,
   modulesBySlug,
+  onActiveIndexChange,
   onActivate,
-  onTurningChange,
+  paused,
   reducedMotion,
   rendering,
+  request,
   slugs,
-  step,
-  turning,
 }: {
-  activeIndex: number;
   modulesBySlug: Partial<Record<MachineSlug, MachineModule>>;
+  onActiveIndexChange: (index: number) => void;
   onActivate: (index: number) => void;
-  onTurningChange: (turning: boolean) => void;
+  paused: boolean;
   reducedMotion: boolean;
   rendering: boolean;
+  request: TurnRequest | null;
   slugs: readonly MachineSlug[];
-  step: number;
-  turning: boolean;
 }) {
   return (
     <Canvas
       camera={{ fov: 34, position: [0, 2.3, 7.2] }}
       dpr={[1, 1.5]}
-      frameloop={!rendering ? "never" : turning ? "always" : "demand"}
+      frameloop={!rendering ? "never" : reducedMotion ? "demand" : "always"}
       gl={{
         antialias: false,
         powerPreference: "high-performance",
@@ -587,13 +609,13 @@ function TurntableStage({
       <FixedCamera />
       <WarmLightRig />
       <Turntable
-        activeIndex={activeIndex}
         modulesBySlug={modulesBySlug}
+        onActiveIndexChange={onActiveIndexChange}
         onActivate={onActivate}
-        onTurningChange={onTurningChange}
+        paused={paused}
         reducedMotion={reducedMotion}
+        request={request}
         slugs={slugs}
-        step={step}
       />
     </Canvas>
   );
@@ -612,54 +634,40 @@ export default function HomeCarouselHero({
   const documentVisible = useDocumentVisible();
   const heroInView = useElementInView(heroRef);
   const rendering = documentVisible && heroInView;
-  const [carousel, setCarousel] = useState(createHomeCarouselState);
-  const [turning, setTurning] = useState(false);
+  const requestId = useRef(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [turnRequest, setTurnRequest] = useState<TurnRequest | null>(null);
   const dataBySlug = useMachineCatalog(slugs);
   const { modulesBySlug, progress } = useSequentialMachineWarmup(
     !compact,
     slugs,
   );
-  const activeIndex = activeHomeCarouselIndex(carousel.step, slugs.length);
   const activeSlug = slugs[activeIndex];
   const activeData = dataBySlug[activeSlug];
   const mountedMachineCount = Object.keys(modulesBySlug).length;
 
-  const dispatch = useCallback(
-    (event: Parameters<typeof transitionHomeCarousel>[1]) => {
-      setCarousel(
-        (current) => transitionHomeCarousel(current, event, slugs).state,
-      );
+  const activateMachine = useCallback(
+    (index: number) => {
+      window.location.hash = `/m/${slugs[index]}`;
     },
     [slugs],
   );
-  const activateMachine = useCallback(
+  const turnToMachine = useCallback(
     (index: number) => {
-      const target = transitionHomeCarousel(
-        carousel,
-        { type: "activate", index },
-        slugs,
-      ).navigateTo;
-      if (target) window.location.hash = target.slice(1);
+      if (compact || reduceMotion) setActiveIndex(index);
+      if (compact) return;
+      requestId.current += 1;
+      setTurnRequest({ id: requestId.current, index });
     },
-    [carousel, slugs],
+    [compact, reduceMotion],
   );
-
-  useEffect(() => {
-    if (!rendering || reduceMotion || carousel.paused) return;
-    const interval = window.setInterval(
-      () => dispatch({ type: "advance", automatic: true }),
-      7000,
-    );
-    return () => window.clearInterval(interval);
-  }, [carousel.paused, dispatch, reduceMotion, rendering]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     event.preventDefault();
-    dispatch({
-      type: "advance",
-      delta: event.key === "ArrowLeft" ? -1 : 1,
-    });
+    const delta = event.key === "ArrowLeft" ? -1 : 1;
+    turnToMachine((activeIndex + delta + slugs.length) % slugs.length);
   };
 
   return (
@@ -668,11 +676,11 @@ export default function HomeCarouselHero({
       className="hero home-carousel-hero"
       data-active-slug={activeSlug}
       data-rendering={rendering ? "true" : "false"}
-      onBlur={() => dispatch({ type: "hover", paused: false })}
-      onFocus={() => dispatch({ type: "hover", paused: true })}
+      onBlur={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
       onKeyDown={handleKeyDown}
-      onMouseEnter={() => dispatch({ type: "hover", paused: true })}
-      onMouseLeave={() => dispatch({ type: "hover", paused: false })}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
       ref={heroRef}
       tabIndex={0}
     >
@@ -696,15 +704,14 @@ export default function HomeCarouselHero({
           </a>
         ) : (
           <TurntableStage
-            activeIndex={activeIndex}
             modulesBySlug={modulesBySlug}
+            onActiveIndexChange={setActiveIndex}
             onActivate={activateMachine}
-            onTurningChange={setTurning}
+            paused={paused}
             reducedMotion={reduceMotion}
             rendering={rendering}
+            request={turnRequest}
             slugs={slugs}
-            step={carousel.step}
-            turning={turning}
           />
         )}
         {!compact && Object.keys(modulesBySlug).length === 0 && progress ? (
@@ -722,6 +729,7 @@ export default function HomeCarouselHero({
           className="home-carousel-machine-copy"
           data-testid="home-active-machine"
           href={`#/m/${activeSlug}`}
+          key={activeSlug}
         >
           <span className="machine-index">
             {String(activeIndex + 1).padStart(2, "0")}
@@ -742,7 +750,7 @@ export default function HomeCarouselHero({
               data-machine-slug={slug}
               data-testid="home-machine-pill"
               key={slug}
-              onClick={() => dispatch({ type: "select", index })}
+              onClick={() => turnToMachine(index)}
               type="button"
             >
               {data?.names[language] ?? slug}

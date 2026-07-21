@@ -887,6 +887,7 @@ interface TransientMaterialState {
   inspectionState?: InspectionState;
   layerColor?: string;
   layerOpacity?: number;
+  layerVariant?: string;
   schemeHighlighted: boolean;
   seismoscopeDragonSpotlight: boolean;
   spotlightDimmed: boolean;
@@ -902,11 +903,6 @@ function applyTransientMaterialState(
   material.copy(baseMaterial);
   material.userData.mechanicaMaterialCacheKey = cacheKey;
 
-  if (state.aidCutaway) {
-    material.opacity = 0.12;
-    material.transparent = true;
-    material.depthWrite = false;
-  }
   if (
     state.aidHighlighted ||
     state.schemeHighlighted ||
@@ -965,6 +961,14 @@ function applyTransientMaterialState(
     material.color.set("#b62f2f");
     material.emissive.set("#7d1515");
     material.emissiveIntensity = 1.6;
+  }
+  if (state.aidCutaway || state.layerVariant === "story-cutaway") {
+    material.opacity = state.aidCutaway
+      ? 0.22
+      : Math.max(0.18, Math.min(state.layerOpacity ?? 0.22, 0.25));
+    material.emissiveIntensity = Math.min(material.emissiveIntensity, 0.15);
+    material.transparent = true;
+    material.depthWrite = false;
   }
 }
 
@@ -1203,6 +1207,7 @@ const PartNode = memo(function PartNode({
     part.id.startsWith("dragon-");
   const layerColor = layerPresentation?.color;
   const layerOpacity = layerPresentation?.opacity;
+  const layerVariant = layerPresentation?.variant;
   const transientStateKey = [
     aidCutaway ? "aid-cutaway" : "",
     aidHighlighted ? "aid-highlight" : "",
@@ -1237,6 +1242,7 @@ const PartNode = memo(function PartNode({
     inspectionState: inspectionMaterialState,
     layerColor,
     layerOpacity,
+    layerVariant,
     schemeHighlighted,
     seismoscopeDragonSpotlight,
     spotlightDimmed,

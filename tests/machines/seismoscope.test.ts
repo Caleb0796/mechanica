@@ -38,15 +38,26 @@ function provenanceFor(part: PartDef, path: string): Provenance | undefined {
   return part.dimensionProvenance[path] ?? part.dimensionProvenance["@rest"];
 }
 
+function customGeometries(
+  builder: string,
+  params: Record<string, number>,
+): THREE.BufferGeometry[] {
+  const built = machine.customBuilders?.[builder]?.(params);
+  if (!built) {
+    throw new Error(`${builder} must return geometry`);
+  }
+  return (Array.isArray(built) ? built : [built]) as THREE.BufferGeometry[];
+}
+
 function customGeometry(
   builder: string,
   params: Record<string, number>,
 ): THREE.BufferGeometry {
-  const built = machine.customBuilders?.[builder]?.(params);
-  if (!built || Array.isArray(built)) {
+  const geometries = customGeometries(builder, params);
+  if (geometries.length !== 1) {
     throw new Error(`${builder} must return one geometry`);
   }
-  return built as THREE.BufferGeometry;
+  return geometries[0];
 }
 
 describe("seismoscope machine module", () => {
@@ -145,8 +156,11 @@ describe("seismoscope machine module", () => {
     expect(semantic).toMatchObject({
       kind: "chinese-dragon-head",
       forward: [0, 0, 1],
+      headPitchDeg: 27,
       jawGapRatio: 0.34,
       maneFinCount: 3,
+      maneSweepMaxDeg: 25,
+      snoutLengthRatio: 0.51,
       features: expect.arrayContaining([
         "connected-neck-root",
         "connected-neck-flare",
@@ -244,7 +258,9 @@ describe("seismoscope machine module", () => {
       bossRadius: 0.14,
       boreRadius: 0.105,
     });
-    const toad = customGeometry("seismoscopeToad", { radius: 0.18 });
+    const [toad, toadMouthShadow] = customGeometries("seismoscopeToad", {
+      radius: 0.18,
+    });
     const wangChute = customGeometry("seismoscopeWangChute", {
       length: 0.36,
       width: 0.07,
@@ -352,6 +368,7 @@ describe("seismoscope machine module", () => {
     expect(toad.userData.mechanicaSemantic).toMatchObject({
       kind: "open-mouthed-toad",
       forward: [0, 0, -1],
+      catchAxis: [0, expect.any(Number), expect.any(Number)],
       features: expect.arrayContaining([
         "single-dome-body",
         "upturned-open-mouth",
@@ -367,6 +384,10 @@ describe("seismoscope machine module", () => {
     expect(toad.userData.mechanicaMaterial).toMatchObject({
       color: "#a9783f",
       textureVariant: "bronze:fresh",
+    });
+    expect(toadMouthShadow.userData).toMatchObject({
+      mechanicaMaterial: { color: "#17120f" },
+      mechanicaSemantic: { kind: "toad-mouth-shadow" },
     });
     // The seated sculpt tightens inward without exceeding the frozen blob envelope.
     expect(toad.boundingBox?.min.x).toBeGreaterThanOrEqual(-0.27);
@@ -408,6 +429,7 @@ describe("seismoscope machine module", () => {
       gate,
       lock,
       toad,
+      toadMouthShadow,
       wangChute,
       fengTrack,
       standing,
@@ -460,6 +482,13 @@ describe("seismoscope machine module", () => {
   });
 
   it("orients all dragons outward and aligns every dragon, ball, and toad path", () => {
+    const toadGeometries = customGeometries("seismoscopeToad", {
+      radius: 0.18,
+    });
+    const catchAxis = new THREE.Vector3(
+      ...toadGeometries[0].userData.mechanicaSemantic.catchAxis,
+    );
+
     for (let bearing = 0; bearing < 8; bearing += 1) {
       const dragon = machine.spec.parts.find(
         (part) => part.id === `dragon-${bearing}`,
@@ -485,6 +514,9 @@ describe("seismoscope machine module", () => {
       const dragonPoint = new THREE.Vector3(...dragon.position);
       const ballPoint = new THREE.Vector3(...ball.position);
       const toadPoint = new THREE.Vector3(...toad.position);
+      const toadCatchAxis = catchAxis
+        .clone()
+        .applyEuler(new THREE.Euler(...(toad.rotationEuler ?? [0, 0, 0])));
       const dragonToToad = toadPoint
         .clone()
         .sub(dragonPoint)
@@ -535,6 +567,10 @@ describe("seismoscope machine module", () => {
         .add(toadPoint);
       expect(forward.dot(outward)).toBeCloseTo(1, 12);
       expect(dragonToToad.dot(outward)).toBeCloseTo(1, 12);
+      expect(toadCatchAxis.y).toBeGreaterThan(0.5);
+      expect(
+        toadCatchAxis.clone().setY(0).normalize().dot(outward.clone().negate()),
+      ).toBeCloseTo(1, 12);
       expect(ballPoint.clone().setY(0).normalize().dot(outward)).toBeCloseTo(
         1,
         12,
@@ -549,6 +585,7 @@ describe("seismoscope machine module", () => {
       expect(receivedRadius - ballRadius).toBeGreaterThan(0.2);
       expect(receivedPoint.distanceTo(toadMouth)).toBeLessThan(0.01);
     }
+    for (const geometry of toadGeometries) geometry.dispose();
   });
 
   it("orients every toad mouth toward its matching dragon", () => {

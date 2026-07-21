@@ -195,46 +195,49 @@ function flaredMountCollar(
 ): THREE.BufferGeometry {
   const radialSegments = 18;
   const neckRadius = radius * 0.77;
-  const baseRadiusX = neckRadius * 1.6;
-  const baseRadiusY = neckRadius * 1.35;
+  const baseRadiusX = neckRadius * 1.3;
+  const baseRadiusY = neckRadius * 1.18;
   const depth = radius * 0.28;
   const positions = [0, centerY, surfaceZ];
   const indices: number[] = [];
 
-  for (let side = 0; side < radialSegments; side += 1) {
-    const angle = (side / radialSegments) * Math.PI * 2;
-    const x = Math.cos(angle) * baseRadiusX;
-    const y = Math.sin(angle) * baseRadiusY;
-    const curvatureSag = (x * x) / (radius * 10.8) + (y * y) / (radius * 8.2);
-    positions.push(x, centerY + y, surfaceZ - curvatureSag);
+  const rings = [
+    { radiusX: baseRadiusX, radiusY: baseRadiusY, rise: 0 },
+    {
+      radiusX: neckRadius * 1.12,
+      radiusY: neckRadius * 1.02,
+      rise: depth * 0.62,
+    },
+    { radiusX: neckRadius, radiusY: neckRadius * 0.9, rise: depth },
+  ];
+  for (const [ringIndex, ring] of rings.entries()) {
+    for (let side = 0; side < radialSegments; side += 1) {
+      const angle = (side / radialSegments) * Math.PI * 2;
+      const x = Math.cos(angle) * ring.radiusX;
+      const y = Math.sin(angle) * ring.radiusY;
+      const curvatureSag =
+        ringIndex === 0
+          ? (x * x) / (radius * 10.8) + (y * y) / (radius * 8.2)
+          : 0;
+      positions.push(x, centerY + y, surfaceZ + ring.rise - curvatureSag);
+    }
   }
-  for (let side = 0; side < radialSegments; side += 1) {
-    const angle = (side / radialSegments) * Math.PI * 2;
-    positions.push(
-      Math.cos(angle) * neckRadius,
-      centerY + Math.sin(angle) * neckRadius * 0.9,
-      surfaceZ + depth,
-    );
-  }
-  const topCenter = 1 + radialSegments * 2;
+  const topCenter = 1 + radialSegments * rings.length;
   positions.push(0, centerY, surfaceZ + depth);
   for (let side = 0; side < radialSegments; side += 1) {
     const nextSide = (side + 1) % radialSegments;
     const base = 1 + side;
     const baseNext = 1 + nextSide;
-    const top = 1 + radialSegments + side;
-    const topNext = 1 + radialSegments + nextSide;
-    indices.push(
-      0,
-      baseNext,
-      base,
-      base,
-      baseNext,
-      top,
-      top,
-      baseNext,
-      topNext,
-    );
+    indices.push(0, baseNext, base);
+    for (let ring = 0; ring < rings.length - 1; ring += 1) {
+      const lower = 1 + ring * radialSegments + side;
+      const lowerNext = 1 + ring * radialSegments + nextSide;
+      const upper = lower + radialSegments;
+      const upperNext = lowerNext + radialSegments;
+      indices.push(lower, lowerNext, upper, upper, lowerNext, upperNext);
+    }
+    const top = 1 + (rings.length - 1) * radialSegments + side;
+    const topNext = 1 + (rings.length - 1) * radialSegments + nextSide;
     indices.push(topCenter, top, topNext);
   }
 
@@ -791,11 +794,11 @@ function seismoscopeDragon(
 ): THREE.BufferGeometry {
   const radius = params.radius;
   const length = radius * 3.5;
-  const headPitch = THREE.MathUtils.degToRad(20);
+  const headPitch = THREE.MathUtils.degToRad(27);
   const headPivot = new THREE.Vector3(0, radius * 0.16, -radius * 0.12);
-  const jawAngle = THREE.MathUtils.degToRad(13);
+  const jawAngle = THREE.MathUtils.degToRad(6);
   const jawLength = length * 0.35;
-  const jawHinge = new THREE.Vector3(0, radius * 0.18, radius * 0.38);
+  const jawHinge = new THREE.Vector3(0, radius * 0.3, radius * 0.3);
   const jawTip = jawHinge
     .clone()
     .add(
@@ -823,7 +826,7 @@ function seismoscopeDragon(
       placeGeometry(
         new THREE.SphereGeometry(1, 20, 14),
         [length * 0.2185, radius * 0.62, length * 0.225],
-        [0, radius * 0.48, radius * 0.12],
+        [0, radius * 0.48, -radius * 0.02],
       ),
       headPivot,
       headPitch,
@@ -831,19 +834,19 @@ function seismoscopeDragon(
     pitchAround(
       taperedWedge([
         {
-          center: new THREE.Vector3(0, radius * 0.38, radius * 0.2),
+          center: new THREE.Vector3(0, radius * 0.38, -radius * 0.1),
           halfWidth: radius * 0.67,
           halfHeight: radius * 0.34,
         },
         {
-          center: new THREE.Vector3(0, radius * 0.38, radius * 0.85),
+          center: new THREE.Vector3(0, radius * 0.38, radius * 0.78),
           halfWidth: radius * 0.56,
           halfHeight: radius * 0.29,
         },
         {
-          center: new THREE.Vector3(0, radius * 0.34, radius * 1.5),
+          center: new THREE.Vector3(0, radius * 0.34, radius * 1.68),
           halfWidth: radius * 0.43,
-          halfHeight: radius * 0.22,
+          halfHeight: radius * 0.18,
         },
       ]),
       headPivot,
@@ -948,7 +951,7 @@ function seismoscopeDragon(
       placeGeometry(
         new THREE.SphereGeometry(length * 0.04, 10, 8),
         [1, 0.72, 1],
-        [-radius * 0.27, radius * 0.32, radius * 1.42],
+        [-radius * 0.27, radius * 0.34, radius * 1.6],
       ),
       headPivot,
       headPitch,
@@ -957,7 +960,7 @@ function seismoscopeDragon(
       placeGeometry(
         new THREE.SphereGeometry(length * 0.04, 10, 8),
         [1, 0.72, 1],
-        [radius * 0.27, radius * 0.32, radius * 1.42],
+        [radius * 0.27, radius * 0.34, radius * 1.6],
       ),
       headPivot,
       headPitch,
@@ -966,8 +969,8 @@ function seismoscopeDragon(
       taperedTubeAlong(
         [
           new THREE.Vector3(-radius * 0.5, radius * 0.78, -radius * 0.1),
-          new THREE.Vector3(-radius * 0.68, radius * 0.94, -radius * 0.58),
-          new THREE.Vector3(-radius * 0.76, radius * 0.97, -radius * 1.02),
+          new THREE.Vector3(-radius * 0.7, radius * 0.86, -radius * 0.54),
+          new THREE.Vector3(-radius * 0.85, radius * 0.85, -radius * 0.9),
         ],
         length * 0.05,
         radius * 0.03,
@@ -981,8 +984,8 @@ function seismoscopeDragon(
       taperedTubeAlong(
         [
           new THREE.Vector3(radius * 0.5, radius * 0.78, -radius * 0.1),
-          new THREE.Vector3(radius * 0.68, radius * 0.94, -radius * 0.58),
-          new THREE.Vector3(radius * 0.76, radius * 0.97, -radius * 1.02),
+          new THREE.Vector3(radius * 0.7, radius * 0.86, -radius * 0.54),
+          new THREE.Vector3(radius * 0.85, radius * 0.85, -radius * 0.9),
         ],
         length * 0.05,
         radius * 0.03,
@@ -1027,19 +1030,19 @@ function seismoscopeDragon(
     sweptManeFin(
       new THREE.Vector3(0, radius * 0.48, -radius * 0.34),
       length * 0.16,
-      length * 0.1,
+      length * 0.06,
       radius * 0.06,
     ),
     sweptManeFin(
       new THREE.Vector3(0, radius * 0.26, -radius * 0.67),
       length * 0.145,
-      length * 0.085,
+      length * 0.052,
       radius * 0.055,
     ),
     sweptManeFin(
       new THREE.Vector3(0, -radius * 0.02, -radius * 0.97),
       length * 0.13,
-      length * 0.07,
+      length * 0.045,
       radius * 0.05,
     ),
   );
@@ -1055,12 +1058,16 @@ function seismoscopeDragon(
       kind: "chinese-dragon-head",
       forward: [0, 0, 1],
       envelope: [radius * 3.5, radius * 2.8, radius * 3.73],
+      headPitchDeg: 27,
       jawGapRatio: 0.34,
       maneFinCount: 3,
+      maneSweepMaxDeg: 25,
+      snoutLengthRatio: 0.51,
       features: [
         "connected-neck-root",
         "connected-neck-flare",
         "solid-mount-plate",
+        "integrated-gold-dome",
         "cranial-mass",
         "down-pitched-head",
         "upper-jaw",
@@ -1087,7 +1094,7 @@ function seismoscopeDragon(
 
 function seismoscopeToad(
   params: Record<string, number>,
-): THREE.BufferGeometry {
+): THREE.BufferGeometry[] {
   const radius = params.radius;
   const height = radius * 2;
   const mouth = new THREE.Vector3(0, radius * 0.27, -radius * 0.94);
@@ -1116,14 +1123,14 @@ function seismoscopeToad(
       24,
     ),
     placeGeometry(
-      new THREE.SphereGeometry(height * 0.08, 12, 9),
+      new THREE.SphereGeometry(height * 0.09, 12, 9),
       [1, 1, 0.88],
-      [-radius * 0.42, radius * 0.38, -radius * 0.55],
+      [-radius * 0.42, radius * 0.42, -radius * 0.55],
     ),
     placeGeometry(
-      new THREE.SphereGeometry(height * 0.08, 12, 9),
+      new THREE.SphereGeometry(height * 0.09, 12, 9),
       [1, 1, 0.88],
-      [radius * 0.42, radius * 0.38, -radius * 0.55],
+      [radius * 0.42, radius * 0.42, -radius * 0.55],
     ),
     placeGeometry(
       new THREE.SphereGeometry(1, 16, 10),
@@ -1136,19 +1143,19 @@ function seismoscopeToad(
       [radius * 0.78, -radius * 0.62, radius * 0.05],
     ),
     cylinderBetween(
-      new THREE.Vector3(-radius * 0.38, -radius * 0.08, -radius * 0.38),
-      new THREE.Vector3(-radius * 0.46, -radius * 0.74, -radius * 0.72),
-      height * 0.07,
+      new THREE.Vector3(-radius * 0.5, -radius * 0.04, -radius * 0.45),
+      new THREE.Vector3(-radius * 0.62, -radius * 0.74, -radius * 0.72),
+      height * 0.075,
       10,
     ),
     cylinderBetween(
-      new THREE.Vector3(radius * 0.38, -radius * 0.08, -radius * 0.38),
-      new THREE.Vector3(radius * 0.46, -radius * 0.74, -radius * 0.72),
-      height * 0.07,
+      new THREE.Vector3(radius * 0.5, -radius * 0.04, -radius * 0.45),
+      new THREE.Vector3(radius * 0.62, -radius * 0.74, -radius * 0.72),
+      height * 0.075,
       10,
     ),
   ];
-  return setGeometryPresentation(
+  const goldSculpt = setGeometryPresentation(
     mergeComposite(parts),
     {
       color: "#a9783f",
@@ -1159,6 +1166,7 @@ function seismoscopeToad(
     {
       kind: "open-mouthed-toad",
       forward: [0, 0, -1],
+      catchAxis: mouthDirection.toArray(),
       features: [
         "crouched-body",
         "single-dome-body",
@@ -1176,6 +1184,26 @@ function seismoscopeToad(
       ],
     },
   );
+  const shadowCenter = throat.clone().addScaledVector(mouthDirection, radius * 0.02);
+  const mouthShadow = orientAlong(
+    new THREE.CircleGeometry(radius * 0.3, 24),
+    new THREE.Vector3(0, 0, 1),
+    mouthDirection,
+  ).translate(shadowCenter.x, shadowCenter.y, shadowCenter.z);
+  setGeometryPresentation(
+    mouthShadow,
+    {
+      color: "#17120f",
+      metalness: 0.18,
+      roughness: 0.82,
+      textureVariant: "iron:cast",
+    },
+    {
+      kind: "toad-mouth-shadow",
+      forward: mouthDirection.toArray(),
+    },
+  );
+  return [goldSculpt, mouthShadow];
 }
 
 function seismoscopeStandingDuzhu(

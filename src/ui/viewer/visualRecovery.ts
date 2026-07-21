@@ -47,8 +47,6 @@ export const VIEWER_PROFILES: Record<MachineSlug, ViewerProfile> = {
       fov: 36,
     },
     minDistanceFactor: 2,
-    minAzimuthAngle: 0.27,
-    maxAzimuthAngle: 0.97,
     minPolarAngle: 1.1,
     maxPolarAngle: 1.45,
     targetOffset: [0, -0.03, 0],

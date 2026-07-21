@@ -217,7 +217,11 @@ function flaredMountCollar(
       const y = Math.sin(angle) * ring.radiusY;
       const curvatureSag =
         ringIndex === 0
-          ? (x * x) / (radius * 10.8) + (y * y) / (radius * 8.2)
+          ? Math.min(
+              (x * x) / (radius * 10.8) +
+                (y * y) / (radius * 8.2),
+              radius * 0.025,
+            )
           : 0;
       positions.push(x, centerY + y, surfaceZ + ring.rise - curvatureSag);
     }
@@ -266,14 +270,15 @@ function sweptManeFin(
 ): THREE.BufferGeometry {
   const halfThickness = thickness / 2;
   const halfLength = length / 2;
+  const rootY = center.y - height * 0.75;
   const positions: number[] = [];
   for (const x of [-halfThickness, halfThickness]) {
     positions.push(
       center.x + x,
-      center.y,
+      rootY,
       center.z + halfLength,
       center.x + x,
-      center.y,
+      rootY,
       center.z - halfLength,
       center.x + x,
       center.y + height,
@@ -799,6 +804,9 @@ function seismoscopeDragon(
   const jawAngle = THREE.MathUtils.degToRad(6);
   const jawLength = length * 0.35;
   const jawHinge = new THREE.Vector3(0, radius * 0.3, radius * 0.3);
+  const mountCenterY = -radius * 0.34;
+  const mountSurfaceZ = -radius * 2.155;
+  const mountCrownZ = mountSurfaceZ + radius * 0.28;
   const jawTip = jawHinge
     .clone()
     .add(
@@ -809,10 +817,10 @@ function seismoscopeDragon(
       ),
     );
   const parts = [
-    flaredMountCollar(radius, -radius * 0.34, -radius * 2.07),
+    flaredMountCollar(radius, mountCenterY, mountSurfaceZ),
     taperedTubeAlong(
       [
-        new THREE.Vector3(0, -radius * 0.34, -radius * 1.25),
+        new THREE.Vector3(0, mountCenterY, mountCrownZ),
         new THREE.Vector3(radius * 0.12, -radius * 0.76, -radius * 0.86),
         new THREE.Vector3(-radius * 0.12, -radius * 0.12, -radius * 0.44),
         new THREE.Vector3(0, radius * 0.16, -radius * 0.12),

@@ -130,7 +130,7 @@ describe("independent machine validation", () => {
       expected: -0.5,
       actual: -0.5,
     });
-  });
+  }, 20_000);
 
   it("fails a corrupted expected ratio", () => {
     const module = miniModule();

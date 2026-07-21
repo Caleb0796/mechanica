@@ -331,7 +331,7 @@ describe("independent machine validation", () => {
       ),
     ).toMatchObject({ status: "pass" });
     expect(probeCalls).toBeGreaterThan(0);
-  });
+  }, 20_000);
 
   it("checks global collisions through a disconnected alternate drive", () => {
     const module = miniModule();

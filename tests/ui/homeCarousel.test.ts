@@ -40,8 +40,16 @@ describe("home turntable state", () => {
       slugs,
     ).state;
     expect(
-      transitionHomeCarousel(paused, { type: "advance" }, slugs).state,
+      transitionHomeCarousel(
+        paused,
+        { type: "advance", automatic: true },
+        slugs,
+      ).state,
     ).toBe(paused);
+    expect(
+      transitionHomeCarousel(paused, { type: "advance", delta: -1 }, slugs)
+        .state.step,
+    ).toBe(-1);
 
     const resumed = transitionHomeCarousel(
       paused,
@@ -49,7 +57,11 @@ describe("home turntable state", () => {
       slugs,
     ).state;
     expect(
-      transitionHomeCarousel(resumed, { type: "advance" }, slugs).state.step,
+      transitionHomeCarousel(
+        resumed,
+        { type: "advance", automatic: true },
+        slugs,
+      ).state.step,
     ).toBe(1);
   });
 

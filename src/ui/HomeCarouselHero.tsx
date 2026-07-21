@@ -7,20 +7,26 @@ import {
   useMemo,
   useRef,
   useState,
+  type KeyboardEvent,
   type RefObject,
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  ACESFilmicToneMapping,
   Box3,
   type BufferGeometry,
   type Group,
+  MathUtils,
   PerspectiveCamera,
-  Sphere,
+  type SpotLight,
   Vector3,
 } from "three";
 
 import { machineGeometryCache } from "../core/geometryCache";
-import { warmMachine } from "../core/geometryWarmup";
+import {
+  type GeometryWarmupProgress,
+  warmMachine,
+} from "../core/geometryWarmup";
 import {
   acquireMaterial,
   getMaterial,
@@ -41,14 +47,20 @@ import type {
   PartDef,
 } from "../sim/types";
 import {
+  activeHomeCarouselIndex,
   createHomeCarouselState,
   transitionHomeCarousel,
 } from "./homeCarousel";
-import {
-  GeometryLoading,
-  useMachineGeometryWarmup,
-} from "./viewer/geometryWarmup";
+import { GeometryLoading } from "./viewer/geometryWarmup";
+import SceneEnvironment, {
+  prepareSceneEnvironment,
+} from "./viewer/SceneEnvironment";
 import { visualMaterialFor } from "./viewer/visualRecovery";
+
+const TURNTABLE_RADIUS = 2.6;
+const QUARTER_TURN = Math.PI / 2;
+const TURN_DURATION_SECONDS = 1.1;
+const PLATFORM_TOP = 0.16;
 
 const heroMachineModules = import.meta.glob<{ default: MachineModule }>(
   "../machines/*/build.ts",
@@ -67,6 +79,15 @@ function loadHeroData(slug: MachineSlug): Promise<MachineData> {
   const loader = heroDataModules[`../data/machines/${slug}.json`];
   if (!loader) return Promise.reject(new Error(`Missing machine data ${slug}`));
   return loader().then((loaded) => loaded.default);
+}
+
+function machineSpec(module: MachineModule): MachineSpec {
+  return applySchemePatch(
+    module.spec,
+    module.defaultSchemeId
+      ? module.schemes?.[module.defaultSchemeId]
+      : undefined,
+  );
 }
 
 function useMediaQuery(query: string): boolean {
@@ -110,6 +131,69 @@ function useElementInView(ref: RefObject<HTMLElement | null>): boolean {
   return inView;
 }
 
+function useMachineCatalog(slugs: readonly MachineSlug[]) {
+  const [dataBySlug, setDataBySlug] = useState<
+    Partial<Record<MachineSlug, MachineData>>
+  >({});
+  useEffect(() => {
+    let active = true;
+    void Promise.all(
+      slugs.map(async (slug) => [slug, await loadHeroData(slug)] as const),
+    ).then((entries) => {
+      if (active) setDataBySlug(Object.fromEntries(entries));
+    });
+    return () => {
+      active = false;
+    };
+  }, [slugs]);
+  return dataBySlug;
+}
+
+function useSequentialMachineWarmup(
+  enabled: boolean,
+  slugs: readonly MachineSlug[],
+) {
+  const [modulesBySlug, setModulesBySlug] = useState<
+    Partial<Record<MachineSlug, MachineModule>>
+  >({});
+  const [progress, setProgress] = useState<GeometryWarmupProgress | null>(null);
+
+  useEffect(() => {
+    if (!enabled) return;
+    let active = true;
+    let running: ReturnType<typeof warmMachine> | null = null;
+
+    void (async () => {
+      for (const slug of slugs) {
+        const module = await loadHeroMachine(slug);
+        if (!active) return;
+        const spec = machineSpec(module);
+        setProgress({ built: 0, total: spec.parts.length });
+        running = warmMachine(module, spec, setProgress, {
+          consumerScope: `home-turntable:${slug}`,
+        });
+        const result = await running.done;
+        running.release();
+        running = null;
+        if (!active) return;
+        if (result.status === "completed") {
+          setModulesBySlug((current) => ({ ...current, [slug]: module }));
+        }
+      }
+      if (active) setProgress(null);
+    })().catch(() => {
+      if (active) setProgress(null);
+    });
+
+    return () => {
+      active = false;
+      running?.cancel();
+    };
+  }, [enabled, slugs]);
+
+  return { modulesBySlug, progress };
+}
+
 function HeroPartGeometry({
   geometry,
   material,
@@ -130,7 +214,7 @@ function HeroPartGeometry({
   );
 }
 
-const HeroMachinePart = memo(function HeroMachinePart({
+const StaticMachinePart = memo(function StaticMachinePart({
   childrenByParent,
   module,
   part,
@@ -142,7 +226,7 @@ const HeroMachinePart = memo(function HeroMachinePart({
   const geometryResource = useMemo(
     () =>
       machineGeometryCache.prepare(module, part.geometry, {
-        consumerKey: `home:${module.data.slug}:${part.id}`,
+        consumerKey: `home-turntable:${module.data.slug}:${part.id}`,
       }),
     [module, part],
   );
@@ -155,7 +239,7 @@ const HeroMachinePart = memo(function HeroMachinePart({
     [module.data.slug, part],
   );
   const materialKey = useMemo(
-    () => `home:${materialVariantKey(presentation)}`,
+    () => `home-turntable:${materialVariantKey(presentation)}`,
     [presentation],
   );
   const material = getMaterial(part.material, materialKey, () =>
@@ -182,7 +266,7 @@ const HeroMachinePart = memo(function HeroMachinePart({
         />
       ))}
       {(childrenByParent.get(part.id) ?? []).map((child) => (
-        <HeroMachinePart
+        <StaticMachinePart
           childrenByParent={childrenByParent}
           key={child.id}
           module={module}
@@ -193,41 +277,34 @@ const HeroMachinePart = memo(function HeroMachinePart({
   );
 });
 
-function fitHeroCamera(camera: PerspectiveCamera, model: Group): void {
-  model.position.set(0, 0, 0);
-  model.updateWorldMatrix(true, true);
-  const bounds = new Box3().setFromObject(model);
-  if (bounds.isEmpty()) return;
-  const center = bounds.getCenter(new Vector3());
-  const sphere = bounds.getBoundingSphere(new Sphere());
-  model.position.sub(center);
-  const verticalFov = (camera.fov * Math.PI) / 180;
-  const horizontalFov =
-    2 * Math.atan(Math.tan(verticalFov / 2) * camera.aspect);
-  const limitingFov = Math.min(verticalFov, horizontalFov);
-  const distance = Math.max(
-    sphere.radius / Math.sin(limitingFov / 2),
-    sphere.radius * 2,
-  );
-  const direction = new Vector3(0.68, 0.36, 1).normalize();
-  camera.position.copy(direction.multiplyScalar(distance * 1.16));
-  camera.lookAt(0, 0, 0);
-  camera.updateProjectionMatrix();
+function localBounds(group: Group): Box3 {
+  group.updateWorldMatrix(true, true);
+  const world = new Box3().setFromObject(group);
+  const local = new Box3();
+  const point = new Vector3();
+  for (const x of [world.min.x, world.max.x]) {
+    for (const y of [world.min.y, world.max.y]) {
+      for (const z of [world.min.z, world.max.z]) {
+        point.set(x, y, z);
+        group.parent?.worldToLocal(point);
+        local.expandByPoint(point);
+      }
+    }
+  }
+  return local;
 }
 
-function HeroMachineModel({
+function StaticMachineModel({
   module,
-  onMounted,
-  spec,
+  onActivate,
+  slug,
 }: {
   module: MachineModule;
-  onMounted: () => void;
-  spec: MachineSpec;
+  onActivate: () => void;
+  slug: MachineSlug;
 }) {
-  const camera = useThree((state) => state.camera);
-  const viewport = useThree((state) => state.size);
-  const stage = useRef<Group>(null);
   const model = useRef<Group>(null);
+  const spec = useMemo(() => machineSpec(module), [module]);
   const partIds = useMemo(
     () => new Set(spec.parts.map((part) => part.id)),
     [spec.parts],
@@ -249,102 +326,264 @@ function HeroMachineModel({
   );
 
   useLayoutEffect(() => {
-    if (!(camera instanceof PerspectiveCamera) || !model.current) return;
-    fitHeroCamera(camera, model.current);
-    onMounted();
-  }, [camera, module, onMounted, viewport]);
-
-  useFrame((_, delta) => {
-    if (stage.current) stage.current.rotation.y += Math.min(delta, 0.05) * 0.1;
-  });
+    if (!model.current) return;
+    model.current.position.set(0, 0, 0);
+    model.current.scale.setScalar(1);
+    const bounds = localBounds(model.current);
+    const size = bounds.getSize(new Vector3());
+    const center = bounds.getCenter(new Vector3());
+    const scale = Math.min(1.85 / Math.max(size.x, size.z), 1.8 / size.y);
+    model.current.scale.setScalar(scale);
+    model.current.position.set(
+      -center.x * scale,
+      PLATFORM_TOP - bounds.min.y * scale,
+      -center.z * scale,
+    );
+  }, [module]);
 
   return (
-    <group ref={stage}>
-      <group ref={model}>
-        {rootParts.map((part) => (
-          <HeroMachinePart
-            childrenByParent={childrenByParent}
-            key={part.id}
-            module={module}
-            part={part}
-          />
-        ))}
-      </group>
+    <group
+      name={`home-machine-${slug}`}
+      onClick={(event) => {
+        event.stopPropagation();
+        onActivate();
+      }}
+      ref={model}
+    >
+      {rootParts.map((part) => (
+        <StaticMachinePart
+          childrenByParent={childrenByParent}
+          key={part.id}
+          module={module}
+          part={part}
+        />
+      ))}
     </group>
   );
 }
 
-function LoadedHeroStage({
-  module,
-  onReady,
-  rendering,
-  slug,
-}: {
-  module: MachineModule;
-  onReady: (slug: MachineSlug) => void;
-  rendering: boolean;
-  slug: MachineSlug;
-}) {
-  const { t } = useTranslation();
-  const spec = useMemo(
-    () =>
-      applySchemePatch(
-        module.spec,
-        module.defaultSchemeId
-          ? module.schemes?.[module.defaultSchemeId]
-          : undefined,
-      ),
-    [module],
+function RoundPlatform({ radius }: { radius: number }) {
+  return (
+    <group>
+      <mesh position={[0, PLATFORM_TOP / 2, 0]}>
+        <cylinderGeometry args={[radius, radius, PLATFORM_TOP, 72]} />
+        <meshStandardMaterial
+          color="#6f3f20"
+          metalness={0.06}
+          roughness={0.72}
+        />
+      </mesh>
+      <mesh
+        position={[0, PLATFORM_TOP + 0.005, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+      >
+        <ringGeometry args={[radius * 0.72, radius * 0.725, 72]} />
+        <meshStandardMaterial
+          color="#c88a42"
+          metalness={0.18}
+          roughness={0.58}
+        />
+      </mesh>
+    </group>
   );
-  const warmup = useMachineGeometryWarmup({
-    consumerScope: `home:${slug}`,
-    module,
-    spec,
-    warmupKey: `${slug}:${module.defaultSchemeId ?? "default"}`,
-  });
+}
 
-  useEffect(() => {
-    if (warmup.prepared) onReady(slug);
-  }, [onReady, slug, warmup.prepared]);
+function FixedCamera() {
+  const camera = useThree((state) => state.camera);
+  useLayoutEffect(() => {
+    if (!(camera instanceof PerspectiveCamera)) return;
+    camera.position.set(0, 2.3, 7.2);
+    camera.lookAt(0, 0.9, 0);
+    camera.updateProjectionMatrix();
+  }, [camera]);
+  return null;
+}
 
+function WarmLightRig() {
+  const light = useRef<SpotLight>(null);
+  const target = useRef<Group>(null);
+  useLayoutEffect(() => {
+    if (light.current && target.current) light.current.target = target.current;
+  }, []);
   return (
     <>
-      <Canvas
-        camera={{ fov: 34, position: [0, 0, 5] }}
-        dpr={[1, 1.5]}
-        frameloop={rendering ? "always" : "never"}
-        gl={{ antialias: false, powerPreference: "high-performance" }}
-      >
-        <color args={["#0c0d0c"]} attach="background" />
-        <ambientLight color="#d9c498" intensity={0.8} />
-        <hemisphereLight args={["#dce8ef", "#241b13", 1.25]} />
-        <directionalLight
-          color="#ffe0a6"
-          intensity={2.8}
-          position={[4, 6, 5]}
-        />
-        <directionalLight
-          color="#82b2c7"
-          intensity={1.1}
-          position={[-5, 2, -4]}
-        />
-        {warmup.prepared ? (
-          <HeroMachineModel
-            module={module}
-            onMounted={warmup.commit}
-            spec={spec}
-          />
-        ) : null}
-      </Canvas>
-      {!warmup.prepared ? (
-        <GeometryLoading
-          built={warmup.built}
-          label={t("app.loading")}
-          scope="home-carousel"
-          total={warmup.total}
-        />
-      ) : null}
+      <ambientLight color="#d8b46c" intensity={0.38} />
+      <hemisphereLight args={["#ead7b2", "#2d2118", 0.48]} />
+      <directionalLight color="#ffe1b6" intensity={2.2} position={[3, 5, 4]} />
+      <directionalLight
+        color="#b88a5a"
+        intensity={0.42}
+        position={[-4, 2, -3]}
+      />
+      <spotLight
+        angle={0.42}
+        color="#ffc66f"
+        decay={2}
+        distance={11}
+        intensity={7}
+        penumbra={0.72}
+        position={[0, 4.8, 6.2]}
+        ref={light}
+      />
+      <group position={[0, 0.9, TURNTABLE_RADIUS]} ref={target} />
     </>
+  );
+}
+
+interface TurnAnimation {
+  activeIndex: number;
+  elapsed: number;
+  fromRotation: number;
+  fromScales: number[];
+  toRotation: number;
+}
+
+function easeInOutCubic(value: number): number {
+  return value < 0.5
+    ? 4 * value * value * value
+    : 1 - Math.pow(-2 * value + 2, 3) / 2;
+}
+
+function Turntable({
+  activeIndex,
+  modulesBySlug,
+  onActivate,
+  reducedMotion,
+  slugs,
+  step,
+}: {
+  activeIndex: number;
+  modulesBySlug: Partial<Record<MachineSlug, MachineModule>>;
+  onActivate: (index: number) => void;
+  reducedMotion: boolean;
+  slugs: readonly MachineSlug[];
+  step: number;
+}) {
+  const turntable = useRef<Group>(null);
+  const anchors = useRef<Array<Group | null>>([]);
+  const animation = useRef<TurnAnimation | null>(null);
+  const targetRotation = -step * QUARTER_TURN;
+
+  useLayoutEffect(() => {
+    if (!turntable.current) return;
+    if (reducedMotion) {
+      turntable.current.rotation.y = targetRotation;
+      anchors.current.forEach((anchor, index) =>
+        anchor?.scale.setScalar(index === activeIndex ? 1.12 : 1),
+      );
+      animation.current = null;
+      return;
+    }
+    animation.current = {
+      activeIndex,
+      elapsed: 0,
+      fromRotation: turntable.current.rotation.y,
+      fromScales: anchors.current.map((anchor) => anchor?.scale.x ?? 1),
+      toRotation: targetRotation,
+    };
+  }, [activeIndex, reducedMotion, targetRotation]);
+
+  useFrame((_, delta) => {
+    const current = animation.current;
+    if (!current || !turntable.current) return;
+    current.elapsed += delta;
+    const progress = Math.min(current.elapsed / TURN_DURATION_SECONDS, 1);
+    const eased = easeInOutCubic(progress);
+    turntable.current.rotation.y = MathUtils.lerp(
+      current.fromRotation,
+      current.toRotation,
+      eased,
+    );
+    anchors.current.forEach((anchor, index) => {
+      if (!anchor) return;
+      anchor.scale.setScalar(
+        MathUtils.lerp(
+          current.fromScales[index] ?? 1,
+          index === current.activeIndex ? 1.12 : 1,
+          eased,
+        ),
+      );
+    });
+    if (progress === 1) animation.current = null;
+  });
+
+  return (
+    <group ref={turntable} rotation={[0, targetRotation, 0]}>
+      {slugs.map((slug, index) => {
+        const angle = index * QUARTER_TURN;
+        const module = modulesBySlug[slug];
+        return (
+          <group
+            key={slug}
+            position={[
+              TURNTABLE_RADIUS * Math.sin(angle),
+              0,
+              TURNTABLE_RADIUS * Math.cos(angle),
+            ]}
+            ref={(node) => {
+              anchors.current[index] = node;
+            }}
+            rotation={[0, angle, 0]}
+            scale={index === activeIndex ? 1.12 : 1}
+          >
+            {module ? (
+              <StaticMachineModel
+                module={module}
+                onActivate={() => onActivate(index)}
+                slug={slug}
+              />
+            ) : null}
+          </group>
+        );
+      })}
+      <RoundPlatform radius={TURNTABLE_RADIUS + 0.9} />
+    </group>
+  );
+}
+
+function TurntableStage({
+  activeIndex,
+  modulesBySlug,
+  onActivate,
+  reducedMotion,
+  rendering,
+  slugs,
+  step,
+}: {
+  activeIndex: number;
+  modulesBySlug: Partial<Record<MachineSlug, MachineModule>>;
+  onActivate: (index: number) => void;
+  reducedMotion: boolean;
+  rendering: boolean;
+  slugs: readonly MachineSlug[];
+  step: number;
+}) {
+  return (
+    <Canvas
+      camera={{ fov: 34, position: [0, 2.3, 7.2] }}
+      dpr={[1, 1.5]}
+      frameloop={rendering ? "always" : "never"}
+      gl={{
+        antialias: false,
+        powerPreference: "high-performance",
+        toneMapping: ACESFilmicToneMapping,
+        toneMappingExposure: 1.05,
+      }}
+      onCreated={prepareSceneEnvironment}
+    >
+      <color args={["#090a0a"]} attach="background" />
+      <SceneEnvironment />
+      <FixedCamera />
+      <WarmLightRig />
+      <Turntable
+        activeIndex={activeIndex}
+        modulesBySlug={modulesBySlug}
+        onActivate={onActivate}
+        reducedMotion={reducedMotion}
+        slugs={slugs}
+        step={step}
+      />
+    </Canvas>
   );
 }
 
@@ -360,30 +599,16 @@ export default function HomeCarouselHero({
   const heroRef = useRef<HTMLElement>(null);
   const documentVisible = useDocumentVisible();
   const heroInView = useElementInView(heroRef);
-  const interactive = !reduceMotion && !compact;
-  const rendering = interactive && documentVisible && heroInView;
+  const rendering = documentVisible && heroInView;
   const [carousel, setCarousel] = useState(createHomeCarouselState);
-  const [dataBySlug, setDataBySlug] = useState<
-    Partial<Record<MachineSlug, MachineData>>
-  >({});
-  const [modulesBySlug, setModulesBySlug] = useState<
-    Partial<Record<MachineSlug, MachineModule>>
-  >({});
-  const [exitElapsed, setExitElapsed] = useState(false);
-  const [stageReadySlug, setStageReadySlug] = useState<MachineSlug | null>(
-    null,
+  const dataBySlug = useMachineCatalog(slugs);
+  const { modulesBySlug, progress } = useSequentialMachineWarmup(
+    !compact,
+    slugs,
   );
-  const idlePreparedSlugs = useRef(new Set<MachineSlug>());
-  const activeSlug = slugs[carousel.activeIndex];
-  const nextSlug = slugs[(carousel.activeIndex + 1) % slugs.length];
-  const pendingSlug =
-    carousel.pendingIndex === null ? null : slugs[carousel.pendingIndex];
+  const activeIndex = activeHomeCarouselIndex(carousel.step, slugs.length);
+  const activeSlug = slugs[activeIndex];
   const activeData = dataBySlug[activeSlug];
-  const activeModule = modulesBySlug[activeSlug];
-  const wantedSlug =
-    interactive && carousel.phase === "idle" && activeData && activeModule
-      ? nextSlug
-      : (pendingSlug ?? activeSlug);
 
   const dispatch = useCallback(
     (event: Parameters<typeof transitionHomeCarousel>[1]) => {
@@ -393,216 +618,117 @@ export default function HomeCarouselHero({
     },
     [slugs],
   );
+  const activateMachine = useCallback(
+    (index: number) => {
+      const target = transitionHomeCarousel(
+        carousel,
+        { type: "activate", index },
+        slugs,
+      ).navigateTo;
+      if (target) window.location.hash = target.slice(1);
+    },
+    [carousel, slugs],
+  );
 
   useEffect(() => {
-    let cancelled = false;
-    if (dataBySlug[wantedSlug]) return;
-    void loadHeroData(wantedSlug)
-      .then((loaded) => {
-        if (!cancelled) {
-          setDataBySlug((current) => ({
-            ...current,
-            [wantedSlug]: loaded,
-          }));
-        }
-      })
-      .catch(() => undefined);
-    return () => {
-      cancelled = true;
-    };
-  }, [dataBySlug, wantedSlug]);
-
-  useEffect(() => {
-    if (!interactive || modulesBySlug[wantedSlug]) return;
-    let cancelled = false;
-    void loadHeroMachine(wantedSlug)
-      .then((loaded) => {
-        if (!cancelled) {
-          setModulesBySlug((current) => ({
-            ...current,
-            [wantedSlug]: loaded,
-          }));
-        }
-      })
-      .catch(() => undefined);
-    return () => {
-      cancelled = true;
-    };
-  }, [interactive, modulesBySlug, wantedSlug]);
-
-  useEffect(() => {
-    if (!rendering) return;
+    if (!rendering || reduceMotion || carousel.paused) return;
     const interval = window.setInterval(
-      () => dispatch({ type: "cycle" }),
+      () => dispatch({ type: "advance", automatic: true }),
       7000,
     );
     return () => window.clearInterval(interval);
-  }, [dispatch, rendering]);
+  }, [carousel.paused, dispatch, reduceMotion, rendering]);
 
-  useEffect(() => {
-    if (
-      !rendering ||
-      carousel.phase !== "idle" ||
-      stageReadySlug !== activeSlug ||
-      idlePreparedSlugs.current.has(nextSlug)
-    ) {
-      return;
-    }
-    const nextModule = modulesBySlug[nextSlug];
-    if (!nextModule) return;
-    const spec = applySchemePatch(
-      nextModule.spec,
-      nextModule.defaultSchemeId
-        ? nextModule.schemes?.[nextModule.defaultSchemeId]
-        : undefined,
-    );
-    const controller = warmMachine(nextModule, spec, () => undefined, {
-      consumerScope: `home:${nextSlug}`,
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    dispatch({
+      type: "advance",
+      delta: event.key === "ArrowLeft" ? -1 : 1,
     });
-    let active = true;
-    void controller.done.then(
-      (result) => {
-        controller.release();
-        if (active && result.status === "completed") {
-          idlePreparedSlugs.current.add(nextSlug);
-        }
-      },
-      () => controller.release(),
-    );
-    return () => {
-      active = false;
-      controller.cancel();
-    };
-  }, [
-    activeSlug,
-    carousel.phase,
-    modulesBySlug,
-    nextSlug,
-    rendering,
-    stageReadySlug,
-  ]);
-
-  useEffect(() => {
-    if (carousel.phase !== "exiting") {
-      setExitElapsed(false);
-      return;
-    }
-    const timeout = window.setTimeout(() => setExitElapsed(true), 240);
-    return () => window.clearTimeout(timeout);
-  }, [carousel.phase]);
-
-  useEffect(() => {
-    if (
-      carousel.phase !== "exiting" ||
-      !exitElapsed ||
-      !pendingSlug ||
-      !dataBySlug[pendingSlug] ||
-      !modulesBySlug[pendingSlug]
-    ) {
-      return;
-    }
-    setStageReadySlug(null);
-    dispatch({ type: "exit-complete" });
-  }, [
-    carousel.phase,
-    dataBySlug,
-    dispatch,
-    exitElapsed,
-    modulesBySlug,
-    pendingSlug,
-  ]);
-
-  useEffect(() => {
-    if (carousel.phase !== "entering" || stageReadySlug !== activeSlug) {
-      return;
-    }
-    let secondFrame = 0;
-    const firstFrame = requestAnimationFrame(() => {
-      secondFrame = requestAnimationFrame(() =>
-        dispatch({ type: "enter-complete" }),
-      );
-    });
-    return () => {
-      cancelAnimationFrame(firstFrame);
-      cancelAnimationFrame(secondFrame);
-    };
-  }, [activeSlug, carousel.phase, dispatch, stageReadySlug]);
-
-  useEffect(() => {
-    setCarousel((current) =>
-      interactive
-        ? { ...current, paused: false }
-        : {
-            ...current,
-            paused: true,
-            pendingIndex: null,
-            phase: "idle",
-          },
-    );
-  }, [interactive]);
-
-  const target = transitionHomeCarousel(
-    carousel,
-    { type: "activate" },
-    slugs,
-  ).navigateTo;
-  const handleStageReady = useCallback((slug: MachineSlug) => {
-    setStageReadySlug(slug);
-  }, []);
+  };
 
   return (
     <section
+      aria-label={t("app.home")}
       className="hero home-carousel-hero"
+      data-active-slug={activeSlug}
       data-rendering={rendering ? "true" : "false"}
+      onBlur={() => dispatch({ type: "hover", paused: false })}
+      onFocus={() => dispatch({ type: "hover", paused: true })}
+      onKeyDown={handleKeyDown}
+      onMouseEnter={() => dispatch({ type: "hover", paused: true })}
+      onMouseLeave={() => dispatch({ type: "hover", paused: false })}
       ref={heroRef}
+      tabIndex={0}
     >
-      <a
-        aria-label={
-          activeData
-            ? `${activeData.names[language]} — ${activeData.oneLiner[language]}`
-            : t("home.open")
-        }
-        className="home-carousel-link"
-        data-phase={carousel.phase}
-        data-static={interactive ? "false" : "true"}
-        href={target}
-        onBlur={() => dispatch({ type: "hover", paused: false })}
-        onFocus={() => dispatch({ type: "hover", paused: true })}
-        onMouseEnter={() => dispatch({ type: "hover", paused: true })}
-        onMouseLeave={() => dispatch({ type: "hover", paused: false })}
-      >
-        <div className="home-carousel-heading">
-          <p className="eyebrow">{t("home.eyebrow")}</p>
-          <h1 className="display-title">{t("home.title")}</h1>
-          <p className="hero-copy">{t("home.intro")}</p>
-        </div>
-        <div className="home-carousel-visual">
-          {interactive && activeModule ? (
-            <LoadedHeroStage
-              module={activeModule}
-              onReady={handleStageReady}
-              rendering={rendering}
-              slug={activeSlug}
-            />
-          ) : (
+      <header className="home-carousel-heading">
+        <p className="eyebrow">{t("home.eyebrow")}</p>
+        <h1 className="display-title">{t("home.title")}</h1>
+        <p className="hero-copy">{t("home.intro")}</p>
+      </header>
+      <div className="home-turntable-stage" data-testid="home-turntable">
+        {compact ? (
+          <a className="home-carousel-poster-link" href={`#/m/${activeSlug}`}>
             <img
               alt=""
               className="home-carousel-poster"
               src={`${import.meta.env.BASE_URL}assets/renders/${activeSlug}/overall.jpg`}
             />
-          )}
-        </div>
-        {activeData ? (
-          <div aria-live="polite" className="home-carousel-machine-copy">
-            <span className="machine-index">
-              {String(carousel.activeIndex + 1).padStart(2, "0")}
-            </span>
-            <h2>{activeData.names[language]}</h2>
-            <p>{activeData.oneLiner[language]}</p>
-            <span className="machine-open">{t("home.open")}</span>
-          </div>
+          </a>
+        ) : (
+          <TurntableStage
+            activeIndex={activeIndex}
+            modulesBySlug={modulesBySlug}
+            onActivate={activateMachine}
+            reducedMotion={reduceMotion}
+            rendering={rendering}
+            slugs={slugs}
+            step={carousel.step}
+          />
+        )}
+        {!compact && Object.keys(modulesBySlug).length === 0 && progress ? (
+          <GeometryLoading
+            built={progress.built}
+            label={t("app.loading")}
+            scope="home-turntable"
+            total={progress.total}
+          />
         ) : null}
-      </a>
+      </div>
+      {activeData ? (
+        <a
+          aria-live="polite"
+          className="home-carousel-machine-copy"
+          data-testid="home-active-machine"
+          href={`#/m/${activeSlug}`}
+        >
+          <span className="machine-index">
+            {String(activeIndex + 1).padStart(2, "0")}
+          </span>
+          <span className="home-carousel-machine-text">
+            <strong>{activeData.names[language]}</strong>
+            <span>{activeData.oneLiner[language]}</span>
+          </span>
+          <span className="machine-open">{t("home.open")}</span>
+        </a>
+      ) : null}
+      <div className="home-machine-pills" role="group">
+        {slugs.map((slug, index) => {
+          const data = dataBySlug[slug];
+          return (
+            <button
+              aria-pressed={index === activeIndex}
+              data-testid="home-machine-pill"
+              key={slug}
+              onClick={() => dispatch({ type: "select", index })}
+              type="button"
+            >
+              {data?.names[language] ?? slug}
+            </button>
+          );
+        })}
+      </div>
     </section>
   );
 }

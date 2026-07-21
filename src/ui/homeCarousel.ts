@@ -7,7 +7,7 @@ export interface HomeCarouselState {
 
 export type HomeCarouselEvent =
   | { type: "activate"; index?: number }
-  | { type: "advance"; delta?: -1 | 1 }
+  | { type: "advance"; automatic?: boolean; delta?: -1 | 1 }
   | { type: "hover"; paused: boolean }
   | { type: "select"; index: number };
 
@@ -42,7 +42,7 @@ export function transitionHomeCarousel(
     return { state: { ...state, paused: event.paused } };
   }
   if (event.type === "advance") {
-    if (state.paused || slugs.length < 2) return { state };
+    if ((state.paused && event.automatic) || slugs.length < 2) return { state };
     return { state: { ...state, step: state.step + (event.delta ?? 1) } };
   }
   if (slugs.length < 2) return { state };

@@ -3,14 +3,18 @@ import { useFrame, useThree } from "@react-three/fiber";
 import {
   AdditiveBlending,
   BufferGeometry,
+  CanvasTexture,
   CatmullRomCurve3,
   type Camera,
   Float32BufferAttribute,
   type Group,
+  Line as ThreeLine,
+  LineDashedMaterial,
   type Material,
   type MeshBasicMaterial,
   type Object3D,
   type Points,
+  SRGBColorSpace,
   type Texture,
   TubeGeometry,
   Vector3,
@@ -88,6 +92,23 @@ const particleColors: Record<
   thread: "#e9ddc4",
   water: "#6fc7d9",
 };
+
+function softParticleTexture(): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 64;
+  canvas.height = 64;
+  const context = canvas.getContext("2d")!;
+  const gradient = context.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+  gradient.addColorStop(0.42, "rgba(255, 255, 255, 0.9)");
+  gradient.addColorStop(0.72, "rgba(255, 255, 255, 0.35)");
+  gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, 64, 64);
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  return texture;
+}
 
 function calculateFullscreenPosition(
   _object: Object3D,
@@ -319,22 +340,63 @@ function FlowParticles({
   const points = useRef<Points>(null);
   const runtimeKey = useRef("");
   const warnedRef = useRef(false);
-  const count = Math.min(
-    200,
-    Math.max(24, Math.round((aid.rate ?? 40) * 2)),
-  );
+  const count =
+    aid.flavor === "thread"
+      ? Math.min(72, Math.max(24, Math.round((aid.rate ?? 40) * 0.8)))
+      : Math.min(200, Math.max(24, Math.round((aid.rate ?? 40) * 2)));
   const geometry = useMemo(() => {
     const next = new BufferGeometry();
     next.setAttribute("position", new Float32BufferAttribute(count * 3, 3));
     return next;
   }, [count]);
+  const pathGeometry = useMemo(() => {
+    const next = new BufferGeometry();
+    next.setAttribute(
+      "position",
+      new Float32BufferAttribute(aid.pathPartIds.length * 3, 3),
+    );
+    next.setDrawRange(0, 0);
+    return next;
+  }, [aid.pathPartIds.length]);
+  const pathMaterial = useMemo(
+    () =>
+      new LineDashedMaterial({
+        blending: AdditiveBlending,
+        color: particleColors[aid.flavor],
+        dashSize: 0.13,
+        depthTest: false,
+        depthWrite: false,
+        gapSize: 0.085,
+        opacity: 0.8,
+        transparent: true,
+      }),
+    [aid.flavor],
+  );
+  const pathLine = useMemo(() => {
+    const next = new ThreeLine(pathGeometry, pathMaterial);
+    next.frustumCulled = false;
+    next.name = "mechanica-aid-flow-path";
+    next.raycast = () => undefined;
+    next.renderOrder = 11;
+    next.visible = false;
+    return next;
+  }, [pathGeometry, pathMaterial]);
+  const particleTexture = useMemo(softParticleTexture, []);
   const pathPositions = useMemo(
     () => aid.pathPartIds.map(() => new Vector3()),
     [aid.pathPartIds],
   );
   const [customEmitter, setCustomEmitter] = useState<Object3D | null>(null);
 
-  useEffect(() => () => geometry.dispose(), [geometry]);
+  useEffect(
+    () => () => {
+      geometry.dispose();
+      particleTexture.dispose();
+      pathGeometry.dispose();
+      pathMaterial.dispose();
+    },
+    [geometry, particleTexture, pathGeometry, pathMaterial],
+  );
   useEffect(() => {
     if (aid.flavor !== "custom") {
       setCustomEmitter(null);
@@ -394,6 +456,26 @@ function FlowParticles({
     }
     if (customRoot.current) customRoot.current.visible = resolved > 0;
     if (points.current) points.current.visible = resolved > 0;
+    const linePositions = pathGeometry.getAttribute(
+      "position",
+    ) as Float32BufferAttribute;
+    for (let index = 0; index < resolved; index += 1) {
+      linePositions.setXYZ(index, ...pathPositions[index].toArray());
+    }
+    pathGeometry.setDrawRange(0, resolved);
+    linePositions.needsUpdate = true;
+    pathLine.visible = resolved > 1;
+    if (resolved > 1) {
+      pathLine.computeLineDistances();
+      const lineDistances = pathGeometry.getAttribute(
+        "lineDistance",
+      ) as Float32BufferAttribute;
+      const dashOffset = state.clock.elapsedTime * 0.36;
+      for (let index = 0; index < resolved; index += 1) {
+        lineDistances.setX(index, lineDistances.getX(index) + dashOffset);
+      }
+      lineDistances.needsUpdate = true;
+    }
     if (customEmitter && customRoot.current && resolved > 0) {
       if (resolved === 1) {
         customRoot.current.position.copy(pathPositions[0]);
@@ -433,35 +515,48 @@ function FlowParticles({
     recordFrame(performance.now() - startedAt);
   });
 
-  if (aid.flavor === "custom") {
-    return customEmitter ? (
-      <group
-        name="mechanica-aid-custom-emitter"
-        ref={customRoot}
-        visible={false}
-      >
-        <primitive dispose={null} object={customEmitter} />
-      </group>
-    ) : null;
-  }
-
   return (
-    <points
-      geometry={geometry}
-      name="mechanica-aid-flow-particles"
-      ref={points}
-      visible={false}
-    >
-      <pointsMaterial
-        blending={AdditiveBlending}
-        color={particleColors[aid.flavor]}
-        depthWrite={false}
-        opacity={0.95}
-        size={aid.flavor === "sparks" ? 0.06 : 0.055}
-        sizeAttenuation
-        transparent
-      />
-    </points>
+    <>
+      <primitive dispose={null} object={pathLine} />
+      {aid.flavor === "custom" ? (
+        customEmitter ? (
+          <group
+            name="mechanica-aid-custom-emitter"
+            ref={customRoot}
+            visible={false}
+          >
+            <primitive dispose={null} object={customEmitter} />
+          </group>
+        ) : null
+      ) : (
+        <points
+          geometry={geometry}
+          name="mechanica-aid-flow-particles"
+          ref={points}
+          renderOrder={12}
+          visible={false}
+        >
+          <pointsMaterial
+            alphaTest={0.02}
+            blending={AdditiveBlending}
+            color={particleColors[aid.flavor]}
+            depthTest={false}
+            depthWrite={false}
+            map={particleTexture}
+            opacity={0.95}
+            size={
+              aid.flavor === "thread"
+                ? 0.034
+                : aid.flavor === "sparks"
+                  ? 0.065
+                  : 0.075
+            }
+            sizeAttenuation
+            transparent
+          />
+        </points>
+      )}
+    </>
   );
 }
 
@@ -587,6 +682,10 @@ export default function AidLayer({
   const aidWindow = window as AidWindow;
   const hooksEnabled = import.meta.env.DEV || import.meta.env.VITE_E2E === "1";
   const activeAid = activeIndex === null ? null : (aids[activeIndex] ?? null);
+  const flowCutawayIndex =
+    activeAid?.kind === "flowParticles"
+      ? aids.findIndex((aid) => aid.kind === "cutaway")
+      : -1;
 
   const resetPerformance = useCallback(() => {
     framePerformance.current = { samples: [], totalMs: 0 };
@@ -603,6 +702,12 @@ export default function AidLayer({
     flowRuntime.current = runtime;
   }, []);
 
+  useEffect(() => {
+    if (!activeTriggerId) return;
+    resetPerformance();
+    setActiveIndex(null);
+  }, [activeTriggerId, resetPerformance]);
+
   useFrame(() => {
     if (
       activeAid &&
@@ -614,7 +719,7 @@ export default function AidLayer({
   });
 
   useEffect(() => {
-    if (!activeAid || activeAid.kind !== "powerPath") {
+    if (activeTriggerId || !activeAid || activeAid.kind !== "powerPath") {
       highlightedPartIds.current = [];
       setCurrentPartId(null);
       onHighlightChange([]);
@@ -635,13 +740,20 @@ export default function AidLayer({
       setCurrentPartId(null);
       onHighlightChange([]);
     };
-  }, [activeAid, onHighlightChange]);
+  }, [activeAid, activeTriggerId, onHighlightChange]);
 
   useEffect(() => {
-    const nextPartIds = activeAid?.kind === "cutaway" ? activeAid.partIds : [];
+    const cutawayAid =
+      activeAid?.kind === "cutaway"
+        ? activeAid
+        : activeAid?.kind === "flowParticles"
+          ? aids.find((aid) => aid.kind === "cutaway")
+          : undefined;
+    const nextPartIds =
+      cutawayAid?.kind === "cutaway" ? cutawayAid.partIds : [];
     onCutawayChange(nextPartIds);
     return () => onCutawayChange([]);
-  }, [activeAid, onCutawayChange]);
+  }, [activeAid, aids, onCutawayChange]);
 
   useLayoutEffect(() => {
     if (!hooksEnabled) return;
@@ -727,7 +839,7 @@ export default function AidLayer({
           recordFrame={recordFrame}
         />
       ) : null}
-      {activeAid?.kind === "powerPath" ? (
+      {activeAid?.kind === "powerPath" && !activeTriggerId ? (
         <PowerPathRoute
           aid={activeAid}
           currentPartId={currentPartId}
@@ -755,37 +867,50 @@ export default function AidLayer({
             className="aid-chip-toolbar"
             role="toolbar"
           >
-            {aids.map((aid, index) => (
-              <button
-                aria-pressed={activeIndex === index}
-                data-aid-kind={aid.kind}
-                data-testid="aid-select"
-                key={`${aid.kind}:${index}`}
-                onClick={() => {
-                  resetPerformance();
-                  setActiveIndex((current) =>
-                    current === index ? null : index,
-                  );
-                }}
-                style={{
-                  background:
-                    activeIndex === index
+            {aids.map((aid, index) => {
+              const pressed =
+                activeIndex === index ||
+                flowCutawayIndex === index ||
+                (aid.kind === "subDemo" && activeTriggerId === aid.triggerId);
+              return (
+                <button
+                  aria-pressed={pressed}
+                  data-aid-kind={aid.kind}
+                  data-aid-linked={
+                    flowCutawayIndex === index ? "true" : undefined
+                  }
+                  data-testid="aid-select"
+                  key={`${aid.kind}:${index}`}
+                  onClick={() => {
+                    resetPerformance();
+                    if (aid.kind === "subDemo") {
+                      setActiveIndex(index);
+                      onRunTrigger(aid.triggerId);
+                      return;
+                    }
+                    setActiveIndex((current) =>
+                      current === index ? null : index,
+                    );
+                  }}
+                  style={{
+                    background: pressed
                       ? "rgba(178, 125, 44, 0.94)"
                       : "rgba(12, 14, 14, 0.88)",
-                  border: "1px solid rgba(219, 181, 102, 0.7)",
-                  borderRadius: "999px",
-                  color: "#fff3d5",
-                  cursor: "pointer",
-                  font: "inherit",
-                  fontSize: "12px",
-                  padding: "6px 10px",
-                }}
-                type="button"
-              >
-                {("label" in aid ? aid.label?.[language] : undefined) ??
-                  aidNames[aid.kind][language]}
-              </button>
-            ))}
+                    border: "1px solid rgba(219, 181, 102, 0.7)",
+                    borderRadius: "999px",
+                    color: "#fff3d5",
+                    cursor: "pointer",
+                    font: "inherit",
+                    fontSize: "12px",
+                    padding: "6px 10px",
+                  }}
+                  type="button"
+                >
+                  {("label" in aid ? aid.label?.[language] : undefined) ??
+                    aidNames[aid.kind][language]}
+                </button>
+              );
+            })}
             {activeAid?.kind === "subDemo" ? (
               <button
                 aria-pressed={activeTriggerId === activeAid.triggerId}

@@ -50,6 +50,7 @@ import {
   activeHomeCarouselIndex,
   homeCarouselDriftSpeed,
   homeMachineScale,
+  targetHomeCarouselQuarterRotation,
   targetHomeCarouselRotation,
 } from "./homeCarousel";
 import { GeometryLoading } from "./viewer/geometryWarmup";
@@ -431,10 +432,9 @@ function WarmLightRig() {
   );
 }
 
-interface TurnRequest {
-  id: number;
-  index: number;
-}
+type TurnRequest =
+  | { id: number; type: "machine"; index: number }
+  | { id: number; type: "quarter"; direction: -1 | 1 };
 
 interface TurnAnimation {
   elapsed: number;
@@ -474,11 +474,18 @@ function Turntable({
 
   useLayoutEffect(() => {
     if (!turntable.current || !request) return;
-    const targetRotation = targetHomeCarouselRotation(
-      turntable.current.rotation.y,
-      request.index,
-      slugs.length,
-    );
+    const targetRotation =
+      request.type === "machine"
+        ? targetHomeCarouselRotation(
+            turntable.current.rotation.y,
+            request.index,
+            slugs.length,
+          )
+        : targetHomeCarouselQuarterRotation(
+            turntable.current.rotation.y,
+            request.direction,
+            slugs.length,
+          );
     if (reducedMotion) {
       turntable.current.rotation.y = targetRotation;
       anchors.current.forEach((anchor, index) =>
@@ -486,8 +493,12 @@ function Turntable({
           homeMachineScale(targetRotation, index, slugs.length),
         ),
       );
-      activeIndex.current = request.index;
-      onActiveIndexChange(request.index);
+      const nextActiveIndex = activeHomeCarouselIndex(
+        targetRotation,
+        slugs.length,
+      );
+      activeIndex.current = nextActiveIndex;
+      onActiveIndexChange(nextActiveIndex);
       animation.current = null;
       driftSpeed.current = 0;
       invalidate();
@@ -658,16 +669,29 @@ export default function HomeCarouselHero({
       if (compact || reduceMotion) setActiveIndex(index);
       if (compact) return;
       requestId.current += 1;
-      setTurnRequest({ id: requestId.current, index });
+      setTurnRequest({ id: requestId.current, type: "machine", index });
     },
     [compact, reduceMotion],
+  );
+  const turnQuarter = useCallback(
+    (direction: -1 | 1) => {
+      const nextIndex = (activeIndex + direction + slugs.length) % slugs.length;
+      if (compact || reduceMotion) setActiveIndex(nextIndex);
+      if (compact) return;
+      requestId.current += 1;
+      setTurnRequest({
+        direction,
+        id: requestId.current,
+        type: "quarter",
+      });
+    },
+    [activeIndex, compact, reduceMotion, slugs.length],
   );
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     event.preventDefault();
-    const delta = event.key === "ArrowLeft" ? -1 : 1;
-    turnToMachine((activeIndex + delta + slugs.length) % slugs.length);
+    turnQuarter(event.key === "ArrowLeft" ? -1 : 1);
   };
 
   return (

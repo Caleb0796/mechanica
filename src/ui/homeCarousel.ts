@@ -50,3 +50,12 @@ export function targetHomeCarouselRotation(
   const revolutions = Math.round((rotationY - canonical) / FULL_TURN);
   return canonical + revolutions * FULL_TURN;
 }
+
+export function targetHomeCarouselQuarterRotation(
+  rotationY: number,
+  direction: -1 | 1,
+  machineCount: number,
+): number {
+  if (machineCount === 0) return rotationY;
+  return rotationY - direction * (FULL_TURN / machineCount);
+}

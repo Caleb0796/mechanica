@@ -5,6 +5,7 @@ import {
   HOME_CAROUSEL_DRIFT_RADIANS_PER_SECOND,
   homeCarouselDriftSpeed,
   homeMachineScale,
+  targetHomeCarouselQuarterRotation,
   targetHomeCarouselRotation,
 } from "../../src/ui/homeCarousel";
 
@@ -34,6 +35,12 @@ describe("home turntable angle model", () => {
     expect(wrappedTarget).toBeCloseTo(quarter);
     expect(activeHomeCarouselIndex(clockwiseTarget, machineCount)).toBe(1);
     expect(activeHomeCarouselIndex(wrappedTarget, machineCount)).toBe(3);
+    expect(
+      targetHomeCarouselQuarterRotation(-0.2, 1, machineCount),
+    ).toBeCloseTo(-0.2 - quarter);
+    expect(
+      targetHomeCarouselQuarterRotation(-0.2, -1, machineCount),
+    ).toBeCloseTo(-0.2 + quarter);
   });
 
   it("stops drift on hover and resumes at the authored speed", () => {

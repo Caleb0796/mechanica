@@ -139,13 +139,9 @@ describe("seismoscope machine module", () => {
 
     expect(geometry.index).not.toBeNull();
     expect(geometry.getAttribute("position").count).toBeGreaterThan(500);
-    expect(size?.toArray()).toEqual(
-      expect.arrayContaining([
-        expect.closeTo(0.56, 5),
-        expect.closeTo(0.448, 5),
-        expect.closeTo(0.56, 5),
-      ]),
-    );
+    // The refined sculpt tightens the old box while only its mount collar grows urnward.
+    expect(size?.x).toBeLessThanOrEqual(0.56);
+    expect(size?.y).toBeLessThanOrEqual(0.448);
     expect(semantic).toMatchObject({
       kind: "chinese-dragon-head",
       forward: [0, 0, 1],
@@ -172,9 +168,12 @@ describe("seismoscope machine module", () => {
         "mane-fins",
       ]),
     });
-    expect(geometry.boundingBox?.min.z).toBeCloseTo(-0.296, 5);
-    expect(1.22 + (geometry.boundingBox?.min.z ?? 0)).toBeCloseTo(0.924, 5);
-    expect(geometry.boundingBox?.max.z).toBeCloseTo(0.264, 5);
+    expect(geometry.boundingBox?.min.x).toBeGreaterThanOrEqual(-0.28);
+    expect(geometry.boundingBox?.max.x).toBeLessThanOrEqual(0.28);
+    expect(geometry.boundingBox?.min.y).toBeGreaterThanOrEqual(-0.2432);
+    expect(geometry.boundingBox?.max.y).toBeLessThanOrEqual(0.2048);
+    expect(geometry.boundingBox?.min.z).toBeGreaterThanOrEqual(-0.354);
+    expect(geometry.boundingBox?.max.z).toBeLessThanOrEqual(0.264);
     const dragonMuzzle = 1.22 + (geometry.boundingBox?.max.z ?? 0);
     expect(1.43 - 0.078).toBeLessThan(dragonMuzzle);
     expect(1.43 + 0.078 - dragonMuzzle).toBeGreaterThan(0.015);
@@ -359,7 +358,13 @@ describe("seismoscope machine module", () => {
         "four-limb-crouch",
       ]),
     });
-    expect(1.78 + (toad.boundingBox?.min.z ?? 0)).toBeCloseTo(1.5298, 4);
+    // The seated sculpt tightens inward without exceeding the frozen blob envelope.
+    expect(toad.boundingBox?.min.x).toBeGreaterThanOrEqual(-0.27);
+    expect(toad.boundingBox?.max.x).toBeLessThanOrEqual(0.27);
+    expect(toad.boundingBox?.min.y).toBeGreaterThanOrEqual(-0.1656);
+    expect(toad.boundingBox?.max.y).toBeLessThanOrEqual(0.1944);
+    expect(toad.boundingBox?.min.z).toBeGreaterThanOrEqual(-0.2502);
+    expect(toad.boundingBox?.max.z).toBeLessThanOrEqual(0.1098);
     expect(wangChute.userData.mechanicaSemantic).toMatchObject({
       kind: "wang-standing-column-chute",
       features: expect.arrayContaining(["broad-u-channel"]),

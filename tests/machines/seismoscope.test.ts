@@ -60,6 +60,32 @@ function customGeometry(
   return geometries[0];
 }
 
+function vesselSurfaceRadius(radius: number, localY: number): number {
+  const profile = [
+    [radius * 0.56, -0.9],
+    [radius * 0.63, -0.82],
+    [radius * 0.67, -0.68],
+    [radius * 0.9, -0.42],
+    [radius, -0.2],
+    [radius * 0.93, 0.06],
+    [radius * 0.79, 0.28],
+    [radius * 0.7, 0.48],
+    [radius * 0.76, 0.58],
+  ] as const;
+  if (localY <= profile[0][1]) return profile[0][0];
+  for (let index = 1; index < profile.length; index += 1) {
+    const [nextRadius, nextY] = profile[index];
+    if (localY > nextY) continue;
+    const [previousRadius, previousY] = profile[index - 1];
+    return THREE.MathUtils.lerp(
+      previousRadius,
+      nextRadius,
+      (localY - previousY) / (nextY - previousY),
+    );
+  }
+  return profile.at(-1)![0];
+}
+
 describe("seismoscope machine module", () => {
   it("covers every part and numeric geometry field with provenance", () => {
     const sourceIds = new Set(machine.data.sources.map((source) => source.id));
@@ -160,6 +186,8 @@ describe("seismoscope machine module", () => {
       jawAngleDeg: 19,
       jawGapRatio: 0.34,
       maneFinCount: 0,
+      mountClearance: 0.0038,
+      mountContactVertexCount: 97,
       sideLipCount: 2,
       snoutLengthRatio: 0.51,
       features: expect.arrayContaining([
@@ -191,11 +219,66 @@ describe("seismoscope machine module", () => {
     expect(geometry.boundingBox?.max.x).toBeLessThanOrEqual(0.28);
     expect(geometry.boundingBox?.min.y).toBeGreaterThanOrEqual(-0.2432);
     expect(geometry.boundingBox?.max.y).toBeLessThanOrEqual(0.2048);
-    expect(geometry.boundingBox?.min.z).toBeGreaterThanOrEqual(-0.354);
+    // Only the hidden contact footprint grows urnward to follow the vessel;
+    // the accepted head anatomy and outward silhouette remain unchanged.
+    expect(geometry.boundingBox?.min.z).toBeGreaterThanOrEqual(-0.405);
     expect(geometry.boundingBox?.max.z).toBeLessThanOrEqual(0.264);
     const dragonMuzzle = 1.22 + (geometry.boundingBox?.max.z ?? 0);
     expect(1.43 - 0.078).toBeLessThan(dragonMuzzle);
     expect(1.43 + 0.078 - dragonMuzzle).toBeGreaterThan(0.015);
+    geometry.dispose();
+  });
+
+  it("keeps every dragon mount just outside the local vessel surface", () => {
+    const vessel = machine.spec.parts.find((part) => part.id === "vessel");
+    const dragons = machine.spec.parts.filter((part) =>
+      part.id.startsWith("dragon-"),
+    );
+    if (!vessel || vessel.geometry.type !== "custom") {
+      throw new Error("Missing vessel mount profile");
+    }
+    const geometry = customGeometry("seismoscopeDragon", { radius: 0.16 });
+    const position = geometry.getAttribute("position");
+    const contactVertexCount =
+      geometry.userData.mechanicaSemantic.mountContactVertexCount;
+
+    expect(dragons).toHaveLength(8);
+    for (const dragon of dragons) {
+      const transform = new THREE.Matrix4()
+        .makeRotationFromEuler(
+          new THREE.Euler(...(dragon.rotationEuler ?? [0, 0, 0])),
+        )
+        .setPosition(...dragon.position);
+      let maxPenetration = -Infinity;
+      let minimumContactGap = Infinity;
+      let maximumContactGap = -Infinity;
+      for (let vertex = 0; vertex < position.count; vertex += 1) {
+        const point = new THREE.Vector3(
+          position.getX(vertex),
+          position.getY(vertex),
+          position.getZ(vertex),
+        ).applyMatrix4(transform);
+        const surfaceRadius = vesselSurfaceRadius(
+          vessel.geometry.params.radius,
+          point.y - vessel.position[1],
+        );
+        const gap = Math.hypot(point.x, point.z) - surfaceRadius;
+        maxPenetration = Math.max(maxPenetration, -gap);
+        if (vertex < contactVertexCount) {
+          minimumContactGap = Math.min(minimumContactGap, gap);
+          maximumContactGap = Math.max(maximumContactGap, gap);
+        }
+      }
+
+      expect(maxPenetration, `${dragon.id} penetration`).toBeLessThan(0);
+      expect(
+        minimumContactGap,
+        `${dragon.id} minimum clearance`,
+      ).toBeGreaterThanOrEqual(0.001);
+      expect(maximumContactGap, `${dragon.id} visual gap`).toBeLessThanOrEqual(
+        0.004,
+      );
+    }
     geometry.dispose();
   });
 
@@ -1133,6 +1216,7 @@ describe("seismoscope machine module", () => {
       expect(collisions).not.toContainEqual(["vessel", "floor-plate"]);
       expect(collisions).not.toContainEqual(["vessel", "linkage-crown"]);
       for (let bearing = 0; bearing < 8; bearing += 1) {
+        expect(collisions).not.toContainEqual(["vessel", `dragon-${bearing}`]);
         expect(collisions).not.toContainEqual(["vessel", `gate-${bearing}`]);
         expect(collisions).not.toContainEqual(["linkage-crown", `gate-${bearing}`]);
         expect(collisions).not.toContainEqual([`gate-${bearing}`, `lock-${bearing}`]);

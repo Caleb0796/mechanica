@@ -100,12 +100,6 @@ function HomePage() {
         <h1 className="display-title">{t("home.title")}</h1>
         <p className="hero-copy">{t("home.intro")}</p>
       </section>
-      <aside className="demo-callout">
-        <p>{t("app.demoHint")}</p>
-        <a className="gold-button" href="#/m/demo">
-          {t("app.demo")}
-        </a>
-      </aside>
       <section aria-label={t("app.home")} className="machine-grid">
         {MACHINE_SLUGS.map((slug, index) => {
           const card = machineCards[slug];

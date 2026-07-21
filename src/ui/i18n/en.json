@@ -9,9 +9,7 @@
     "loading": "Unfolding the mechanism…",
     "loadError": "This exhibit could not be loaded",
     "notFoundMachine": "No exhibit named “{{slug}}”.",
-    "retry": "Try again",
-    "demo": "Open the gear demo",
-    "demoHint": "Drag the small gear to see the ratio and reverse motion"
+    "retry": "Try again"
   },
   "home": {
     "eyebrow": "Four machines · Four ingenious ideas",

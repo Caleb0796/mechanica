@@ -161,26 +161,6 @@ a {
   line-height: 1.7;
 }
 
-.demo-callout {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 2rem auto;
-  padding: 1.3rem 1.5rem;
-  border: 1px solid rgba(219, 182, 103, 0.3);
-  background: linear-gradient(
-    100deg,
-    rgba(195, 148, 61, 0.13),
-    rgba(195, 148, 61, 0.02)
-  );
-}
-
-.demo-callout p {
-  margin: 0;
-  color: #c4bcae;
-}
-
 .gold-button,
 .ghost-button,
 .mechanism-button {
@@ -1279,11 +1259,6 @@ a {
 
   body .docent-entry {
     bottom: calc(72px + env(safe-area-inset-bottom));
-  }
-
-  .demo-callout {
-    align-items: stretch;
-    flex-direction: column;
   }
 
   .gold-button {

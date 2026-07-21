@@ -18,3 +18,4 @@ The Build Week Session ID is supplied directly in Devpost and intentionally not 
 - Existing renders are not accepted as final evidence. Final render generation remains blocked until all four exhibits pass semantic recovery, default/alternate/exploded browser review, and independent visual review.
 - Verification counts and provenance totals will be recorded only after the four-exhibit test, validation, build, E2E, and browser gates complete.
 - 2026-07-20 · `d227925..d914640` · astroclock QA wave T1–T16 green; evidence in `artifacts/visual-gate-2/astroclock-qa/`.
+- 2026-07-20 · four-machine QA wave T17–T28 green; evidence in `artifacts/visual-gate-2/four-machine-qa/`.

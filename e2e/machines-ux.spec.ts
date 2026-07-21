@@ -1,0 +1,63 @@
+import { expect, test } from "@playwright/test";
+
+const MACHINES = ["astroclock", "seismoscope", "odometer", "loom"];
+
+for (const slug of MACHINES) {
+  test(`${slug}: loads with camera OUTSIDE the model (never black)`, async ({
+    page,
+  }) => {
+    await page.goto(`/#/m/${slug}`);
+    await page.waitForFunction(
+      () => (window as any).__mechCamera?.boundingRadius > 0,
+      undefined,
+      { timeout: 30_000 },
+    );
+    const ok = await page.evaluate(() => {
+      const cam = (window as any).__mechCamera;
+      return cam.distance > cam.boundingRadius * 1.05;
+    });
+    expect(ok).toBe(true);
+  });
+
+  test(`${slug}: aid chips are unique and every aid activates`, async ({
+    page,
+  }) => {
+    await page.goto(`/#/m/${slug}`);
+    const chips = page.locator("[data-aid-kind]");
+    await expect(chips.first()).toBeVisible({ timeout: 30_000 });
+    const labels = await chips.allTextContents();
+    expect(new Set(labels).size).toBe(labels.length);
+    const count = await chips.count();
+    for (let i = 0; i < count; i += 1) {
+      await chips.nth(i).click();
+      await page.waitForFunction(
+        (index) => (window as any).__mechAid?.state().index === index,
+        i,
+      );
+    }
+  });
+}
+
+test("seismoscope: matched bearing fires the dragon", async ({ page }) => {
+  await page.goto("/#/m/seismoscope");
+  await page.getByRole("button", { name: "中文", exact: true }).click();
+  await page
+    .getByTestId("bearing-picker")
+    .getByRole("button", { name: "东 E", exact: true })
+    .click();
+  await page.getByTestId("mech-trigger-quake:arm").click();
+  await page.getByTestId("mech-trigger-quake").click();
+  await expect(page.getByTestId("event-captions")).toContainText(/ball|铜丸/, {
+    timeout: 30_000,
+  });
+});
+
+test("odometer: readout counts during the decimal-distance demo", async ({
+  page,
+}) => {
+  await page.goto("/#/m/odometer");
+  await page.getByTestId("mech-trigger-spotlight").click();
+  await expect(page.getByTestId("odometer-readout")).not.toHaveText(/^0\.00/, {
+    timeout: 30_000,
+  });
+});

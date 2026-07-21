@@ -135,8 +135,10 @@ interface OrbitControlsHandle {
 }
 
 interface CameraDiagnostics {
+  boundingRadius: number;
   camera: Camera;
   controlsEnabled: boolean;
+  distance: number;
   focusFallback: boolean;
   geometryReadyAt: number;
   homeDistance: number;
@@ -218,6 +220,7 @@ declare global {
       };
     };
     __mechExplodeSpread?: () => number;
+    __mechCamera?: { boundingRadius: number; distance: number };
     __mechDemoFocus?: { focusPartId: string | null };
     __mechSelect?: (partId: string | null) => void;
     __mechAssembly?: {
@@ -786,8 +789,12 @@ function CameraDirector({
 
     if (diagnostics) {
       diagnostics.current = {
+        boundingRadius: wholeSphere.radius,
         camera,
         controlsEnabled: !shouldPlayIntro,
+        distance: (shouldPlayIntro ? startPosition : endPosition).distanceTo(
+          target,
+        ),
         focusFallback,
         geometryReadyAt: readyAt,
         homeDistance,
@@ -2026,6 +2033,7 @@ function MachineScene({
   storyHighlightPartIds,
   transitionLayer,
 }: MachineSceneProps) {
+  const camera = useThree((state) => state.camera);
   const dragging = useRef(false);
   const escapementElapsed = useRef(0);
   const floorMeasurement = useRef({
@@ -2154,8 +2162,11 @@ function MachineScene({
   useLayoutEffect(() => {
     if (cameraDiagnostics?.current) {
       cameraDiagnostics.current.controlsEnabled = Boolean(controlsEnabled);
+      cameraDiagnostics.current.distance = camera.position.distanceTo(
+        cameraDiagnostics.current.target,
+      );
     }
-  }, [cameraDiagnostics, controlsEnabled]);
+  }, [camera, cameraDiagnostics, controlsEnabled]);
 
   useLayoutEffect(() => {
     if (spotlightActive) {
@@ -3679,6 +3690,14 @@ export default function MachineViewer({
         return demoFocusRef.current;
       },
     };
+    window.__mechCamera = {
+      get boundingRadius() {
+        return cameraDiagnostics.current?.boundingRadius ?? 0;
+      },
+      get distance() {
+        return cameraDiagnostics.current?.distance ?? 0;
+      },
+    };
     window.__mechAssembly = {
       advanceStep: assembly.advanceStep,
       enterExplodedMode: assembly.enterExplodedMode,
@@ -3722,6 +3741,7 @@ export default function MachineViewer({
     return () => {
       if (window.__mech?.graph === graph) {
         delete window.__mech;
+        delete window.__mechCamera;
         delete window.__mechSelect;
         delete window.__mechDemoFocus;
         delete window.__mechExplodeSpread;

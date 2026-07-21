@@ -127,9 +127,10 @@ describe("usage scene specifications", () => {
     expect(
       seismoscopeScene.props?.filter((prop) => prop.kind === "brazier"),
     ).toHaveLength(2);
-    expect(
-      seismoscopeScene.props?.some((prop) => prop.kind === "balustrade-arc"),
-    ).toBe(true);
+    const balustrade = seismoscopeScene.props?.find(
+      (prop) => prop.kind === "balustrade-arc",
+    );
+    expect(balustrade?.params?.arc).toBe(Math.PI * 2);
     expect(
       seismoscopeScene.ambientMotion?.some(
         (motion) => motion.kind === "quake-shockwave",

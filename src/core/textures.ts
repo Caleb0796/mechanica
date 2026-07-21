@@ -37,6 +37,11 @@ interface VariantPalette {
   seed: number;
 }
 
+interface SurfaceFields {
+  height: Float32Array;
+  variation: Float32Array;
+}
+
 const MAP_SIZE = 512;
 const SURFACE_SIZE = 256;
 const MAX_TEXTURE_SETS = 12;
@@ -196,17 +201,44 @@ function surfaceHeight(
   return THREE.MathUtils.clamp(0.42 + patina * relief + fine * 0.18, 0, 1);
 }
 
-function buildHeightField(
+function surfaceVariation(
+  variant: Exclude<MaterialTextureVariant, "none">,
+  x: number,
+  y: number,
+  seed: number,
+): number {
+  if (variant.startsWith("wood:")) {
+    const broad = smoothNoise(x, y, seed + 541, 48);
+    const warp = (smoothNoise(x, y, seed + 997, 64) - 0.5) * 7;
+    const grain = 0.5 + 0.5 * Math.sin(x * 0.16 + y * 0.018 + warp);
+    return THREE.MathUtils.clamp(grain * 0.64 + broad * 0.36, 0, 1);
+  }
+  if (variant.startsWith("bronze:")) {
+    const broad = smoothNoise(x, y, seed + 541, 48);
+    const clustered = smoothNoise(x, y, seed + 853, 14);
+    return THREE.MathUtils.smoothstep(
+      broad * 0.72 + clustered * 0.28,
+      0.56,
+      0.86,
+    );
+  }
+  return 0;
+}
+
+function buildSurfaceFields(
   variant: Exclude<MaterialTextureVariant, "none">,
   seed: number,
-): Float32Array {
+): SurfaceFields {
   const height = new Float32Array(SURFACE_SIZE * SURFACE_SIZE);
+  const variation = new Float32Array(SURFACE_SIZE * SURFACE_SIZE);
   for (let y = 0; y < SURFACE_SIZE; y += 1) {
     for (let x = 0; x < SURFACE_SIZE; x += 1) {
-      height[y * SURFACE_SIZE + x] = surfaceHeight(variant, x, y, seed);
+      const index = y * SURFACE_SIZE + x;
+      height[index] = surfaceHeight(variant, x, y, seed);
+      variation[index] = surfaceVariation(variant, x, y, seed);
     }
   }
-  return height;
+  return { height, variation };
 }
 
 function mixChannel(low: number, high: number, amount: number): number {
@@ -214,18 +246,51 @@ function mixChannel(low: number, high: number, amount: number): number {
 }
 
 function buildColorPixels(
-  height: Float32Array,
+  variant: Exclude<MaterialTextureVariant, "none">,
+  fields: SurfaceFields,
   palette: VariantPalette,
 ): Uint8ClampedArray {
   const pixels = new Uint8ClampedArray(MAP_SIZE * MAP_SIZE * 4);
+  const bronzePatina = variant.startsWith("bronze:")
+    ? {
+        color:
+          variant === "bronze:gilded"
+            ? ([104, 119, 70] as const)
+            : ([51, 96, 76] as const),
+        strength:
+          variant === "bronze:gilded"
+            ? 0.055
+            : variant === "bronze:excavated"
+              ? 0.24
+              : 0.16,
+      }
+    : null;
   for (let y = 0; y < MAP_SIZE; y += 1) {
     for (let x = 0; x < MAP_SIZE; x += 1) {
-      const surface =
-        height[Math.floor(y / 2) * SURFACE_SIZE + Math.floor(x / 2)];
+      const sourceIndex = Math.floor(y / 2) * SURFACE_SIZE + Math.floor(x / 2);
+      const surface = fields.height[sourceIndex];
+      const variation = fields.variation[sourceIndex];
+      const amount = variant.startsWith("wood:")
+        ? THREE.MathUtils.clamp(
+            0.34 + surface * 0.34 + (variation - 0.5) * 0.2,
+            0,
+            1,
+          )
+        : variant.startsWith("bronze:")
+          ? THREE.MathUtils.clamp(0.34 + surface * 0.42, 0, 1)
+          : surface;
       const pixel = (y * MAP_SIZE + x) * 4;
-      pixels[pixel] = mixChannel(palette.low[0], palette.high[0], surface);
-      pixels[pixel + 1] = mixChannel(palette.low[1], palette.high[1], surface);
-      pixels[pixel + 2] = mixChannel(palette.low[2], palette.high[2], surface);
+      const patinaAmount = bronzePatina ? variation * bronzePatina.strength : 0;
+      for (let channel = 0; channel < 3; channel += 1) {
+        const base = mixChannel(
+          palette.low[channel],
+          palette.high[channel],
+          amount,
+        );
+        pixels[pixel + channel] = bronzePatina
+          ? mixChannel(base, bronzePatina.color[channel], patinaAmount)
+          : base;
+      }
       pixels[pixel + 3] = 255;
     }
   }
@@ -258,18 +323,28 @@ function buildNormalPixels(height: Float32Array): Uint8ClampedArray {
 }
 
 function buildRoughnessPixels(
-  height: Float32Array,
+  variant: Exclude<MaterialTextureVariant, "none">,
+  fields: SurfaceFields,
   roughness: readonly [number, number],
 ): Uint8ClampedArray {
-  const pixels = new Uint8ClampedArray(SURFACE_SIZE * SURFACE_SIZE * 4);
-  for (let index = 0; index < height.length; index += 1) {
-    const value = Math.round(
-      THREE.MathUtils.lerp(roughness[1], roughness[0], height[index]) * 255,
-    );
+  const pixels = new Uint8ClampedArray(fields.height.length * 4);
+  for (let index = 0; index < fields.height.length; index += 1) {
+    const surfaceAmount =
+      variant.startsWith("bronze:") || variant.startsWith("wood:")
+        ? 0.24 + fields.height[index] * 0.52
+        : fields.height[index];
+    let value = THREE.MathUtils.lerp(roughness[1], roughness[0], surfaceAmount);
+    if (variant.startsWith("bronze:")) {
+      const patinaLift = variant === "bronze:gilded" ? 0.04 : 0.18;
+      value += fields.variation[index] * patinaLift;
+    } else if (variant.startsWith("wood:")) {
+      value += (fields.variation[index] - 0.5) * 0.1;
+    }
+    const encoded = Math.round(THREE.MathUtils.clamp(value, 0, 1) * 255);
     const pixel = index * 4;
-    pixels[pixel] = value;
-    pixels[pixel + 1] = value;
-    pixels[pixel + 2] = value;
+    pixels[pixel] = encoded;
+    pixels[pixel + 1] = encoded;
+    pixels[pixel + 2] = encoded;
     pixels[pixel + 3] = 255;
   }
   return pixels;
@@ -337,15 +412,23 @@ function generateTextureSet(
   variant: Exclude<MaterialTextureVariant, "none">,
 ): MaterialTextureSet {
   const palette = PALETTES[variant];
-  const height = buildHeightField(variant, palette.seed);
+  const fields = buildSurfaceFields(variant, palette.seed);
   const set: MaterialTextureSet = {
-    map: canvasTexture(MAP_SIZE, buildColorPixels(height, palette), true),
+    map: canvasTexture(
+      MAP_SIZE,
+      buildColorPixels(variant, fields, palette),
+      true,
+    ),
     metalness: palette.metalness,
-    normalMap: canvasTexture(SURFACE_SIZE, buildNormalPixels(height), false),
+    normalMap: canvasTexture(
+      SURFACE_SIZE,
+      buildNormalPixels(fields.height),
+      false,
+    ),
     normalScale: palette.normalScale,
     roughnessMap: canvasTexture(
       SURFACE_SIZE,
-      buildRoughnessPixels(height, palette.roughness),
+      buildRoughnessPixels(variant, fields, palette.roughness),
       false,
     ),
     variant,

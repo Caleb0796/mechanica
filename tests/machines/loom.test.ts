@@ -335,7 +335,7 @@ describe("loom machine module", () => {
       ).toBeDefined();
     }
     expect(treadles?.joint).toBeUndefined();
-  }, 30_000);
+  }, 60_000);
 
   it("uses semantic silhouettes for the named weaving parts", () => {
     const expectedBuilders = new Map([

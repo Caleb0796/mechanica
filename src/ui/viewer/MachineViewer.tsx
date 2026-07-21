@@ -107,6 +107,11 @@ import {
   GeometryLoading,
   useMachineGeometryWarmup,
 } from "./geometryWarmup";
+import {
+  transitionViewerIdle,
+  VIEWER_IDLE_TIMEOUT_MS,
+  type ViewerIdleState,
+} from "./idleActivity";
 import SceneEnvironment, { prepareSceneEnvironment } from "./SceneEnvironment";
 import {
   ASSEMBLY_COMPLETION_DURATION_MS,
@@ -3040,7 +3045,6 @@ function SpotlightSemanticReadout({
 }
 
 const DRIVE_COACH_KEY = "mechanica:drive-coach";
-const VIEWER_IDLE_TIMEOUT_MS = 30_000;
 
 export default function MachineViewer({
   module,
@@ -3152,6 +3156,7 @@ export default function MachineViewer({
   const viewerIdleTimer = useRef<number | null>(null);
   const viewerIdleAutoPaused = useRef(false);
   const viewerIdleDemand = useRef(false);
+  const viewerTimelineActive = useRef(false);
   const sceneFrames = useRef(0);
   const sceneTriangles = useRef(0);
   const sceneryTriangles = useRef(0);
@@ -3182,6 +3187,9 @@ export default function MachineViewer({
   const setShowScene = useUiStore((state) => state.setShowScene);
   const selectedPartId = useUiStore((state) => state.selectedPartId);
   const setSelectedPartId = useUiStore((state) => state.setSelectedPartId);
+  const timelineActive =
+    activeTrigger !== null || assemblyPlaying || completionProgress < 1;
+  viewerTimelineActive.current = timelineActive;
   const mechanismCutawayPartIds = useMemo(() => {
     const aid = module.aids?.find((candidate) => candidate.kind === "cutaway");
     return aid?.kind === "cutaway" ? aid.partIds : EMPTY_PART_IDS;
@@ -3224,33 +3232,45 @@ export default function MachineViewer({
     window.clearTimeout(viewerIdleTimer.current);
     viewerIdleTimer.current = null;
   }, []);
+  const idleState = useCallback(
+    (): ViewerIdleState => ({
+      autoPaused: viewerIdleAutoPaused.current,
+      demand: viewerIdleDemand.current,
+      paused: useUiStore.getState().paused,
+      timelineActive: viewerTimelineActive.current,
+    }),
+    [],
+  );
+  const applyIdleState = useCallback(
+    (next: ViewerIdleState) => {
+      viewerIdleAutoPaused.current = next.autoPaused;
+      viewerIdleDemand.current = next.demand;
+      setIdleAutoPaused(next.autoPaused);
+      setIdleDemand(next.demand);
+      setPaused(next.paused);
+    },
+    [setIdleAutoPaused, setIdleDemand, setPaused],
+  );
   const enterViewerIdle = useCallback(() => {
     clearViewerIdleTimer();
-    viewerIdleAutoPaused.current = !useUiStore.getState().paused;
-    if (viewerIdleAutoPaused.current) {
-      setIdleAutoPaused(true);
-      setPaused(true);
-    }
-    viewerIdleDemand.current = true;
-    setIdleDemand(true);
-  }, [clearViewerIdleTimer, setIdleAutoPaused, setPaused]);
+    applyIdleState(
+      transitionViewerIdle(idleState(), { type: "idle-elapsed" }).state,
+    );
+  }, [applyIdleState, clearViewerIdleTimer, idleState]);
   const armViewerIdleTimer = useCallback(() => {
     clearViewerIdleTimer();
+    if (viewerTimelineActive.current) return;
     viewerIdleTimer.current = window.setTimeout(
       enterViewerIdle,
       VIEWER_IDLE_TIMEOUT_MS,
     );
   }, [clearViewerIdleTimer, enterViewerIdle]);
   const registerViewerInteraction = useCallback(() => {
-    viewerIdleDemand.current = false;
-    setIdleDemand(false);
-    if (viewerIdleAutoPaused.current) {
-      viewerIdleAutoPaused.current = false;
-      setIdleAutoPaused(false);
-      setPaused(false);
-    }
+    applyIdleState(
+      transitionViewerIdle(idleState(), { type: "interaction" }).state,
+    );
     armViewerIdleTimer();
-  }, [armViewerIdleTimer, setIdleAutoPaused, setPaused]);
+  }, [applyIdleState, armViewerIdleTimer, idleState]);
 
   const oldSchemeSpec = useMemo(
     () =>
@@ -3361,6 +3381,28 @@ export default function MachineViewer({
     module.spec.slug,
     setIdleAutoPaused,
     setPaused,
+  ]);
+
+  useEffect(() => {
+    applyIdleState(
+      transitionViewerIdle(idleState(), {
+        type: "timeline-change",
+        active: timelineActive,
+      }).state,
+    );
+    if (timelineActive || compareActive) {
+      clearViewerIdleTimer();
+      return;
+    }
+    armViewerIdleTimer();
+    return clearViewerIdleTimer;
+  }, [
+    applyIdleState,
+    armViewerIdleTimer,
+    clearViewerIdleTimer,
+    compareActive,
+    idleState,
+    timelineActive,
   ]);
 
   useEffect(
@@ -3960,6 +4002,7 @@ export default function MachineViewer({
   };
 
   const runTrigger = (triggerId: string, arg?: number) => {
+    registerViewerInteraction();
     if (pendingTrigger.current || activeTrigger) {
       pulseDemoInProgress();
       return;
@@ -4035,6 +4078,8 @@ export default function MachineViewer({
   return (
     <main
       className="viewer-page"
+      onClickCapture={registerViewerInteraction}
+      onKeyDownCapture={registerViewerInteraction}
       onPointerDownCapture={registerViewerInteraction}
       onPointerMoveCapture={registerViewerInteraction}
       onWheelCapture={registerViewerInteraction}

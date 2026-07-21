@@ -15,9 +15,11 @@ import {
   ACESFilmicToneMapping,
   Box3,
   type BufferGeometry,
+  CanvasTexture,
   type Group,
   MathUtils,
   PerspectiveCamera,
+  SRGBColorSpace,
   type SpotLight,
   Vector3,
 } from "three";
@@ -444,6 +446,43 @@ function FixedCamera() {
   return null;
 }
 
+function MuseumLightPool() {
+  const texture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const context = canvas.getContext("2d")!;
+    const gradient = context.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gradient.addColorStop(0, "rgba(255, 222, 155, 0.62)");
+    gradient.addColorStop(0.38, "rgba(255, 190, 98, 0.34)");
+    gradient.addColorStop(0.72, "rgba(220, 135, 52, 0.12)");
+    gradient.addColorStop(1, "rgba(190, 105, 35, 0)");
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 256, 256);
+    const poolTexture = new CanvasTexture(canvas);
+    poolTexture.colorSpace = SRGBColorSpace;
+    return poolTexture;
+  }, []);
+
+  useEffect(() => () => texture.dispose(), [texture]);
+
+  return (
+    <mesh
+      position={[0, PLATFORM_TOP + 0.011, TURNTABLE_RADIUS]}
+      raycast={() => undefined}
+      rotation={[-Math.PI / 2, 0, 0]}
+    >
+      <circleGeometry args={[1.65, 64]} />
+      <meshBasicMaterial
+        depthWrite={false}
+        map={texture}
+        toneMapped={false}
+        transparent
+      />
+    </mesh>
+  );
+}
+
 function WarmLightRig() {
   const light = useRef<SpotLight>(null);
   const target = useRef<Group>(null);
@@ -452,8 +491,8 @@ function WarmLightRig() {
   }, []);
   return (
     <>
-      <ambientLight color="#d8b46c" intensity={0.12} />
-      <hemisphereLight args={["#ead7b2", "#211811", 0.2]} />
+      <ambientLight color="#d8b46c" intensity={0.08} />
+      <hemisphereLight args={["#ead7b2", "#211811", 0.13]} />
       <directionalLight color="#ffe1b6" intensity={0.55} position={[3, 5, 4]} />
       <directionalLight
         color="#b88a5a"
@@ -662,6 +701,7 @@ function TurntableStage({
       <SceneEnvironment />
       <FixedCamera />
       <WarmLightRig />
+      <MuseumLightPool />
       <Turntable
         modulesBySlug={modulesBySlug}
         onActiveIndexChange={onActiveIndexChange}

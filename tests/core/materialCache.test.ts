@@ -8,7 +8,10 @@ import {
   materialVariantKey,
   sweepMaterialCache,
 } from "../../src/core/materialCache";
-import { standardMaterial } from "../../src/core/materials";
+import {
+  applyStandardMaterialPresentation,
+  standardMaterial,
+} from "../../src/core/materials";
 
 describe("material cache", () => {
   beforeEach(() => {
@@ -68,6 +71,58 @@ describe("material cache", () => {
     expect(dispose).toHaveBeenCalledOnce();
     expect(materialCacheStats().entries).toBe(0);
     vi.useRealTimers();
+  });
+
+  it("keeps vertex-colored bronze separate from ordinary bronze", () => {
+    const plain = { textureVariant: "bronze:fresh" };
+    const colored = { ...plain, vertexColors: true };
+    const plainKey = materialVariantKey(plain);
+    const coloredKey = materialVariantKey(colored);
+    const plainMaterial = getMaterial("bronze", plainKey, () =>
+      standardMaterial("bronze", plain),
+    );
+    const coloredMaterial = getMaterial("bronze", coloredKey, () =>
+      standardMaterial("bronze", colored),
+    );
+
+    expect(coloredKey).not.toBe(plainKey);
+    expect(coloredKey).not.toBe(
+      materialVariantKey({ ...plain, vertexColors: false }),
+    );
+    expect(coloredMaterial).not.toBe(plainMaterial);
+    expect(plainMaterial.vertexColors).toBe(false);
+    expect(coloredMaterial.vertexColors).toBe(true);
+    expect(coloredMaterial.map).not.toBeNull();
+    expect(coloredMaterial.map).toBe(plainMaterial.map);
+    expect(coloredMaterial.normalMap).toBe(plainMaterial.normalMap);
+    expect(coloredMaterial.roughnessMap).toBe(plainMaterial.roughnessMap);
+    expect(coloredMaterial.color.getHexString()).toBe("ffffff");
+    expect(coloredMaterial.metalness).toBe(plainMaterial.metalness);
+    expect(coloredMaterial.roughness).toBe(plainMaterial.roughness);
+    expect(getMaterial("bronze", coloredKey)).toBe(coloredMaterial);
+  });
+
+  it("recompiles only when vertex-color support changes on a textured material", () => {
+    const material = standardMaterial("bronze");
+    const map = material.map;
+    const initialVersion = material.version;
+
+    applyStandardMaterialPresentation(material, { vertexColors: true }, false);
+    expect(material.vertexColors).toBe(true);
+    expect(material.version).toBe(initialVersion + 1);
+
+    applyStandardMaterialPresentation(material, { vertexColors: true }, false);
+    expect(material.version).toBe(initialVersion + 1);
+
+    applyStandardMaterialPresentation(material, { roughness: 0.1 }, false);
+    expect(material.vertexColors).toBe(true);
+    expect(material.roughness).toBe(1);
+
+    applyStandardMaterialPresentation(material, { vertexColors: false }, false);
+    expect(material.vertexColors).toBe(false);
+    expect(material.version).toBe(initialVersion + 2);
+    expect(material.map).toBe(map);
+    material.dispose();
   });
 
   it("keeps the transient pool flat across twenty state toggles", () => {

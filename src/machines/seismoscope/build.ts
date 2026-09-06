@@ -823,80 +823,307 @@ function seismoscopeDragon(
   params: Record<string, number>,
 ): THREE.BufferGeometry {
   const radius = params.radius;
-  const length = radius * 3.5;
-  const headPitch = THREE.MathUtils.degToRad(27);
-  const headPivot = new THREE.Vector3(0, radius * 0.16, -radius * 0.12);
-  const jawAngle = THREE.MathUtils.degToRad(19);
-  const jawLength = length * 0.35;
-  const jawHinge = new THREE.Vector3(0, radius * 0.3, radius * 0.3);
-  const jawNormal = new THREE.Vector3(
-    0,
-    Math.cos(jawAngle),
-    Math.sin(jawAngle),
+  // All sculptural proportions below are display reconstruction. The finished
+  // face retains the established envelope, pivot, and bronze-ball seat.
+  // The vessel-fitted mount is assembled afterward so fitting the face does
+  // not rescale the upstream contact footprint or ball-containment cradle.
+  const parts: THREE.BufferGeometry[] = [];
+  type Point = readonly [number, number, number];
+  const bronze: Point = [0.7, 0.73, 0.66];
+  const raised: Point = [0.91, 0.88, 0.75];
+  const patina: Point = [0.12, 0.16, 0.13];
+  const recess: Point = [0.035, 0.047, 0.04];
+  const withTone = (geometry: THREE.BufferGeometry, tone: Point = bronze) => {
+    const colors = new Float32Array(
+      geometry.getAttribute("position").count * 3,
+    );
+    for (let vertex = 0; vertex < colors.length; vertex += 3)
+      colors.set(tone, vertex);
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    return geometry;
+  };
+  const add = (geometry: THREE.BufferGeometry, tone: Point = bronze) => {
+    parts.push(withTone(geometry, tone));
+  };
+  const ellipsoid = (
+    scale: Point,
+    position: Point,
+    tone: Point = bronze,
+    rotation: Point = [0, 0, 0],
+  ) =>
+    add(
+      placeGeometry(
+        new THREE.SphereGeometry(radius, 16, 12),
+        scale,
+        position.map((value) => value * radius) as [number, number, number],
+        rotation,
+      ),
+      tone,
+    );
+  const sweep = (points: Point[], thickness: number, tone: Point = bronze) => {
+    const curve = new THREE.CatmullRomCurve3(
+      points.map((point) => new THREE.Vector3(...point).multiplyScalar(radius)),
+    );
+    const segments = points.length > 4 ? 24 : 16;
+    const geometry = new THREE.TubeGeometry(
+      curve,
+      segments,
+      radius * thickness,
+      8,
+      false,
+    );
+    const position = geometry.getAttribute("position");
+    for (let ring = 0; ring <= segments; ring += 1) {
+      const progress = ring / segments;
+      const center = curve.getPointAt(progress);
+      const taper = 0.06 + 0.94 * (1 - progress) ** 0.7;
+      for (let side = 0; side <= 8; side += 1) {
+        const index = ring * 9 + side;
+        const point = new THREE.Vector3()
+          .fromBufferAttribute(position, index)
+          .sub(center)
+          .multiplyScalar(taper)
+          .add(center);
+        position.setXYZ(index, point.x, point.y, point.z);
+      }
+    }
+    add(geometry, tone);
+  };
+  // A continuous, flattened cranial ridge and muzzle replace stacked beads.
+  // Each ring is [forward position, center height, half width, half height].
+  const loft = (rings: number[][], tone: Point = bronze) => {
+    const positions: number[] = [];
+    const uvs: number[] = [];
+    const indices: number[] = [];
+    const sides = 24;
+    for (let ring = 0; ring < rings.length; ring += 1) {
+      const [z, y, width, height] = rings[ring];
+      for (let side = 0; side <= sides; side += 1) {
+        const angle = (side / sides) * Math.PI * 2;
+        const sine = Math.sin(angle);
+        positions.push(
+          radius * Math.cos(angle) * width,
+          radius * (y + Math.sign(sine) * Math.abs(sine) ** 0.7 * height),
+          radius * z,
+        );
+        uvs.push(side / sides, ring / (rings.length - 1));
+        if (ring < rings.length - 1 && side < sides) {
+          const current = ring * (sides + 1) + side;
+          const next = current + sides + 1;
+          indices.push(current, current + 1, next, current + 1, next + 1, next);
+        }
+      }
+    }
+    for (const ring of [0, rings.length - 1]) {
+      const [z, y] = rings[ring];
+      const center = positions.length / 3;
+      positions.push(0, radius * y, radius * z);
+      uvs.push(0.5, 0.5);
+      for (let side = 0; side < sides; side += 1) {
+        const index = ring * (sides + 1) + side;
+        if (ring === 0) indices.push(center, index + 1, index);
+        else indices.push(center, index, index + 1);
+      }
+    }
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(positions, 3),
+    );
+    geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+    geometry.setIndex(indices);
+    geometry.computeVertexNormals();
+    add(geometry, tone);
+  };
+  loft([
+    [-1.85, -0.12, 0.25, 0.3],
+    [-1.5, 0.02, 0.35, 0.42],
+    [-0.9, 0.16, 0.58, 0.52],
+    [-0.35, 0.16, 0.61, 0.5],
+    [0.05, 0.09, 0.47, 0.36],
+    [0.45, 0.015, 0.34, 0.22],
+    [1.08, 0.02, 0.4, 0.19],
+    [1.48, 0.055, 0.47, 0.22],
+    [1.62, 0.035, 0.38, 0.16],
+  ]);
+  // Jaw side rails frame the copper ball instead of obscuring it.
+  loft([
+    [-0.55, -0.39, 0.39, 0.17],
+    [-0.05, -0.85, 0.42, 0.16],
+    [0.65, -1.13, 0.43, 0.13],
+    [1.3, -1.12, 0.47, 0.12],
+    [1.56, -1.03, 0.36, 0.105],
+  ]);
+  ellipsoid([0.3, 0.055, 0.55], [0, -0.94, 0.63], patina);
+  sweep(
+    [
+      [0, -1.2, 0.98],
+      [0, -1.43, 0.64],
+      [0, -1.5, 0.12],
+      [0, -1.36, -0.12],
+    ],
+    0.17,
   );
+
+  for (const side of [-1, 1]) {
+    // Recessed almond eyes and an overhanging brow give the face direction.
+    ellipsoid([0.12, 0.18, 0.25], [side * 0.535, 0.27, 0.02], patina, [
+      0,
+      side * 0.3,
+      side * -0.2,
+    ]);
+    ellipsoid([0.064, 0.105, 0.13], [side * 0.63, 0.27, 0.075], recess);
+    sweep(
+      [
+        [side * 0.63, 0.26, 0.33],
+        [side * 0.66, 0.45, 0.17],
+        [side * 0.59, 0.55, -0.17],
+        [side * 0.45, 0.47, -0.5],
+      ],
+      0.16,
+      raised,
+    );
+    sweep(
+      [
+        [side * 0.5, 0.015, 0.26],
+        [side * 0.69, -0.1, 0],
+        [side * 0.65, 0, -0.46],
+        [side * 0.43, 0.2, -0.8],
+      ],
+      0.15,
+    );
+    // The pointed horn tips sweep upward and back; a short branch reads as
+    // an antler rather than the former rounded, sideways ear-like stalk.
+    sweep(
+      [
+        [side * 0.34, 0.47, -0.6],
+        [side * 0.49, 0.82, -0.79],
+        [side * 0.59, 1.22, -1.17],
+        [side * 0.45, 1.25, -1.64],
+      ],
+      0.18,
+      raised,
+    );
+    sweep(
+      [
+        [side * 0.47, 0.79, -0.79],
+        [side * 0.76, 1.03, -0.98],
+        [side * 0.87, 1.17, -1.24],
+      ],
+      0.1,
+      raised,
+    );
+    ellipsoid([0.22, 0.11, 0.44], [side * 0.7, 0.22, -0.6], bronze, [
+      0.2,
+      side * -0.65,
+      side * 0.2,
+    ]);
+    // Flared nostril rims leave a visibly dark inset at the end of the snout.
+    ellipsoid([0.19, 0.135, 0.15], [side * 0.235, 0.16, 1.4], raised);
+    ellipsoid([0.11, 0.06, 0.09], [side * 0.25, 0.26, 1.435], recess);
+    sweep(
+      [
+        [side * 0.37, -0.03, 1.4],
+        [side * 0.89, -0.17, 1.16],
+        [side * 1.5, -0.07, 0.62],
+        [side * 1.69, 0.18, 0.06],
+        [side * 1.51, 0.32, -0.2],
+      ],
+      0.085,
+      raised,
+    );
+    // Sparse fangs and a raised lip retain an open silhouette around the ball.
+    sweep(
+      [
+        [side * 0.43, -0.12, 1.0],
+        [side * 0.5, -0.36, 1.07],
+        [side * 0.43, -0.57, 1.22],
+      ],
+      0.095,
+      raised,
+    );
+    sweep(
+      [
+        [side * 0.4, -0.96, 1.36],
+        [side * 0.49, -0.9, 0.7],
+        [side * 0.45, -0.52, -0.15],
+      ],
+      0.075,
+      raised,
+    );
+  }
+  // Three broad crest leaves cast readable shadows, instead of tiny cones.
+  for (let fin = 0; fin < 3; fin += 1) {
+    const z = -0.48 - fin * 0.39;
+    sweep(
+      [
+        [0, 0.54 - fin * 0.08, z],
+        [0, 0.9 - fin * 0.07, z - 0.14],
+        [0, 0.82 - fin * 0.07, z - 0.5],
+      ],
+      0.15,
+      raised,
+    );
+  }
+  const face = fitDragonMountClearance(
+    mergeComposite(
+      parts,
+      // Stay inside the envelope after the Float32 attribute conversion.
+      [radius * 3.5 - 1e-7, radius * 2.8 - 1e-7, radius * 3.5 - 1e-7],
+      [0, -radius * 0.12, -radius * 0.1],
+    ),
+  );
+
+  // Keep the mount's contact vertices first: they are fitted to the curved
+  // vessel at a deliberate clearance, independently of the display sculpt.
   const mountCenterY = -radius * 0.34;
   const mountSurfaceZ = -radius * 2.155;
   const mountCrownZ = mountSurfaceZ + radius * 0.28;
+  const mount = withTone(
+    flaredMountCollar(radius, mountCenterY, mountSurfaceZ),
+  );
+  const neck = withTone(
+    fitDragonMountClearance(
+      taperedTubeAlong(
+        [
+          new THREE.Vector3(0, mountCenterY, mountCrownZ),
+          new THREE.Vector3(radius * 0.12, -radius * 0.76, -radius * 0.86),
+          new THREE.Vector3(-radius * 0.12, -radius * 0.12, -radius * 0.44),
+          new THREE.Vector3(0, radius * 0.16, -radius * 0.12),
+        ],
+        radius * 3.5 * 0.22,
+        radius * 3.5 * 0.16,
+        28,
+        12,
+      ),
+    ),
+  );
+
+  // Preserve the established lower cradle and raised side lips. Their frame
+  // remains fixed to the ball seat even as the decorative face is refined.
+  const cradlePitch = THREE.MathUtils.degToRad(27);
+  const cradlePivot = new THREE.Vector3(0, radius * 0.16, -radius * 0.12);
+  const jawAngle = THREE.MathUtils.degToRad(19);
+  const jawHinge = new THREE.Vector3(0, radius * 0.3, radius * 0.3);
   const jawTip = jawHinge
     .clone()
     .add(
       new THREE.Vector3(
         0,
-        -Math.sin(jawAngle) * jawLength,
-        Math.cos(jawAngle) * jawLength,
+        -Math.sin(jawAngle) * radius * 3.5 * 0.35,
+        Math.cos(jawAngle) * radius * 3.5 * 0.35,
       ),
     );
+  const jawNormal = new THREE.Vector3(
+    0,
+    Math.cos(jawAngle),
+    Math.sin(jawAngle),
+  );
   const lipCenter = jawHinge
     .clone()
     .lerp(jawTip, 0.88)
     .addScaledVector(jawNormal, radius * 0.17);
-  const neckRoot = fitDragonMountClearance(
-    taperedTubeAlong(
-      [
-        new THREE.Vector3(0, mountCenterY, mountCrownZ),
-        new THREE.Vector3(radius * 0.12, -radius * 0.76, -radius * 0.86),
-        new THREE.Vector3(-radius * 0.12, -radius * 0.12, -radius * 0.44),
-        new THREE.Vector3(0, radius * 0.16, -radius * 0.12),
-      ],
-      length * 0.22,
-      length * 0.16,
-      28,
-      12,
-    ),
-  );
-  const parts = [
-    flaredMountCollar(radius, mountCenterY, mountSurfaceZ),
-    neckRoot,
-    pitchAround(
-      placeGeometry(
-        new THREE.SphereGeometry(1, 20, 14),
-        [length * 0.2185, radius * 0.62, length * 0.225],
-        [0, radius * 0.48, -radius * 0.02],
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      taperedWedge([
-        {
-          center: new THREE.Vector3(0, radius * 0.38, -radius * 0.1),
-          halfWidth: radius * 0.67,
-          halfHeight: radius * 0.34,
-        },
-        {
-          center: new THREE.Vector3(0, radius * 0.38, radius * 0.78),
-          halfWidth: radius * 0.56,
-          halfHeight: radius * 0.29,
-        },
-        {
-          center: new THREE.Vector3(0, radius * 0.34, radius * 1.68),
-          halfWidth: radius * 0.43,
-          halfHeight: radius * 0.18,
-        },
-      ]),
-      headPivot,
-      headPitch,
-    ),
+  const cradle = withTone(
     pitchAround(
       taperedWedge([
         {
@@ -909,16 +1136,14 @@ function seismoscopeDragon(
           halfWidth: radius * 0.56,
           halfHeight: radius * 0.135,
         },
-        {
-          center: jawTip,
-          halfWidth: radius * 0.48,
-          halfHeight: radius * 0.14,
-        },
+        { center: jawTip, halfWidth: radius * 0.48, halfHeight: radius * 0.14 },
       ]),
-      headPivot,
-      headPitch,
+      cradlePivot,
+      cradlePitch,
     ),
-    ...[-1, 1].map((side) =>
+  );
+  const lips = [-1, 1].map((side) =>
+    withTone(
       pitchAround(
         placeGeometry(
           new THREE.BoxGeometry(radius * 0.08, radius * 0.1, radius * 0.3),
@@ -926,167 +1151,18 @@ function seismoscopeDragon(
           [side * radius * 0.52, lipCenter.y, lipCenter.z],
           [jawAngle, 0, 0],
         ),
-        headPivot,
-        headPitch,
+        cradlePivot,
+        cradlePitch,
       ),
+      raised,
     ),
-    pitchAround(
-      cylinderBetween(
-        jawHinge
-          .clone()
-          .lerp(jawTip, 0.46)
-          .add(new THREE.Vector3(-radius * 0.52, 0, 0)),
-        jawTip.clone().add(new THREE.Vector3(-radius * 0.48, 0, 0)),
-        radius * 0.06,
-        8,
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      cylinderBetween(
-        jawHinge
-          .clone()
-          .lerp(jawTip, 0.46)
-          .add(new THREE.Vector3(radius * 0.52, 0, 0)),
-        jawTip.clone().add(new THREE.Vector3(radius * 0.48, 0, 0)),
-        radius * 0.06,
-        8,
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      placeGeometry(
-        new THREE.SphereGeometry(radius * 0.12, 12, 8),
-        [1, 1, 1],
-        [-radius * 0.43, radius * 0.82, radius * 0.55],
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      placeGeometry(
-        new THREE.SphereGeometry(radius * 0.12, 12, 8),
-        [1, 1, 1],
-        [radius * 0.43, radius * 0.82, radius * 0.55],
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      taperedTubeAlong(
-        [
-          new THREE.Vector3(-radius * 0.63, radius * 0.88, radius * 0.2),
-          new THREE.Vector3(-radius * 0.46, radius * 0.98, radius * 0.48),
-          new THREE.Vector3(-radius * 0.23, radius * 0.91, radius * 0.75),
-        ],
-        length * 0.05,
-        length * 0.04,
-        12,
-        8,
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      taperedTubeAlong(
-        [
-          new THREE.Vector3(radius * 0.63, radius * 0.88, radius * 0.2),
-          new THREE.Vector3(radius * 0.46, radius * 0.98, radius * 0.48),
-          new THREE.Vector3(radius * 0.23, radius * 0.91, radius * 0.75),
-        ],
-        length * 0.05,
-        length * 0.04,
-        12,
-        8,
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      placeGeometry(
-        new THREE.SphereGeometry(length * 0.04, 10, 8),
-        [1, 0.72, 1],
-        [-radius * 0.27, radius * 0.34, radius * 1.6],
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      placeGeometry(
-        new THREE.SphereGeometry(length * 0.04, 10, 8),
-        [1, 0.72, 1],
-        [radius * 0.27, radius * 0.34, radius * 1.6],
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      taperedTubeAlong(
-        [
-          new THREE.Vector3(-radius * 0.5, radius * 0.78, -radius * 0.1),
-          new THREE.Vector3(-radius * 0.7, radius * 0.86, -radius * 0.54),
-          new THREE.Vector3(-radius * 0.85, radius * 0.85, -radius * 0.9),
-        ],
-        length * 0.05,
-        radius * 0.03,
-        18,
-        9,
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      taperedTubeAlong(
-        [
-          new THREE.Vector3(radius * 0.5, radius * 0.78, -radius * 0.1),
-          new THREE.Vector3(radius * 0.7, radius * 0.86, -radius * 0.54),
-          new THREE.Vector3(radius * 0.85, radius * 0.85, -radius * 0.9),
-        ],
-        length * 0.05,
-        radius * 0.03,
-        18,
-        9,
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      taperedTubeAlong(
-        [
-          new THREE.Vector3(-radius * 0.45, radius * 0.18, radius * 1.05),
-          new THREE.Vector3(-radius * 0.78, radius * 0.04, radius * 0.92),
-          new THREE.Vector3(-radius * 1.05, -radius * 0.05, radius * 0.75),
-        ],
-        radius * 0.035,
-        radius * 0.008,
-        12,
-        7,
-      ),
-      headPivot,
-      headPitch,
-    ),
-    pitchAround(
-      taperedTubeAlong(
-        [
-          new THREE.Vector3(radius * 0.45, radius * 0.18, radius * 1.05),
-          new THREE.Vector3(radius * 0.78, radius * 0.04, radius * 0.92),
-          new THREE.Vector3(radius * 1.05, -radius * 0.05, radius * 0.75),
-        ],
-        radius * 0.035,
-        radius * 0.008,
-        12,
-        7,
-      ),
-      headPivot,
-      headPitch,
-    ),
-  ];
+  );
+  const assembly = mergeComposite([mount, neck, face, cradle, ...lips]);
   return setGeometryPresentation(
-    mergeComposite(parts),
+    assembly,
     {
       color: "#a9783f",
+      vertexColors: true,
       metalness: 0.9,
       roughness: 0.34,
       textureVariant: "bronze:fresh",
@@ -1094,23 +1170,23 @@ function seismoscopeDragon(
     {
       kind: "chinese-dragon-head",
       forward: [0, 0, 1],
-      envelope: [radius * 3.5, radius * 2.8, radius * 3.73],
-      headPitchDeg: 27,
+      envelope: assembly.boundingBox!.getSize(new THREE.Vector3()).toArray(),
+      faceEnvelope: [radius * 3.5, radius * 2.8, radius * 3.5],
+      cradlePitchDeg: 27,
       jawAngleDeg: 19,
-      jawGapRatio: 0.34,
-      maneFinCount: 0,
       mountClearance: DRAGON_MOUNT_CLEARANCE,
       mountContactVertexCount:
         1 + DRAGON_MOUNT_RADIAL_SEGMENTS * DRAGON_MOUNT_CONTACT_RINGS,
       sideLipCount: 2,
-      snoutLengthRatio: 0.51,
+      jawGapRatio: 0.34,
+      maneFinCount: 3,
       features: [
         "connected-neck-root",
         "connected-neck-flare",
         "solid-mount-plate",
-        "integrated-gold-dome",
+        "ball-cradle",
+        "side-lip-plates",
         "cranial-mass",
-        "down-pitched-head",
         "upper-jaw",
         "elongated-upper-snout",
         "deep-open-jaw-gap",
@@ -1118,16 +1194,20 @@ function seismoscopeDragon(
         "swept-neck-profile",
         "jaw-hinge",
         "open-lower-jaw",
-        "ball-cradle",
-        "side-lip-plates",
         "backward-horns",
         "whiskers",
-        "short-curved-whiskers",
         "brow-eyes",
         "arched-brows",
         "paired-nostrils",
         "visible-tongue",
         "side-ears",
+        "mane-fins",
+        "continuous-tapered-muzzle",
+        "swept-antler-horns",
+        "recessed-almond-eyes",
+        "curved-tapered-whiskers",
+        "sparse-fangs",
+        "patinated-recesses",
       ],
     },
   );

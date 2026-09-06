@@ -43,6 +43,7 @@ function normalizedPresentation(
     "side",
     "textureVariant",
     "transparent",
+    "vertexColors",
   ] as const) {
     const value = presentation[key];
     if (

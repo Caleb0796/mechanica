@@ -5,12 +5,19 @@ import { fileURLToPath } from "node:url";
 
 import { chromium } from "playwright";
 
-const slugs = [
+const availableSlugs = [
   "astroclock",
   "seismoscope",
   "odometer",
   "loom",
 ];
+const requestedSlug = process.argv
+  .find((argument) => argument.startsWith("--slug="))
+  ?.slice(7);
+if (requestedSlug && !availableSlugs.includes(requestedSlug)) {
+  throw new Error(`Unknown render machine: ${requestedSlug}`);
+}
+const slugs = requestedSlug ? [requestedSlug] : availableSlugs;
 const angles = ["overall", "cutaway", "mechanism-close-up", "exploded"];
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const renderRoot = join(root, "public", "assets", "renders");
@@ -79,17 +86,30 @@ async function waitForModel(page, slug, view) {
   });
   const canvas = page.locator(".viewer-canvas");
   await canvas.locator("canvas").waitFor({ state: "visible" });
+  await page.locator('.viewer-canvas[data-machine-ready="true"]').waitFor();
+  if (slug === "seismoscope") {
+    const sceneToggle = page.getByTestId("scene-toggle");
+    if ((await sceneToggle.getAttribute("aria-pressed")) !== "true") {
+      await sceneToggle.click();
+    }
+  }
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(900);
   return canvas;
 }
 
 async function hideCaptureChrome(page) {
+  // Clear the model's hover highlight and drive handle before taking a still.
+  await page.mouse.move(page.viewportSize().width - 1, 1);
+  await page.waitForTimeout(250);
   await page.addStyleTag({
     content: `
       .drive-buttons,
       .story-launch-button,
       .viewer-title,
+      .aid-chip-toolbar,
+      .drive-coach,
+      .docent-entry,
       .viewer-toolbar { visibility: hidden !important; }
     `,
   });
@@ -137,6 +157,11 @@ async function captureMachine(page, slug) {
   await capture(canvas, join(outputDirectory, "overall.jpg"));
 
   canvas = await waitForModel(page, slug, "cutaway");
+  if (slug === "seismoscope") {
+    await page
+      .getByRole("button", { name: "Reveal the eight internal gates", exact: true })
+      .click();
+  }
   const box = await canvas.boundingBox();
   if (!box) throw new Error(`Canvas bounds unavailable for ${slug}`);
   await page.mouse.move(box.x + box.width * 0.82, box.y + box.height * 0.46);
@@ -151,6 +176,9 @@ async function captureMachine(page, slug) {
 
   canvas = await waitForModel(page, slug, "mechanism-close-up");
   if (slug === "seismoscope") {
+    await page
+      .getByRole("button", { name: "Reveal the eight internal gates", exact: true })
+      .click();
     const closeupBox = await canvas.boundingBox();
     if (!closeupBox) throw new Error(`Canvas bounds unavailable for ${slug}`);
     await page.mouse.move(
@@ -176,6 +204,7 @@ async function captureMachine(page, slug) {
   await capture(canvas, join(outputDirectory, "mechanism-close-up.jpg"));
 
   canvas = await waitForModel(page, slug, "exploded");
+  await page.locator(".controls-advanced > summary").click();
   await page.getByTestId("explode-slider").fill("1");
   await page.waitForTimeout(1300);
   await hideCaptureChrome(page);
@@ -187,6 +216,9 @@ const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({
   deviceScaleFactor: 1,
   viewport: { height: 1000, width: 1440 },
+});
+await page.addInitScript(() => {
+  localStorage.setItem("mechanica:drive-coach", "dismissed");
 });
 const browserErrors = [];
 page.on("console", (message) => {
@@ -220,4 +252,4 @@ for (const slug of slugs) {
 if (totalBytes > maxTotalBytes) {
   throw new Error(`Render total ${totalBytes} exceeds ${maxTotalBytes} bytes`);
 }
-console.log(`16 renders complete: ${totalBytes} bytes`);
+console.log(`${slugs.length * angles.length} renders complete: ${totalBytes} bytes`);

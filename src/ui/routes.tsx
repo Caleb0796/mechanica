@@ -14,6 +14,9 @@ export function retryImportOnce<T>(loader: () => Promise<T>): Promise<T> {
 const MachineViewer = lazy(() =>
   retryImportOnce(() => import("./viewer/MachineViewer")),
 );
+const FreeExplorePrototype = lazy(() =>
+  retryImportOnce(() => import("./viewer/FreeExplorePrototype")),
+);
 const MachineStoryStage = lazy(() =>
   retryImportOnce(() =>
     import("./viewer/MachineViewer").then((module) => ({
@@ -64,7 +67,13 @@ function HomePage() {
   );
 }
 
-function MachineRoute({ slug }: { slug: string }) {
+function MachineRoute({
+  slug,
+  prototype = false,
+}: {
+  slug: string;
+  prototype?: boolean;
+}) {
   const { t } = useTranslation();
   const [module, setModule] = useState<MachineModule | null>(null);
   const [error, setError] = useState(false);
@@ -138,7 +147,11 @@ function MachineRoute({ slug }: { slug: string }) {
         </main>
       }
     >
-      <MachineViewer module={module} schemeId={module.defaultSchemeId} />
+      {prototype ? (
+        <FreeExplorePrototype module={module} />
+      ) : (
+        <MachineViewer module={module} schemeId={module.defaultSchemeId} />
+      )}
     </Suspense>
   );
 }
@@ -259,6 +272,11 @@ export default function RouterView() {
     return () => window.removeEventListener("hashchange", updatePath);
   }, []);
 
+  if (/^\/prototype\/seismoscope\/?$/.test(path)) {
+    return (
+      <MachineRoute key="free-explore-prototype" slug="seismoscope" prototype />
+    );
+  }
   const storyMatch = path.match(/^\/story\/([^/]+)\/?$/);
   if (storyMatch) {
     return <StoryRoute slug={decodeURIComponent(storyMatch[1])} />;

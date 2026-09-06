@@ -103,6 +103,7 @@ import DriveHandle, {
 import DemoFocusRig from "./DemoFocusRig";
 import { buildDemoTimeline } from "./demoTimeline";
 import ExplodedControl from "./ExplodedControl";
+import FreeMovePart, { type FreeMoveControl } from "./FreeMovePart";
 import { GeometryLoading, useMachineGeometryWarmup } from "./geometryWarmup";
 import {
   transitionViewerIdle,
@@ -314,6 +315,8 @@ interface PartNodeProps {
   driveCoachVisible?: boolean;
   drivePartIds: ReadonlySet<string>;
   explode: number;
+  freeMove?: FreeMoveControl;
+  freeMoves?: Readonly<Record<string, FreeMoveControl>>;
   geometryScope: string;
   graph: IKinematicGraph;
   interactionDisabled?: boolean;
@@ -1138,6 +1141,8 @@ const PartNode = memo(function PartNode({
   driveCoachVisible,
   drivePartIds,
   explode,
+  freeMove,
+  freeMoves,
   geometryScope,
   graph,
   interactionDisabled,
@@ -1517,28 +1522,33 @@ const PartNode = memo(function PartNode({
       partPointerIntent.current = null;
     }
   };
+  const ownGeometry = renderOwnPart
+    ? geometries.map((geometry, index) => (
+        <PartGeometryMesh
+          assemblyOpacity={assemblyAppearance}
+          compareContext={compareContext}
+          geometry={geometry}
+          index={index}
+          inspectionOutline={hasInstancedGeometry ? undefined : inspectionState}
+          instanceMatrices={instanceMatrices[index]}
+          key={geometry.uuid}
+          onInstancedMesh={setInstancedMesh}
+          part={part}
+          transientState={transientState}
+          transientStateKey={transientStateKey}
+          visualPresentation={visualPresentation}
+        />
+      ))
+    : null;
+  const partFreeMove =
+    freeMoves?.[part.id] ?? (freeMove?.partId === part.id ? freeMove : undefined);
   const content = (
     <>
-      {renderOwnPart
-        ? geometries.map((geometry, index) => (
-            <PartGeometryMesh
-              assemblyOpacity={assemblyAppearance}
-              compareContext={compareContext}
-              geometry={geometry}
-              index={index}
-              inspectionOutline={
-                hasInstancedGeometry ? undefined : inspectionState
-              }
-              instanceMatrices={instanceMatrices[index]}
-              key={geometry.uuid}
-              onInstancedMesh={setInstancedMesh}
-              part={part}
-              transientState={transientState}
-              transientStateKey={transientStateKey}
-              visualPresentation={visualPresentation}
-            />
-          ))
-        : null}
+      {partFreeMove ? (
+        <FreeMovePart control={partFreeMove}>{ownGeometry}</FreeMovePart>
+      ) : (
+        ownGeometry
+      )}
       {childParts.map((child) => (
         <PartNode
           aidCutawayMaxAssemblyStep={aidCutawayMaxAssemblyStep}
@@ -1553,6 +1563,8 @@ const PartNode = memo(function PartNode({
           driveCoachVisible={driveCoachVisible}
           drivePartIds={drivePartIds}
           explode={explode}
+          freeMove={freeMove}
+          freeMoves={freeMoves}
           geometryScope={geometryScope}
           graph={graph}
           interactionDisabled={interactionDisabled}
@@ -1652,6 +1664,8 @@ interface MachineSceneProps {
   displayState: { current: Record<string, number> | null };
   driveCoachVisible?: boolean;
   explode: number;
+  freeMove?: FreeMoveControl;
+  freeMoves?: Readonly<Record<string, FreeMoveControl>>;
   geometryReadyAt: number | null;
   graph: IKinematicGraph;
   introPlayed?: MutableRefObject<boolean>;
@@ -1661,6 +1675,7 @@ interface MachineSceneProps {
   onDriveSuccess?: () => void;
   onGeometryCommitted: (committedAt: number) => void;
   paused: boolean;
+  profile?: ViewerProfile;
   schemeId?: string;
   shadowDiagnostics?: MutableRefObject<ShadowDiagnostics>;
   showScene?: boolean;
@@ -2057,7 +2072,7 @@ function AssemblyStagingGround({
   );
 }
 
-function MachineScene({
+export function MachineScene({
   activeSpec,
   aidCutawayPartIds = EMPTY_PART_IDS,
   aidHighlightPartIds = EMPTY_PART_IDS,
@@ -2070,6 +2085,8 @@ function MachineScene({
   displayState,
   driveCoachVisible,
   explode,
+  freeMove,
+  freeMoves,
   geometryReadyAt,
   graph,
   introPlayed,
@@ -2079,6 +2096,7 @@ function MachineScene({
   onDriveSuccess,
   onGeometryCommitted,
   paused,
+  profile,
   schemeId,
   shadowDiagnostics,
   showScene,
@@ -2090,6 +2108,7 @@ function MachineScene({
   transitionLayer,
 }: MachineSceneProps) {
   const camera = useThree((state) => state.camera);
+  const freeExploration = Boolean(freeMove || freeMoves);
   const dragging = useRef(false);
   const escapementElapsed = useRef(0);
   const floorMeasurement = useRef({
@@ -2107,13 +2126,14 @@ function MachineScene({
     [activeSpec],
   );
   const viewerProfile =
-    module.data.slug === "demo"
+    profile ??
+    (module.data.slug === "demo"
       ? {
           ...DEMO_VIEWER_PROFILE,
           focusPartIds: undefined,
           homePose: undefined,
         }
-      : VIEWER_PROFILES[module.data.slug];
+      : VIEWER_PROFILES[module.data.slug]);
   const desiredAssemblyCameraState =
     assembly?.state.mode === "reassemble"
       ? assembly.state.complete
@@ -2309,6 +2329,8 @@ function MachineScene({
           />
           <directionalLight
             castShadow
+            shadow-bias={freeExploration ? -0.0004 : 0}
+            shadow-mapSize={freeExploration ? [1024, 1024] : [512, 512]}
             color="#ffe1b6"
             intensity={2.2}
             position={[3, 5, 4]}
@@ -2366,9 +2388,11 @@ function MachineScene({
             driveCoachVisible={driveCoachVisible}
             drivePartIds={drivePartIds}
             explode={explode}
+            freeMove={freeMove}
+            freeMoves={freeMoves}
             geometryScope={geometryScope}
             graph={graph}
-            interactionDisabled={interactionDisabled}
+            interactionDisabled={interactionDisabled || freeExploration}
             key={part.id}
             maxAssemblyStep={maxAssemblyStep}
             module={module}
@@ -2411,12 +2435,14 @@ function MachineScene({
         machineRoot={machineRoot}
         onIntroActiveChange={setCameraIntroActive}
         onTargetChange={compareContext?.onCameraTargetChange}
-        playIntro={!compareContext && module.spec.slug !== "demo"}
+        playIntro={
+          !freeExploration && !compareContext && module.spec.slug !== "demo"
+        }
         profile={viewerProfile}
         readyAt={geometryReadyAt}
         spec={activeSpec}
       />
-      {!compareContext && !storyCamera && !sceneVisible ? (
+      {!freeExploration && !compareContext && !storyCamera && !sceneVisible ? (
         <ContactShadows
           blur={2.5}
           far={3}
@@ -4402,6 +4428,15 @@ export default function MachineViewer({
                 {module.data.oneLiner[language]} · {t("viewer.rotateHint")}
               </p>
             </div>
+            {module.data.slug === "seismoscope" ? (
+              <a
+                className="story-launch-button"
+                data-testid="free-explore-launch"
+                href="#/prototype/seismoscope"
+              >
+                {t("freeExplore.launch")}
+              </a>
+            ) : null}
             {storyAvailable ? (
               <a
                 className="story-launch-button"

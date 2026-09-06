@@ -19,6 +19,7 @@ export interface StandardMaterialPresentation {
   textureVariant?: string;
   transparent?: boolean;
   normalMap?: THREE.Texture | null;
+  vertexColors?: boolean;
 }
 
 export function applyStandardMaterialPresentation(
@@ -65,6 +66,13 @@ export function applyStandardMaterialPresentation(
   }
   if (typeof presentation.transparent === "boolean") {
     material.transparent = presentation.transparent;
+  }
+  if (
+    typeof presentation.vertexColors === "boolean" &&
+    material.vertexColors !== presentation.vertexColors
+  ) {
+    material.vertexColors = presentation.vertexColors;
+    material.needsUpdate = true;
   }
   if (
     presentation.alphaMap !== undefined ||

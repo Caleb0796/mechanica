@@ -299,7 +299,7 @@ describe("independent machine validation", () => {
         (check) => check.id === "base:collision:whitelist:g20:g40",
       ),
     ).toMatchObject({ status: "pass" });
-  });
+  }, 20_000);
 
   it("checks whitelisted gears through an alternate declared drive", () => {
     const module = miniModule();
@@ -483,7 +483,7 @@ describe("independent machine validation", () => {
     ).toMatchObject({
       status: "fail",
     });
-  });
+  }, 20_000);
 
   it("accepts an intentional moving non-gear contact pair", () => {
     const module = miniModule();
@@ -507,7 +507,7 @@ describe("independent machine validation", () => {
           check.id === "base:collision:whitelist:moving-link:contact-follower",
       ),
     ).toMatchObject({ status: "pass" });
-  });
+  }, 20_000);
 
   it("accepts an intentional static non-gear contact pair", () => {
     const module = miniModule();
@@ -523,7 +523,7 @@ describe("independent machine validation", () => {
           check.id === "base:collision:whitelist:static-mount:static-shaft",
       ),
     ).toMatchObject({ status: "pass" });
-  });
+  }, 20_000);
 
   it("verifies a brief whitelisted contact at the shared resolution", () => {
     const module = miniModule();

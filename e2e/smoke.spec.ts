@@ -182,7 +182,7 @@ async function dragDriveGizmo(page: Page, testIdPrefix: string, distance = 80) {
 test("smoke: homepage turntable is the sole four-machine navigation", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#/museum");
   await expect(page.getByTestId("home-turntable")).toBeVisible();
   await expect(
     page.getByTestId("home-turntable").locator("canvas"),
@@ -206,7 +206,7 @@ test("G6.3: home turntable holds fifty fps with four mounted machines", async ({
   page,
 }) => {
   test.setTimeout(45_000);
-  await page.goto("/");
+  await page.goto("/#/museum");
   const stage = page.getByTestId("home-turntable");
   await expect(stage).toHaveAttribute("data-mounted-machine-count", "4", {
     timeout: 30_000,

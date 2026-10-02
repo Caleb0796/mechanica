@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 import './i18n'
 import './styles.css'
-import RouterView from './routes'
+import CoverPage from './CoverPage'
+import RouterView, { COVER_PATH, useCurrentPath } from './routes'
 import { type UiLanguage, useUiStore } from './store'
 
 interface LazyRouteErrorBoundaryProps {
@@ -83,6 +84,7 @@ function LanguageSwitch() {
 export default function App() {
   const { t } = useTranslation()
   const language = useUiStore((state) => state.language)
+  const path = useCurrentPath()
 
   useEffect(() => {
     document.title = t('app.pageTitle')
@@ -91,10 +93,12 @@ export default function App() {
       ?.setAttribute('content', t('app.metaDescription'))
   }, [language, t])
 
+  if (path === COVER_PATH) return <CoverPage />
+
   return (
     <div className="app-shell">
       <header className="museum-header">
-        <a className="brand-link" href="#/">
+        <a className="brand-link" href="#/museum">
           <span className="brand-mark">{t('app.brand')}</span>
           <span className="brand-subtitle">{t('app.subtitle')}</span>
         </a>
@@ -105,7 +109,7 @@ export default function App() {
         message={t('app.versionPublished')}
         reloadLabel={t('app.reload')}
       >
-        <RouterView />
+        <RouterView path={path} />
       </LazyRouteErrorBoundary>
     </div>
   )

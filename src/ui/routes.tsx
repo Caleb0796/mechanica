@@ -56,6 +56,21 @@ function currentPath() {
   return window.location.hash.replace(/^#/, "") || "/";
 }
 
+export const COVER_PATH = "/";
+export const MUSEUM_HREF = "#/museum";
+
+export function useCurrentPath() {
+  const [path, setPath] = useState(currentPath);
+
+  useEffect(() => {
+    const updatePath = () => setPath(currentPath());
+    window.addEventListener("hashchange", updatePath);
+    return () => window.removeEventListener("hashchange", updatePath);
+  }, []);
+
+  return path;
+}
+
 function HomePage() {
   return (
     <main className="home-page">
@@ -114,7 +129,7 @@ function MachineRoute({ slug }: { slug: string }) {
           >
             {t("app.retry")}
           </button>
-          <a className="ghost-button" href="#/">
+          <a className="ghost-button" href={MUSEUM_HREF}>
             {t("app.home")}
           </a>
         </div>
@@ -203,7 +218,7 @@ function StoryRoute({ slug }: { slug: string }) {
           >
             {t("app.retry")}
           </button>
-          <a className="ghost-button" href="#/">
+          <a className="ghost-button" href={MUSEUM_HREF}>
             {t("app.home")}
           </a>
         </div>
@@ -250,15 +265,7 @@ function StoryRoute({ slug }: { slug: string }) {
   );
 }
 
-export default function RouterView() {
-  const [path, setPath] = useState(currentPath);
-
-  useEffect(() => {
-    const updatePath = () => setPath(currentPath());
-    window.addEventListener("hashchange", updatePath);
-    return () => window.removeEventListener("hashchange", updatePath);
-  }, []);
-
+export default function RouterView({ path }: { path: string }) {
   const storyMatch = path.match(/^\/story\/([^/]+)\/?$/);
   if (storyMatch) {
     return <StoryRoute slug={decodeURIComponent(storyMatch[1])} />;

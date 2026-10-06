@@ -38,8 +38,9 @@ export default function CoverPage() {
           <section>
             <h2 className="cover-label">Demo video</h2>
             <p>
-              Thanks to <span className="cover-name">Yunkun</span> and{" "}
-              <span className="cover-name">Olive</span> for helping me record
+              Thanks to <span className="cover-name">Yunkun</span>,{" "}
+              <span className="cover-name">Olive</span>, and{" "}
+              <span className="cover-name">Ian</span> for helping me record
               the demo video and for their notes on it.
             </p>
           </section>

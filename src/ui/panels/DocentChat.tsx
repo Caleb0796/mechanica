@@ -1,3 +1,6 @@
+// Explanation: Read the active in-memory target and original source language separately.
+// Reason: Temporary translation must not turn Chinese or English into a different API source preference.
+import { getTranslationState } from "../../localization/session";
 import {
   type FormEvent,
   type KeyboardEvent,
@@ -8,7 +11,17 @@ import {
   useState,
 } from "react";
 import type { TFunction } from "i18next";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+// import { useTranslation, localize, localizeSingle } from "../i18n/requestedTranslation";
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+import { useTranslation, localize } from "../i18n/requestedTranslation";
 
 import type { MachineModule } from "../../sim/types";
 import "../docent/docent.css";
@@ -54,11 +67,23 @@ export interface DocentChatProps {
   schemeId?: string;
 }
 
+// Explanation: Keep docent source-language detection independent of the translated page.
+// Reason: The document may now have a third-language tag.
+// function pageLang(): Lang {
+//   if (typeof document === "undefined") return "en";
+//   return document.documentElement.lang.toLowerCase().startsWith("zh")
+//     ? "zh"
+//     : "en";
+// }
+// 
+// Explanation: Keep docent source-language detection independent of the translated page.
+// Reason: The document may now have a third-language tag.
 function pageLang(): Lang {
-  if (typeof document === "undefined") return "en";
-  return document.documentElement.lang.toLowerCase().startsWith("zh")
-    ? "zh"
-    : "en";
+// Explanation: Use the original i18next language instead of the translated document attribute.
+// Reason: The temporary target is a separate request field.
+  return i18n.resolvedLanguage === "zh" ? "zh" : "en";
+// Explanation: Complete original-language detection.
+// Reason: Existing bilingual records stay indexed by English or Chinese.
 }
 
 function suggestedQuestions(
@@ -69,22 +94,57 @@ function suggestedQuestions(
   const data = module.data as unknown as SuggestionData;
   const questions: string[] = [];
   for (const controversy of data.controversies ?? []) {
-    const topic = controversy.topic?.[lang];
+    const topic = (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// controversy.topic?.[lang]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(controversy.topic, lang)
+);
     if (topic) {
       questions.push(t("docent.controversyQuestion", { topic }));
     }
   }
   for (const scheme of data.schemes ?? []) {
     const label =
-      scheme.name?.[lang] ??
-      scheme.title?.[lang] ??
-      scheme.scholar?.[lang] ??
+      (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.name?.[lang]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.name, lang)
+) ??
+      (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.title?.[lang]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.title, lang)
+) ??
+      (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.scholar?.[lang]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.scholar, lang)
+) ??
       scheme.id;
     if (label) {
       questions.push(t("docent.schemeQuestion", { scheme: label }));
     }
   }
-  const machineName = module.data.names[lang];
+  const machineName = (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.names[lang]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.names, lang)
+);
   const fallbacks = [
     t("docent.fallbackControversies", { machine: machineName }),
     t("docent.fallbackSchemes", { machine: machineName }),
@@ -109,15 +169,36 @@ export function mockDocentReply(
   const data = module.data;
   const hit = data.controversies?.find(
     (controversy) =>
-      question.includes(controversy.topic[lang]) ||
+      question.includes((
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// controversy.topic[lang]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(controversy.topic, lang)
+)) ||
       question.includes(controversy.topic.zh) ||
       question.includes(controversy.topic.en),
   );
   if (hit) {
     const cite = hit.sourceIds[0] ?? data.sources[0].id;
-    return `${hit.detail[lang]} [来源:${cite}]`;
+    return `${(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// hit.detail[lang]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(hit.detail, lang)
+)} [来源:${cite}]`;
   }
-  const principle = data.principle[lang];
+  const principle = (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// data.principle[lang]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(data.principle, lang)
+);
   const cite = data.sources[0].id;
   const t = i18n.getFixedT(lang);
   return t("docent.mockDepth", { cite, principle });
@@ -196,6 +277,9 @@ export function DocentChat({
 }: DocentChatProps): ReactElement | null {
   const { t } = useTranslation();
   const lang = pageLang();
+// Explanation: Read the explicitly active temporary target for this answer.
+// Reason: Generation must use only the language requested through the Translate button.
+  const targetLanguage = getTranslationState().target;
   const labels = {
     checking: t("docent.checking"),
     close: t("docent.close"),
@@ -234,7 +318,12 @@ export function DocentChat({
     setFailure(false);
     setRetryAvailable(false);
     retryMessages.current = null;
-  }, [module.spec.slug, partId, schemeId]);
+// Explanation: Cancel pending answers and clear translated conversation on language changes.
+// Reason: Source-language buttons and empty translation requests must clear every translated answer.
+//   }, [module.spec.slug, partId, schemeId]);
+// Explanation: Cancel pending answers and clear translated conversation on language changes.
+// Reason: Source-language buttons and empty translation requests must clear every translated answer.
+  }, [module.spec.slug, partId, schemeId, targetLanguage, lang]);
 
   useEffect(
     () => () => {
@@ -293,7 +382,12 @@ export function DocentChat({
     }
     if (availability === "checking") return;
     setAvailability("checking");
-    if (DEV_MOCK) {
+// Explanation: Keep the original mock for source-language development only.
+// Reason: Temporary target answers must use real post-generation validation.
+//     if (DEV_MOCK) {
+// Explanation: Keep the original mock for source-language development only.
+// Reason: Temporary target answers must use real post-generation validation.
+    if (DEV_MOCK && !targetLanguage) {
       setAvailability("available");
       setOpen(true);
       return;
@@ -310,6 +404,9 @@ export function DocentChat({
           ...(partId ? { partId } : {}),
           ...(schemeId ? { schemeId } : {}),
           lang,
+// Explanation: Include the temporary target only during an explicitly requested session.
+// Reason: The backend must never infer or translate another language.
+          ...(targetLanguage ? { targetLanguage } : {}),
           messages: [],
         }),
       });
@@ -348,6 +445,9 @@ export function DocentChat({
     setRetryAvailable(false);
 
     const appendDelta = (delta: string): void => {
+// Explanation: Ignore answer text from an aborted or superseded temporary-language request.
+// Reason: Chinese, English and empty-target resets must override even a late streaming callback.
+      if (controller.signal.aborted || getTranslationState().target !== targetLanguage) return;
       setMessages((current) =>
         current.map((message) =>
           message.id === assistantId
@@ -358,7 +458,12 @@ export function DocentChat({
     };
 
     try {
-      if (DEV_MOCK) {
+  // Explanation: Keep the original mock for source-language development only.
+// Reason: Temporary target answers must use real post-generation validation.
+//     if (DEV_MOCK) {
+// Explanation: Keep the original mock for source-language development only.
+// Reason: Temporary target answers must use real post-generation validation.
+    if (DEV_MOCK && !targetLanguage) {
         const question = conversation.at(-1)?.content ?? "";
         const reply = mockDocentReply(question, module, lang);
         for (let offset = 0; offset < reply.length; offset += 8) {
@@ -375,6 +480,12 @@ export function DocentChat({
             ...(partId ? { partId } : {}),
             ...(schemeId ? { schemeId } : {}),
             lang,
+// Explanation: Forward the active temporary target with the answer request.
+// Reason: Completed target-language paragraphs must pass backend validation before display.
+            ...(targetLanguage ? { targetLanguage } : {}),
+// Explanation: Disable the duplicate temporary-target field.
+// Reason: The request already contains this field immediately above.
+//           ...(targetLanguage ? { targetLanguage } : {}),
             messages: conversation,
           }),
           signal: controller.signal,

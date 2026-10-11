@@ -12,7 +12,17 @@ import {
   useRef,
   useState,
 } from "react";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+// import { useTranslation, localize, localizeSingle, localizeRendered } from "../i18n/requestedTranslation";
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+import { useTranslation, localize, localizeRendered } from "../i18n/requestedTranslation";
 import { ACESFilmicToneMapping } from "three";
 
 import { KinematicGraph } from "../../sim/graph";
@@ -207,7 +217,14 @@ function schemeLabel(
 ): string {
   const scheme = module.schemes?.[schemeId];
   if (!scheme) return schemeId;
-  return `${scheme.scholar[language]} · ${scheme.year}`;
+  return `${(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.scholar[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.scholar, language)
+)} · ${scheme.year}`;
 }
 
 function compareGraph(module: MachineModule, schemeId: string): KinematicGraph {
@@ -223,7 +240,12 @@ export default function CompareView({
   renderScene,
   rightSchemeId,
 }: CompareViewProps) {
-  const { i18n, t } = useTranslation();
+// Explanation: Observe the explicitly active target for temporary captions.
+// Reason: Source-language overrides must remove every previously translated message.
+//   const { i18n, t } = useTranslation();
+// Explanation: Observe the explicitly active target for temporary captions.
+// Reason: Source-language overrides must remove every previously translated message.
+  const { i18n, t, translationTarget } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const hoveredPartId = useCompareStore((state) => state.hoveredPartId);
   const cameraTarget = useCompareStore((state) => state.camera.target);
@@ -238,6 +260,10 @@ export default function CompareView({
     Partial<Record<CompareSide, string>>
   >({});
   const [driveCaption, setDriveCaption] = useState("");
+// Explanation: Implement the temporary translation operation below.
+// Reason: Clear comparison captions when temporary translation is replaced or cancelled.
+useEffect(() => { setDriveCaption(""); }, [translationTarget]);
+
   const [contextLost, setContextLost] = useState<
     Partial<Record<CompareSide, boolean>>
   >({});
@@ -521,7 +547,14 @@ export default function CompareView({
   return (
     <section className="compare-view" data-testid="compare-view">
       <header className="compare-header">
-        <strong>{module.data.names[language]}</strong>
+        <strong>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.names[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.names, language)
+)}</strong>
         <span>{schemeLabel(module, leftSchemeId, language)}</span>
         <span>{schemeLabel(module, rightSchemeId, language)}</span>
         <button
@@ -563,7 +596,14 @@ export default function CompareView({
           +
         </button>
         <p aria-live="polite" className="event-caption">
-          {driveCaption}
+          {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// driveCaption
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeRendered(driveCaption)
+)}
         </p>
       </div>
       <div className="compare-table-wrap">

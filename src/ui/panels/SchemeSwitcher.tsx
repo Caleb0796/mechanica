@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+// import { useTranslation, localize, localizeSingle } from "../i18n/requestedTranslation";
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+import { useTranslation, localize } from "../i18n/requestedTranslation";
 
 import type { MachineModule } from "../../sim/types";
 import {
@@ -77,12 +87,26 @@ export default function SchemeSwitcher({
       >
         {schemes.map((scheme) => (
           <option key={scheme.id} value={scheme.id}>
-            {scheme.scholar[language]} · {scheme.year}
+            {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.scholar[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.scholar, language)
+)} · {scheme.year}
           </option>
         ))}
       </select>
       <p className="panel-copy">
-        {selected?.summary[language] ?? t("viewer.schemeDiff")}
+        {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// selected?.summary[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(selected?.summary, language)
+) ?? t("viewer.schemeDiff")}
       </p>
       <button
         aria-pressed={isCompareActive}
@@ -91,16 +115,30 @@ export default function SchemeSwitcher({
         onClick={toggleCompare}
         type="button"
       >
-        {language === "en" ? "Compare schemes" : "对比复原方案"}
+        {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// language === "en" ? "Compare schemes" : "对比复原方案"
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize({ en: "Compare schemes", zh: "对比复原方案" }, language)
+)}
       </button>
       {isCompareActive ? (
         <div className="compare-scheme-pickers">
           {([0, 1] as const).map((side) => (
             <select
               aria-label={
-                language === "en"
-                  ? `${side === 0 ? "Left" : "Right"} comparison scheme`
-                  : `${side === 0 ? "左侧" : "右侧"}对比方案`
+                (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// language === "en"
+//                   ? `${side === 0 ? "Left" : "Right"} comparison scheme`
+//                   : `${side === 0 ? "左侧" : "右侧"}对比方案`
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize({ en: `${side === 0 ? "Left" : "Right"} comparison scheme`, zh: `${side === 0 ? "左侧" : "右侧"}对比方案` }, language)
+)
               }
               className="scheme-select"
               key={side}
@@ -111,7 +149,14 @@ export default function SchemeSwitcher({
             >
               {schemes.map((scheme) => (
                 <option key={scheme.id} value={scheme.id}>
-                  {scheme.scholar[language]} · {scheme.year}
+                  {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.scholar[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.scholar, language)
+)} · {scheme.year}
                 </option>
               ))}
             </select>

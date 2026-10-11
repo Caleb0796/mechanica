@@ -1,5 +1,13 @@
+// Explanation: Read whether a temporary translation session is active.
+// Reason: Original primary quotations must retain their existing rendering when translation is off.
+import { getTranslationState } from "../../localization/session";
 import { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+import { useTranslation, localize, localizeSingle } from "../i18n/requestedTranslation";
 
 import type {
   MachineModule,
@@ -82,8 +90,13 @@ const BOOK_EN: Record<string, string> = {
   新儀象法要: "Xin Yi Xiang Fa Yao",
 };
 
-const localizedNote = (note: string, language: Lang) =>
-  language === "zh" ? (NOTE_ZH[note] ?? note) : note;
+// Explanation: Resolve existing provenance-note translations as source pairs.
+// Reason: Unknown note counterparts must not be invented during cross-validation.
+// const localizedNote = (note: string, language: Lang) =>
+//   language === "zh" ? (NOTE_ZH[note] ?? note) : note;
+// Explanation: Resolve existing provenance-note translations as source pairs.
+// Reason: Unknown note counterparts must not be invented during cross-validation.
+const localizedNote = (note: string, language: Lang) => localize({ en: note, zh: NOTE_ZH[note] }, language);
 
 function sourceBook(
   module: MachineModule,
@@ -94,7 +107,12 @@ function sourceBook(
     .map((id) => {
       const book = module.data.sources.find((source) => source.id === id)?.book;
       if (!book) return id;
-      return language === "en" ? (BOOK_EN[book] ?? book) : book;
+      // Explanation: Resolve the existing bilingual historical book title.
+// Reason: Book display wording should use validated temporary translation while identifiers stay unchanged.
+// return language === "en" ? (BOOK_EN[book] ?? book) : book;
+// Explanation: Resolve the existing bilingual historical book title.
+// Reason: Book display wording should use validated temporary translation while identifiers stay unchanged.
+return localize({ en: BOOK_EN[book], zh: book }, language);
     })
     .join(" + ");
 }
@@ -134,12 +152,33 @@ function MachineEvidenceRecord({
         </span>
       </summary>
       <p className="panel-copy">
-        {module.data.era[language]} · {copy.inventors}:{" "}
+        {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.era[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.era, language)
+)} · {copy.inventors}:{" "}
         {module.data.inventors
-          .map((inventor) => inventor[language])
+          .map((inventor) => (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// inventor[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(inventor, language)
+))
           .join(" · ")}
       </p>
-      <p className="panel-copy">{module.data.principle[language]}</p>
+      <p className="panel-copy">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.principle[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.principle, language)
+)}</p>
 
       <h4>{copy.dimensions}</h4>
       <dl className="record-list" lang={language}>
@@ -155,7 +194,14 @@ function MachineEvidenceRecord({
               data-machine-dimension={dimension.sourceId}
               key={`${dimension.label.en}-${dimension.ancient}`}
             >
-              <dt>{dimension.label[language]}</dt>
+              <dt>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// dimension.label[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(dimension.label, language)
+)}</dt>
               <dd>
                 <span className="dim-value">
                   {dimension.ancient} · {metric}
@@ -167,7 +213,14 @@ function MachineEvidenceRecord({
                       ? (BOOK_EN[source.book] ?? source.book)
                       : source.book
                     : dimension.sourceId}{" "}
-                  · {copy.basis}: {dimension.basis}
+                  · {copy.basis}: {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// dimension.basis
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeSingle(dimension.basis, /[\p{Script=Han}]/u.test(dimension.basis) ? "zh" : "en")
+)}
                 </span>
               </dd>
             </div>
@@ -185,12 +238,40 @@ function MachineEvidenceRecord({
               key={scheme.id}
             >
               <strong>
-                {scheme.scholar[language]} · {scheme.year}
+                {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.scholar[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.scholar, language)
+)} · {scheme.year}
               </strong>
-              <p>{scheme.evidence[language]}</p>
-              {scheme.critique ? <p>{scheme.critique[language]}</p> : null}
+              <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.evidence[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.evidence, language)
+)}</p>
+              {scheme.critique ? <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.critique[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.critique, language)
+)}</p> : null}
               {module.schemes?.[scheme.id]?.notes ? (
-                <p>{module.schemes[scheme.id].notes?.[language]}</p>
+                <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.schemes[scheme.id].notes?.[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.schemes[scheme.id].notes, language)
+)}</p>
               ) : null}
             </div>
           ))}
@@ -222,7 +303,14 @@ function MachineEvidenceRecord({
                     <div key={`${constraint.type}-${index}`}>
                       <dt>{constraint.type}</dt>
                       <dd>
-                        {constraint.provenance.kind} ·{" "}
+                        {(
+// Explanation: Resolve the engineering evidence category during an active translation session.
+// Reason: Raw provenance identifiers should not bypass translated display labels while their stored values remain unchanged.
+// constraint.provenance.kind
+// Explanation: Resolve the engineering evidence category during an active translation session.
+// Reason: Raw provenance identifiers should not bypass translated display labels while their stored values remain unchanged.
+getTranslationState().target ? t(`inspector.${constraint.provenance.kind}`) : constraint.provenance.kind
+)} ·{" "}
                         {constraint.provenance.ref}
                         {constraint.provenance.note ? (
                           <small data-evidence-text>
@@ -252,7 +340,14 @@ function MachineEvidenceRecord({
             {source.quote}
           </p>
           {source.translation ? (
-            <p className="panel-copy">{source.translation[language]}</p>
+            <p className="panel-copy">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// source.translation[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(source.translation, language)
+)}</p>
           ) : null}
           <a
             className="panel-link"
@@ -274,8 +369,22 @@ function MachineEvidenceRecord({
               data-machine-controversy={controversy.topic.en}
               key={controversy.topic.en}
             >
-              <strong>{controversy.topic[language]}</strong>
-              <p>{controversy.detail[language]}</p>
+              <strong>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// controversy.topic[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(controversy.topic, language)
+)}</strong>
+              <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// controversy.detail[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(controversy.detail, language)
+)}</p>
             </div>
           ))}
         </div>
@@ -362,7 +471,14 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
       ref={panel}
     >
       <h2>{t("inspector.title")}</h2>
-      <h3 className="part-name">{part.name[language]}</h3>
+      <h3 className="part-name">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// part.name[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(part.name, language)
+)}</h3>
       <span className="provenance-badge">
         {t(`inspector.${part.provenance.kind}`)} ·{" "}
         {sourceBook(module, part.provenance.ref, language)}
@@ -446,7 +562,12 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
               key={source.id}
               tabIndex={-1}
             >
-              <p className="panel-copy">{source.quote}</p>
+              {/* Explanation: Preserve the original primary quotation. */}
+{/* Reason: Historical wording must remain available verbatim. */}
+{/* <p className="panel-copy">{source.quote}</p> */}
+{/* Explanation: Display the available bilingual source reading through the temporary layer. */}
+{/* Reason: Requested translations must be checked against both existing source readings. */}
+              <p className="panel-copy">{getTranslationState().target ? localize(source.translation || { zh: source.quote }, language) : source.quote}</p>
               <a
                 className="panel-link"
                 href={source.url}
@@ -474,10 +595,31 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
               key={scheme.id}
             >
               <strong>
-                {scheme.scholar[language]} · {scheme.year}
+                {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.scholar[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.scholar, language)
+)} · {scheme.year}
               </strong>
-              <p>{scheme.evidence[language]}</p>
-              {scheme.critique ? <p>{scheme.critique[language]}</p> : null}
+              <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.evidence[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.evidence, language)
+)}</p>
+              {scheme.critique ? <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// scheme.critique[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(scheme.critique, language)
+)}</p> : null}
             </div>
           ))}
         </div>
@@ -488,8 +630,22 @@ export default function PartInspector({ module, spec }: PartInspectorProps) {
         {controversies.length > 0 ? (
           controversies.map((controversy) => (
             <div className="panel-copy" key={controversy.topic.en}>
-              <strong>{controversy.topic[language]}</strong>
-              <p>{controversy.detail[language]}</p>
+              <strong>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// controversy.topic[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(controversy.topic, language)
+)}</strong>
+              <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// controversy.detail[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(controversy.detail, language)
+)}</p>
             </div>
           ))
         ) : (

@@ -1629,3 +1629,22 @@ a {
     width: 100%;
   }
 }
+
+/* Explanation: Group the original buttons and the explicitly triggered translation picker. */
+/* Reason: Both controls must remain visible and usable on narrow screens. */
+.museum-language-controls, .cover-language-controls, .translation-controls { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+/* Explanation: Position language controls above the original cover. */
+/* Reason: Translation is available before entering the museum without covering its content. */
+.cover-language-controls { position: relative; z-index: 10; padding: 1rem 2rem; background: #14120f; }
+/* Explanation: Style the collapsed language selector and explicit translate action. */
+/* Reason: The controls should match the museum palette and remain readable. */
+.translation-controls select, .translation-controls button { max-width: 15rem; min-height: 2.5rem; padding: .4rem .7rem; color: #f1e7d1; background: #242019; border: 1px solid #766345; border-radius: .4rem; }
+/* Explanation: Keep translation progress and duplicate-request feedback visible. */
+/* Reason: Requests can require generation and two validation passes. */
+.translation-status { font-size: .8rem; max-width: 24rem; color: #d9b86d; }
+/* Explanation: Allow paragraph fallbacks and long translations to wrap. */
+/* Reason: Both originals and the required uncertainty message must remain readable. */
+html[data-translation="active"] :is(p, h1, h2, h3, h4, dd, dt, button, .event-caption, .machine-open, .panel-copy, .dim-note) { white-space: pre-line; overflow-wrap: anywhere; }
+/* Explanation: Align temporary translated prose with its writing direction. */
+/* Reason: Right-to-left text must be readable while the 3D mechanical geometry stays unchanged. */
+html[dir="rtl"] :is(p, h1, h2, h3, h4, .panel-copy, .docent-message) { text-align: start; }

@@ -1,3 +1,6 @@
+// Explanation: Import the temporary bilingual terminology resolver.
+// Reason: Dimension labels must be translated without changing part geometry.
+import { localize, localizeSingle } from "../i18n/requestedTranslation";
 type Lang = "zh" | "en";
 
 const DIM_LABELS: Record<string, { zh: string; en: string }> = {
@@ -39,6 +42,16 @@ export function humanizeDimLabel(
     ? path
     : `${geometryType}.${path}`;
   const hit = DIM_LABELS[key];
-  if (hit) return hit[language];
-  return prettify(path);
+// Explanation: Resolve the existing bilingual dimension term.
+// Reason: Additional target languages cannot index the original two-language dictionary.
+//   if (hit) return hit[language];
+// Explanation: Resolve the existing bilingual dimension term.
+// Reason: Additional target languages cannot index the original two-language dictionary.
+  if (hit) return localize(hit, language);
+// Explanation: Retain the original readable label for unknown terms.
+// Reason: A missing Chinese source must trigger uncertainty during temporary translation.
+//   return prettify(path);
+// Explanation: Retain the original readable label for unknown terms.
+// Reason: A missing Chinese source must trigger uncertainty during temporary translation.
+  return localizeSingle(prettify(path), "en");
 }

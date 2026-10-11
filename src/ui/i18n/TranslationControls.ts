@@ -45,7 +45,31 @@ export default function TranslationControls() {
     createElement("button", { type: "button", "data-testid": "translate-button", onClick: requestTranslation }, "translate"),
 // Explanation: Apply the current createElement operation in the translation pipeline.
 // Reason: Keep the initially empty selector and explicit Translate action independent of the higher-priority Chinese and English controls.
-    createElement("span", { role: "status", "aria-live": "polite", className: "translation-status" }, state.message));
+    // Explanation: Preserve the earlier status-element prefix.
+// Reason: Implementation comments must occupy their own lines.
+// createElement("span", { role: "status", "aria-live": "polite",
+// Explanation: Create the accessible translation status or popup.
+// Reason: Screen readers need polite announcements without changed paragraph text.
+    createElement("span", { role: "status", "aria-live": "polite",
+// Reason: Temporary notices should appear as a popup without changing the language controls or paragraph content.
+// // Explanation: Preserve the superseded translation implementation.
+// Reason: Temporary notices should appear as a popup without changing language controls or paragraph content.
+// // Explanation: Preserve the superseded translation implementation.
+// Reason: Temporary notices should appear as a popup without changing language controls or paragraph content.
+// className: "translation-status"
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Temporary notices should appear as a popup without changing language controls or paragraph content.
+// Explanation: Disable incomplete duplicate invocation arguments.
+// Reason: The complete reviewed invocation below supplies these arguments once.
+// className: "translation-status" + (state.message && !state.message.startsWith("Translating") ? " translation-notice" : "")
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Temporary notices should appear as a popup without changing language controls or paragraph content.
+// Explanation: Disable incomplete duplicate invocation arguments.
+// Reason: The complete reviewed invocation below supplies these arguments once.
+// className: "translation-status" + (state.message && !state.message.startsWith("Translating") ? " translation-notice" : "")
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Temporary notices should appear as a popup without changing the language controls or paragraph content.
+className: "translation-status" + (state.message && !state.message.startsWith("Translating") ? " translation-notice" : "") }, state.message));
 // Explanation: Complete the current translation scope or callback.
 // Reason: Keep the initially empty selector and explicit Translate action independent of the higher-priority Chinese and English controls.
 }

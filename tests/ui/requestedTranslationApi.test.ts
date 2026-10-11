@@ -30,6 +30,30 @@ let saved: Record<string, string | undefined>;
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
 const originalFetch = globalThis.fetch;
+// Explanation: Verify safe classification of provider credit, credential and access failures.
+// Reason: Users need actionable error codes without exposing raw provider responses.
+test("translation API: provider setup failures return safe actionable codes without raw errors", async () => {
+// Explanation: Verify safe classification of provider credit, credential and access failures.
+// Reason: Users need actionable error codes without exposing raw provider responses.
+  for (const [status, code, expected] of [[429, "credit_balance_exhausted", "provider_billing_required"], [401, "invalid_api_key", "provider_authentication_failed"], [403, "permission_denied", "provider_access_denied"], [404, "model_not_found", "provider_model_unavailable"], [429, "rate_limit_exceeded", "provider_rate_limited"]] as const) {
+// Explanation: Verify safe classification of provider credit, credential and access failures.
+// Reason: Users need actionable error codes without exposing raw provider responses.
+    globalThis.fetch = (async () => new Response(JSON.stringify({ error: { code, message: "PRIVATE_UPSTREAM_ERROR" } }), { status })) as typeof fetch;
+// Explanation: Verify safe classification of provider credit, credential and access failures.
+// Reason: Users need actionable error codes without exposing raw provider responses.
+    const reply = await invoke(translateHandler, translationBody);
+// Explanation: Verify safe classification of provider credit, credential and access failures.
+// Reason: Users need actionable error codes without exposing raw provider responses.
+    expect(reply.json().results[0].reason).toBe(expected);
+// Explanation: Verify safe classification of provider credit, credential and access failures.
+// Reason: Users need actionable error codes without exposing raw provider responses.
+    expect(reply.text()).not.toContain("PRIVATE_UPSTREAM_ERROR");
+// Explanation: Verify safe classification of provider credit, credential and access failures.
+// Reason: Users need actionable error codes without exposing raw provider responses.
+  }
+// Explanation: Verify safe classification of provider credit, credential and access failures.
+// Reason: Users need actionable error codes without exposing raw provider responses.
+});
 // Explanation: Check the server's bounded translation timeout.
 // Reason: A stalled provider must resolve to uncertainty without returning unchecked text.
 test("translation API: provider timeout resolves to uncertainty", async () => {
@@ -314,7 +338,12 @@ test("translation API: one disagreeing review prevents candidate acceptance", as
   const reply = await invoke(translateHandler, translationBody);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
-  expect(calls).toHaveLength(3);
+  // Explanation: Preserve the old immediate-rejection call count.
+// Reason: A failed review now triggers one correction and both fresh reviews.
+// expect(calls).toHaveLength(3);
+// Explanation: Verify the bounded correction call count.
+// Reason: Correction must not skip independent validation.
+  expect(calls).toHaveLength(6);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
   expect(reply.json().results[0].status).toBe("uncertain");
@@ -401,7 +430,12 @@ test("translated docent: only target generation occurs and no answer is sent bef
 });
 // Explanation: Check the API behavior named below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
-test("translated docent: failed source review displays both existing evidence versions", async () => {
+// Explanation: Preserve the earlier test title.
+// Reason: The latest requirement uses source-only fallback with a temporary notice.
+// test("translated docent: failed source review displays both existing evidence versions", async () => {
+// Explanation: Name the current fallback behavior accurately.
+// Reason: Reviewers should see what the test actually verifies.
+test("translated docent: unrepaired source review retains selected English evidence", async () => {
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
   let count = 0;
@@ -425,13 +459,42 @@ test("translated docent: failed source review displays both existing evidence ve
   const reply = await invoke(docentHandler, docentBody);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
-  expect(reply.text()).toContain(UNKNOWN_TRANSLATION);
+// Explanation: Preserve the old inline bilingual warning expectation.
+// Reason: Fallback now uses response metadata and only the selected original language.
+// // Explanation: Preserve the old inline bilingual warning expectation.
+// Reason: Fallback now uses response metadata and only the selected original language.
+// // Explanation: Preserve the old inline bilingual warning expectation.
+// Reason: Fallback now uses response metadata and only the selected original language.
+//   expect(reply.text()).toContain(UNKNOWN_TRANSLATION);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Fallback warnings belong in a temporary browser notice.
+expect(reply.text()).not.toContain(UNKNOWN_TRANSLATION);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Fallback warnings belong in a temporary browser notice.
+  expect(reply.headers.get("x-translation-unavailable")).toBe("1");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Fallback warnings belong in a temporary browser notice.
+expect(reply.text()).not.toContain(UNKNOWN_TRANSLATION);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Fallback warnings belong in a temporary browser notice.
+  expect(reply.headers.get("x-translation-unavailable")).toBe("1");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Fallback warnings belong in a temporary browser notice.
+expect(reply.text()).not.toContain(UNKNOWN_TRANSLATION);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Fallback warnings belong in a temporary browser notice.
+  expect(reply.headers.get("x-translation-unavailable")).toBe("1");
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
   expect(reply.text()).toContain(odometer.sources[0].translation.en);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
-  expect(reply.text()).toContain(odometer.sources[0].translation.zh);
+  // Explanation: Preserve the previous bilingual fallback assertion.
+// Reason: Only the selected English evidence belongs in this response.
+// expect(reply.text()).toContain(odometer.sources[0].translation.zh);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Do not mix Chinese into an English fallback.
+expect(reply.text()).not.toContain(odometer.sources[0].translation.zh);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
   expect(reply.text()).not.toContain(paragraph);
@@ -452,7 +515,15 @@ test("translated docent: unknown citation never exposes generated text or calls 
   const reply = await invoke(docentHandler, docentBody);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
-  expect(reply.text()).toContain(UNKNOWN_TRANSLATION);
+// Explanation: Retain the old warning assertion for review.
+// Reason: Warnings now use metadata rather than paragraph text.
+//   expect(reply.text()).toContain(UNKNOWN_TRANSLATION);
+// Explanation: Verify the selected-source fallback metadata.
+// Reason: The browser uses it for the temporary popup.
+  expect(reply.text()).not.toContain(UNKNOWN_TRANSLATION);
+// Explanation: Verify the safe temporary fallback signal.
+// Reason: No warning belongs in the answer text.
+  expect(reply.headers.get("x-translation-unavailable")).toBe("1");
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
   expect(reply.text()).not.toContain("Unchecked");
@@ -464,7 +535,12 @@ test("translated docent: unknown citation never exposes generated text or calls 
 });
 // Explanation: Check the API behavior named below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
-test("translated docent: uncited paragraph retains bilingual principle evidence", async () => {
+// Explanation: Preserve the earlier test title.
+// Reason: The latest requirement uses source-only fallback with a temporary notice.
+// test("translated docent: uncited paragraph retains bilingual principle evidence", async () => {
+// Explanation: Name the current fallback behavior accurately.
+// Reason: Reviewers should see what the test actually verifies.
+test("translated docent: uncited paragraph retains selected English principle evidence", async () => {
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
   globalThis.fetch = (async () => stream("Uncited target text")) as typeof fetch;
@@ -473,13 +549,26 @@ test("translated docent: uncited paragraph retains bilingual principle evidence"
   const reply = await invoke(docentHandler, docentBody);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
-  expect(reply.text()).toContain(UNKNOWN_TRANSLATION);
+// Explanation: Retain the old warning assertion for review.
+// Reason: Warnings now use metadata rather than paragraph text.
+//   expect(reply.text()).toContain(UNKNOWN_TRANSLATION);
+// Explanation: Verify the selected-source fallback metadata.
+// Reason: The browser uses it for the temporary popup.
+  expect(reply.text()).not.toContain(UNKNOWN_TRANSLATION);
+// Explanation: Verify the safe temporary fallback signal.
+// Reason: No warning belongs in the answer text.
+  expect(reply.headers.get("x-translation-unavailable")).toBe("1");
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
   expect(reply.text()).toContain(odometer.principle.en);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
-  expect(reply.text()).toContain(odometer.principle.zh);
+  // Explanation: Preserve the previous bilingual fallback assertion.
+// Reason: Only the selected English evidence belongs in this response.
+// expect(reply.text()).toContain(odometer.principle.zh);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Do not mix Chinese into an English fallback.
+expect(reply.text()).not.toContain(odometer.principle.zh);
 // Explanation: Execute the API test setup, response simulation or assertion below.
 // Reason: Verify translation validation and preserve existing docent behavior without paid provider requests.
   expect(reply.text()).not.toContain("Uncited target text");

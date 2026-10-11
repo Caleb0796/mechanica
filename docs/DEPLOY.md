@@ -96,3 +96,15 @@ The request guards are in-memory and approximate across serverless instances. Se
 <!-- Explanation: Document the temporary translation behavior and deployment configuration. -->
 <!-- Reason: Operators need to preserve explicit requests, validation and non-persistence across hosting environments. -->
 Run `node --experimental-strip-types scripts/check-requested-translation.mjs` for dependency-free translation regression checks. Run the existing build and UI checks when project dependencies are installed.
+
+<!-- Explanation: Document safe provider setup errors and their user-facing remedy. -->
+<!-- Reason: Exhausted credit or invalid credentials must not be confused with cross-validation disagreement. -->
+Translation reports actionable status for API credit, authentication, permissions, model availability and rate limits. Raw provider errors and credentials are never returned to the browser. After restoring provider access, clear the failed session with EN or 中文 before requesting the same target again.
+
+<!-- Explanation: Document compatible source wording and bounded target correction. -->
+<!-- Reason: Minor English and Chinese phrasing differences should be accepted without weakening factual checks. -->
+Reviews accept minor wording differences when both originals' factual claims are compatible. Fixable target wording receives at most one correction in the selected language, followed by two fresh source reviews and the same protected-content checks. Genuine factual conflicts and unresolved corrections retain bilingual fallback; original catalogs are never rewritten.
+
+### Translation fallback update
+
+Minor source wording, emphasis and nonessential detail differences are acceptable. Failed paired translations receive one target-only correction with reviewer feedback and fresh English/Chinese checks. Unresolved items keep the selected original; the browser shows an accessible notice for 4.5 seconds. Docent fallback uses the same selected-source behavior and signals the notice through `X-Translation-Unavailable`. No runtime translation files are created.

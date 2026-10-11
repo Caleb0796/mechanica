@@ -294,7 +294,12 @@ test("explicit translation, duplicate feedback, empty reset and stale-result can
 });
 // Explanation: Check the specified temporary-translation behavior.
 // Reason: Verify the translation rules without paid API calls, dependency installation, or generated translation files.
-test("both immutable catalogs retain their original bytes", async () => {
+// Explanation: Preserve the original byte-oriented test name.
+// Reason: Windows Git checkouts may change line endings without changing catalog content.
+// test("both immutable catalogs retain their original bytes", async () => {
+// Explanation: Check catalog content against the original baseline with portable line endings.
+// Reason: Protected catalogs must remain unchanged while valid Windows checkouts must pass.
+test("both immutable catalogs retain their original content across Git line endings", async () => {
 // Explanation: Process the relevant translation items without creating persistent artifacts.
 // Reason: Verify the translation rules without paid API calls, dependency installation, or generated translation files.
   for (const [language, expected] of Object.entries({ en: "0b9c2c5cde78dbf14864b8601085af2d13c12ce24cff2464e106a949a6ccd4ac", zh: "657e00fa8aedd3782365a3a3cd5b9913607141dfdc34fa612ba683c49edf06da" })) {
@@ -303,7 +308,12 @@ test("both immutable catalogs retain their original bytes", async () => {
     const bytes = await readFile(new URL("../src/ui/i18n/" + language + ".json", import.meta.url));
 // Explanation: Assert the expected translation state or invariant.
 // Reason: Verify the translation rules without paid API calls, dependency installation, or generated translation files.
-    assert.equal(createHash("sha256").update(bytes).digest("hex"), expected);
+// Explanation: Preserve the original raw-byte hash assertion.
+// Reason: Git converts LF to CRLF on this Windows checkout.
+//     assert.equal(createHash("sha256").update(bytes).digest("hex"), expected);
+// Explanation: Normalize only CRLF before comparing the original catalog hash.
+// Reason: Every other catalog character remains protected by the exact baseline hash.
+    assert.equal(createHash("sha256").update(bytes.toString("utf8").replace(/\r\n/g, "\n")).digest("hex"), expected);
 // Explanation: Complete the current translation scope or callback.
 // Reason: Verify the translation rules without paid API calls, dependency installation, or generated translation files.
   }
@@ -382,7 +392,12 @@ test("failed provider responses retain sources and never expose unchecked text",
     session.selectTranslationLanguage("fr"); session.requestTranslation(); session.localize(pair, "en"); await settle();
 // Explanation: Implement the temporary translation operation below.
 // Reason: Exercise target replacement, failure handling, API validation and highest-priority source-language reset without paid provider calls.
-    assert.equal(session.localize(pair, "en"), uncertaintyText(pair));
+    // Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// assert.equal(session.localize(pair, "en"), uncertaintyText(pair));
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+assert.equal(session.localize(pair, "en"), pair.en);
 // Explanation: Implement the temporary translation operation below.
 // Reason: Exercise target replacement, failure handling, API validation and highest-priority source-language reset without paid provider calls.
   } finally { session.clearTranslation(); globalThis.fetch = originalFetch; }
@@ -542,7 +557,12 @@ test("single-source pages finish without provider requests or endless loading", 
     session.selectTranslationLanguage("fr"); session.requestTranslation();
 // Explanation: Implement the temporary translation operation below.
 // Reason: Verify that missing bilingual evidence produces immediate uncertainty without a paid request or unfinished loading indicator.
-    assert.match(session.localize({ en: "English-only cover paragraph" }, "en"), /Original Chinese unavailable/);
+    // Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// assert.match(session.localize({ en: "English-only cover paragraph" }, "en"), /Original Chinese unavailable/);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+assert.equal(session.localize({ en: "English-only cover paragraph" }, "en"), "English-only cover paragraph");
 // Explanation: Implement the temporary translation operation below.
 // Reason: Verify that missing bilingual evidence produces immediate uncertainty without a paid request or unfinished loading indicator.
     await settle();
@@ -551,7 +571,12 @@ test("single-source pages finish without provider requests or endless loading", 
     assert.equal(requests, 0);
 // Explanation: Implement the temporary translation operation below.
 // Reason: Verify that missing bilingual evidence produces immediate uncertainty without a paid request or unfinished loading indicator.
-    assert.equal(session.getTranslationState().message, "");
+    // Explanation: Preserve the old no-notice assertion.
+// Reason: Missing source pairs now show a temporary notice.
+// assert.equal(session.getTranslationState().message, "");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Missing originals retain readable content and signal the temporary fallback.
+assert.match(session.getTranslationState().message, /unavailable/);
 // Explanation: Implement the temporary translation operation below.
 // Reason: Verify that missing bilingual evidence produces immediate uncertainty without a paid request or unfinished loading indicator.
   } finally { session.clearTranslation(); globalThis.fetch = originalFetch; }
@@ -627,10 +652,20 @@ test("stale text callbacks use the current target and uncertain interpolation ke
     const display = captured.t("viewer.driveForward", { part: session.localize(part, "en") });
 // Explanation: Implement the temporary translation operation below.
 // Reason: Verify reversible interpolation and callbacks retained by long-running demonstrations without installing React or making live provider calls.
-    assert.ok(display.includes("English: Drive Wheel forward"));
+    // Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// assert.ok(display.includes("English: Drive Wheel forward"));
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+assert.equal(display, "Drive Wheel forward");
 // Explanation: Implement the temporary translation operation below.
 // Reason: Verify reversible interpolation and callbacks retained by long-running demonstrations without installing React or making live provider calls.
-    assert.ok(display.includes("中文: 轮：正向驱动"));
+    // Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// assert.ok(display.includes("中文: 轮：正向驱动"));
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+assert.ok(!display.includes("中文:"));
 // Explanation: Implement the temporary translation operation below.
 // Reason: Verify reversible interpolation and callbacks retained by long-running demonstrations without installing React or making live provider calls.
     assert.ok(!display.includes("Roue"));

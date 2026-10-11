@@ -1,6 +1,73 @@
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
 import { expect, test, type Page } from "@playwright/test";
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+// Explanation: Preserve the earlier test title.
+// Reason: The latest requirement uses source-only fallback with a temporary notice.
+// test("translation: exhausted API credit shows an actionable status while keeping both originals", async ({ page }) => {
+// Explanation: Name the current fallback behavior accurately.
+// Reason: Reviewers should see what the test actually verifies.
+test("translation: exhausted API credit shows a temporary popup and retains selected originals", async ({ page }) => {
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+  await prepare(page);
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+  await page.route("**/api/translate", async route => {
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+    const body = route.request().postDataJSON();
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+    await route.fulfill({ json: { results: body.items.map((item: { id: string }) => ({ id: item.id, status: "uncertain", reason: "provider_billing_required" })) } });
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+  });
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+  await apply(page);
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+  await expect(page.locator(".translation-status")).toContainText("API credit");
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+  await expect(page.locator(".translation-status")).not.toContainText("Translation unavailable;");
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+// Explanation: Preserve the former bilingual heading expectation.
+// Reason: Heading fallback must show only the selected English original.
+// // Explanation: Preserve the former bilingual heading expectation.
+// Reason: Heading fallback must show only the selected English original.
+// // Explanation: Preserve the former bilingual heading expectation.
+// Reason: Heading fallback must show only the selected English original.
+//   await expect(page.locator("h1")).toContainText(unknown);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Uncertain translation must not replace the original heading.
+await expect(page.locator("h1")).toHaveText("Set ancient machines in motion");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Uncertain translation must not replace the original heading.
+await expect(page.locator("h1")).toHaveText("Set ancient machines in motion");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Uncertain translation must not replace the original heading.
+await expect(page.locator("h1")).toHaveText("Set ancient machines in motion");
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+// Explanation: Preserve the former bilingual heading expectation.
+// Reason: Heading fallback must show only the selected English original.
+//   await expect(page.locator("h1")).toContainText("English:");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Uncertain translation must not replace the original heading.
+await expect(page.locator("h1")).toHaveText("Set ancient machines in motion");
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+  await page.getByRole("button", { name: "EN", exact: true }).click();
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+  await expect(page.locator("h1")).toHaveText("Set ancient machines in motion");
+// Explanation: Verify the browser credit diagnostic and retained source-language controls.
+// Reason: Exhausted provider credit must have a useful status while the original interface remains usable.
+});
 // Explanation: Execute the translated docent browser action or assertion below.
 // Reason: Verify that the selected target reaches the API and that source-language priority clears temporary answers.
 test("translation: translated docent sends the selected target and source override clears its answer", async ({ page }) => {
@@ -437,7 +504,12 @@ test("translation: delayed old target cannot overwrite a newer target", async ({
 });
 // Explanation: Check the translation behavior named below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-test("translation: uncertainty displays the exact warning and both originals", async ({ page }) => {
+// Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// test("translation: uncertainty displays the exact warning and both originals",
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+test("translation: uncertainty retains selected originals and shows only a temporary popup", async ({ page }) => {
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
   await prepare(page, "uncertain");
@@ -446,13 +518,40 @@ test("translation: uncertainty displays the exact warning and both originals", a
   await apply(page);
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-  await expect(page.locator("h1")).toContainText(unknown);
+// Explanation: Retain the old heading assertion for review.
+// Reason: Fallback must keep the selected original text.
+//   await expect(page.locator("h1")).toContainText(unknown);
+// Explanation: Verify the original heading remains readable.
+// Reason: Translation notices belong outside paragraph text.
+  await expect(page.locator("h1")).toHaveText("Set ancient machines in motion");
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-  await expect(page.locator("h1")).toContainText("English: Set ancient machines in motion");
+  // Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// await expect(page.locator("h1")).toContainText("English: Set ancient machines in motion");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+await expect(page.locator(".translation-notice")).toContainText("unavailable");
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-  await expect(page.locator("h1")).toContainText("中文:");
+  // Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// await expect(page.locator("h1")).toContainText("中文:");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+await expect(page.locator(".translation-status")).toHaveText("", { timeout: 6500 });
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+  await page.getByRole("button", { name: "中文", exact: true }).click();
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+  const originalChinese = await page.locator("h1").innerText();
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+  await apply(page);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+  await expect(page.locator("h1")).toHaveText(originalChinese);
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
   await expect(page.locator("h1")).toContainText(/[\u4e00-\u9fff]/);
@@ -470,10 +569,20 @@ test("translation: unavailable provider falls back and leaves navigation usable"
   await apply(page);
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-  await expect(page.locator("h1")).toContainText(unknown);
+// Explanation: Retain the old heading assertion for review.
+// Reason: Fallback must keep the selected original text.
+//   await expect(page.locator("h1")).toContainText(unknown);
+// Explanation: Verify the original heading remains readable.
+// Reason: Translation notices belong outside paragraph text.
+  await expect(page.locator("h1")).toHaveText("Set ancient machines in motion");
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-  await expect(page.locator(".translation-status")).toContainText("unavailable");
+// Explanation: Preserve the old generic service-error assertion.
+// Reason: Missing credentials now have a specific actionable message.
+//   await expect(page.locator(".translation-status")).toContainText("unavailable");
+// Explanation: Check that the browser identifies the missing server key.
+// Reason: Setup failures must be distinguished from bilingual validation outcomes.
+  await expect(page.locator(".translation-status")).toContainText("API key is not configured");
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
   await page.getByRole("button", { name: "EN", exact: true }).click();
@@ -611,16 +720,36 @@ test("translation: English-only cover uses honest fallback and keeps the origina
   await apply(page);
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-  await expect(page.locator(".cover-title")).toContainText(unknown);
+  // Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// await expect(page.locator(".cover-title")).toContainText(unknown);
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+await expect(page.locator(".cover-title")).not.toContainText(unknown);
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-  await expect(page.locator(".cover-title")).toContainText("[Original Chinese unavailable]");
+  // Explanation: Preserve the previous expectation for review.
+// Reason: Match source-only fallback and bounded API correction requirements.
+// await expect(page.locator(".cover-title")).toContainText("[Original Chinese unavailable]");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Match source-only fallback and bounded API correction requirements.
+await expect(page.locator(".cover-title")).not.toContainText("unavailable");
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
   await expect(page.getByTestId("cover-enter")).toHaveAttribute("href", "#/museum");
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
-  await expect(page.locator(".translation-status")).toHaveText("");
+  // Explanation: Preserve the original immediate-empty status expectation.
+// Reason: The source-only cover now briefly reports translation unavailability.
+// await expect(page.locator(".translation-status")).toHaveText("");
+// Explanation: Check the revised translation recovery behavior.
+// Reason: Allow the temporary popup to expire.
+// Explanation: Verify the source-only fallback briefly shows a popup.
+// Reason: Unavailable status must be visible temporarily outside paragraph text.
+  await expect(page.locator(".translation-notice")).toContainText("unavailable");
+// Explanation: Verify the popup disappears automatically.
+// Reason: The notice must not persist beside the language selector.
+  await expect(page.locator(".translation-status")).toHaveText("", { timeout: 6500 });
 // Explanation: Execute the browser test setup or assertion below.
 // Reason: Verify explicit translation controls, temporary state and original navigation with deterministic endpoint responses.
   await page.getByRole("button", { name: "EN", exact: true }).click();

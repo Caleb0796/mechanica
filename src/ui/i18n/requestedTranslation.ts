@@ -70,7 +70,39 @@ const interpolate = (value: string, source?: "en" | "zh") => value.replace(/{{\s
     const originals = { en: interpolate(en, "en"), zh: interpolate(zh, "zh") };
 // Explanation: Define display for this operation.
 // Reason: Interpolate accepted text with current values but retain each original language in uncertain paragraphs.
-    const display = template.startsWith("Unknown about the correct translation, keeping the English and the Chinese version") ? "Unknown about the correct translation, keeping the English and the Chinese version\nEnglish: " + originals.en + "\n中文: " + originals.zh : interpolate(template);
+    // Explanation: Preserve the superseded translation implementation.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+// // Explanation: Preserve the superseded translation implementation.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+// // Explanation: Preserve the superseded translation implementation.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+// const display = template.startsWith("Unknown about the correct translation, keeping the English and the Chinese version") ? "Unknown about the correct translation, keeping the English and the Chinese version\nEnglish: " + originals.en + "\n中文: " + originals.zh : interpolate(template);
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+const source = base.i18n.resolvedLanguage === "zh" ? "zh" : "en";
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+    const display = template === en || template === zh ? originals[source] : interpolate(template);
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+// Explanation: Disable duplicate generated code while retaining it for review.
+// Reason: This operation must execute only once.
+// const source = base.i18n.resolvedLanguage === "zh" ? "zh" : "en";
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+// Explanation: Disable duplicate generated code while retaining it for review.
+// Reason: This operation must execute only once.
+//     const display = template === en || template === zh ? originals[source] : interpolate(template);
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+// Explanation: Disable duplicate generated code while retaining it for review.
+// Reason: This operation must execute only once.
+// const source = base.i18n.resolvedLanguage === "zh" ? "zh" : "en";
+// Explanation: Apply the reviewed translation recovery and display behavior.
+// Reason: Fallback interpolation must preserve original parameter names in the selected source language.
+// Explanation: Disable duplicate generated code while retaining it for review.
+// Reason: This operation must execute only once.
+//     const display = template === en || template === zh ? originals[source] : interpolate(template);
 // Explanation: Apply the current rememberDisplaySource operation in the translation pipeline.
 // Reason: Interpolate accepted text with current values but retain each original language in uncertain paragraphs.
     rememberDisplaySource(display, originals);

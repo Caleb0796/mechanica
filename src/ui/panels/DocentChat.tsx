@@ -1,6 +1,11 @@
 // Explanation: Read the active in-memory target and original source language separately.
 // Reason: Temporary translation must not turn Chinese or English into a different API source preference.
-import { getTranslationState } from "../../localization/session";
+// Explanation: Preserve the previous implementation for review.
+// Reason: Docent fallback shares the existing temporary translation popup.
+// import { getTranslationState } from "../../localization/session";
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Docent fallback shares the existing temporary translation popup.
+import { getTranslationState, notifyTranslationUnavailable } from "../../localization/session";
 import {
   type FormEvent,
   type KeyboardEvent,
@@ -491,7 +496,15 @@ export function DocentChat({
           signal: controller.signal,
         });
         if (!response.ok) throw new Error("docent_request_failed");
-        await consumeDocentSse(response, appendDelta);
+        // Explanation: Preserve the previous implementation for review.
+// Reason: Notify only after the selected-language answer is displayed and ignore stale or cancelled requests.
+// await consumeDocentSse(response, appendDelta);
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Notify only after the selected-language answer is displayed and ignore stale or cancelled requests.
+await consumeDocentSse(response, appendDelta);
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Notify only after the selected-language answer is displayed and ignore stale or cancelled requests.
+        if (response.headers.get("X-Translation-Unavailable") === "1" && !controller.signal.aborted && getTranslationState().target === targetLanguage) notifyTranslationUnavailable();
       }
       setAvailability("available");
     } catch {

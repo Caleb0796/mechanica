@@ -119,7 +119,30 @@ export const translationModel: JsonModel = async (instructions, input, schema, s
   const response = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: "Bearer " + process.env.OPENAI_API_KEY, "Content-Type": "application/json" }, body: JSON.stringify({ model: process.env.TRANSLATION_MODEL || process.env.OPENAI_MODEL || "gpt-5.6", store: false, instructions, input: JSON.stringify(input), max_output_tokens: 12_000, text: { format: { type: "json_schema", name: "temporary_translation", strict: true, schema } } }), signal });
 // Explanation: Guard this operation against an invalid, stale or unresolved translation condition.
 // Reason: Perform generation and two post-translation reviews on the server without storing text or exposing API credentials.
-  if (!response.ok) throw new Error("upstream_unavailable");
+// Explanation: Preserve the superseded implementation for review.
+// Reason: Billing and authentication failures must not be disguised as translation disagreement or leak raw provider errors.
+//   if (!response.ok) throw new Error("upstream_unavailable");
+// Explanation: Classify provider failures into safe actionable reason codes.
+// Reason: Billing and authentication failures must not be disguised as translation disagreement or leak raw provider errors.
+  if (!response.ok) {
+// Explanation: Classify provider failures into safe actionable reason codes.
+// Reason: Billing and authentication failures must not be disguised as translation disagreement or leak raw provider errors.
+    const failure = await response.json().catch(() => ({})) as { error?: { code?: unknown } };
+// Explanation: Classify provider failures into safe actionable reason codes.
+// Reason: Billing and authentication failures must not be disguised as translation disagreement or leak raw provider errors.
+    const code = failure.error?.code;
+// Explanation: Classify provider failures into safe actionable reason codes.
+// Reason: Billing and authentication failures must not be disguised as translation disagreement or leak raw provider errors.
+    const billingCodes = ["credit_balance_exhausted", "insufficient_quota", "organization_spend_limit_exceeded", "project_spend_limit_exceeded", "organization_usage_limit_exceeded"];
+// Explanation: Classify provider failures into safe actionable reason codes.
+// Reason: Billing and authentication failures must not be disguised as translation disagreement or leak raw provider errors.
+    const reason = typeof code === "string" && billingCodes.includes(code) ? "provider_billing_required" : response.status === 401 ? "provider_authentication_failed" : response.status === 403 ? "provider_access_denied" : response.status === 404 ? "provider_model_unavailable" : response.status === 429 ? "provider_rate_limited" : "service_unavailable";
+// Explanation: Classify provider failures into safe actionable reason codes.
+// Reason: Billing and authentication failures must not be disguised as translation disagreement or leak raw provider errors.
+    throw new Error(reason);
+// Explanation: Classify provider failures into safe actionable reason codes.
+// Reason: Billing and authentication failures must not be disguised as translation disagreement or leak raw provider errors.
+  }
 // Explanation: Define payload for this operation.
 // Reason: Perform generation and two post-translation reviews on the server without storing text or exposing API credentials.
   const payload = await response.json() as { status?: string; output?: Array<{ content?: Array<{ type?: string; text?: string }> }> };
@@ -226,10 +249,26 @@ translateAndValidate(body.items, body.language, translationModel, controller.sig
     if (!response.writableEnded) send(response, 200, { results });
 // Explanation: Complete the current translation scope or callback.
 // Reason: Perform generation and two post-translation reviews on the server without storing text or exposing API credentials.
-  } catch {
+// Explanation: Preserve the superseded implementation for review.
+// Reason: The browser needs an actionable reason without receiving credentials or raw error text.
+//   } catch {
+// Explanation: Capture the translation failure for safe classification.
+// Reason: The browser needs an actionable reason without receiving credentials or raw error text.
+  } catch (error) {
 // Explanation: Guard this operation against an invalid, stale or unresolved translation condition.
 // Reason: Perform generation and two post-translation reviews on the server without storing text or exposing API credentials.
-    if (!response.writableEnded) send(response, 200, { results: body.items.map(item => ({ id: item.id, status: "uncertain", reason: "service_unavailable" })) });
+// Explanation: Preserve the superseded implementation for review.
+// Reason: Users need to know when credit, credentials or model access prevents generation.
+//     if (!response.writableEnded) send(response, 200, { results: body.items.map(item => ({ id: item.id, status: "uncertain", reason: "service_unavailable" })) });
+// Explanation: Return a safe failure code with each unaccepted item.
+// Reason: Users need to know when credit, credentials or model access prevents generation.
+    const knownReasons = ["provider_billing_required", "provider_authentication_failed", "provider_access_denied", "provider_model_unavailable", "provider_rate_limited"];
+// Explanation: Return a safe failure code with each unaccepted item.
+// Reason: Users need to know when credit, credentials or model access prevents generation.
+    const reason = error instanceof Error && knownReasons.includes(error.message) ? error.message : "service_unavailable";
+// Explanation: Return a safe failure code with each unaccepted item.
+// Reason: Users need to know when credit, credentials or model access prevents generation.
+    if (!response.writableEnded) send(response, 200, { results: body.items.map(item => ({ id: item.id, status: "uncertain", reason })) });
 // Explanation: Complete the current translation scope or callback.
 // Reason: Perform generation and two post-translation reviews on the server without storing text or exposing API credentials.
   } finally { clearTimeout(timeout); response.off?.("close", disconnect); }

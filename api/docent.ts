@@ -1,6 +1,11 @@
 // Explanation: Import temporary target validation and bilingual uncertainty rendering.
 // Reason: Generated answers must be cross-validated before any target text reaches the browser.
-import { isTargetLanguage, validateCandidate, uncertaintyText } from "../src/localization/translation";
+// Explanation: Preserve the previous implementation for review.
+// Reason: Docent answers need the same correction opportunity and selected-source fallback as static text.
+// import { isTargetLanguage, validateCandidate, uncertaintyText } from "../src/localization/translation";
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Docent answers need the same correction opportunity and selected-source fallback as static text.
+import { isTargetLanguage, correctValidatedAnswer } from "../src/localization/translation";
 // Explanation: Reuse the stateless server model adapter for independent answer reviews.
 // Reason: Review calls must not persist generated translations.
 import { translationModel } from "./translate";
@@ -538,7 +543,15 @@ async function relayValidatedTarget(upstream: globalThis.Response, response: Api
   const data = machines[body.slug].data;
 // Explanation: Implement the temporary translation operation below.
 // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
-  const output: string[] = [];
+  // Explanation: Preserve the previous implementation for review.
+// Reason: Track unresolved paragraphs separately so the browser can show one temporary notice.
+// const output: string[] = [];
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Track unresolved paragraphs separately so the browser can show one temporary notice.
+const output: string[] = [];
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Track unresolved paragraphs separately so the browser can show one temporary notice.
+  let unavailable = false;
 // Explanation: Implement the temporary translation operation below.
 // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
   for (const paragraph of candidate.split(/\n\s*\n/).filter(Boolean)) {
@@ -561,13 +574,31 @@ if (signal.aborted && signal.reason !== "timeout") throw new Error("docent_cance
     const pair = sources.length ? { en: sources.map(source => source.translation?.en || "").filter(Boolean).join("\n"), zh: sources.map(source => source.translation?.zh || "").filter(Boolean).join("\n") } : data.principle;
 // Explanation: Implement the temporary translation operation below.
 // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
-    let accepted = false;
+    // Explanation: Preserve the previous implementation for review.
+// Reason: Keep the reviewed corrected answer rather than a boolean for the original candidate.
+// let accepted = false;
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Keep the reviewed corrected answer rather than a boolean for the original candidate.
+let accepted: string | undefined;
 // Explanation: Implement the temporary translation operation below.
 // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
-    try { accepted = ids.length > 0 && ids.every(id => sources.some(source => source.id === id)) && await validateCandidate(pair, paragraph, body.targetLanguage!, translationModel, signal); } catch { accepted = false; }
+    // Explanation: Preserve the previous implementation for review.
+// Reason: Unknown citations stay rejected; otherwise attempt one reviewed correction before falling back.
+// try { accepted = ids.length > 0 && ids.every(id => sources.some(source => source.id === id)) && await validateCandidate(pair, paragraph, body.targetLanguage!, translationModel, signal); } catch { accepted = false; }
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Unknown citations stay rejected; otherwise attempt one reviewed correction before falling back.
+try { if (ids.length > 0 && ids.every(id => sources.some(source => source.id === id))) accepted = await correctValidatedAnswer(pair, paragraph, body.targetLanguage!, translationModel, signal); } catch { accepted = undefined; }
 // Explanation: Implement the temporary translation operation below.
 // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
-    output.push(accepted ? paragraph : uncertaintyText(pair));
+    // Explanation: Preserve the previous implementation for review.
+// Reason: Unresolved answers show evidence only in the selected English or Chinese language.
+// output.push(accepted ? paragraph : uncertaintyText(pair));
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Unresolved answers show evidence only in the selected English or Chinese language.
+unavailable ||= !accepted;
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Unresolved answers show evidence only in the selected English or Chinese language.
+    output.push(accepted ?? pair[body.lang] ?? pair.en ?? pair.zh ?? "");
 // Explanation: Implement the temporary translation operation below.
 // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
   }
@@ -590,6 +621,14 @@ if (signal.aborted && signal.reason !== "timeout") throw new Error("docent_cance
   response.setHeader("Cache-Control", "no-store, no-transform");
 // Explanation: Implement the temporary translation operation below.
 // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  // Explanation: Preserve the previous implementation for review.
+// Reason: Signal fallback in response metadata so unavailable text never appears inside the answer.
+// writeSse(response, "response.output_text.delta", { type: "response.output_text.delta", delta: output.join("\n\n") });
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Signal fallback in response metadata so unavailable text never appears inside the answer.
+if (unavailable) response.setHeader("X-Translation-Unavailable", "1");
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Signal fallback in response metadata so unavailable text never appears inside the answer.
   writeSse(response, "response.output_text.delta", { type: "response.output_text.delta", delta: output.join("\n\n") });
 // Explanation: Implement the temporary translation operation below.
 // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.

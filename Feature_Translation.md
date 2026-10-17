@@ -31,32 +31,32 @@ The existing cover contains English-only prose. Its prose therefore uses the unc
 
 Paths below are relative to this project.
 
-| File or related group | Change |
-| --- | --- |
-| `src/localization/translation.ts` — new | Shared translation contract, supported target list, generation, post-generation source reviews, protected-content checks and uncertainty formatting. |
-| `src/localization/session.ts` — new | Memory-only target selection, batching, result reuse within the active session, progress feedback, cancellation and stale-response rejection. |
-| `src/ui/i18n/requestedTranslation.ts` — new | React translation wrapper over the existing catalogs, source-pair lookup, interpolation and render-time localization helpers. |
-| `src/ui/i18n/TranslationControls.ts` — new | Empty language selector, explicit translate action and temporary status feedback. |
-| `src/ui/App.tsx` | Shared controls on the cover and museum pages, source-language priority, document language, writing direction, title and metadata. |
-| `src/ui/routes.tsx`, `src/ui/HomeCarouselHero.tsx`, `src/ui/PosterFallback.tsx` | Apply the translation wrapper to navigation, home content and fallback labels. |
-| `src/ui/CoverPage.tsx` | Temporary localization of cover prose while retaining the existing entry action and original inactive layout. |
-| `src/ui/panels/SchemeSwitcher.tsx`, `src/ui/panels/PartInspector.tsx`, `src/ui/panels/partDimLabels.ts` | Translate bilingual reconstruction names, inspection content and dimension labels. |
-| `src/ui/panels/GalleryPanel.tsx` | Translate display captions and available bilingual labels while retaining original metadata for gallery classification and attribution. |
-| `src/ui/compare/ComparisonTable.tsx`, `src/ui/compare/CompareView.tsx` | Translate comparison labels and display captions. |
-| `src/ui/story/ScrollStory.tsx` | Translate story text through the active temporary session. |
-| `src/ui/viewer/AidLayer.tsx`, `src/ui/viewer/ExplodedControl.tsx`, `src/ui/viewer/MachineViewer.tsx` | Translate viewer labels, bilingual explanations, assembly hints and captions; clear temporary captions when the active target changes. |
-| `src/ui/panels/DocentChat.tsx` | Send the requested target separately from the original source language, use the backend for translated answers and clear stale answers when language changes. |
-| `api/translate.ts` — new | Server-only provider adapter, input limits, approximate in-memory usage limits, bounded requests, disabled response storage and validation before accepted output. |
-| `api/docent.ts` | Generate only the requested answer language, buffer translated output until source reviews finish and substitute bilingual evidence when uncertain. Preserve original source-language streaming. |
-| `vite.config.ts` | Local development API routes and server-only translation/docent environment settings. |
-| `src/ui/styles.css` | Control layout, wrapping for longer fallback text and right-to-left text alignment. |
-| `docs/DEPLOY.md` | Configuration, temporary-state behavior and deployment limitations. |
-| `scripts/check-requested-translation.mjs` — new | Fourteen dependency-free translation contract checks. |
-| `tests/ui/requestedTranslationApi.test.ts` — new | Eleven focused translation and translated-docent API tests. |
-| `tests/ui/translationRecovery.test.ts` — new in the follow-up | Eight checks for harmless wording differences, bounded correction, protected facts and provider credit feedback. |
-| `e2e/requestedTranslation.spec.ts` — new | Sixteen translation browser tests. |
-| `e2e/translation.config.ts` — new | Focused Chrome configuration selecting the sixteen translation cases and nine existing smoke cases by default. |
-| `Feature_Translation.md` — new | This change and test record. |
+| File or related group                                                                                   | Change                                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/localization/translation.ts` — new                                                                 | Shared translation contract, supported target list, generation, post-generation source reviews, protected-content checks and uncertainty formatting.                                             |
+| `src/localization/session.ts` — new                                                                     | Memory-only target selection, batching, result reuse within the active session, progress feedback, cancellation and stale-response rejection.                                                    |
+| `src/ui/i18n/requestedTranslation.ts` — new                                                             | React translation wrapper over the existing catalogs, source-pair lookup, interpolation and render-time localization helpers.                                                                    |
+| `src/ui/i18n/TranslationControls.ts` — new                                                              | Empty language selector, explicit translate action and temporary status feedback.                                                                                                                |
+| `src/ui/App.tsx`                                                                                        | Shared controls on the cover and museum pages, source-language priority, document language, writing direction, title and metadata.                                                               |
+| `src/ui/routes.tsx`, `src/ui/HomeCarouselHero.tsx`, `src/ui/PosterFallback.tsx`                         | Apply the translation wrapper to navigation, home content and fallback labels.                                                                                                                   |
+| `src/ui/CoverPage.tsx`                                                                                  | Temporary localization of cover prose while retaining the existing entry action and original inactive layout.                                                                                    |
+| `src/ui/panels/SchemeSwitcher.tsx`, `src/ui/panels/PartInspector.tsx`, `src/ui/panels/partDimLabels.ts` | Translate bilingual reconstruction names, inspection content and dimension labels.                                                                                                               |
+| `src/ui/panels/GalleryPanel.tsx`                                                                        | Translate display captions and available bilingual labels while retaining original metadata for gallery classification and attribution.                                                          |
+| `src/ui/compare/ComparisonTable.tsx`, `src/ui/compare/CompareView.tsx`                                  | Translate comparison labels and display captions.                                                                                                                                                |
+| `src/ui/story/ScrollStory.tsx`                                                                          | Translate story text through the active temporary session.                                                                                                                                       |
+| `src/ui/viewer/AidLayer.tsx`, `src/ui/viewer/ExplodedControl.tsx`, `src/ui/viewer/MachineViewer.tsx`    | Translate viewer labels, bilingual explanations, assembly hints and captions; clear temporary captions when the active target changes.                                                           |
+| `src/ui/panels/DocentChat.tsx`                                                                          | Send the requested target separately from the original source language, use the backend for translated answers and clear stale answers when language changes.                                    |
+| `api/translate.ts` — new                                                                                | Server-only provider adapter, input limits, approximate in-memory usage limits, bounded requests, disabled response storage and validation before accepted output.                               |
+| `api/docent.ts`                                                                                         | Generate only the requested answer language, buffer translated output until source reviews finish and substitute bilingual evidence when uncertain. Preserve original source-language streaming. |
+| `vite.config.ts`                                                                                        | Local development API routes and server-only translation/docent environment settings.                                                                                                            |
+| `src/ui/styles.css`                                                                                     | Control layout, wrapping for longer fallback text and right-to-left text alignment.                                                                                                              |
+| `docs/DEPLOY.md`                                                                                        | Configuration, temporary-state behavior and deployment limitations.                                                                                                                              |
+| `scripts/check-requested-translation.mjs` — new                                                         | Fourteen dependency-free translation contract checks.                                                                                                                                            |
+| `tests/ui/requestedTranslationApi.test.ts` — new                                                        | Eleven focused translation and translated-docent API tests.                                                                                                                                      |
+| `tests/ui/translationRecovery.test.ts` — new in the follow-up                                           | Eight checks for harmless wording differences, bounded correction, protected facts and provider credit feedback.                                                                                 |
+| `e2e/requestedTranslation.spec.ts` — new                                                                | Sixteen translation browser tests.                                                                                                                                                               |
+| `e2e/translation.config.ts` — new                                                                       | Focused Chrome configuration selecting the sixteen translation cases and nine existing smoke cases by default.                                                                                   |
+| `Feature_Translation.md` — new                                                                          | This change and test record.                                                                                                                                                                     |
 
 Superseded feature code remains commented out. Added and changed code uses separate explanation and reasoning comments.
 
@@ -64,8 +64,8 @@ Superseded feature code remains commented out. Added and changed code uses separ
 
 Neither source catalog was changed. SHA-256 checks match the original baseline:
 
-| File | SHA-256 |
-| --- | --- |
+| File                  | SHA-256                                                            |
+| --------------------- | ------------------------------------------------------------------ |
 | `src/ui/i18n/en.json` | `0b9c2c5cde78dbf14864b8601085af2d13c12ce24cff2464e106a949a6ccd4ac` |
 | `src/ui/i18n/zh.json` | `657e00fa8aedd3782365a3a3cd5b9913607141dfdc34fa612ba683c49edf06da` |
 
@@ -77,14 +77,14 @@ Dependency installation and builds create ordinary development/build artifacts. 
 
 Tests ran on Windows using Node, Vitest and installed Google Chrome through Playwright. Browser translation responses and model responses were simulated; the application, session logic and API handlers themselves were exercised.
 
-| Group | Distinct cases | Final result |
-| --- | ---: | --- |
-| Dependency-free translation contract checks | 14 | 14 passed |
-| New translation and translated-docent API checks | 11 | 11 passed |
-| New translation browser checks | 16 | 16 passed |
-| Existing focused unit/regression checks | 34 | 34 passed |
-| Existing focused browser smoke checks | 9 | 9 passed |
-| **Total** | **84** | **84 passed** |
+| Group                                            | Distinct cases | Final result  |
+| ------------------------------------------------ | -------------: | ------------- |
+| Dependency-free translation contract checks      |             14 | 14 passed     |
+| New translation and translated-docent API checks |             11 | 11 passed     |
+| New translation browser checks                   |             16 | 16 passed     |
+| Existing focused unit/regression checks          |             34 | 34 passed     |
+| Existing focused browser smoke checks            |              9 | 9 passed      |
+| **Total**                                        |         **84** | **84 passed** |
 
 ### Translation contract checks — 14 passed
 
@@ -138,14 +138,14 @@ Tests ran on Windows using Node, Vitest and installed Google Chrome through Play
 
 ### Existing regression checks — 34 passed
 
-| Existing suite | Cases | Coverage |
-| --- | ---: | --- |
-| `tests/ui/i18n.test.ts` | 5 | Catalog structure, browser locale, original language switching and persisted source language. |
-| `tests/ui/lazyRouteRecovery.test.ts` | 2 | Dynamic-import retry and error recovery. |
-| `tests/ui/compare.test.ts` | 4 | Reconstruction differences, linked drives, colors and quake input. |
-| `tests/ui/story.test.ts` | 4 | Authored story validity, motion transitions and reconstruction crossfades. |
-| `tests/ui/docent.test.ts` | 16 | Original docent replies, citations, input validation, availability, rate/budget limits and streaming behavior. |
-| `tests/ui/partDimLabels.test.ts` | 3 | Known dimension names, unknown-label formatting and readable joint limits. |
+| Existing suite                       | Cases | Coverage                                                                                                       |
+| ------------------------------------ | ----: | -------------------------------------------------------------------------------------------------------------- |
+| `tests/ui/i18n.test.ts`              |     5 | Catalog structure, browser locale, original language switching and persisted source language.                  |
+| `tests/ui/lazyRouteRecovery.test.ts` |     2 | Dynamic-import retry and error recovery.                                                                       |
+| `tests/ui/compare.test.ts`           |     4 | Reconstruction differences, linked drives, colors and quake input.                                             |
+| `tests/ui/story.test.ts`             |     4 | Authored story validity, motion transitions and reconstruction crossfades.                                     |
+| `tests/ui/docent.test.ts`            |    16 | Original docent replies, citations, input validation, availability, rate/budget limits and streaming behavior. |
+| `tests/ui/partDimLabels.test.ts`     |     3 | Known dimension names, unknown-label formatting and readable joint limits.                                     |
 
 ### Existing browser smoke checks — 9 passed
 
@@ -163,14 +163,14 @@ The original browser test files were not edited.
 
 ## Additional verification
 
-| Check | Result |
-| --- | --- |
-| Normal production build: TypeScript and Vite | Passed after the integration corrections below; final build has E2E hooks disabled. |
-| E2E build using the existing `VITE_E2E=1` hooks | Passed; used for existing machine-state and mock-docent smoke checks. |
-| Existing `pnpm i18n:check` | Passed, zero catalog issues. |
-| Local Vite development API routing without credentials | Passed: translation returned 503 `translation_not_configured`; docent probe returned 503 disabled. |
-| Catalog byte-integrity verification | Passed against both baseline hashes. |
-| Full `pnpm validate` geometry sampling | Started, then stopped because it was broader and slower than the requested light regression scope. No completed result is claimed. Existing validation report files retained their original modification times. |
+| Check                                                  | Result                                                                                                                                                                                                          |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Normal production build: TypeScript and Vite           | Passed after the integration corrections below; final build has E2E hooks disabled.                                                                                                                             |
+| E2E build using the existing `VITE_E2E=1` hooks        | Passed; used for existing machine-state and mock-docent smoke checks.                                                                                                                                           |
+| Existing `pnpm i18n:check`                             | Passed, zero catalog issues.                                                                                                                                                                                    |
+| Local Vite development API routing without credentials | Passed: translation returned 503 `translation_not_configured`; docent probe returned 503 disabled.                                                                                                              |
+| Catalog byte-integrity verification                    | Passed against both baseline hashes.                                                                                                                                                                            |
+| Full `pnpm validate` geometry sampling                 | Started, then stopped because it was broader and slower than the requested light regression scope. No completed result is claimed. Existing validation report files retained their original modification times. |
 
 The production build reports a large Three.js vendor chunk warning. It does not fail the build and is outside the translation change.
 
@@ -230,20 +230,19 @@ No credentials or raw provider error messages were printed or added to the repos
 
 ### Follow-up verification
 
-| Check | Final result |
-| --- | --- |
-| Translation recovery tests | 8 passed |
-| Translation and translated-docent API tests | 12 passed |
-| Dependency-free contract checks | 14 passed after the line-ending assertion correction |
-| Browser credit diagnostic and unavailable-provider fallback | 2 passed |
-| Normal TypeScript and production build | Passed |
-| Live provider diagnostic | Confirmed exhausted API credit; no successful generation |
-| Running local API diagnostic | Confirmed `provider_billing_required` reaches the client |
+| Check                                                       | Final result                                             |
+| ----------------------------------------------------------- | -------------------------------------------------------- |
+| Translation recovery tests                                  | 8 passed                                                 |
+| Translation and translated-docent API tests                 | 12 passed                                                |
+| Dependency-free contract checks                             | 14 passed after the line-ending assertion correction     |
+| Browser credit diagnostic and unavailable-provider fallback | 2 passed                                                 |
+| Normal TypeScript and production build                      | Passed                                                   |
+| Live provider diagnostic                                    | Confirmed exhausted API credit; no successful generation |
+| Running local API diagnostic                                | Confirmed `provider_billing_required` reaches the client |
 
 This follow-up verified 36 distinct automated cases. It adds 10 new cases to the original focused suite, bringing its available total to 94 distinct cases, below 100. The entire 94-case suite was not rerun in the follow-up.
 
 To resume live use, restore API credit or the applicable spending allowance for the organization/project associated with the key. Refresh the application, click EN or 中文 to clear the failed session, select the desired target, then click translate. This reset preserves the required rule that repeating an already applied target does not automatically generate again.
-
 
 ## Follow-up: recover source differences and use temporary fallback popups
 

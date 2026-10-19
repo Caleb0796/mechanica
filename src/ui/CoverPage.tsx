@@ -1,8 +1,24 @@
+// Explanation: Use the session-aware hook for temporary cover text.
+// Reason: The cover contains original English prose outside the immutable catalogs.
+import { useTranslation, localizeSingle } from "./i18n/requestedTranslation";
+// Explanation: Read the active target without changing the original cover source.
+// Reason: The fixed English attribute must not mislabel a requested target language.
+import { getTranslationState } from "../localization/session";
 const MACHINE_NAMES = ["Astronomical Clock", "Seismoscope", "Odometer", "Loom"];
 
 export default function CoverPage() {
+// Explanation: Subscribe the cover to temporary translation progress.
+// Reason: Completed validation must refresh its text without changing any source file.
+  useTranslation();
   return (
-    <div className="cover-page" data-testid="cover-page" lang="en">
+    <div className="cover-page" data-testid="cover-page" lang={(
+// Explanation: Set the cover language from the active temporary session.
+// Reason: The original English cover must not override the requested document language.
+// "en"
+// Explanation: Set the cover language from the active temporary session.
+// Reason: The original English cover must not override the requested document language.
+getTranslationState().target || "en"
+)}>
       <svg
         aria-hidden="true"
         className="cover-astrolabe"
@@ -24,31 +40,74 @@ export default function CoverPage() {
 
       <header className="cover-header">
         <span className="cover-brand">Mechanica</span>
-        <span className="cover-pill">Archived</span>
+        <span className="cover-pill">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// "Archived"
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeSingle("Archived", "en")
+)}</span>
       </header>
 
       <main className="cover-main">
-        <p className="cover-eyebrow">Thank you</p>
+        <p className="cover-eyebrow">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// "Thank you"
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeSingle("Thank you", "en")
+)}</p>
         <h1 className="cover-title">
-          Thank you, OpenAI, <br className="cover-break" />
-          and everyone who liked Mechanica.
+          {/* Explanation: Preserve the original English cover title. */}
+{/* Reason: No authoritative Chinese counterpart exists for bilingual validation. */}
+{/* Thank you, OpenAI, <br className="cover-break" />
+          and everyone who liked Mechanica. */}
+{/* Explanation: Route the complete title through the temporary uncertainty policy. */}
+{/* Reason: Fragmented translation would lose the sentence context. */}
+          {getTranslationState().target ? localizeSingle("Thank you, OpenAI, and everyone who liked Mechanica.", "en") : <>Thank you, OpenAI, <br className="cover-break" />and everyone who liked Mechanica.</>}
         </h1>
 
         <div className="cover-columns">
           <section>
-            <h2 className="cover-label">Demo video</h2>
+            <h2 className="cover-label">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// "Demo video"
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeSingle("Demo video", "en")
+)}</h2>
             <p>
-              Thanks to <span className="cover-name">Yunkun</span>,{" "}
+              {/* Explanation: Preserve the original cover paragraph. */}
+{/* Reason: Existing source wording must remain available unchanged. */}
+{/* Thanks to <span className="cover-name">Yunkun</span>,{" "}
               <span className="cover-name">Olive</span>, and{" "}
               <span className="cover-name">Ian</span> for helping me record
-              the demo video and for their notes on it.
+              the demo video and for their notes on it. */}
+{/* Explanation: Resolve the complete paragraph through temporary localization. */}
+{/* Reason: Missing source pairs must be disclosed instead of invented. */}
+              {getTranslationState().target ? localizeSingle("Thanks to Yunkun, Olive, and Ian for helping me record the demo video and for their notes on it.", "en") : <>Thanks to <span className="cover-name">Yunkun</span>, <span className="cover-name">Olive</span>, and <span className="cover-name">Ian</span> for helping me record the demo video and for their notes on it.</>}
             </p>
           </section>
           <section>
-            <h2 className="cover-label">Status</h2>
+            <h2 className="cover-label">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// "Status"
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeSingle("Status", "en")
+)}</h2>
             <p>
-              I've stopped working on Mechanica. The site stays up, and the
-              machines still run.
+              {/* Explanation: Preserve the original cover paragraph. */}
+{/* Reason: Existing source wording must remain available unchanged. */}
+{/* I've stopped working on Mechanica. The site stays up, and the
+              machines still run. */}
+{/* Explanation: Resolve the complete paragraph through temporary localization. */}
+{/* Reason: Missing source pairs must be disclosed instead of invented. */}
+              {localizeSingle("I've stopped working on Mechanica. The site stays up, and the machines still run.", "en")}
             </p>
           </section>
         </div>
@@ -57,7 +116,14 @@ export default function CoverPage() {
 
         <div className="cover-actions">
           <a className="cover-enter" data-testid="cover-enter" href="#/museum">
-            Enter the museum
+            {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// "Enter the museum"
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeSingle("Enter the museum", "en")
+)}
             <svg
               aria-hidden="true"
               fill="none"
@@ -72,12 +138,26 @@ export default function CoverPage() {
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </a>
-          <span className="cover-machines">{MACHINE_NAMES.join(" · ")}</span>
+          <span className="cover-machines">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// MACHINE_NAMES.join(" · ")
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeSingle(MACHINE_NAMES.join(" · "), "en")
+)}</span>
         </div>
       </main>
 
       <footer className="cover-footer">
-        <span>Ancient Machines Reborn</span>
+        <span>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// "Ancient Machines Reborn"
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localizeSingle("Ancient Machines Reborn", "en")
+)}</span>
         <span>2026</span>
       </footer>
     </div>

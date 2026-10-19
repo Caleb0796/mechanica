@@ -27,7 +27,17 @@ import {
   useRef,
   useState,
 } from "react";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+// import { useTranslation, localize, localizeSingle } from "../i18n/requestedTranslation";
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+import { useTranslation, localize } from "../i18n/requestedTranslation";
 
 import type { MachineModule, PrincipleAid } from "../../sim/types";
 
@@ -315,7 +325,14 @@ function Callouts({
                 whiteSpace: "nowrap",
               }}
             >
-              {anchor.label[language]}
+              {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// anchor.label[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(anchor.label, language)
+)}
             </span>
           </span>
         </Html>
@@ -590,9 +607,16 @@ function PowerPathRoute({
     return new TubeGeometry(curve, points.length * 8, 0.028, 6, false);
   }, [aid.sequence, curveVersion, scene]);
   const currentPartName = currentPartId
-    ? (module.spec.parts.find((part) => part.id === currentPartId)?.name[
-        language
-      ] ?? currentPartId)
+    ? ((
+// Explanation: Resolve the highlighted power-path part name from its existing bilingual record.
+// Reason: Dynamically found part names need the same temporary validation as static labels.
+// module.spec.parts.find((part) => part.id === currentPartId)?.name[
+//         language
+//       ]
+// Explanation: Resolve the highlighted power-path part name from its existing bilingual record.
+// Reason: Dynamically found part names need the same temporary validation as static labels.
+localize(module.spec.parts.find((part) => part.id === currentPartId)?.name, language)
+) ?? currentPartId)
     : null;
 
   useFrame((state) => {
@@ -906,8 +930,22 @@ export default function AidLayer({
                   }}
                   type="button"
                 >
-                  {("label" in aid ? aid.label?.[language] : undefined) ??
-                    aidNames[aid.kind][language]}
+                  {("label" in aid ? (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// aid.label?.[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(aid.label, language)
+) : undefined) ??
+                    (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// aidNames[aid.kind][language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(aidNames[aid.kind], language)
+)}
                 </button>
               );
             })}
@@ -936,7 +974,14 @@ export default function AidLayer({
                 }}
                 type="button"
               >
-                {activeAid.caption[language]}
+                {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// activeAid.caption[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(activeAid.caption, language)
+)}
               </button>
             ) : null}
             {activeAid && "label" in activeAid && activeAid.label ? (
@@ -951,7 +996,14 @@ export default function AidLayer({
                   padding: "6px 10px",
                 }}
               >
-                {activeAid.label[language]}
+                {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// activeAid.label[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(activeAid.label, language)
+)}
               </output>
             ) : null}
           </div>

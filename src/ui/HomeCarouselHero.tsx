@@ -10,7 +10,17 @@ import {
   type KeyboardEvent,
   type RefObject,
 } from "react";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+// import { useTranslation, localize, localizeSingle } from "./i18n/requestedTranslation";
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+import { useTranslation, localize } from "./i18n/requestedTranslation";
 import {
   ACESFilmicToneMapping,
   Box3,
@@ -846,8 +856,22 @@ export default function HomeCarouselHero({
             {String(activeIndex + 1).padStart(2, "0")}
           </span>
           <span className="home-carousel-machine-text">
-            <strong>{activeData.names[language]}</strong>
-            <span>{activeData.oneLiner[language]}</span>
+            <strong>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// activeData.names[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(activeData.names, language)
+)}</strong>
+            <span>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// activeData.oneLiner[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(activeData.oneLiner, language)
+)}</span>
           </span>
           <span className="machine-open">{t("home.open")}</span>
         </a>
@@ -864,7 +888,14 @@ export default function HomeCarouselHero({
               onClick={() => turnToMachine(index)}
               type="button"
             >
-              {data?.names[language] ?? slug}
+              {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// data?.names[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(data?.names, language)
+) ?? slug}
             </button>
           );
         })}

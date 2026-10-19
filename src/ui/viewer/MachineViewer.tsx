@@ -18,7 +18,17 @@ import {
   type MutableRefObject,
   type RefObject,
 } from "react";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+// import { useTranslation, localize, localizeSingle, localizeRendered } from "../i18n/requestedTranslation";
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+import { useTranslation, localize, localizeRendered } from "../i18n/requestedTranslation";
 import {
   ACESFilmicToneMapping,
   BackSide,
@@ -2585,7 +2595,12 @@ export function MachineStoryStage({
   spotlightRunId: number;
   state: StoryStageState;
 }) {
-  const { i18n, t } = useTranslation();
+// Explanation: Observe the explicitly active target for temporary captions.
+// Reason: Source-language overrides must remove every previously translated message.
+//   const { i18n, t } = useTranslation();
+// Explanation: Observe the explicitly active target for temporary captions.
+// Reason: Source-language overrides must remove every previously translated message.
+  const { i18n, t, translationTarget } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const [contextLost, setContextLost] = useState(false);
   const contextLossCleanup = useRef<(() => void) | null>(null);
@@ -3084,7 +3099,14 @@ function mechanismCaption(
   const namedPart = module.spec.parts.find(
     (candidate) => candidate.id === part,
   );
-  const partLabel = namedPart?.name[language];
+  const partLabel = (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// namedPart?.name[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(namedPart?.name, language)
+);
   return partLabel ? `${eventLabel} · ${partLabel}` : eventLabel;
 }
 
@@ -3145,7 +3167,12 @@ export default function MachineViewer({
   module,
   schemeId,
 }: MachineViewerProps) {
-  const { i18n, t } = useTranslation();
+// Explanation: Observe the explicitly active target for temporary captions.
+// Reason: Source-language overrides must remove every previously translated message.
+//   const { i18n, t } = useTranslation();
+// Explanation: Observe the explicitly active target for temporary captions.
+// Reason: Source-language overrides must remove every previously translated message.
+  const { i18n, t, translationTarget } = useTranslation();
   const language = i18n.resolvedLanguage === "en" ? "en" : "zh";
   const storyAvailable =
     module.data.slug === "astroclock" || module.data.slug === "seismoscope";
@@ -3224,6 +3251,19 @@ export default function MachineViewer({
   const [spotlightPartIds, setSpotlightPartIds] = useState<string[]>([]);
   const [spotlightRunId, setSpotlightRunId] = useState(0);
   const [spotlightTranscript, setSpotlightTranscript] = useState<string[]>([]);
+// Explanation: Implement the temporary translation operation below.
+// Reason: Discard displayed event captions whenever the temporary target changes or is cleared.
+useEffect(() => {
+// Explanation: Implement the temporary translation operation below.
+// Reason: Discard displayed event captions whenever the temporary target changes or is cleared.
+    setCaption("");
+// Explanation: Implement the temporary translation operation below.
+// Reason: Discard displayed event captions whenever the temporary target changes or is cleared.
+    setSpotlightTranscript([]);
+// Explanation: Implement the temporary translation operation below.
+// Reason: Discard displayed event captions whenever the temporary target changes or is cleared.
+  }, [translationTarget]);
+
   const [quakeBearing, setQuakeBearing] = useState(6);
   const [armedQuakeBearing, setArmedQuakeBearing] = useState<number | null>(
     null,
@@ -4374,9 +4414,23 @@ export default function MachineViewer({
   const assemblyStateHint = assembly.state.hint;
   const requiredAssemblyPartName =
     assemblyStateHint?.kind === "parent-required"
-      ? (module.spec.parts.find(
-          (part) => part.id === assemblyStateHint.requiredPartId,
-        )?.name[language] ?? assemblyStateHint.requiredPartId)
+// Explanation: Preserve the invalid optional-call expression for review.
+// Reason: A found part is data and cannot be called as a function.
+//       ? (module.spec.parts.find(
+//           (part) => part.id === assemblyStateHint.requiredPartId,
+//         )?.(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// name[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// Explanation: Preserve the superseded localization argument.
+// Reason: The bilingual name must come from the found assembly part.
+// localize(name, language)
+// ) ?? assemblyStateHint.requiredPartId)
+// Explanation: Localize the required part's bilingual name when the part exists.
+// Reason: Assembly hints must remain usable with and without temporary translation.
+      ? (localize(module.spec.parts.find(part => part.id === assemblyStateHint.requiredPartId)?.name, language) ?? assemblyStateHint.requiredPartId)
       : null;
   const assemblyHint = assemblyStateHint
     ? assemblyStateHint.kind === "parent-required"
@@ -4397,9 +4451,23 @@ export default function MachineViewer({
         {compareActive || assembly.state.mode === "reassemble" ? null : (
           <div className="viewer-title-row">
             <div className="viewer-title">
-              <h1>{module.data.names[language]}</h1>
+              <h1>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.names[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.names, language)
+)}</h1>
               <p>
-                {module.data.oneLiner[language]} · {t("viewer.rotateHint")}
+                {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.oneLiner[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.oneLiner, language)
+)} · {t("viewer.rotateHint")}
               </p>
             </div>
             {storyAvailable ? (
@@ -4687,7 +4755,14 @@ export default function MachineViewer({
                 <button
                   aria-keyshortcuts="ArrowLeft ArrowDown"
                   aria-label={t("viewer.driveReverse", {
-                    part: selectedDrivePart.name[language],
+                    part: (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// selectedDrivePart.name[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(selectedDrivePart.name, language)
+),
                   })}
                   data-drive-part-id={selectedDrivePart.id}
                   data-testid="drive-keyboard-reverse"
@@ -4712,13 +4787,27 @@ export default function MachineViewer({
                   type="button"
                 >
                   {t("viewer.driveReverse", {
-                    part: selectedDrivePart.name[language],
+                    part: (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// selectedDrivePart.name[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(selectedDrivePart.name, language)
+),
                   })}
                 </button>
                 <button
                   aria-keyshortcuts="ArrowRight ArrowUp"
                   aria-label={t("viewer.driveForward", {
-                    part: selectedDrivePart.name[language],
+                    part: (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// selectedDrivePart.name[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(selectedDrivePart.name, language)
+),
                   })}
                   data-drive-part-id={selectedDrivePart.id}
                   data-testid="drive-keyboard-forward"
@@ -4743,7 +4832,14 @@ export default function MachineViewer({
                   type="button"
                 >
                   {t("viewer.driveForward", {
-                    part: selectedDrivePart.name[language],
+                    part: (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// selectedDrivePart.name[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(selectedDrivePart.name, language)
+),
                   })}
                 </button>
               </>
@@ -4875,9 +4971,23 @@ export default function MachineViewer({
                   className="assembly-current"
                   data-testid="assembly-current-part"
                 >
-                  {assembly.currentPartName[language]}
+                  {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// assembly.currentPartName[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(assembly.currentPartName, language)
+)}
                   {assembly.currentPartCaption
-                    ? ` · ${assembly.currentPartCaption[language]}`
+                    ? ` · ${(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// assembly.currentPartCaption[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(assembly.currentPartCaption, language)
+)}`
                     : null}
                 </p>
               ) : null}
@@ -4916,8 +5026,22 @@ export default function MachineViewer({
         <section className="panel">
           <article className="spotlight-card">
             <strong>{t("viewer.spotlight")}</strong>
-            <p className="panel-copy">{module.data.ingenuity.hook[language]}</p>
-            <p className="panel-copy">{module.data.ingenuity.demo[language]}</p>
+            <p className="panel-copy">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.ingenuity.hook[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.ingenuity.hook, language)
+)}</p>
+            <p className="panel-copy">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.ingenuity.demo[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.ingenuity.demo, language)
+)}</p>
             <button
               aria-pressed={activeTrigger?.triggerId === spotlight?.id}
               className="gold-button demo-trigger-button"
@@ -4946,11 +5070,25 @@ export default function MachineViewer({
                 data-testid="spotlight-source-transcript"
               >
                 {spotlightTranscript.map((entry) => (
-                  <li key={entry}>{entry}</li>
+                  <li key={entry}>{(
+// Explanation: Resolve each stored transcript message from its original source wording.
+// Reason: Pending captions must refresh after validation without changing mechanical playback.
+// entry
+// Explanation: Resolve each stored transcript message from its original source wording.
+// Reason: Pending captions must refresh after validation without changing mechanical playback.
+localizeRendered(entry)
+)}</li>
                 ))}
               </ol>
             ) : null}
-            <p className="panel-copy">{module.data.ingenuity.echo[language]}</p>
+            <p className="panel-copy">{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// module.data.ingenuity.echo[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(module.data.ingenuity.echo, language)
+)}</p>
             {spotlightDone ? (
               <span className="spotlight-done">
                 {t("viewer.spotlightDone")}
@@ -5035,7 +5173,14 @@ export default function MachineViewer({
                     }
                     type="button"
                   >
-                    {trigger.label[language]}
+                    {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// trigger.label[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(trigger.label, language)
+)}
                   </button>
                 ))
             ) : (
@@ -5066,7 +5211,14 @@ export default function MachineViewer({
                 value={demoProgress}
               />
             ) : null}
-            {caption !== "" ? <p className="event-caption">{caption}</p> : null}
+            {caption !== "" ? <p className="event-caption">{(
+// Explanation: Refresh the stored event caption from its original source pair.
+// Reason: A completed validation result must update captions created while translation was pending.
+// caption
+// Explanation: Refresh the stored event caption from its original source pair.
+// Reason: A completed validation result must update captions created while translation was pending.
+localizeRendered(caption)
+)}</p> : null}
           </div>
         </section>
         <SchemeSwitcher

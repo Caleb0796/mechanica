@@ -6,7 +6,17 @@ import {
   useRef,
   useState,
 } from "react";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+// import { useTranslation, localize, localizeSingle } from "../i18n/requestedTranslation";
+// Explanation: Import only the translation operations used by this component.
+// Reason: Unused helper imports are unnecessary; their previous declarations remain commented out.
+import { useTranslation, localize } from "../i18n/requestedTranslation";
 
 import type { MachineModule } from "../../sim/types";
 import "./story.css";
@@ -290,8 +300,22 @@ export default function ScrollStory({
                 <span className="scroll-story__index">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <h2>{step.title[language]}</h2>
-                <p>{step.body[language]}</p>
+                <h2>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// step.title[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(step.title, language)
+)}</h2>
+                <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// step.body[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(step.body, language)
+)}</p>
                 {source ? (
                   <button
                     aria-controls="story-source-panel"
@@ -348,9 +372,16 @@ export default function ScrollStory({
             {openSource.chapter ? ` · ${openSource.chapter}` : ""}
           </p>
           <blockquote>
-            {language === "en"
-              ? (openSource.translation?.en ?? openSource.quote)
-              : (openSource.translation?.zh ?? openSource.quote)}
+            {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// language === "en"
+//               ? (openSource.translation?.en ?? openSource.quote)
+//               : (openSource.translation?.zh ?? openSource.quote)
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(openSource.translation || { zh: openSource.quote }, language)
+)}
           </blockquote>
           <a href={openSource.url} rel="noreferrer" target="_blank">
             {t("story.openSource")}

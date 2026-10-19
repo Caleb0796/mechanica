@@ -1,3 +1,17 @@
+// Explanation: Import temporary target validation and bilingual uncertainty rendering.
+// Reason: Generated answers must be cross-validated before any target text reaches the browser.
+// Explanation: Preserve the previous implementation for review.
+// Reason: Docent answers need the same correction opportunity and selected-source fallback as static text.
+// import { isTargetLanguage, validateCandidate, uncertaintyText } from "../src/localization/translation";
+// Explanation: Apply translation correction and source-only fallback.
+// Reason: Docent answers need the same correction opportunity and selected-source fallback as static text.
+import {
+  isTargetLanguage,
+  correctValidatedAnswer,
+} from "../src/localization/translation";
+// Explanation: Reuse the stateless server model adapter for independent answer reviews.
+// Reason: Review calls must not persist generated translations.
+import { translationModel } from "./translate";
 import astroclockDataJson from "../src/data/machines/astroclock.json" with { type: "json" };
 import loomDataJson from "../src/data/machines/loom.json" with { type: "json" };
 import odometerDataJson from "../src/data/machines/odometer.json" with { type: "json" };
@@ -17,7 +31,12 @@ import type { MachineData, MachineSlug } from "../src/sim/types";
 
 declare const process: { env: Record<string, string | undefined> };
 
-export const config = { api: { bodyParser: false } };
+// Explanation: Allow the translated-answer pipeline to complete within a bounded server duration.
+// Reason: Generation and both mandatory reviews must finish before accepted output is streamed.
+// export const config = { api: { bodyParser: false } };
+// Explanation: Allow the translated-answer pipeline to complete within a bounded server duration.
+// Reason: Generation and both mandatory reviews must finish before accepted output is streamed.
+export const config = { api: { bodyParser: false }, maxDuration: 60 };
 
 const MAX_BODY_BYTES = 8192;
 const MAX_MESSAGES = 6;
@@ -48,6 +67,9 @@ export interface DocentRequestBody {
   partId?: string;
   schemeId?: string;
   lang: "zh" | "en";
+  // Explanation: Carry the explicitly requested temporary target separately from the original language.
+  // Reason: Chinese and English controls must keep their existing API contract.
+  targetLanguage?: string;
   messages: DocentMessage[];
 }
 
@@ -109,7 +131,14 @@ export function buildPrompt(body: DocentRequestBody): string {
   const machine = machines[body.slug];
   return `${DOCENT_PROMPT_CORE}
 
-lang=${body.lang}
+lang=${
+    // Explanation: Resolve the original bilingual text through the active translation session.
+    // Reason: Display validated target text or retain the original versions when validation is uncertain.
+    // body.lang
+    // Explanation: Resolve the original bilingual text through the active translation session.
+    // Reason: Display validated target text or retain the original versions when validation is uncertain.
+    body.targetLanguage ?? body.lang
+  }
 partId=${body.partId ?? "null"}
 schemeId=${body.schemeId ?? "null"}
 
@@ -212,7 +241,19 @@ function parseBody(rawBody: string): DocentRequestBody {
   if (
     !hasOnlyKeys(
       parsed,
-      new Set(["slug", "partId", "schemeId", "lang", "messages"]),
+      // Explanation: Allow an explicit temporary target in docent requests.
+      // Reason: Additional languages require an opt-in field rather than changing the base source-language setting.
+      // new Set(["slug", "partId", "schemeId", "lang", "messages"]),
+      // Explanation: Allow an explicit temporary target in docent requests.
+      // Reason: Additional languages require an opt-in field rather than changing the base source-language setting.
+      new Set([
+        "slug",
+        "partId",
+        "schemeId",
+        "lang",
+        "targetLanguage",
+        "messages",
+      ]),
     )
   ) {
     throw new RequestViolation("body_invalid");
@@ -226,6 +267,13 @@ function parseBody(rawBody: string): DocentRequestBody {
   if (parsed.lang !== "zh" && parsed.lang !== "en") {
     throw new RequestViolation("lang_invalid");
   }
+  // Explanation: Reject invalid temporary targets before any provider request.
+  // Reason: The API may generate only the single allowed target requested by the user.
+  if (
+    parsed.targetLanguage !== undefined &&
+    !isTargetLanguage(parsed.targetLanguage)
+  )
+    throw new RequestViolation("target_language_invalid");
   if (parsed.partId !== undefined && typeof parsed.partId !== "string") {
     throw new RequestViolation("part_invalid");
   }
@@ -269,6 +317,9 @@ function parseBody(rawBody: string): DocentRequestBody {
     partId: parsed.partId as string | undefined,
     schemeId: parsed.schemeId as string | undefined,
     lang: parsed.lang,
+    // Explanation: Preserve the validated temporary target in the parsed request.
+    // Reason: Generation and post-translation reviews must use the identical language.
+    targetLanguage: parsed.targetLanguage as string | undefined,
     messages,
   };
 }
@@ -477,6 +528,178 @@ async function relaySemanticDeltas(
   response.end();
 }
 
+// Explanation: Implement the temporary translation operation below.
+// Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+async function relayValidatedTarget(
+  upstream: globalThis.Response,
+  response: ApiResponse,
+  body: DocentRequestBody,
+  signal: AbortSignal,
+): Promise<void> {
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  let candidate = "";
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  const buffered: ApiResponse = {
+    statusCode: 200,
+    setHeader: () => {},
+    write: (chunk) => {
+      // Explanation: Implement the temporary translation operation below.
+      // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+      const data = chunk.split("\n").find((line) => line.startsWith("data: "));
+      // Explanation: Implement the temporary translation operation below.
+      // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+      if (data) {
+        const payload = JSON.parse(data.slice(6)) as { delta?: string };
+        candidate += payload.delta || "";
+      }
+      // Explanation: Implement the temporary translation operation below.
+      // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+      return true;
+      // Explanation: Implement the temporary translation operation below.
+      // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+    },
+    end: () => {},
+    on: () => {},
+  };
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  await relaySemanticDeltas(upstream, buffered);
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  const data = machines[body.slug].data;
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  // Explanation: Preserve the previous implementation for review.
+  // Reason: Track unresolved paragraphs separately so the browser can show one temporary notice.
+  // const output: string[] = [];
+  // Explanation: Apply translation correction and source-only fallback.
+  // Reason: Track unresolved paragraphs separately so the browser can show one temporary notice.
+  const output: string[] = [];
+  // Explanation: Apply translation correction and source-only fallback.
+  // Reason: Track unresolved paragraphs separately so the browser can show one temporary notice.
+  let unavailable = false;
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  for (const paragraph of candidate.split(/\n\s*\n/).filter(Boolean)) {
+    // Explanation: Implement the temporary translation operation below.
+    // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+    // Explanation: Stop disconnected requests but retain bilingual fallback when answer validation times out.
+    // Reason: A completed but unverified target answer must resolve to uncertainty instead of being exposed.
+    // if (signal.aborted) throw new Error("docent_cancelled");
+    // Explanation: Stop disconnected requests but retain bilingual fallback when answer validation times out.
+    // Reason: A completed but unverified target answer must resolve to uncertainty instead of being exposed.
+    if (signal.aborted && signal.reason !== "timeout")
+      throw new Error("docent_cancelled");
+    // Explanation: Implement the temporary translation operation below.
+    // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+    const ids = [...paragraph.matchAll(/\[来源:([^\]]+)\]/g)].map(
+      (match) => match[1],
+    );
+    // Explanation: Implement the temporary translation operation below.
+    // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+    const sources = data.sources.filter((source) => ids.includes(source.id));
+    // Explanation: Implement the temporary translation operation below.
+    // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+    const pair = sources.length
+      ? {
+          en: sources
+            .map((source) => source.translation?.en || "")
+            .filter(Boolean)
+            .join("\n"),
+          zh: sources
+            .map((source) => source.translation?.zh || "")
+            .filter(Boolean)
+            .join("\n"),
+        }
+      : data.principle;
+    // Explanation: Implement the temporary translation operation below.
+    // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+    // Explanation: Preserve the previous implementation for review.
+    // Reason: Keep the reviewed corrected answer rather than a boolean for the original candidate.
+    // let accepted = false;
+    // Explanation: Apply translation correction and source-only fallback.
+    // Reason: Keep the reviewed corrected answer rather than a boolean for the original candidate.
+    let accepted: string | undefined;
+    // Explanation: Implement the temporary translation operation below.
+    // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+    // Explanation: Preserve the previous implementation for review.
+    // Reason: Unknown citations stay rejected; otherwise attempt one reviewed correction before falling back.
+    // try { accepted = ids.length > 0 && ids.every(id => sources.some(source => source.id === id)) && await validateCandidate(pair, paragraph, body.targetLanguage!, translationModel, signal); } catch { accepted = false; }
+    // Explanation: Apply translation correction and source-only fallback.
+    // Reason: Unknown citations stay rejected; otherwise attempt one reviewed correction before falling back.
+    try {
+      if (
+        ids.length > 0 &&
+        ids.every((id) => sources.some((source) => source.id === id))
+      )
+        accepted = await correctValidatedAnswer(
+          pair,
+          paragraph,
+          body.targetLanguage!,
+          translationModel,
+          signal,
+        );
+    } catch {
+      accepted = undefined;
+    }
+    // Explanation: Implement the temporary translation operation below.
+    // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+    // Explanation: Preserve the previous implementation for review.
+    // Reason: Unresolved answers show evidence only in the selected English or Chinese language.
+    // output.push(accepted ? paragraph : uncertaintyText(pair));
+    // Explanation: Apply translation correction and source-only fallback.
+    // Reason: Unresolved answers show evidence only in the selected English or Chinese language.
+    unavailable ||= !accepted;
+    // Explanation: Apply translation correction and source-only fallback.
+    // Reason: Unresolved answers show evidence only in the selected English or Chinese language.
+    output.push(accepted ?? pair[body.lang] ?? pair.en ?? pair.zh ?? "");
+    // Explanation: Implement the temporary translation operation below.
+    // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  }
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  // Explanation: Stop disconnected requests but retain bilingual fallback when answer validation times out.
+  // Reason: A completed but unverified target answer must resolve to uncertainty instead of being exposed.
+  // if (signal.aborted) throw new Error("docent_cancelled");
+  // Explanation: Stop disconnected requests but retain bilingual fallback when answer validation times out.
+  // Reason: A completed but unverified target answer must resolve to uncertainty instead of being exposed.
+  if (signal.aborted && signal.reason !== "timeout")
+    throw new Error("docent_cancelled");
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  response.statusCode = 200;
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  response.setHeader("Content-Type", "text/event-stream; charset=utf-8");
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  response.setHeader("Cache-Control", "no-store, no-transform");
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  // Explanation: Preserve the previous implementation for review.
+  // Reason: Signal fallback in response metadata so unavailable text never appears inside the answer.
+  // writeSse(response, "response.output_text.delta", { type: "response.output_text.delta", delta: output.join("\n\n") });
+  // Explanation: Apply translation correction and source-only fallback.
+  // Reason: Signal fallback in response metadata so unavailable text never appears inside the answer.
+  if (unavailable) response.setHeader("X-Translation-Unavailable", "1");
+  // Explanation: Apply translation correction and source-only fallback.
+  // Reason: Signal fallback in response metadata so unavailable text never appears inside the answer.
+  writeSse(response, "response.output_text.delta", {
+    type: "response.output_text.delta",
+    delta: output.join("\n\n"),
+  });
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  writeSse(response, "done", {});
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+  response.end();
+  // Explanation: Implement the temporary translation operation below.
+  // Reason: Generate only the explicitly requested target and validate each completed answer paragraph against existing bilingual evidence.
+}
+
 export default async function handler(
   request: ApiRequest,
   response: ApiResponse,
@@ -526,7 +749,12 @@ export default async function handler(
   const controller = new AbortController();
   const timeout = setTimeout(
     () => controller.abort("timeout"),
-    UPSTREAM_TIMEOUT_MS,
+    // Explanation: Allow time for independent validation of a requested target answer.
+    // Reason: The source-language timeout stays unchanged while translated answers require additional review calls.
+    //     UPSTREAM_TIMEOUT_MS,
+    // Explanation: Allow time for independent validation of a requested target answer.
+    // Reason: The source-language timeout stays unchanged while translated answers require additional review calls.
+    body.targetLanguage ? 50_000 : UPSTREAM_TIMEOUT_MS,
   );
   const abortForDisconnect = (): void => {
     if (!response.writableEnded) controller.abort("client_disconnected");
@@ -560,6 +788,9 @@ export default async function handler(
         input: body.messages,
         max_output_tokens: 600,
         stream: true,
+        // Explanation: Disable provider response storage for temporary translated answers.
+        // Reason: Translation must not create persistent answer artifacts.
+        store: false,
       }),
       signal: controller.signal,
     });
@@ -567,7 +798,16 @@ export default async function handler(
       sendJson(response, 502, { error: "docent_upstream_unavailable" });
       return;
     }
-    await relaySemanticDeltas(upstream, response);
+    // Explanation: Withhold target-language output until independent evidence reviews finish.
+    // Reason: Unverified streaming fragments would bypass mandatory cross-validation.
+    //     await relaySemanticDeltas(upstream, response);
+    // Explanation: Withhold target-language output until independent evidence reviews finish.
+    // Reason: Unverified streaming fragments would bypass mandatory cross-validation.
+    if (body.targetLanguage)
+      await relayValidatedTarget(upstream, response, body, controller.signal);
+    // Explanation: Preserve existing streaming behavior when no temporary target was requested.
+    // Reason: The source-language docent must remain unchanged.
+    else await relaySemanticDeltas(upstream, response);
   } catch (error) {
     if (response.writableEnded) return;
     if (controller.signal.reason === "client_disconnected") return;

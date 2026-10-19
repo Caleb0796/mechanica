@@ -5,7 +5,12 @@ import {
   useState,
   type KeyboardEvent,
 } from "react";
-import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+// import { useTranslation } from "react-i18next";
+// Explanation: Use the translation-aware React hook and original-text resolvers.
+// Reason: Apply the explicitly requested target without changing English or Chinese source catalogs.
+import { useTranslation, localize, localizeSingle } from "../i18n/requestedTranslation";
 
 import { reconstructionRenderAssets } from "../../data/reconstructionRenders";
 import type { ExhibitData, MachineData } from "../../sim/types";
@@ -17,6 +22,9 @@ interface GalleryPanelProps {
 type DataGalleryImage = MachineData["images"][number];
 type GalleryImage = Omit<DataGalleryImage, "license"> & {
   license: DataGalleryImage["license"] | "MIT";
+// Explanation: Carry existing bilingual labels alongside generated render metadata.
+// Reason: Display translation must not lose the original source pair or translate a translation again.
+  textSources?: { title: { en: string; zh: string }; angle: { en: string; zh: string } };
 };
 type GalleryLayer = "reconstruction" | "classical" | "museum" | "collection";
 
@@ -60,14 +68,27 @@ function reconstructionRenders(
   language: "en" | "zh",
 ): GalleryImage[] {
   return reconstructionRenderAssets(data.slug).map((render) => ({
-    angle: render.label[language],
+    // Explanation: Keep render metadata in its original language until display.
+// Reason: Gallery classification and source attribution must not operate on generated text.
+// angle: render.label[language],
+// Explanation: Keep render metadata in its original language until display.
+// Reason: Gallery classification and source attribution must not operate on generated text.
+angle: render.label[language],
+// Explanation: Retain both original render labels and exhibit names.
+// Reason: The display resolver needs bilingual evidence before accepting translated metadata.
+    textSources: { title: data.names, angle: render.label },
     attributionText: render.attributionText,
     author: render.author,
     file: render.file,
     license: render.license,
     licenseUrl: render.licenseUrl,
     sourceUrl: `${import.meta.env.BASE_URL}#/m/${data.slug}`,
-    title: data.names[language],
+    // Explanation: Keep the original exhibit title in gallery metadata.
+// Reason: Translate only at display so accepted results are not treated as new originals.
+// title: data.names[language],
+// Explanation: Keep the original exhibit title in gallery metadata.
+// Reason: Translate only at display so accepted results are not treated as new originals.
+title: data.names[language],
   }));
 }
 
@@ -103,6 +124,16 @@ function attributionAuthor(image: GalleryImage, unavailable: string): string {
     : attribution;
 }
 
+// Explanation: Resolve gallery display text without changing source metadata.
+// Reason: Render labels have trusted pairs while external captions may have only one original.
+function galleryText(image: GalleryImage, field: "title" | "angle"): string {
+// Explanation: Prefer the original paired labels when they exist.
+// Reason: Single-language metadata cannot satisfy two-source validation.
+  return image.textSources ? localize(image.textSources[field], image[field] === image.textSources[field].zh ? "zh" : "en") : localizeSingle(image[field], /[\p{Script=Han}]/u.test(image[field]) ? "zh" : "en");
+// Explanation: Complete the gallery display resolver.
+// Reason: Attribution metadata remains unchanged outside the rendered text.
+}
+
 function ImageCaption({
   copy,
   image,
@@ -122,7 +153,21 @@ function ImageCaption({
   return (
     <div className="gallery-caption">
       <p>
-        <strong>{image.title}</strong> · {image.angle}
+        <strong>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.title
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "title")
+)}</strong> · {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.angle
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "angle")
+)}
       </p>
       <p className="gallery-attribution">
         {author} · {licenseLabel}:{" "}
@@ -154,7 +199,12 @@ function ImageCaption({
 }
 
 export default function GalleryPanel({ data }: GalleryPanelProps) {
-  const { i18n, t } = useTranslation();
+// Explanation: Observe completion of temporary gallery translations.
+// Reason: Memoized render metadata must refresh when validation results arrive.
+//   const { i18n, t } = useTranslation();
+// Explanation: Observe completion of temporary gallery translations.
+// Reason: Memoized render metadata must refresh when validation results arrive.
+  const { i18n, t, translationRevision } = useTranslation();
   const language = i18n.resolvedLanguage?.startsWith("zh") ? "zh" : "en";
   const copy: GalleryCopy = {
     authorUnavailable: t("gallery.authorUnavailable"),
@@ -204,7 +254,12 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
     const linkouts = data.images.filter((image) => image.license === "linkout");
 
     return { classical, linkouts, museum, reconstruction };
-  }, [data, language]);
+// Explanation: Recompute gallery display metadata after translation validation.
+// Reason: The source data identity and original language do not change during temporary translation.
+//   }, [data, language]);
+// Explanation: Recompute gallery display metadata after translation validation.
+// Reason: The source data identity and original language do not change during temporary translation.
+  }, [data, language, translationRevision]);
 
   const layerCounts: Record<GalleryLayer, number> = {
     reconstruction: layers.reconstruction.length,
@@ -343,9 +398,30 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
               ) : (
                 <div className="gallery-grid gallery-collection-grid">
                   {data.museums.map((museum) => {
-                    const name = museum.name[language];
-                    const exhibit = museum.exhibit[language];
-                    const city = museum.city[language];
+                    const name = (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// museum.name[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(museum.name, language)
+);
+                    const exhibit = (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// museum.exhibit[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(museum.exhibit, language)
+);
+                    const city = (
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// museum.city[language]
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+localize(museum.city, language)
+);
                     return (
                       <article
                         className="gallery-item gallery-collection-card"
@@ -387,17 +463,59 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
                     <article
                       className="gallery-item gallery-collection-card"
                       data-collection-status="linked"
-                      key={`${image.title}-${image.angle}`}
+                      key={`${(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.title
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "title")
+)}-${(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.angle
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "angle")
+)}`}
                     >
-                      <h3>{image.title}</h3>
-                      <p>{image.angle}</p>
+                      <h3>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.title
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "title")
+)}</h3>
+                      <p>{(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.angle
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "angle")
+)}</p>
                       <a
                         className="panel-link"
                         href={image.sourceUrl}
                         rel="noreferrer noopener"
                         target="_blank"
                       >
-                        {image.title} — {image.angle}
+                        {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.title
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "title")
+)} — {(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.angle
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "angle")
+)}
                       </a>
                       <p className="gallery-link-fallback">{copy.deadLink}</p>
                     </article>
@@ -415,17 +533,45 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
                       className="gallery-item"
                       data-gallery-license={image.license}
                       data-testid="image-credit"
-                      key={`${image.title}-${image.angle}`}
+                      key={`${(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.title
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "title")
+)}-${(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.angle
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "angle")
+)}`}
                     >
                       {imageUrl ? (
                         <button
-                          aria-label={`${copy.viewImage}: ${image.title}`}
+                          aria-label={`${copy.viewImage}: ${(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.title
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "title")
+)}`}
                           className="gallery-image-button"
                           onClick={() => openLightbox(image)}
                           type="button"
                         >
                           <img
-                            alt={image.title}
+                            alt={(
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+// image.title
+// Explanation: Resolve the original bilingual text through the active translation session.
+// Reason: Display validated target text or retain the original versions when validation is uncertain.
+galleryText(image, "title")
+)}
                             loading="lazy"
                             src={imageUrl}
                           />
@@ -475,7 +621,14 @@ export default function GalleryPanel({ data }: GalleryPanelProps) {
             </button>
             <h3 id="gallery-lightbox-title">{copy.lightbox}</h3>
             <img
-              alt={lightboxImage.title}
+              alt={(
+// Explanation: Resolve the expanded image accessibility label through the same gallery text resolver.
+// Reason: The lightbox must not retain an untranslated label when the gallery has accepted translated text.
+// lightboxImage.title
+// Explanation: Resolve the expanded image accessibility label through the same gallery text resolver.
+// Reason: The lightbox must not retain an untranslated label when the gallery has accepted translated text.
+galleryText(lightboxImage, "title")
+)}
               className="gallery-lightbox-image"
               src={localImageUrl(lightboxImage)}
             />
